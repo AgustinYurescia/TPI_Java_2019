@@ -1,6 +1,7 @@
-package entidades;
+package modelo;
 
 public class Producto {
+	
 	private int idProducto;
 	private String nombre;
 	private String categoria;
