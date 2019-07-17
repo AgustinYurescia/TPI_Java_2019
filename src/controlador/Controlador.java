@@ -16,10 +16,11 @@ import modeloDAO.ProductoDAO;
 @WebServlet("/Controlador")
 public class Controlador extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	String listar="vistas/listarProductos.jsp";
-	String alta="vistas/altaProducto.jsp";
-	String baja="vistas/bajaProducto.jsp";
-	String editar="vistas/editarProducto.jsp";
+	String index="index.jsp";
+	String listar="listarProductos.jsp";
+	String alta="altaProducto.jsp";
+	String baja="bajaProducto.jsp";
+	String editar="editarProducto.jsp";
 	Producto prod = new Producto();
 	ProductoDAO prodDAO = new ProductoDAO();
 	
@@ -39,7 +40,14 @@ public class Controlador extends HttpServlet {
 			prod.setPrecioVenta();
 			prod.setStock(stock);
 			prodDAO.alta(prod);
+		}else if(action.equalsIgnoreCase("Listar")) {
+			acceso=listar;
+		}else if(action.equalsIgnoreCase("Index")) {
+			acceso=index;
+		}else if(action.equalsIgnoreCase("alta")) {
+			acceso=alta;
 		}
+		
 		RequestDispatcher vista = request.getRequestDispatcher(acceso);
 		vista.forward(request, response);
 	}

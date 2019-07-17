@@ -8,7 +8,8 @@
 	</head>
 	<body>
 		<div>
-			<a href="Controlador?accion=listar">Listar Productos</a>
+			<a href="Controlador?accion=listar">Listar Productos</a><br>
+			<a href="Controlador?accion=alta">Nuevo Producto</a><br>
 		</div>
 	</body>
 </html>

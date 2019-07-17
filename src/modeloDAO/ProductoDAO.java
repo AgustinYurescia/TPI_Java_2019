@@ -1,5 +1,6 @@
 package modeloDAO;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.sql.*;
 
@@ -16,8 +17,28 @@ public class ProductoDAO implements CRUD{
 	Boolean agregado;
 	
 	@Override
-	public List<?> listar() {
-		return null;
+	public List<Producto> listar() {
+		ArrayList<Producto>lista = new ArrayList<>();
+		String sentenciaSQL="select * from productos";
+		try {
+			conn=cn.getConexion();
+			ps=conn.prepareStatement(sentenciaSQL);
+			rs=ps.executeQuery();
+			while(rs.next()) {
+				Producto prod = new Producto();
+				prod.setIdProducto(rs.getInt("idProducto"));
+				prod.setNombre(rs.getString("nombre"));
+				prod.setCategoria(rs.getString("categoria"));
+				prod.setDescripcion(rs.getString("descripcion"));
+				prod.setPrecioCosto(rs.getDouble("precioCosto"));
+				prod.setPrecioVenta();
+				prod.setStock(rs.getInt("stock"));
+				lista.add(prod);
+			}
+		} catch (Exception e) {
+			
+		}
+		return lista;
 	}
 
 	@Override

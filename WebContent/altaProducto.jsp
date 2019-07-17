@@ -18,5 +18,6 @@
 				<input type="submit" name="accion" value="Agregar"><br>
 			</form>
 		</div>
+		<a href="Controlador?accion=index">Volver a inicio</a>
 	</body>
 </html>
