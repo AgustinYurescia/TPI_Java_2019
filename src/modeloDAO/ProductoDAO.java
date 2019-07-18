@@ -1,74 +1,84 @@
 package modeloDAO;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.*;
-
 import config.Conexion;
-import interfaz.CRUD;
 import modelo.Producto;
 
-public class ProductoDAO implements CRUD{
-	Conexion cn=new Conexion();
-	Connection conn;
-	PreparedStatement ps;
-	ResultSet rs;
-	Producto prod=new Producto();
-	Boolean agregado;
-	
-	@Override
+public class ProductoDAO {
+		
 	public List<Producto> listar() {
+		Statement st = null;
+		ResultSet rs=null;
 		ArrayList<Producto>lista = new ArrayList<>();
 		String sentenciaSQL="select * from productos";
 		try {
-			conn=cn.getConexion();
-			ps=conn.prepareStatement(sentenciaSQL);
-			rs=ps.executeQuery();
-			while(rs.next()) {
-				Producto prod = new Producto();
-				prod.setIdProducto(rs.getInt("idProducto"));
-				prod.setNombre(rs.getString("nombre"));
-				prod.setCategoria(rs.getString("categoria"));
-				prod.setDescripcion(rs.getString("descripcion"));
-				prod.setPrecioCosto(rs.getDouble("precioCosto"));
-				prod.setPrecioVenta();
-				prod.setStock(rs.getInt("stock"));
-				lista.add(prod);
+			st=Conexion.getInstancia().getConexion().createStatement();
+			rs=st.executeQuery(sentenciaSQL);
+			if(rs!=null) {
+				while(rs.next()) {
+					Producto prod = new Producto();
+					prod.setIdProducto(rs.getInt("idProducto"));
+					prod.setNombre(rs.getString("nombre"));
+					prod.setCategoria(rs.getString("categoria"));
+					prod.setDescripcion(rs.getString("descripcion"));
+					prod.setPrecioCosto(rs.getDouble("precioCosto"));
+					prod.setPrecioVenta();
+					prod.setStock(rs.getInt("stock"));
+					lista.add(prod);
+				}
 			}
 		} catch (Exception e) {
-			
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs!=null) {rs.close();}
+				if(st!=null) {st.close();}
+				Conexion.getInstancia().desconectar();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		return lista;
 	}
 
-	@Override
-	public Boolean alta(Producto prod) {
+	public void alta(Producto prod) {
+		PreparedStatement st = null;
+		ResultSet keyResultSet=null;
 		String sentenciaSQL="insert into productos(nombre,categoria,descripcion,precioCosto,precioVenta,stock)values(?,?,?,?,?,?)";
 		try {
-			conn=cn.getConexion();
-			ps=conn.prepareStatement(sentenciaSQL);
-			ps.setString(1,prod.getNombre());
-			ps.setString(2, prod.getCategoria());
-			ps.setString(3, prod.getDescripcion());
-			ps.setDouble(4, prod.getPrecioCosto());
-			ps.setDouble(5, prod.getPrecioVenta());
-			ps.setInt(6, prod.getStock());
-			ps.executeUpdate();
-			agregado=true;
-			ps.close();
-			cn.desconectar();
+			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL,PreparedStatement.RETURN_GENERATED_KEYS);
+			st.setString(1,prod.getNombre());
+			st.setString(2, prod.getCategoria());
+			st.setString(3, prod.getDescripcion());
+			st.setDouble(4, prod.getPrecioCosto());
+			st.setDouble(5, prod.getPrecioVenta());
+			st.setInt(6, prod.getStock());
+			st.executeUpdate();
+			keyResultSet=st.getGeneratedKeys();
+			if(keyResultSet!=null && keyResultSet.next()) {
+				prod.setIdProducto(keyResultSet.getInt(1));
+			}
 		} catch (Exception e) {
-			agregado=false;
+			e.printStackTrace();
+		}finally {
+			try {
+				if(keyResultSet!=null) {keyResultSet.close();}
+                if(st!=null) {st.close();}
+                Conexion.getInstancia().desconectar();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
-		return agregado;
+		
 	}
 
-	@Override
+	
 	public Boolean baja(int id) {
 		return null;
 	}
 
-	@Override
+	
 	public Boolean modificar(Producto prod) {
 		return null;
 	}
