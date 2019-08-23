@@ -50,7 +50,7 @@ public class ProveedorDAO {
 		String sentenciaSQL="insert into proveedores(cuit,razonSocial,direccion,telefono,mail)values(?,?,?,?,?)";
 		try {
 			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL,PreparedStatement.RETURN_GENERATED_KEYS);
-			st.setString(1,prov.getCuit());
+			st.setString(1, prov.getCuit());
 			st.setString(2, prov.getRazonSocial());
 			st.setString(3, prov.getDireccion());
 			st.setString(4, prov.getTelefono());

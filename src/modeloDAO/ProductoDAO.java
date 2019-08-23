@@ -72,15 +72,51 @@ public class ProductoDAO {
 		}
 		
 	}
-
 	
-	public Boolean baja(int id) {
-		return null;
+	public Boolean baja(int idProd) {
+		PreparedStatement st = null;
+		String sentenciaSQL="DELETE FROM productos WHERE idProducto=?";
+		try {
+			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			st.setInt(1, idProd);
+			st.executeUpdate();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}finally {
+			try {
+                Conexion.getInstancia().desconectar();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	
-	public Boolean modificar(Producto prod) {
-		return null;
+	public void update(Producto prod) {
+		PreparedStatement st = null;
+		
+		String sentenciaSQL="update productos set(nombre=?,categoria=?,descripcion=?,precioCosto=?,precioVenta=?,stock=?) where idProducto=? values(?,?,?,?,?,?,?)";
+		try {
+			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			st.setString(1,prod.getNombre());
+			st.setString(2, prod.getCategoria());
+			st.setString(3, prod.getDescripcion());
+			st.setDouble(4, prod.getPrecioCosto());
+			st.setDouble(5, prod.getPrecioVenta());
+			st.setInt(6, prod.getStock());
+			st.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+                Conexion.getInstancia().desconectar();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
 	}
 	
 }
