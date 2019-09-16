@@ -2,18 +2,17 @@ package modelo;
 
 public class Producto {
 	
-	private int idProducto;
+	private int codigo;
 	private String nombre;
-	private String categoria;
-	private String descripcion;
-	private Double precioCosto;
-	private Double precioVenta;
+	private String url_imagen;
 	private int stock;
-	public int getIdProducto() {
-		return idProducto;
+	private Double precioVenta;
+	private int codigo_categoria;
+	public int getCodigo() {
+		return codigo;
 	}
-	public void setIdProducto(int idProducto) {
-		this.idProducto = idProducto;
+	public void setCodigo(int codigo) {
+		this.codigo = codigo;
 	}
 	public String getNombre() {
 		return nombre;
@@ -21,23 +20,11 @@ public class Producto {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	public String getCategoria() {
-		return categoria;
+	public String getUrl_imagen() {
+		return url_imagen;
 	}
-	public void setCategoria(String categoria) {
-		this.categoria = categoria;
-	}
-	public String getDescripcion() {
-		return descripcion;
-	}
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
-	public Double getPrecioCosto() {
-		return precioCosto;
-	}
-	public void setPrecioCosto(Double precioCosto) {
-		this.precioCosto = precioCosto;
+	public void setUrl_imagen(String url_imagen) {
+		this.url_imagen = url_imagen;
 	}
 	public int getStock() {
 		return stock;
@@ -45,11 +32,18 @@ public class Producto {
 	public void setStock(int stock) {
 		this.stock = stock;
 	}
-	public void setPrecioVenta() {
-		this.precioVenta = this.precioCosto*1.40;
-	}
 	public Double getPrecioVenta() {
 		return precioVenta;
 	}
+	public void setPrecioVenta() {
+		
+	}
+	public int getCodigo_categoria() {
+		return codigo_categoria;
+	}
+	public void setCodigo_categoria(int codigo_categoria) {
+		this.codigo_categoria = codigo_categoria;
+	}
+	
 }
 

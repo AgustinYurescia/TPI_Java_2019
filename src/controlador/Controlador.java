@@ -29,16 +29,14 @@ public class Controlador extends HttpServlet {
 		String action=request.getParameter("accion");
 		if(action.equalsIgnoreCase("Agregar")) {
 			String nombre=request.getParameter("nombre");
-			String categoria=request.getParameter("categoria");
-			String descripcion=request.getParameter("descripcion");
-			Double precioCosto=Double.parseDouble(request.getParameter("precioCosto"));
+			int categoria=Integer.parseInt(request.getParameter("codigoCategoria"));
+			String url_imagen=request.getParameter("url_imagen");
 			int stock=Integer.parseInt(request.getParameter("stock"));
 			prod.setNombre(nombre);
-			prod.setCategoria(categoria);
-			prod.setDescripcion(descripcion);
-			prod.setPrecioCosto(precioCosto);
-			prod.setPrecioVenta();
+			prod.setUrl_imagen(url_imagen);
 			prod.setStock(stock);
+			prod.setPrecioVenta();
+			prod.setCodigo_categoria(categoria);
 			prodDAO.alta(prod);
 		}else if(action.equalsIgnoreCase("Listar")) {
 			acceso=listar;

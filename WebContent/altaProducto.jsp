@@ -11,9 +11,8 @@
 			<h1>Agregar Producto</h1>
 			<form action="Controlador">
 				Nombre: <input type="text" name="nombre"><br>
-				Categoría: <input type="text" name="categoria"><br>
-				Descripción: <input type="text" name="descripcion"><br>
-				Precio costo: <input type="text" name="precioCosto"><br>
+				Url de la imagen: <input type="text" name="url_imagen"><br>
+				Categoría: <input type="text" name="codigoCategoria"><br>
 				Cantidad: <input type="text" name="stock"><br>
 				<input type="submit" name="accion" value="Agregar"><br>
 			</form>

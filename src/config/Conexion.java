@@ -6,7 +6,7 @@ public class Conexion {
 	private static Conexion instancia;
 	private Connection con=null;
 	private int conectados=0;
-	private String url="jdbc:mysql://localhost:3306/java?useTimezone=true&serverTimezone=UTC";
+	private String url="jdbc:mysql://localhost:3306/vinoteca_gatti?useTimezone=true&serverTimezone=UTC";
 	private String usuario="root";
 	private String pass="java2019";
 	
@@ -50,22 +50,5 @@ public class Conexion {
 	}
 	
 }
-	/*
-	public Conexion() {
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			con=DriverManager.getConnection("jdbc:mysql://localhost:3306/java?useTimezone=true&serverTimezone=UTC","root", "java2019");
-		} catch (Exception e){
-			System.err.println("Error"+e);
-		}
-	}
-	public Connection getConexion() {
-		return con;
-	}
-	public void desconectar() throws SQLException {
-		if (con != null && !con.isClosed()) {
-            con.close();
-        }
-	}
-	*/
+
 
