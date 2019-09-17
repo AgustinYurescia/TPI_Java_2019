@@ -16,34 +16,33 @@ import modeloDAO.ProductoDAO;
 @WebServlet("/Controlador")
 public class Controlador extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	String index="index.jsp";
-	String listar="listarProductos.jsp";
-	String alta="altaProducto.jsp";
-	String baja="bajaProducto.jsp";
-	String editar="editarProducto.jsp";
+	String index = "index.jsp";
+	String listar = "listarProductos.jsp";
+	String alta = "altaProducto.jsp";
 	Producto prod = new Producto();
 	ProductoDAO prodDAO = new ProductoDAO();
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String acceso="";
-		String action=request.getParameter("accion");
+		String acceso = "";
+		String action = request.getParameter("accion");
 		if(action.equalsIgnoreCase("Agregar")) {
-			String nombre=request.getParameter("nombre");
-			int categoria=Integer.parseInt(request.getParameter("codigoCategoria"));
-			String url_imagen=request.getParameter("url_imagen");
-			int stock=Integer.parseInt(request.getParameter("stock"));
+			String nombre = request.getParameter("nombre");
+			int categoria = Integer.parseInt(request.getParameter("codigo_categoria"));
+			String url_imagen = request.getParameter("url_imagen");
+			int stock = Integer.parseInt(request.getParameter("stock"));
+			String cuil_proveedor = request.getParameter("cuil_proveedor");
+			Double precio = Double.parseDouble(request.getParameter("precio"));
 			prod.setNombre(nombre);
 			prod.setUrl_imagen(url_imagen);
 			prod.setStock(stock);
-			prod.setPrecioVenta();
 			prod.setCodigo_categoria(categoria);
-			prodDAO.alta(prod);
-		}else if(action.equalsIgnoreCase("Listar")) {
-			acceso=listar;
-		}else if(action.equalsIgnoreCase("Index")) {
-			acceso=index;
+			prodDAO.alta(prod, cuil_proveedor, precio);
+		}else if(action.equalsIgnoreCase("listar")) {
+			acceso = listar;
+		}else if(action.equalsIgnoreCase("index")) {
+			acceso = index;
 		}else if(action.equalsIgnoreCase("alta")) {
-			acceso=alta;
+			acceso = alta;
 		}
 		
 		RequestDispatcher vista = request.getRequestDispatcher(acceso);

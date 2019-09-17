@@ -35,8 +35,9 @@ public class Producto {
 	public Double getPrecioVenta() {
 		return precioVenta;
 	}
-	public void setPrecioVenta() {
-		
+	public void setPrecioVenta(Double precio_venta) {
+		this.precioVenta = precio_venta;
+		 
 	}
 	public int getCodigo_categoria() {
 		return codigo_categoria;
@@ -44,6 +45,5 @@ public class Producto {
 	public void setCodigo_categoria(int codigo_categoria) {
 		this.codigo_categoria = codigo_categoria;
 	}
-	
 }
 

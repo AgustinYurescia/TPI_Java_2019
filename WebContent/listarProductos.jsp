@@ -17,11 +17,10 @@
 			<table border="1">
 				<thead>
 					<tr>
-						<th>ID</th>
+						<th>Codigo</th>
 						<th>Nombre</th>
 						<th>Categoría</th>
-						<th>Descripción</th>
-						<th>Precio Costo</th>
+						<th>Imagen</th>
 						<th>Precio Venta</th>
 						<th>Stock</th>
 					</tr>
@@ -36,11 +35,10 @@
 						%>
 				<tbody>
 					<tr>
-						<td><%=prod.getIdProducto()%></td>
+						<td><%=prod.getCodigo()%></td>
 						<td><%=prod.getNombre()%></td>
-						<td><%=prod.getCategoria()%></td>
-						<td><%=prod.getDescripcion()%></td>
-						<td><%=prod.getPrecioCosto()%></td>
+						<td><%=prod.getCodigo_categoria()%></td>
+						<td><%=prod.getUrl_imagen()%></td>
 						<td><%=prod.getPrecioVenta()%></td>
 						<td><%=prod.getStock()%></td>
 					</tr>
