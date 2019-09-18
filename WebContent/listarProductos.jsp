@@ -18,9 +18,8 @@
 				<thead>
 					<tr>
 						<th>Codigo</th>
-						<th>Nombre</th>
-						<th>Categoría</th>
 						<th>Imagen</th>
+						<th>Nombre</th>
 						<th>Precio Venta</th>
 						<th>Stock</th>
 					</tr>
@@ -35,12 +34,11 @@
 						%>
 				<tbody>
 					<tr>
-						<td><%=prod.getCodigo()%></td>
-						<td><%=prod.getNombre()%></td>
-						<td><%=prod.getCodigo_categoria()%></td>
-						<td><%=prod.getUrl_imagen()%></td>
-						<td><%=prod.getPrecioVenta()%></td>
-						<td><%=prod.getStock()%></td>
+						<td align="center"><%=prod.getCodigo()%></td>
+						<td><img src=<%=prod.getUrl_imagen()%> width="50" height="80"/></td>
+						<td align="center"><%=prod.getNombre()%></td>
+						<td align="center"><%=prod.getPrecioVenta()%></td>
+						<td align="center"><%=prod.getStock()%></td>
 					</tr>
 					<%}%>
 				</tbody>
