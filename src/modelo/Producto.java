@@ -8,6 +8,7 @@ public class Producto {
 	private int stock;
 	private Double precioVenta;
 	private int codigo_categoria;
+	private java.sql.Date fecha_baja;
 	public int getCodigo() {
 		return codigo;
 	}
@@ -44,6 +45,12 @@ public class Producto {
 	}
 	public void setCodigo_categoria(int codigo_categoria) {
 		this.codigo_categoria = codigo_categoria;
+	}
+	public java.sql.Date getFecha_baja() {
+		return fecha_baja;
+	}
+	public void setFecha_baja(java.sql.Date fecha_baja) {
+		this.fecha_baja = fecha_baja;
 	}
 }
 

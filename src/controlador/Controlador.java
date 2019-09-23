@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import modelo.Producto;
 import modeloDAO.ProductoDAO;
+import modeloDAO.CategoriaDAO;
 
 
 @WebServlet("/Controlador")
@@ -38,6 +39,16 @@ public class Controlador extends HttpServlet {
 			prod.setCodigo_categoria(categoria);
 			prodDAO.alta(prod, cuil_proveedor, precio);
 		}else if(action.equalsIgnoreCase("listar")) {
+			CategoriaDAO catDAO = new CategoriaDAO();
+			String nombre_filtro = request.getParameter("filtrar_por");
+			if (nombre_filtro.equalsIgnoreCase("TODOS")){
+				request.setAttribute("filtro", "TODOS");
+			}else {
+				int codigo_filtro = catDAO.getCodigoCategoria(nombre_filtro);
+				if (codigo_filtro != 0) {
+					request.setAttribute("filtro", Integer.toString(codigo_filtro));
+				}
+			}
 			acceso = listar;
 		}else if(action.equalsIgnoreCase("index")) {
 			acceso = index;
@@ -53,5 +64,4 @@ public class Controlador extends HttpServlet {
 	
 		doGet(request, response);
 	}
-
 }

@@ -1,15 +1,11 @@
 package modeloDAO;
-import modeloDAO.ClienteDAO;
+import modeloDAO.ProductoDAO;
 
 public class Pruebas {
 
 	public static void main(String[] args) {
-		ClienteDAO cli = new ClienteDAO();
-		Boolean rta;
-		
-		rta=cli.existe("agus_yur","39291780");
-		System.out.println(rta);
-
+		ProductoDAO cli = new ProductoDAO();
+		cli.calcular_precio_venta_nuevo_producto(7,120.0);
 	}
 
 }

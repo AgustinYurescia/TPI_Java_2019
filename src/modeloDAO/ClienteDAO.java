@@ -66,6 +66,44 @@ public class ClienteDAO {
 		}
 		return false;
 	}
+	
+	public void baja(String usuario, String contrasena) {
+		PreparedStatement st = null;
+		String sentenciaSQL="DELETE FROM cliente WHERE cliente_usuario='"+usuario+"' AND cliente_contrasena='"+contrasena+"'";
+		try {
+			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			st.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(st!=null) {st.close();}
+				Conexion.getInstancia().desconectar();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void cambio_contrasena(String usuario, String contrasena_vieja, String contrasena_nueva) {
+		PreparedStatement st = null;
+		String sentenciaSQL="UPDATE cliente SET cliente_contrasena = '"+contrasena_nueva+"' WHERE cliente_usuario='"+usuario+"'"
+				+ " AND cliente_contrasena='"+contrasena_vieja+"'";
+		try {
+			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			st.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(st!=null) {st.close();}
+				Conexion.getInstancia().desconectar();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 }
 
 

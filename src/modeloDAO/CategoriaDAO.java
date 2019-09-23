@@ -32,4 +32,28 @@ public class CategoriaDAO {
 		}
 		
 	}
+	public int getCodigoCategoria(String descripcion_categoria) {
+		PreparedStatement st = null;
+		ResultSet rs=null;
+		String sentenciaSQL="SELECT codigo FROM categoria WHERE descripcion = '"+descripcion_categoria+"' ";
+		try {
+			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			rs=st.executeQuery();
+			if(rs!=null && rs.next()) {
+				return rs.getInt("codigo");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rs!=null) {rs.close();}
+                if(st!=null) {st.close();}
+                Conexion.getInstancia().desconectar();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return 0;
+	}
+	
 }

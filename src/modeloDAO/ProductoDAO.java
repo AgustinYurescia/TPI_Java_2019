@@ -15,7 +15,7 @@ public class ProductoDAO {
 		Statement st = null;
 		ResultSet rs = null;
 		ArrayList<Producto>lista = new ArrayList<>();
-		String sentenciaSQL = "select * from producto";
+		String sentenciaSQL = "SELECT * FROM producto WHERE fecha_baja is null";
 		try {
 			st=Conexion.getInstancia().getConexion().createStatement();
 			rs=st.executeQuery(sentenciaSQL);
@@ -48,7 +48,7 @@ public class ProductoDAO {
 	public void alta(Producto prod, String cuil_proveedor, Double precio) {
 		PreparedStatement st = null;
 		ResultSet keyResultSet=null;
-		String sentenciaSQL="insert into producto(nombre,url_imagen,stock,codigo_categoria)values(?,?,?,?)";
+		String sentenciaSQL="INSERT INTO producto(nombre,url_imagen,stock,codigo_categoria)VALUES(?,?,?,?)";
 		try {
 			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL,PreparedStatement.RETURN_GENERATED_KEYS);
 			st.setString(1, prod.getNombre());
@@ -70,7 +70,6 @@ public class ProductoDAO {
 				java.util.Date utilDate = new java.util.Date();
 				long lnMilisegundos = utilDate.getTime();
 				java.sql.Date fecha = new java.sql.Date(lnMilisegundos);
-				System.out.println(fecha);
 				pre.setFecha_desde(fecha);
 				pre.setPrecio(precio);
 				ppDAO.alta(pp);
@@ -94,10 +93,9 @@ public class ProductoDAO {
 
 	public void baja(int idProd) {
 		PreparedStatement st = null;
-		String sentenciaSQL="DELETE FROM producto WHERE idProducto=?";
+		String sentenciaSQL="UPDATE producto SET fecha_baja = current_date WHERE idProducto="+idProd+"";
 		try {
 			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
-			st.setInt(1, idProd);
 			st.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -109,9 +107,10 @@ public class ProductoDAO {
 			}
 		}
 	}
+	
 	public void update(Producto prod) {
 		PreparedStatement st = null;
-		String sentenciaSQL="update producto set(nombre=?,url_imagen=?,stock=?,codigo_categoria=?) where codigo=? values(?,?,?,?)";
+		String sentenciaSQL="UPDATE producto SET(nombre=?,url_imagen=?,stock=?,codigo_categoria=?) WHERE codigo=? VALUES(?,?,?,?)";
 		try {
 			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
 			st.setString(1,prod.getNombre());
@@ -143,9 +142,6 @@ public class ProductoDAO {
 				porcGan=rs.getDouble("porcentaje");
 				precio_venta = (precio*(1+(porcGan/100)));
 				String sentenciaParaUpdate="UPDATE producto SET precio_venta="+precio_venta+" WHERE codigo="+codigo_producto+"";
-				System.out.println(porcGan);
-				System.out.println(precio_venta);
-				System.out.println(codigo_producto);
 				st2=Conexion.getInstancia().getConexion().prepareStatement(sentenciaParaUpdate);
 				st2.executeUpdate(); 
 			}
