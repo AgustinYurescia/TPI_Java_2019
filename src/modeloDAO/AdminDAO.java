@@ -31,4 +31,30 @@ public class AdminDAO {
 			}
 		}
 	}
+	
+	public Boolean existe(String usuario, String contrasena) {
+		PreparedStatement st = null;
+		ResultSet rs=null;
+		String sentenciaSQL="SELECT * FROM admin WHERE admin_usuario='"+usuario+"' AND admin_contrasena='"+contrasena+"'";
+		try {
+			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			rs = st.executeQuery();
+			if(rs.next()) {
+				return true;
+			}else {
+				return false;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(st!=null) {st.close();}
+				Conexion.getInstancia().desconectar();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
 }

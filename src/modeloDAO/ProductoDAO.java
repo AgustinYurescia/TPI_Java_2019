@@ -11,11 +11,11 @@ import modeloDAO.PrecioDAO;
 
 public class ProductoDAO {
 		
-	public List<Producto> listar() {
+	public List<Producto> obtener_todos() {
 		Statement st = null;
 		ResultSet rs = null;
 		ArrayList<Producto>lista = new ArrayList<>();
-		String sentenciaSQL = "SELECT * FROM producto WHERE fecha_baja is null";
+		String sentenciaSQL = "SELECT * FROM producto WHERE fecha_baja is null order by nombre asc";
 		try {
 			st=Conexion.getInstancia().getConexion().createStatement();
 			rs=st.executeQuery(sentenciaSQL);
@@ -108,15 +108,11 @@ public class ProductoDAO {
 		}
 	}
 	
-	public void update(Producto prod) {
+	public void actualizar_stock(int codigo_producto, int cantidad) {
 		PreparedStatement st = null;
-		String sentenciaSQL="UPDATE producto SET(nombre=?,url_imagen=?,stock=?,codigo_categoria=?) WHERE codigo=? VALUES(?,?,?,?)";
+		String sentenciaSQL="UPDATE producto SET stock=stock+"+cantidad+" WHERE codigo="+codigo_producto+"";
 		try {
 			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
-			st.setString(1,prod.getNombre());
-			st.setString(2, prod.getUrl_imagen());
-			st.setInt(3, prod.getStock());
-			st.setInt(4, prod.getCodigo_categoria());
 			st.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -157,5 +153,35 @@ public class ProductoDAO {
 				e.printStackTrace();
 			}
 		}
+	}
+	public Producto buscar_producto(int codigo_producto) {
+		Producto prod = new Producto();
+		Statement st = null;
+		PreparedStatement st2 = null;
+		ResultSet rs = null;
+		String sentenciaParaPorc="SELECT * FROM producto WHERE codigo = "+codigo_producto+"";
+		try {
+			st=Conexion.getInstancia().getConexion().createStatement();
+			rs=st.executeQuery(sentenciaParaPorc);
+			if (rs.next()) {
+				prod.setNombre(rs.getString(2));
+				prod.setUrl_imagen(rs.getString(3));
+				prod.setStock(rs.getInt(4));
+				prod.setPrecioVenta(rs.getDouble(5));
+			}
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			try {
+                Conexion.getInstancia().desconectar();
+			} 
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return prod;
 	}
 }

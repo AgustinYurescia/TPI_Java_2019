@@ -14,12 +14,12 @@ import modeloDAO.ProductoDAO;
 import modeloDAO.CategoriaDAO;
 
 
-@WebServlet("/Controlador")
-public class Controlador extends HttpServlet {
+@WebServlet("/ControladorProducto")
+public class ControladorProducto extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	String index = "index.jsp";
 	String listar = "listarProductos.jsp";
-	String alta = "altaProducto.jsp";
+	String listarAdmin = "listarProductosAdmin.jsp";
+	String mostrar_producto = "producto.jsp";
 	Producto prod = new Producto();
 	ProductoDAO prodDAO = new ProductoDAO();
 	
@@ -38,6 +38,7 @@ public class Controlador extends HttpServlet {
 			prod.setStock(stock);
 			prod.setCodigo_categoria(categoria);
 			prodDAO.alta(prod, cuil_proveedor, precio);
+			
 		}else if(action.equalsIgnoreCase("listar")) {
 			CategoriaDAO catDAO = new CategoriaDAO();
 			String nombre_filtro = request.getParameter("filtrar_por");
@@ -50,10 +51,36 @@ public class Controlador extends HttpServlet {
 				}
 			}
 			acceso = listar;
-		}else if(action.equalsIgnoreCase("index")) {
-			acceso = index;
-		}else if(action.equalsIgnoreCase("alta")) {
-			acceso = alta;
+			
+		}else if(action.equalsIgnoreCase("listarAdmin")) {
+			CategoriaDAO catDAO = new CategoriaDAO();
+			String nombre_filtro = request.getParameter("filtrar_por");
+			if (nombre_filtro.equalsIgnoreCase("TODOS")){
+				request.setAttribute("filtro", "TODOS");
+			}else {
+				int codigo_filtro = catDAO.getCodigoCategoria(nombre_filtro);
+				if (codigo_filtro != 0) {
+					request.setAttribute("filtro", Integer.toString(codigo_filtro));
+				}
+			}
+			acceso = listarAdmin;
+			
+		}else if(action.equalsIgnoreCase("mostrar_producto")) {
+			String codigo_producto;
+			ProductoDAO pdao = new ProductoDAO();
+			Producto prod;
+			codigo_producto = request.getParameter("codigo_producto");
+			prod = pdao.buscar_producto(Integer.parseInt(codigo_producto));
+			request.setAttribute("producto", prod);
+			acceso = mostrar_producto;
+			
+		}else if(action.equalsIgnoreCase("ActualizarStock")) {
+			String codigo_producto;
+			String cantidad;
+			ProductoDAO pdao = new ProductoDAO();
+			codigo_producto = request.getParameter("codigo_producto");
+			cantidad = request.getParameter("cantidad");
+			pdao.actualizar_stock(Integer.parseInt(codigo_producto), Integer.parseInt(cantidad));
 		}
 		
 		RequestDispatcher vista = request.getRequestDispatcher(acceso);
