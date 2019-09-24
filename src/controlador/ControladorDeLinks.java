@@ -9,9 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import modelo.Producto;
-import modeloDAO.ProductoDAO;
-import modeloDAO.CategoriaDAO;
 
 
 @WebServlet("/ControladorDeLinks")
@@ -25,8 +22,6 @@ public class ControladorDeLinks extends HttpServlet {
 	String listar = "listarProductos.jsp";
 	String altaProducto = "altaProducto.jsp";
 	String mostrar_producto = "producto.jsp";
-	Producto prod = new Producto();
-	ProductoDAO prodDAO = new ProductoDAO();
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String acceso = "";
@@ -39,13 +34,13 @@ public class ControladorDeLinks extends HttpServlet {
 			acceso = loginAdmin;
 		}else if(action.equalsIgnoreCase("indexAdmin")) {
 			acceso = indexAdmin;
-		}else if(action.equalsIgnoreCase("index")) {
-			acceso = indexCliente;
+		}else if(action.equalsIgnoreCase("actualizarStock")) {
+			acceso = "actualizarStock.jsp";
 		}else if(action.equalsIgnoreCase("altaProducto")) {
 			acceso = altaProducto;
-		}else if(action.equalsIgnoreCase("mostrar_producto")) {
+		}else if(action.equalsIgnoreCase("-------")) {
 			acceso = indexCliente;
-		}else if(action.equalsIgnoreCase("actualizarStock")) {
+		}else if(action.equalsIgnoreCase("--------")) {
 			acceso = actualizarStock;
 		}else if(action.equalsIgnoreCase("----")) {
 			acceso = "";
