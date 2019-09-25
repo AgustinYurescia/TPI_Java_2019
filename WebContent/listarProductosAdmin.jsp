@@ -2,6 +2,8 @@
 <%@page import="java.util.List"%>
 <%@page import="modeloDAO.ProductoDAO"%>
 <%@page import="modelo.Producto"%>
+<%@page import="modeloDAO.CategoriaDAO"%>
+<%@page import="modelo.Categoria"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     
@@ -28,20 +30,31 @@
     		<a class="py-2 d-none d-md-inline-block" href=""><font face="Calibri" color="Black">xxxxx</font></a>
   		</div>
 	   </nav>
+	   	   <h5><font face="Calibri" color="Black"><label for="filtrar_por">Categoría</label></font></h5>
+	   <form action="ControladorProducto">
+  			<div class="form-row">
+    			<div class="form-group col-md-6">
+      				<select id="filtrar_por" name="filtrar_por" class="form-control"  >
+        				<option value = "TODOS" selected>Todos</option>
+        				<% 
+						CategoriaDAO catDAO = new CategoriaDAO(); 
+						List<Categoria> listaCat = catDAO.obtener_todos();
+						Iterator<Categoria>iterCat = listaCat.iterator();
+						Categoria cat = null;
+						while(iterCat.hasNext()){
+								cat=iterCat.next();
+						%>
+        				<option value="<%=cat.getDescripcion()%>"><%=cat.getDescripcion()%></option>
+        				<%}%>
+     				</select>														
+    			</div>
+    			<div class="form-group col-md-6">
+    			<button type="submit" class="btn btn-primary" name="accion" value="listar">Filtrar</button>	
+    			</div>
+    		</div>
+		</form>
 	   <div>
 			<h1>Productos</h1>
-			<div class="">
-    			<a class="py-2 d-none d-md-inline-block" href="ControladorProducto?accion=listar&filtrar_por=TODOS"><font face="Calibri" color="Black">Todos </font></a>
-    			<a class="py-2 d-none d-md-inline-block" href="ControladorProducto?accion=listar&filtrar_por=Aperitivo"><font face="Calibri" color="Black">Aperitivos </font></a>
-    			<a class="py-2 d-none d-md-inline-block" href="ControladorProducto?accion=listar&filtrar_por=Bebida Blanca"><font face="Calibri" color="Black">Bebidas Blancas </font></a>
-    			<a class="py-2 d-none d-md-inline-block" href="ControladorProducto?accion=listar&filtrar_por=Cerveza"><font face="Calibri" color="Black">Cervezas</font></a>
-	    		<a class="py-2 d-none d-md-inline-block" href="ControladorProducto?accion=listar&filtrar_por=Espumante"><font face="Calibri" color="Black">Espumantes</font></a>
-	    		<a class="py-2 d-none d-md-inline-block" href="ControladorProducto?accion=listar&filtrar_por=Vino Blanco"><font face="Calibri" color="Black">Vinos Blancos</font></a>
-    			<a class="py-2 d-none d-md-inline-block" href="ControladorProducto?accion=listar&filtrar_por=Vino Tinto"><font face="Calibri" color="Black">Vinos Tintos</font></a>
-    			<a class="py-2 d-none d-md-inline-block" href=""><font face="Calibri" color="Black">xxxxx</font></a>
-    			<a class="py-2 d-none d-md-inline-block" href=""><font face="Calibri" color="Black">xxxxx</font></a>
-    			<a class="py-2 d-none d-md-inline-block" href=""><font face="Calibri" color="Black">xxxxx</font></a>
-  			</div>
 			<table class="table table-striped">
 				<thead>
 					<tr>

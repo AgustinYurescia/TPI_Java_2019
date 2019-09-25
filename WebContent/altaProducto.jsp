@@ -46,7 +46,7 @@
 						while(iter.hasNext()){
 								cat=iter.next();
 						%>
-        				<option value="<%=cat.getDescripcion()%>"><%=cat.getDescripcion()%></option>
+        				<option value="<%=cat.getCodigo()%>"><%=cat.getDescripcion()%></option>
         				<%}%>
      				</select>
     			</div>
