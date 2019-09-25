@@ -34,8 +34,8 @@
     <form class="form-signin" action="ControladorLogin">
   		<img class="mb-4" src="https://proveedorespvriviera.com/wp-content/uploads/2018/10/LogoVINOTECA_negro.png" alt="" width="200" height="72">
   		<h1 class="h3 mb-3 font-weight-normal">Iniciar Sesion</h1>
-  		<label for="usuario" class="sr-only">Usuario</label>
-  		<input type="text" id="usuario" name="usuario" class="form-control" placeholder="Usuario" required>
+  		<label for="usuario_cliente" class="sr-only">Usuario</label>
+  		<input type="text" id="usuario_cliente" name="usuario_cliente" class="form-control" placeholder="Usuario" required>
   		<label for="contrasena" class="sr-only">Contraseña</label>
   		<input type="text" id="contrasena" name="contrasena" class="form-control" placeholder="Contraseña" required>
   		<button class="btn btn-lg btn-primary btn-block" type="submit" name="accion" value="login">Iniciar Sesión</button>

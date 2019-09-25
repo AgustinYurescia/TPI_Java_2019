@@ -1,6 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-    
+<%@ page import = "java.util.ArrayList" %>
+<%@ page import = "modelo.LineaPedido" %>
+<%@ page import = "modeloDAO.ProductoDAO" %>
+<%@ page import = "java.util.Iterator" %>
+<%@ page import = "modelo.Producto" %>
+<% 
+	ArrayList<LineaPedido> linea;
+	HttpSession sesion = request.getSession(true);
+	if (sesion.getAttribute("carrito") == null) {
+		linea = null;
+	}else {
+		linea = (ArrayList<LineaPedido>)sesion.getAttribute("carrito");	
+	}
+%>
+
 <!DOCTYPE html>
 <html>
 	<head>
@@ -24,5 +38,36 @@
     		<a class="py-2 d-none d-md-inline-block" href=""><font face="Calibri" color="Black">xxxxx</font></a>
   		</div>
 	   </nav>
+	   	   <div>
+			<h1>Productos</h1>
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th><font face="Calibri" color="Black">Imagen</font></th>
+						<th><font face="Calibri" color="Black">Nombre</font></th>
+						<th><font face="Calibri" color="Black">Precio Venta</font></th>
+						<th><font face="Calibri" color="Black">Cantidad</font></th>
+					</tr>
+				</thead>
+						<% 
+							ProductoDAO proDAO = new ProductoDAO(); 
+							Iterator<LineaPedido>iter = linea.iterator();
+							LineaPedido lin;
+							Producto pro;
+							while(iter.hasNext()){
+								lin=iter.next();
+								pro = proDAO.buscar_producto(lin.getCodigo_producto());
+						%>
+				<tbody>
+					<tr>
+						<td><img src=<%=pro.getUrl_imagen()%> width="50" height="80"/></td>
+						<td><font face="Calibri" color="Blue"><%=pro.getNombre()%></font></td>
+						<td><font face="Calibri" color="Black"><%=pro.getPrecioVenta()%></font></td>
+						<td><font face="Calibri" color="Black"><%=lin.getCantidad()%></font></td>
+					</tr>
+					<%}%>
+				</tbody>
+			</table>
+		</div>
 	</body>
 </html>

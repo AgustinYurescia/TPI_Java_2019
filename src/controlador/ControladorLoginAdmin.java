@@ -26,25 +26,21 @@ public class ControladorLoginAdmin extends HttpServlet {
 		Boolean rta;
 		String action=request.getParameter("accion");
 		if(action.equalsIgnoreCase("login")) {
-			String usuario=request.getParameter("usuario");
+			String usuario=request.getParameter("usuario_admin");
 			String contrasena=request.getParameter("contrasena");
 			rta = adDAO.existe(usuario, contrasena);
 			System.out.println(rta);
-			if (rta && sesion.getAttribute("usuario") == null) {
-				sesion.setAttribute("usuario", usuario);
-				RequestDispatcher vista = request.getRequestDispatcher("indexAdmin.jsp");
-				vista.forward(request, response);
+			if (rta) {
+				sesion.setAttribute("usuario_admin", usuario);
+				response.sendRedirect("indexAdmin.jsp");
 			}else {
-				RequestDispatcher vista = request.getRequestDispatcher("loginAdminError.jsp");
-				vista.forward(request, response);
+				response.sendRedirect("loginAdminError.jsp");
 			}
 		}else if(action.equalsIgnoreCase("logout")) {
 			sesion.invalidate();
-			RequestDispatcher vista = request.getRequestDispatcher("index.jsp");
-			vista.forward(request, response);
+			response.sendRedirect("index.jsp");
 		}else if(action.equalsIgnoreCase("iniciosesion")) {
-			RequestDispatcher vista = request.getRequestDispatcher("loginAdmin.jsp");
-			vista.forward(request, response);
+			response.sendRedirect("loginAdmin.jsp");
 		}
 		
 	}

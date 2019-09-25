@@ -49,7 +49,7 @@
      				</select>														
     			</div>
     			<div class="form-group col-md-6">
-    			<button type="submit" class="btn btn-primary" name="accion" value="listar">Filtrar</button>	
+    			<button type="submit" class="btn btn-primary" name="accion" value="listarAdmin">Filtrar</button>	
     			</div>
     		</div>
 		</form>
@@ -81,7 +81,7 @@
 					<tr>
 						<td><font face="Calibri" color="Black"><%=prod.getCodigo()%></font></td>
 						<td><img src=<%=prod.getUrl_imagen()%> width="50" height="80"/></td>
-						<td><font face="Calibri" color="Blue"><a class="py-2 d-none d-md-inline-block" href="ControladorProducto?accion=mostrar_producto&codigo_producto=<%=prod.getCodigo()%>"><%=prod.getNombre()%></a></font></td>
+						<td><font face="Calibri" color="Blue"><%=prod.getNombre()%></font></td>
 						<td><font face="Calibri" color="Black"><%=prod.getPrecioVenta()%></font></td>
 						<td><font face="Calibri" color="Black"><%=prod.getStock()%></font></td>
 					</tr>
@@ -93,7 +93,7 @@
 					<tr>
 						<td><font face="Calibri" color="Black"><%=prod.getCodigo()%></font></td>
 						<td><img src=<%=prod.getUrl_imagen()%> width="50" height="80"/></td>
-						<td><font face="Calibri" color="Blue"><a class="py-2 d-none d-md-inline-block" href="ControladorProducto?accion=mostrar_producto&codigo_producto=<%=prod.getCodigo()%>"><%=prod.getNombre()%></a></font></td>
+						<td><font face="Calibri" color="Blue"><%=prod.getNombre()%></font></td>
 						<td><font face="Calibri" color="Black"><%=prod.getPrecioVenta()%></font></td>
 						<td><font face="Calibri" color="Black"><%=prod.getStock()%></font></td>
 					</tr>

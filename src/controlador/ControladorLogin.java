@@ -26,12 +26,12 @@ public class ControladorLogin extends HttpServlet {
 		Boolean rta;
 		String action=request.getParameter("accion");
 		if(action.equalsIgnoreCase("login")) {
-			String usuario=request.getParameter("usuario");
+			String usuario=request.getParameter("usuario_cliente");
 			String contrasena=request.getParameter("contrasena");
 			System.out.println(usuario);
 			rta = cliDAO.existe(usuario, contrasena);
-			if (rta && sesion.getAttribute("usuario") == null) {
-				sesion.setAttribute("usuario", usuario);
+			if (rta && sesion.getAttribute("usuario_cliente") == null) {
+				sesion.setAttribute("usuario_cliente", usuario);
 				RequestDispatcher vista = request.getRequestDispatcher("index.jsp");
 				vista.forward(request, response);
 			}else {

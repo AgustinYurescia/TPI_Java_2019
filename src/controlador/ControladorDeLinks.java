@@ -1,6 +1,7 @@
 package controlador;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -8,6 +9,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import modelo.LineaPedido;
 
 
 
@@ -31,23 +35,39 @@ public class ControladorDeLinks extends HttpServlet {
 			acceso = indexCliente;
 		}else if(action.equalsIgnoreCase("inicioSesionCliente")) {
 			acceso = loginCliente;
+			response.sendRedirect(acceso);
 		}else if(action.equalsIgnoreCase("inicioSesionAdmin")) {
 			acceso = loginAdmin;
+			response.sendRedirect(acceso);
 		}else if(action.equalsIgnoreCase("indexAdmin")) {
-			acceso = indexAdmin;
+			HttpSession sesion = request.getSession(true);
+			if (sesion.getAttribute("usuario_admin") == null) {
+				response.sendRedirect("loginAdmin.jsp");   
+			}else {
+				response.sendRedirect("indexAdmin.jsp");  
+			}
 		}else if(action.equalsIgnoreCase("actualizarStock")) {
 			acceso = "actualizarStock.jsp";
+			HttpSession sesion = request.getSession(true);
+			if (sesion.getAttribute("usuario_admin") == null) {
+				response.sendRedirect("loginAdmin.jsp");   
+			}else {
+				response.sendRedirect(acceso);
+			}
 		}else if(action.equalsIgnoreCase("altaProducto")) {
 			acceso = altaProducto;
+			HttpSession sesion = request.getSession(true);
+			if (sesion.getAttribute("usuario_admin") == null) {
+				response.sendRedirect("loginAdmin.jsp");   
+			}else {
+				response.sendRedirect(acceso);
+			}
 		}else if(action.equalsIgnoreCase("carrito")) {
 			acceso = carrito;
-		}else if(action.equalsIgnoreCase("--------")) {
-			acceso = actualizarStock;
-		}else if(action.equalsIgnoreCase("----")) {
-			acceso = "";
+			response.sendRedirect(acceso);
 		}
-		RequestDispatcher vista = request.getRequestDispatcher(acceso);
-		vista.forward(request, response);
+		//RequestDispatcher vista = request.getRequestDispatcher(acceso);
+		//vista.forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

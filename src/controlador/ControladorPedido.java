@@ -8,7 +8,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import java.util.ArrayList;
+
+import modelo.LineaPedido;
+import modelo.Producto;
 
 @WebServlet("/ControladorPedido")
 public class ControladorPedido extends HttpServlet {
@@ -21,13 +26,33 @@ public class ControladorPedido extends HttpServlet {
 		String acceso = "";
 		String action = request.getParameter("accion");
 		if(action.equalsIgnoreCase("agregarAlCarrito")) {
-			String codigo_producto = request.getParameter("codigo_producto");
+			int codigo_producto = Integer.parseInt(request.getParameter("codigo_producto"));
 			int cantidad = Integer.parseInt(request.getParameter("cantidad"));
-			System.out.println(codigo_producto);
-			System.out.println(cantidad);
+			ArrayList<LineaPedido> linea;
+			HttpSession sesion = request.getSession(true);
+			if (sesion.getAttribute("carrito") == null) {
+				linea = new ArrayList<LineaPedido>();
+			}else {
+				linea = (ArrayList<LineaPedido>)sesion.getAttribute("carrito");	
+			}
+			
+			boolean ya_existe = false;
+			if (linea.size() > 0) {
+				for (LineaPedido l : linea) {
+					if (codigo_producto == l.getCodigo_producto()) {
+						l.setCantidad(l.getCantidad() + cantidad);
+						ya_existe = true;
+						break;
+					} 
+				}
+			}
+			if (ya_existe == false) {
+				linea.add(new LineaPedido(codigo_producto,cantidad));
+			}
+			sesion.setAttribute("carrito", linea);
 		}
-		RequestDispatcher vista = request.getRequestDispatcher(acceso);
-		vista.forward(request, response);
+		
+		response.sendRedirect("carrito.jsp");
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
