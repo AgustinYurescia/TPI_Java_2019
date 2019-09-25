@@ -164,6 +164,7 @@ public class ProductoDAO {
 			st=Conexion.getInstancia().getConexion().createStatement();
 			rs=st.executeQuery(sentenciaParaPorc);
 			if (rs.next()) {
+				prod.setCodigo(rs.getInt(1));
 				prod.setNombre(rs.getString(2));
 				prod.setUrl_imagen(rs.getString(3));
 				prod.setStock(rs.getInt(4));

@@ -22,6 +22,7 @@ public class ControladorDeLinks extends HttpServlet {
 	String listar = "listarProductos.jsp";
 	String altaProducto = "altaProducto.jsp";
 	String mostrar_producto = "producto.jsp";
+	String carrito = "carrito.jsp";
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String acceso = "";
@@ -38,8 +39,8 @@ public class ControladorDeLinks extends HttpServlet {
 			acceso = "actualizarStock.jsp";
 		}else if(action.equalsIgnoreCase("altaProducto")) {
 			acceso = altaProducto;
-		}else if(action.equalsIgnoreCase("-------")) {
-			acceso = indexCliente;
+		}else if(action.equalsIgnoreCase("carrito")) {
+			acceso = carrito;
 		}else if(action.equalsIgnoreCase("--------")) {
 			acceso = actualizarStock;
 		}else if(action.equalsIgnoreCase("----")) {
