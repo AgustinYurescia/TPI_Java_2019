@@ -37,7 +37,7 @@
   		<label for="usuario" class="sr-only">Usuario</label>
   		<input type="text" id="usuario" name="usuario" class="form-control" placeholder="Usuario" required>
   		<label for="contrasena" class="sr-only">Contraseña</label>
-  		<input type="text" id="contrasena" name="contrasena" class="form-control" placeholder="Contraseña" required>
+  		<input type="password" id="contrasena" name="contrasena" class="form-control" placeholder="Contraseña" required>
   		<button class="btn btn-lg btn-primary btn-block" type="submit" name="accion" value="login">Iniciar Sesión</button>
   		<p class="mt-5 mb-3 text-muted">&copy; 2017-2019</p>
 	</form>

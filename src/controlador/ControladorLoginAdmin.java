@@ -28,7 +28,6 @@ public class ControladorLoginAdmin extends HttpServlet {
 		if(action.equalsIgnoreCase("login")) {
 			String usuario=request.getParameter("usuario");
 			String contrasena=request.getParameter("contrasena");
-			System.out.println(usuario);
 			rta = adDAO.existe(usuario, contrasena);
 			System.out.println(rta);
 			if (rta && sesion.getAttribute("usuario") == null) {
