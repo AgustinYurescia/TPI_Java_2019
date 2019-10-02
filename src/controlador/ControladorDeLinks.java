@@ -33,6 +33,7 @@ public class ControladorDeLinks extends HttpServlet {
 		String action = request.getParameter("accion");
 		if(action.equalsIgnoreCase("indexCliente")) {
 			acceso = indexCliente;
+			response.sendRedirect(acceso);
 		}else if(action.equalsIgnoreCase("inicioSesionCliente")) {
 			acceso = loginCliente;
 			response.sendRedirect(acceso);

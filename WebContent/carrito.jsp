@@ -5,15 +5,7 @@
 <%@ page import = "modeloDAO.ProductoDAO" %>
 <%@ page import = "java.util.Iterator" %>
 <%@ page import = "modelo.Producto" %>
-<% 
-	ArrayList<LineaPedido> linea;
-	HttpSession sesion = request.getSession(true);
-	if (sesion.getAttribute("carrito") == null) {
-		linea = null;
-	}else {
-		linea = (ArrayList<LineaPedido>)sesion.getAttribute("carrito");	
-	}
-%>
+
 
 <!DOCTYPE html>
 <html>
@@ -30,7 +22,7 @@
     		<a class="py-2 d-none d-md-inline-block" href="ControladorProducto?accion=listar&filtrar_por=TODOS"><font face="Calibri" color="Black">Listado de productos</font></a>
     		<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=inicioSesionCliente"><font face="Calibri" color="Black">Iniciar Sesión</font></a>
     		<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=inicioSesionAdmin"><font face="Calibri" color="Black">Iniciar Sesion Admin</font></a>
-    		<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=carrito"><font face="Calibri" color="Black">xxxxx</font></a>
+    		<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=carrito"><font face="Calibri" color="Black">Carrito</font></a>
     		<a class="py-2 d-none d-md-inline-block" href=""><font face="Calibri" color="Black">xxxxx</font></a>
     		<a class="py-2 d-none d-md-inline-block" href=""><font face="Calibri" color="Black">xxxxx</font></a>
     		<a class="py-2 d-none d-md-inline-block" href=""><font face="Calibri" color="Black">xxxxx</font></a>
@@ -38,6 +30,18 @@
     		<a class="py-2 d-none d-md-inline-block" href=""><font face="Calibri" color="Black">xxxxx</font></a>
   		</div>
 	   </nav>
+	   <% 	ArrayList<LineaPedido> linea;
+			HttpSession sesion = request.getSession(true);
+			if (sesion.getAttribute("carrito") == null) {
+				linea = null;
+		%>
+				<div class="alert alert-info">Su carrito se encuentra vacío</div>
+				<a class="py-2 d-none d-md-inline-block" href="ControladorProducto?accion=listar&filtrar_por=TODOS"><button type="submit" class="btn btn-primary">Ir a comprar</button></a>
+		<% 
+			}else {
+				linea = (ArrayList<LineaPedido>)sesion.getAttribute("carrito");	
+		
+		%>
 	   	   <div>
 			<h1>Productos</h1>
 			<table class="table table-striped">
@@ -65,7 +69,7 @@
 						<td><font face="Calibri" color="Black"><%=pro.getPrecioVenta()%></font></td>
 						<td><font face="Calibri" color="Black"><%=lin.getCantidad()%></font></td>
 					</tr>
-					<%}%>
+					<%}}%>
 				</tbody>
 			</table>
 		</div>
