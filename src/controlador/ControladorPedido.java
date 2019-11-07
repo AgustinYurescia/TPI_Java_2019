@@ -25,6 +25,7 @@ public class ControladorPedido extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String acceso = "";
 		String action = request.getParameter("accion");
+		System.out.println(action);
 		if(action.equalsIgnoreCase("agregarAlCarrito")) {
 			int codigo_producto = Integer.parseInt(request.getParameter("codigo_producto"));
 			int cantidad = Integer.parseInt(request.getParameter("cantidad"));
@@ -50,8 +51,19 @@ public class ControladorPedido extends HttpServlet {
 				linea.add(new LineaPedido(codigo_producto,cantidad));
 			}
 			sesion.setAttribute("carrito", linea);
+		}else if(action.equalsIgnoreCase("eliminarDelCarrito")) {
+			HttpSession sesion = request.getSession(true);
+			ArrayList<LineaPedido> linea = (ArrayList<LineaPedido>)sesion.getAttribute("carrito");
+			int codigo = Integer.parseInt(request.getParameter("codigo_prod"));
+			System.out.println(codigo);
+			for (LineaPedido l: linea) {
+				if(l.getCodigo_producto() == codigo) {
+					linea.remove(l);
+					break;
+				}
+			}
+			sesion.setAttribute("carrito", linea);
 		}
-		
 		response.sendRedirect("carrito.jsp");
 	}
 

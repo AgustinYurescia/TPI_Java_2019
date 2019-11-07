@@ -51,6 +51,7 @@
 						<th><font face="Calibri" color="Black">Nombre</font></th>
 						<th><font face="Calibri" color="Black">Precio Venta</font></th>
 						<th><font face="Calibri" color="Black">Cantidad</font></th>
+						<th><font face="Calibri" color="Black"></font></th>
 					</tr>
 				</thead>
 						<% 
@@ -68,6 +69,7 @@
 						<td><font face="Calibri" color="Blue"><%=pro.getNombre()%></font></td>
 						<td><font face="Calibri" color="Black"><%=pro.getPrecioVenta()%></font></td>
 						<td><font face="Calibri" color="Black"><%=lin.getCantidad()%></font></td>
+						<td><font face="Calibri" color="Black"><a href="ControladorPedido?accion=eliminarDelCarrito&codigo_prod=<%=lin.getCodigo_producto()%>">Eliminar</a></font></td>
 					</tr>
 					<%}}%>
 				</tbody>
