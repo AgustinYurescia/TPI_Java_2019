@@ -23,7 +23,6 @@ public class ControladorPedido extends HttpServlet {
         super();
     }
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String acceso = "";
 		String action = request.getParameter("accion");
 		System.out.println(action);
 		if(action.equalsIgnoreCase("agregarAlCarrito")) {

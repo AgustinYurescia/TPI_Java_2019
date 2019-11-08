@@ -33,6 +33,8 @@ public class ControladorCliente extends HttpServlet {
 			if(cliDAO.yaExisteUsuario(nombre_usuario)) {
 				request.setAttribute("registroClienteError", "El usuario ingresado ya existe");
 				acceso = registroClienteError;
+				RequestDispatcher vista = request.getRequestDispatcher(acceso);
+				vista.forward(request, response);
 			}else {
 				if (request.getParameter("contrasena").equals(request.getParameter("contrasena2"))) {
 					Cliente cliente = new Cliente();
@@ -56,6 +58,8 @@ public class ControladorCliente extends HttpServlet {
 				}else {
 					request.setAttribute("registroClienteError","Las contraseñas ingresadas no coinciden");
 					acceso = registroClienteError;
+					RequestDispatcher vista = request.getRequestDispatcher(acceso);
+					vista.forward(request, response);
 				}
 			}	
 		}

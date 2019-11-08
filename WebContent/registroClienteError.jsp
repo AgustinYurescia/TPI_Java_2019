@@ -1,9 +1,3 @@
-<%@page import="java.util.Iterator"%>
-<%@page import="java.util.List"%>
-<%@page import="modeloDAO.ProductoDAO"%>
-<%@page import="modelo.Producto"%>
-<%@page import="modeloDAO.CategoriaDAO"%>
-<%@page import="modelo.Categoria"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     
@@ -12,7 +6,7 @@
 	<head>
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 		<meta charset="ISO-8859-1">
-		<title>Listar Productos</title>
+		<title>VinotecaGatti</title>
 	</head>
 	<body>
 	   <% 	HttpSession sesion = request.getSession(true);
@@ -25,7 +19,7 @@
     					<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=inicioSesionCliente"><font face="Calibri" color="Black">Iniciar Sesión</font></a>
     					<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=inicioSesionAdmin"><font face="Calibri" color="Black">Iniciar Sesion Admin</font></a>
     					<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=carrito"><font face="Calibri" color="Black">Carrito</font></a>
-    					<a class="py-2 d-none d-md-inline-block" href=""><font face="Calibri" color="Black">xxxxx</font></a>
+    					<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=registroCliente"><font face="Calibri" color="Black">Registrarse</font></a>
     					<a class="py-2 d-none d-md-inline-block" href=""><font face="Calibri" color="Black">xxxxx</font></a>
     					<a class="py-2 d-none d-md-inline-block" href=""><font face="Calibri" color="Black">xxxxx</font></a>
     					<a class="py-2 d-none d-md-inline-block" href=""><font face="Calibri" color="Black">xxxxx</font></a>
@@ -50,76 +44,13 @@
   					</div>
 	   			</nav>
 	   	<% } %>
-	   <h5><font face="Calibri" color="Black"><label for="filtrar_por">Categoría</label></font></h5>
-	   <form action="ControladorProducto">
-  			<div class="form-row">
-    			<div class="form-group col-md-6">
-      				<select id="filtrar_por" name="filtrar_por" class="form-control"  >
-        				<option value = "TODOS" selected>Todos</option>
-        				<% 
-						CategoriaDAO catDAO = new CategoriaDAO(); 
-						List<Categoria> listaCat = catDAO.obtener_todos();
-						Iterator<Categoria>iterCat = listaCat.iterator();
-						Categoria cat = null;
-						while(iterCat.hasNext()){
-								cat=iterCat.next();
-						%>
-        				<option value="<%=cat.getDescripcion()%>"><%=cat.getDescripcion()%></option>
-        				<%}%>
-     				</select>														
-    			</div>
-    			<div class="form-group col-md-6">
-    			<button type="submit" class="btn btn-primary" name="accion" value="listar">Filtrar</button>	
-    			</div>
+
+	   <div class="jumbotron" align="center">
+    		<div class="container">
+      		<h1 class="display-3"><a class="py-2 d-none d-md-inline-block" href="ControladorProducto?accion=index"><img class="mb-4" src="https://proveedorespvriviera.com/wp-content/uploads/2018/10/LogoVINOTECA_negro.png" alt="" width="400" height="150"></a></h1>
+      		<p><%=request.getAttribute("registroClienteError")%></p>
+      		<p><a class="btn btn-primary btn-lg" href="ControladorDeLinks?accion=registroCliente" role="button">Ingresar nuevamente &raquo;</a></p>
     		</div>
-		</form>
-	   <div>
-			<h1>Productos</h1>
-			<table class="table table-striped">
-				<thead>
-					<tr>
-						
-						<th><font face="Calibri" color="Black">Codigo</font></th>
-						<th><font face="Calibri" color="Black">Imagen</font></th>
-						<th><font face="Calibri" color="Black">Nombre</font></th>
-						<th><font face="Calibri" color="Black">Precio Venta</font></th>
-						<th><font face="Calibri" color="Black">Stock</font></th>
-						
-					</tr>
-				</thead>
-						<% 
-							ProductoDAO pr = new ProductoDAO(); 
-							List<Producto> lista = pr.obtener_todos();
-							Iterator<Producto>iter = lista.iterator();
-							Producto prod = null;
-							String filtro = (String)request.getAttribute("filtro");
-							if (filtro.equalsIgnoreCase("TODOS")){
-							while(iter.hasNext()){
-								prod=iter.next();
-						%>
-				<tbody>
-					<tr>
-						<td><font face="Calibri" color="Black"><%=prod.getCodigo()%></font></td>
-						<td><img src=<%=prod.getUrl_imagen()%> width="50" height="80"/></td>
-						<td><font face="Calibri" color="Blue"><a class="py-2 d-none d-md-inline-block" href="ControladorProducto?accion=mostrar_producto&codigo_producto=<%=prod.getCodigo()%>"><%=prod.getNombre()%></a></font></td>
-						<td><font face="Calibri" color="Black"><%=prod.getPrecioVenta()%></font></td>
-						<td><font face="Calibri" color="Black"><%=prod.getStock()%></font></td>
-					</tr>
-					<% }} else {
-						while(iter.hasNext()){
-								prod=iter.next();
-								if (prod.getCodigo_categoria()==Integer.parseInt(filtro)){
-					%>
-					<tr>
-						<td><font face="Calibri" color="Black"><%=prod.getCodigo()%></font></td>
-						<td><img src=<%=prod.getUrl_imagen()%> width="50" height="80"/></td>
-						<td><font face="Calibri" color="Blue"><a class="py-2 d-none d-md-inline-block" href="ControladorProducto?accion=mostrar_producto&codigo_producto=<%=prod.getCodigo()%>"><%=prod.getNombre()%></a></font></td>
-						<td><font face="Calibri" color="Black"><%=prod.getPrecioVenta()%></font></td>
-						<td><font face="Calibri" color="Black"><%=prod.getStock()%></font></td>
-					</tr>
-					<%}}}%>
-				</tbody>
-			</table>
-		</div>
+  		</div>
 	</body>
 </html>

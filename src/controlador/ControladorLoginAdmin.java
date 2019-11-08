@@ -22,7 +22,13 @@ public class ControladorLoginAdmin extends HttpServlet {
         
     }
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		HttpSession sesion = request.getSession();
+		String action=request.getParameter("accion");
+		if(action.equalsIgnoreCase("logout")) {
+			sesion.invalidate();
+			RequestDispatcher vista = request.getRequestDispatcher("index.jsp");
+			vista.forward(request, response);
+		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
