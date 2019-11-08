@@ -68,7 +68,7 @@
 						<th><font face="Calibri" color="Black">Nombre</font></th>
 						<th><font face="Calibri" color="Black">Precio Venta</font></th>
 						<th><font face="Calibri" color="Black">Stock</font></th>
-						
+						<th><font face="Calibri" color="Black"></font></th>
 					</tr>
 				</thead>
 						<% 
@@ -88,6 +88,7 @@
 						<td><font face="Calibri" color="Blue"><%=prod.getNombre()%></font></td>
 						<td><font face="Calibri" color="Black"><%=prod.getPrecioVenta()%></font></td>
 						<td><font face="Calibri" color="Black"><%=prod.getStock()%></font></td>
+						<td><font face="Calibri" color="Black"><a href="ControladorProducto?accion=BajaProducto&codigo_producto_baja=<%=prod.getCodigo()%>">Dar de baja</a></font></td>
 					</tr>
 					<% }} else {
 						while(iter.hasNext()){
@@ -100,6 +101,7 @@
 						<td><font face="Calibri" color="Blue"><%=prod.getNombre()%></font></td>
 						<td><font face="Calibri" color="Black"><%=prod.getPrecioVenta()%></font></td>
 						<td><font face="Calibri" color="Black"><%=prod.getStock()%></font></td>
+						<td><font face="Calibri" color="Black"><a href="ControladorProducto?accion=BajaProducto&codigo_producto_baja=<%=prod.getCodigo()%>">Dar de baja</a></font></td>
 					</tr>
 					<%}}}%>
 				</tbody>

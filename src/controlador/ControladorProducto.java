@@ -81,6 +81,12 @@ public class ControladorProducto extends HttpServlet {
 			codigo_producto = request.getParameter("codigo_producto");
 			cantidad = request.getParameter("cantidad");
 			pdao.actualizar_stock(Integer.parseInt(codigo_producto), Integer.parseInt(cantidad));
+		}else if(action.equalsIgnoreCase("BajaProducto")) {
+			ProductoDAO pdao = new ProductoDAO();
+			String codigo_producto_baja = request.getParameter("codigo_producto_baja");
+			pdao.baja(Integer.parseInt(codigo_producto_baja));
+			request.setAttribute("filtro", "TODOS");
+			acceso = listarAdmin;
 		}
 		
 		RequestDispatcher vista = request.getRequestDispatcher(acceso);

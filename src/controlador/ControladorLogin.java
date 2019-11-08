@@ -22,6 +22,10 @@ public class ControladorLogin extends HttpServlet {
         
     }
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession sesion = request.getSession();
 		Boolean rta;
 		String action=request.getParameter("accion");
@@ -30,9 +34,10 @@ public class ControladorLogin extends HttpServlet {
 			String contrasena=request.getParameter("contrasena");
 			System.out.println(usuario);
 			rta = cliDAO.existe(usuario, contrasena);
+			System.out.println(rta);
 			if (rta && sesion.getAttribute("usuario_cliente") == null) {
 				sesion.setAttribute("usuario_cliente", usuario);
-				RequestDispatcher vista = request.getRequestDispatcher("index.jsp");
+				RequestDispatcher vista = request.getRequestDispatcher("indexCliente.jsp");
 				vista.forward(request, response);
 			}else {
 				RequestDispatcher vista = request.getRequestDispatcher("loginClientesError.jsp");
@@ -47,12 +52,7 @@ public class ControladorLogin extends HttpServlet {
 			RequestDispatcher vista = request.getRequestDispatcher("loginClientes.jsp");
 			vista.forward(request, response);
 		}
-		
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		doGet(request, response);
+		/*doGet(request, response);*/
 	}
 
 }

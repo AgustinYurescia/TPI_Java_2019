@@ -91,9 +91,9 @@ public class ProductoDAO {
 		
 	}
 
-	public void baja(int idProd) {
+	public void baja(int codigo_producto_baja) {
 		PreparedStatement st = null;
-		String sentenciaSQL="UPDATE producto SET fecha_baja = current_date WHERE idProducto="+idProd+"";
+		String sentenciaSQL="UPDATE producto SET fecha_baja = current_date WHERE codigo="+codigo_producto_baja+"";
 		try {
 			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
 			st.executeUpdate();

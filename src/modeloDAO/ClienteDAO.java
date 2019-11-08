@@ -11,7 +11,7 @@ public class ClienteDAO {
 	public void alta(Cliente cli) {
 		PreparedStatement st = null;
 		ResultSet keyResultSet=null;
-		String sentenciaSQL="INSERT INTO cliente(dni,cliente_usuario,cliente_contrasena,nombre,apellido,mail,telefono,direccion,fecha_baja_socio)VALUES(?,?,?,?,?,?,?,?,?)";
+		String sentenciaSQL="INSERT INTO cliente(dni,cliente_usuario,cliente_contrasena,nombre,apellido,mail,telefono,direccion,fecha_baja_socio)VALUES(?,?,?,?,?,?,?,?,current_date)";
 		try {
 			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL,PreparedStatement.RETURN_GENERATED_KEYS);
 			st.setString(1, cli.getDni());
@@ -22,7 +22,6 @@ public class ClienteDAO {
 			st.setString(6, cli.getMail());
 			st.setString(7, cli.getTelefono());
 			st.setString(8, cli.getDireccion());
-			st.setDate(9, cli.getFecha_baja_socio());
 			st.executeUpdate();
 			keyResultSet=st.getGeneratedKeys();
 			if(keyResultSet!=null && keyResultSet.next()) {
@@ -102,6 +101,32 @@ public class ClienteDAO {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public Boolean yaExisteUsuario(String usuario) {
+		PreparedStatement st = null;
+		ResultSet rs=null;
+		String sentenciaSQL="SELECT * FROM cliente WHERE cliente_usuario='"+usuario+"'";
+		try {
+			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			rs = st.executeQuery();
+			if(rs.next()) {
+				return true;
+			}else {
+				return false;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(st!=null) {st.close();}
+				Conexion.getInstancia().desconectar();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
 	}
 	
 }

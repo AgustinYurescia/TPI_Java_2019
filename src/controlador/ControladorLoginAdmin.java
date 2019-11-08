@@ -22,6 +22,10 @@ public class ControladorLoginAdmin extends HttpServlet {
         
     }
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession sesion = request.getSession();
 		Boolean rta;
 		String action=request.getParameter("accion");
@@ -42,12 +46,7 @@ public class ControladorLoginAdmin extends HttpServlet {
 		}else if(action.equalsIgnoreCase("iniciosesion")) {
 			response.sendRedirect("loginAdmin.jsp");
 		}
-		
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		doGet(request, response);
+		/*doGet(request, response);*/
 	}
 
 }

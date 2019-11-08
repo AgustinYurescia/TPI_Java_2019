@@ -30,10 +30,9 @@
     		<a class="py-2 d-none d-md-inline-block" href=""><font face="Calibri" color="Black">xxxxx</font></a>
   		</div>
 	   </nav>
-	   <% 	ArrayList<LineaPedido> linea;
-			HttpSession sesion = request.getSession(true);
-			if (sesion.getAttribute("carrito") == null) {
-				linea = null;
+	   <% 	HttpSession sesion = request.getSession(true);
+	   		ArrayList<LineaPedido> linea = (ArrayList<LineaPedido>)sesion.getAttribute("carrito");
+			if (linea == null || linea.isEmpty()) {
 		%>
 				<div class="alert alert-info">Su carrito se encuentra vacío</div>
 				<a class="py-2 d-none d-md-inline-block" href="ControladorProducto?accion=listar&filtrar_por=TODOS"><button type="submit" class="btn btn-primary">Ir a comprar</button></a>

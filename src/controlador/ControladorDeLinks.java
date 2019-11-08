@@ -11,10 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import modelo.LineaPedido;
-
-
-
 @WebServlet("/ControladorDeLinks")
 public class ControladorDeLinks extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -27,7 +23,7 @@ public class ControladorDeLinks extends HttpServlet {
 	String altaProducto = "altaProducto.jsp";
 	String mostrar_producto = "producto.jsp";
 	String carrito = "carrito.jsp";
-	
+	String registroCliente = "registroCliente.jsp";
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String acceso = "";
 		String action = request.getParameter("accion");
@@ -65,6 +61,9 @@ public class ControladorDeLinks extends HttpServlet {
 			}
 		}else if(action.equalsIgnoreCase("carrito")) {
 			acceso = carrito;
+			response.sendRedirect(acceso);
+		}else if(action.equalsIgnoreCase("registroCliente")) {
+			acceso = registroCliente;
 			response.sendRedirect(acceso);
 		}
 		//RequestDispatcher vista = request.getRequestDispatcher(acceso);
