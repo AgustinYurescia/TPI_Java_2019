@@ -48,7 +48,7 @@
 	   <% Producto prod = (Producto)request.getAttribute("producto"); %>
 	   <h1>Información de producto</h1><br>
 	   <div class="media position-relative">
-	   		<img src="<%=prod.getUrl_imagen()%>" class="mr-3" width="200" height="400">
+	   		<img src="ControladorDeImagenes?codigo=<%=prod.getCodigo()%>" class="mr-3" width="400" height="400">
 	   		<div class="media-body">
 	     		<h5 class="mt-0"><%=prod.getNombre()%></h5>
 	     		<p><font face="Calibri" color="Black">Stock disponible = <%=prod.getStock()%></font></p>

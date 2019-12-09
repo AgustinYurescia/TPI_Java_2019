@@ -1,10 +1,12 @@
 package modelo;
 
+import java.io.InputStream;
+
 public class Producto {
 	
 	private int codigo;
 	private String nombre;
-	private String url_imagen;
+	private InputStream imagen;
 	private int stock;
 	private Double precioVenta;
 	private int codigo_categoria;
@@ -21,11 +23,11 @@ public class Producto {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	public String getUrl_imagen() {
-		return url_imagen;
+	public InputStream get_imagen() {
+		return imagen;
 	}
-	public void setUrl_imagen(String url_imagen) {
-		this.url_imagen = url_imagen;
+	public void set_imagen(InputStream imagen) {
+		this.imagen = imagen;
 	}
 	public int getStock() {
 		return stock;

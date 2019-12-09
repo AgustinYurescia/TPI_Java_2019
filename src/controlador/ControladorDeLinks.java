@@ -51,6 +51,14 @@ public class ControladorDeLinks extends HttpServlet {
 			}else {
 				response.sendRedirect(acceso);
 			}
+		}else if(action.equalsIgnoreCase("editarProducto")) {
+			acceso = "editarProducto.jsp";
+			HttpSession sesion = request.getSession(true);
+			if (sesion.getAttribute("usuario_admin") == null) {
+				response.sendRedirect("loginAdmin.jsp");   
+			}else {
+				response.sendRedirect(acceso);
+			}
 		}else if(action.equalsIgnoreCase("altaProducto")) {
 			acceso = altaProducto;
 			HttpSession sesion = request.getSession(true);

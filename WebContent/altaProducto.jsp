@@ -23,6 +23,7 @@
     		<a class="py-2 d-none d-md-inline-block" href="ControladorProducto?accion=listarAdmin&filtrar_por=TODOS"><font face="Calibri" color="Black">Listado de productos</font></a>
     		<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=altaProducto"><font face="Calibri" color="Black">Alta Producto</font></a>
     		<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=actualizarStock"><font face="Calibri" color="Black">Actualizar Stock</font></a>
+    		<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=editarProducto"><font face="Calibri" color="Black">Editar Producto</font></a>
     		<a class="py-2 d-none d-md-inline-block" href="ControladorLoginAdmin?accion=logout"><font face="Calibri" color="Black">Cerrar Sesión</font></a>
     		<a class="py-2 d-none d-md-inline-block" href=""><font face="Calibri" color="Black">xxxxx</font></a>
     		<a class="py-2 d-none d-md-inline-block" href=""><font face="Calibri" color="Black">xxxxx</font></a>
@@ -32,7 +33,7 @@
   	   	</div>
 	   	</nav>
 		<h1>Agregar Producto</h1>
-		<form action="ControladorProducto">
+		<form action="ControladorProducto" enctype="multipart/form-data">
   			<div class="form-row">
     			<div class="form-group col-md-6">
       				<label for="nombre">Nombre del producto</label>
@@ -61,8 +62,8 @@
       				<input type="text" class="form-control" id="cuil_proveedor" name="cuil_proveedor" placeholder="xx-xxxxxxxx-x">
     			</div>
     			<div class="form-group col-md-6">
-      				<label for="url_imagen">Url imagen</label>
-      				<input type="text" id="url_imagen" name="url_imagen" class="form-control" placeholder="https://www.ejemplo.com/imagen.jpg">
+      				<label for="imagen">Imagen del producto</label> </br>
+      				<input type="file" id="imagen" name="imagen" class="">
     			</div>
   			</div>
   			<div class="form-row">

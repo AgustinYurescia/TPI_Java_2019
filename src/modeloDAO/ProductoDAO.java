@@ -1,6 +1,14 @@
 package modeloDAO;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.sql.*;
 import config.Conexion;
 import modelo.Producto;
@@ -24,7 +32,7 @@ public class ProductoDAO {
 					Producto prod = new Producto();
 					prod.setCodigo(rs.getInt("codigo"));
 					prod.setNombre(rs.getString("nombre"));
-					prod.setUrl_imagen(rs.getString("url_imagen"));
+					prod.set_imagen(rs.getBinaryStream("imagen"));
 					prod.setStock(rs.getInt("stock"));
 					prod.setPrecioVenta(rs.getDouble("precio_venta"));
 					prod.setCodigo_categoria(Integer.parseInt(rs.getString("codigo_categoria")));
@@ -44,6 +52,34 @@ public class ProductoDAO {
 		}
 		return lista;
 	}
+	
+	public void listar_imagen(int codigo, HttpServletResponse response) {
+		Statement st = null;
+		ResultSet rs = null;
+		String sentenciaSQL = "SELECT * FROM producto WHERE codigo="+codigo;
+		InputStream inputStream = null;
+		OutputStream outputStream = null;
+		BufferedInputStream bufferedInputStream = null;
+		BufferedOutputStream bufferedOutputStream = null;
+		response.setContentType("image/*");
+		try {
+			outputStream = response.getOutputStream();
+			st=Conexion.getInstancia().getConexion().createStatement();
+			rs=st.executeQuery(sentenciaSQL);
+			if(rs.next()) {
+				inputStream = rs.getBinaryStream("imagen");
+			}
+			bufferedInputStream = new BufferedInputStream(inputStream);
+			bufferedOutputStream = new BufferedOutputStream(outputStream);
+			int i = 0;
+			while ((i=bufferedInputStream.read()) != -1) {
+				bufferedOutputStream.write(i);
+			}
+		}catch(Exception e){
+			
+		}
+		
+	}
 
 	public void alta(Producto prod, String cuil_proveedor, Double precio) {
 		PreparedStatement st = null;
@@ -52,7 +88,7 @@ public class ProductoDAO {
 		try {
 			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL,PreparedStatement.RETURN_GENERATED_KEYS);
 			st.setString(1, prod.getNombre());
-			st.setString(2, prod.getUrl_imagen());
+			st.setBlob(2, prod.get_imagen());
 			st.setInt(3, prod.getStock());
 			st.setInt(4, prod.getCodigo_categoria());
 			st.executeUpdate();
@@ -124,6 +160,25 @@ public class ProductoDAO {
 			}
 		}
 	}
+	public void editar_producto(int codigo_producto, String nuevo_nombre, InputStream imagen) {
+		PreparedStatement st = null;
+		String sentenciaSQL="UPDATE producto SET nombre=?,imagen=? WHERE codigo=?";
+		try {
+			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			st.setString(1, nuevo_nombre);
+			st.setBlob(3, imagen);
+			st.setInt(3, codigo_producto);
+			st.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+                Conexion.getInstancia().desconectar();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
 	public void calcular_precio_venta_nuevo_producto(int codigo_producto, Double precio) {
 		Double porcGan;
 		Double precio_venta;
@@ -166,7 +221,7 @@ public class ProductoDAO {
 			if (rs.next()) {
 				prod.setCodigo(rs.getInt(1));
 				prod.setNombre(rs.getString(2));
-				prod.setUrl_imagen(rs.getString(3));
+				prod.set_imagen(rs.getBinaryStream(3));
 				prod.setStock(rs.getInt(4));
 				prod.setPrecioVenta(rs.getDouble(5));
 			}
