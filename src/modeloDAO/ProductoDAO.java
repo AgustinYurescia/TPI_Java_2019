@@ -53,6 +53,7 @@ public class ProductoDAO {
 		return lista;
 	}
 	
+	
 	public void listar_imagen(int codigo, HttpServletResponse response) {
 		Statement st = null;
 		ResultSet rs = null;
@@ -81,6 +82,7 @@ public class ProductoDAO {
 		
 	}
 
+	
 	public void alta(Producto prod, String cuil_proveedor, Double precio) {
 		PreparedStatement st = null;
 		ResultSet keyResultSet=null;
@@ -127,6 +129,7 @@ public class ProductoDAO {
 		
 	}
 
+	
 	public void baja(int codigo_producto_baja) {
 		PreparedStatement st = null;
 		String sentenciaSQL="UPDATE producto SET fecha_baja = current_date WHERE codigo="+codigo_producto_baja+"";
@@ -144,6 +147,7 @@ public class ProductoDAO {
 		}
 	}
 	
+	
 	public void actualizar_stock(int codigo_producto, int cantidad) {
 		PreparedStatement st = null;
 		String sentenciaSQL="UPDATE producto SET stock=stock+"+cantidad+" WHERE codigo="+codigo_producto+"";
@@ -160,6 +164,8 @@ public class ProductoDAO {
 			}
 		}
 	}
+	
+	
 	public void editar_producto(int codigo_producto, String nuevo_nombre, InputStream imagen) {
 		PreparedStatement st = null;
 		String sentenciaSQL="UPDATE producto SET nombre=?,imagen=? WHERE codigo=?";
@@ -179,6 +185,8 @@ public class ProductoDAO {
 			}
 		}
 	}
+	
+	
 	public void calcular_precio_venta_nuevo_producto(int codigo_producto, Double precio) {
 		Double porcGan;
 		Double precio_venta;
@@ -209,6 +217,8 @@ public class ProductoDAO {
 			}
 		}
 	}
+	
+	
 	public Producto buscar_producto(int codigo_producto) {
 		Producto prod = new Producto();
 		Statement st = null;

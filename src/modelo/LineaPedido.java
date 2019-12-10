@@ -4,10 +4,20 @@ public class LineaPedido {
 	
 	private int codigo_producto;
 	private int cantidad;
+	private double subtotal;
 	
-	public LineaPedido(int codigo_producto, int cantidad){
+	public LineaPedido(int codigo_producto, int cantidad, double subtotal){
 		this.setCantidad(cantidad);
 		this.setCodigo_producto(codigo_producto);
+		this.setSubtotal(subtotal);
+	}
+	
+	public double getSubtotal() {
+		return subtotal;
+	}
+
+	public void setSubtotal(double subtotal) {
+		this.subtotal = subtotal;
 	}
 	
 	public int getCodigo_producto() {

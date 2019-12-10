@@ -63,6 +63,7 @@
 		%>
 	   	   <div>
 			<h1>Productos</h1>
+			<a class="py-2 d-none d-md-inline-block" href="ControladorPedido?accion=ConfirmarCarrito"><button type="submit" class="btn btn-primary">Comprar</button></a>
 			<table class="table table-striped">
 				<thead>
 					<tr>

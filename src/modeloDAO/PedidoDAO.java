@@ -15,7 +15,7 @@ public class PedidoDAO {
 	public void alta(Pedido ped) { 
 		PreparedStatement st = null;
 		ResultSet keyResultSet=null;
-		String sentenciaSQL="INSERT INTO producto(fecha_pedido,fecha_entrega_est,monto,fecha_cancelacion,fecha_entrega_real,dni_cliente)values(?,?,?,?,?,?)";
+		String sentenciaSQL="INSERT INTO pedido(fecha_pedido,fecha_entrega_est,monto,fecha_cancelacion,fecha_entrega_real,dni_cliente)values(?,?,?,?,?,?)";
 		try {
 			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL,PreparedStatement.RETURN_GENERATED_KEYS);
 			st.setDate(1, ped.getFecha_pedido());
