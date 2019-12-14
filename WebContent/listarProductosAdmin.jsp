@@ -85,7 +85,7 @@
 				<tbody>
 					<tr>
 						<td><font face="Calibri" color="Black"><%=prod.getCodigo()%></font></td>
-						<td><img src=<%=prod.getUrl_imagen()%> width="50" height="80"/></td>
+						<td><img src="ControladorDeImagenes?codigo=<%=prod.getCodigo()%>" width="80" height="80"/></td>
 						<td><font face="Calibri" color="Blue"><%=prod.getNombre()%></font></td>
 						<td><font face="Calibri" color="Black"><%=prod.getPrecioVenta()%></font></td>
 						<td><font face="Calibri" color="Black"><%=prod.getStock()%></font></td>
@@ -98,7 +98,7 @@
 					%>
 					<tr>
 						<td><font face="Calibri" color="Black"><%=prod.getCodigo()%></font></td>
-						<td><img src=<%=prod.getUrl_imagen()%> width="50" height="80"/></td>
+						<td><img src="ControladorDeImagenes?codigo=<%=prod.getCodigo()%>" width="80" height="80"/></td>
 						<td><font face="Calibri" color="Blue"><%=prod.getNombre()%></font></td>
 						<td><font face="Calibri" color="Black"><%=prod.getPrecioVenta()%></font></td>
 						<td><font face="Calibri" color="Black"><%=prod.getStock()%></font></td>

@@ -165,6 +165,23 @@ public class ProductoDAO {
 		}
 	}
 	
+	public void descontar_stock(int codigo_producto, int cantidad) {
+		PreparedStatement st = null;
+		String sentenciaSQL="UPDATE producto SET stock=stock-"+cantidad+" WHERE codigo="+codigo_producto+"";
+		try {
+			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			st.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+                Conexion.getInstancia().desconectar();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	
 	public void editar_producto(int codigo_producto, String nuevo_nombre, InputStream imagen) {
 		PreparedStatement st = null;
@@ -222,7 +239,7 @@ public class ProductoDAO {
 	public Producto buscar_producto(int codigo_producto) {
 		Producto prod = new Producto();
 		Statement st = null;
-		PreparedStatement st2 = null;
+		PreparedStatement ps = null;
 		ResultSet rs = null;
 		String sentenciaParaPorc="SELECT * FROM producto WHERE codigo = "+codigo_producto+"";
 		try {

@@ -39,7 +39,8 @@
   		<label for="contrasena" class="sr-only">Contraseña</label>
   		<input type="password" id="contrasena" name="contrasena" class="form-control" placeholder="Contraseña" required>
   		<button class="btn btn-lg btn-primary btn-block" type="submit" name="accion" value="login">Iniciar Sesión</button>
-  		<p class="mt-5 mb-3 text-muted">&copy; 2017-2019</p>
+  		<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=registroCliente"><font face="Calibri" color="Blue">¿Aún no tiene una cuenta? Registrese aquí</font></a>
+  		<p class="mt-5 mb-3 text-muted">&copy; 2019</p>
 	</form>
   </body>
 </html>

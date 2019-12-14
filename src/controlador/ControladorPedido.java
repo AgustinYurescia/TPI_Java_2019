@@ -14,9 +14,13 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import modelo.Cliente;
 import modelo.LineaPedido;
 import modelo.Producto;
 import modeloDAO.ProductoDAO;
+import modelo.Pedido;
+import modeloDAO.ClienteDAO;
+import modeloDAO.PedidoDAO;
 
 @WebServlet("/ControladorPedido")
 public class ControladorPedido extends HttpServlet {
@@ -84,10 +88,25 @@ public class ControladorPedido extends HttpServlet {
 				lin=iter.next();
 				total = total + lin.getSubtotal();
 			sesion.setAttribute("total", total);
-				
 			acceso =  "confirmarPedido.jsp";
 			}
+		}else if(action.equalsIgnoreCase("FinalizarPedido")) {
+			ClienteDAO cliDAO = new ClienteDAO();
+			Cliente cli = new Cliente();
+			Pedido ped = new Pedido();
+			PedidoDAO pedDAO = new PedidoDAO();
+			HttpSession sesion = request.getSession(true);
+			String usuario_cliente = (String)sesion.getAttribute("usuario_cliente");
+			cli = cliDAO.buscar_cliente(usuario_cliente);
+			double total = (double)sesion.getAttribute("total");
+			ped.setDni_cliente(cli.getDni());
+			ped.setMonto(total);
+			ArrayList<LineaPedido> linea = (ArrayList<LineaPedido>)sesion.getAttribute("carrito"); 
+			int nro_pedido = pedDAO.alta(ped, linea);
+			sesion.setAttribute("nro_pedido", nro_pedido);
+			acceso =  "finalizacionDePedido.jsp";
 		}
+		
 		response.sendRedirect(acceso);
 	}
 

@@ -4,32 +4,33 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
 import config.Conexion;
+import modelo.LineaPedido;
 import modelo.Pedido;
 
 
 
 public class PedidoDAO {
 
-	public void alta(Pedido ped) { 
+	public int alta(Pedido ped, ArrayList<LineaPedido> lin) { 
 		PreparedStatement st = null;
 		ResultSet keyResultSet=null;
-		String sentenciaSQL="INSERT INTO pedido(fecha_pedido,fecha_entrega_est,monto,fecha_cancelacion,fecha_entrega_real,dni_cliente)values(?,?,?,?,?,?)";
+		String sentenciaSQL="INSERT INTO pedido(fecha_pedido,monto,dni_cliente)values(current_date,?,?)";
 		try {
 			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL,PreparedStatement.RETURN_GENERATED_KEYS);
-			st.setDate(1, ped.getFecha_pedido());
-			st.setDate(2, ped.getFecha_entrega_est());
-			st.setDouble(3, ped.getMonto());
-			st.setDate(4, ped.getFecha_cancelacion());
-			st.setDate(5, ped.getFecha_entrega_real());
-			st.setString(6, ped.getDni_cliente());
+			st.setDouble(1, ped.getMonto());
+			st.setString(2, ped.getDni_cliente());
 			st.executeUpdate();
 			keyResultSet=st.getGeneratedKeys();
 			if(keyResultSet!=null && keyResultSet.next()) {
 				ped.setNro_pedido(keyResultSet.getInt(1));
-				calcular_monto_pedido(ped.getNro_pedido());
 				setear_fecha_entrega_estimada(ped.getNro_pedido());
+				generar_pedido_productos(ped.getNro_pedido(), lin);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -43,6 +44,38 @@ public class PedidoDAO {
 			}
 		}
 		
+		return ped.getNro_pedido();
+	}
+
+	public void generar_pedido_productos(int nroPedido, ArrayList<LineaPedido> lin ) { 
+		ProductoDAO proDAO = new ProductoDAO();
+		PreparedStatement st = null;
+		ResultSet keyResultSet=null;
+		String sentenciaSQL="INSERT INTO pedido_productos(codigo_producto,nro_pedido,cantidad)values(?,?,?)";
+		try {
+			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			ArrayList<LineaPedido> linea = lin; 
+			Iterator<LineaPedido>iter = linea.iterator();
+			LineaPedido l;
+			while(iter.hasNext()){
+				l=iter.next();
+				st.setInt(1, l.getCodigo_producto());
+				st.setInt(2, nroPedido);
+				st.setInt(3, l.getCantidad());
+				st.executeUpdate();
+				proDAO.descontar_stock(l.getCodigo_producto(), l.getCantidad());
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(keyResultSet!=null) {keyResultSet.close();}
+                if(st!=null) {st.close();}
+                Conexion.getInstancia().desconectar();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	//CONTROLAR QUE ESTÉ BIEN
@@ -76,11 +109,13 @@ public class PedidoDAO {
 	
 	//CONTROLAR QUE ESTÉ BIEN
 	public void setear_fecha_entrega_estimada(int nro_pedido) { 
+		java.sql.Date fecha_ent_est = null;
 		int cantidad_de_dias;
 		Statement st = null;
 		PreparedStatement st2 = null;
 		ResultSet rs = null;
-		String sentenciaParaPorc="SELECT cantidad_de_dias "
+		ResultSet keyResultSet=null;
+		String sentenciaParaDias="SELECT cantidad_de_dias "
 				+ "FROM tardanza_preparacion_pedido "
 				+ "WHERE fecha_desde = ("
 				+ "SELECT MAX(fecha_desde) "
@@ -88,13 +123,13 @@ public class PedidoDAO {
 				+ "WHERE fecha_desde <= current_date)";
 		try {
 			st=Conexion.getInstancia().getConexion().createStatement();
-			rs=st.executeQuery(sentenciaParaPorc);
+			rs=st.executeQuery(sentenciaParaDias);
 			if (rs.next()) {
-				cantidad_de_dias=rs.getInt("cantidad_de_dias");
-				String sentenciaParaUpdate="UPDATE pedido SET precio_venta = ADDDATE(fecha_pedido, interval "+cantidad_de_dias+" DAY) WHERE nro_pedido="+nro_pedido+"";
+				cantidad_de_dias=rs.getInt(1);
+				String sentenciaParaUpdate="UPDATE pedido SET fecha_entrega_est = ADDDATE(fecha_pedido, interval "+cantidad_de_dias+" DAY) WHERE nro_pedido="+nro_pedido+"";
 				st2=Conexion.getInstancia().getConexion().prepareStatement(sentenciaParaUpdate);
 				st2.executeUpdate(); 
-			}
+				}
 		} 
 		catch (Exception e) {
 			e.printStackTrace();
@@ -107,7 +142,6 @@ public class PedidoDAO {
 				e.printStackTrace();
 			}
 		}
-		
 	}
 	
 	public List<Pedido> listar(java.sql.Date fecha_ini, java.sql.Date fecha_fin ) {

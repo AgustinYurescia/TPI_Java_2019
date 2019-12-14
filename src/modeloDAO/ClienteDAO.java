@@ -129,6 +129,37 @@ public class ClienteDAO {
 		return false;
 	}
 	
+	public Cliente buscar_cliente(String usuario) {
+		Cliente cli = new Cliente();
+		PreparedStatement st = null;
+		ResultSet rs=null;
+		String sentenciaSQL="SELECT * FROM cliente WHERE cliente_usuario='"+usuario+"'";
+		try {
+			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			rs = st.executeQuery();
+			if(rs.next()) {
+				cli.setDni(rs.getString(1));
+				cli.setNombre(rs.getString(4));
+				cli.setApellido(rs.getString(5));
+				cli.setMail(rs.getString(6));
+				return cli;
+			}else {
+				return cli;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(st!=null) {st.close();}
+				Conexion.getInstancia().desconectar();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return cli;
+	}
+	
 }
 
 

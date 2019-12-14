@@ -63,7 +63,6 @@
 		%>
 	   	   <div>
 			<h1>Productos</h1>
-			<a class="py-2 d-none d-md-inline-block" href="ControladorPedido?accion=ConfirmarCarrito"><button type="submit" class="btn btn-primary">Comprar</button></a>
 			<table class="table table-striped">
 				<thead>
 					<tr>
@@ -85,15 +84,17 @@
 						%>
 				<tbody>
 					<tr>
-						<td><img src=<%=pro.getUrl_imagen()%> width="50" height="80"/></td>
+						<td><img src="ControladorDeImagenes?codigo=<%=pro.getCodigo()%>" width="80" height="80"/></td>
 						<td><font face="Calibri" color="Blue"><%=pro.getNombre()%></font></td>
 						<td><font face="Calibri" color="Black"><%=pro.getPrecioVenta()%></font></td>
 						<td><font face="Calibri" color="Black"><%=lin.getCantidad()%></font></td>
 						<td><font face="Calibri" color="Black"><a href="ControladorPedido?accion=eliminarDelCarrito&codigo_prod=<%=lin.getCodigo_producto()%>">Eliminar</a></font></td>
 					</tr>
-					<%}}%>
+					<% } %>				
 				</tbody>
 			</table>
+			<a class="py-2 d-none d-md-inline-block" href="ControladorPedido?accion=ConfirmarCarrito"><button type="submit" class="btn btn-primary">Comprar</button></a>
+			<% } %>
 		</div>
 	</body>
 </html>

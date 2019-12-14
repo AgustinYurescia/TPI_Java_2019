@@ -14,28 +14,14 @@ import javax.servlet.http.HttpSession;
 @WebServlet("/ControladorDeLinks")
 public class ControladorDeLinks extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	String loginCliente = "loginClientes.jsp";
-	String indexCliente = "index.jsp";
-	String loginAdmin = "loginAdmin.jsp";
-	String indexAdmin = "indexAdmin.jsp";
-	String actualizarStock = "actualizarStock.jsp";
-	String listar = "listarProductos.jsp";
-	String altaProducto = "altaProducto.jsp";
-	String mostrar_producto = "producto.jsp";
-	String carrito = "carrito.jsp";
-	String registroCliente = "registroCliente.jsp";
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String acceso = "";
 		String action = request.getParameter("accion");
 		if(action.equalsIgnoreCase("indexCliente")) {
-			acceso = indexCliente;
-			response.sendRedirect(acceso);
+			response.sendRedirect("index.jsp");
 		}else if(action.equalsIgnoreCase("inicioSesionCliente")) {
-			acceso = loginCliente;
-			response.sendRedirect(acceso);
+			response.sendRedirect("loginClientes.jsp");
 		}else if(action.equalsIgnoreCase("inicioSesionAdmin")) {
-			acceso = loginAdmin;
-			response.sendRedirect(acceso);
+			response.sendRedirect("loginAdmin.jsp");
 		}else if(action.equalsIgnoreCase("indexAdmin")) {
 			HttpSession sesion = request.getSession(true);
 			if (sesion.getAttribute("usuario_admin") == null) {
@@ -44,36 +30,32 @@ public class ControladorDeLinks extends HttpServlet {
 				response.sendRedirect("indexAdmin.jsp");  
 			}
 		}else if(action.equalsIgnoreCase("actualizarStock")) {
-			acceso = "actualizarStock.jsp";
 			HttpSession sesion = request.getSession(true);
 			if (sesion.getAttribute("usuario_admin") == null) {
 				response.sendRedirect("loginAdmin.jsp");   
 			}else {
-				response.sendRedirect(acceso);
+				response.sendRedirect("actualizarStock.jsp");
 			}
 		}else if(action.equalsIgnoreCase("editarProducto")) {
-			acceso = "editarProducto.jsp";
 			HttpSession sesion = request.getSession(true);
 			if (sesion.getAttribute("usuario_admin") == null) {
 				response.sendRedirect("loginAdmin.jsp");   
 			}else {
-				response.sendRedirect(acceso);
+				response.sendRedirect("editarProducto.jsp");
 			}
 		}else if(action.equalsIgnoreCase("altaProducto")) {
-			acceso = altaProducto;
 			HttpSession sesion = request.getSession(true);
 			if (sesion.getAttribute("usuario_admin") == null) {
 				response.sendRedirect("loginAdmin.jsp");   
 			}else {
-				response.sendRedirect(acceso);
+				response.sendRedirect("altaProducto.jsp");
 			}
 		}else if(action.equalsIgnoreCase("carrito")) {
-			acceso = carrito;
-			response.sendRedirect(acceso);
+			response.sendRedirect("carrito.jsp");
 		}else if(action.equalsIgnoreCase("registroCliente")) {
-			acceso = registroCliente;
-			response.sendRedirect(acceso);
+			response.sendRedirect("registroCliente.jsp");
 		}
+		
 		//RequestDispatcher vista = request.getRequestDispatcher(acceso);
 		//vista.forward(request, response);
 	}

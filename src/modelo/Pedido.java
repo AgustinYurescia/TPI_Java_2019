@@ -2,12 +2,12 @@ package modelo;
 
 public class Pedido {
 	private int nro_pedido;
-	java.sql.Date fecha_pedido;
-	java.sql.Date fecha_entrega_est;
-	Double monto;
-	java.sql.Date fecha_cancelacion;
-	java.sql.Date fecha_entrega_real;
-	String dni_cliente;
+	private java.sql.Date fecha_pedido;
+	private java.sql.Date fecha_entrega_est;
+	private Double monto;
+	private java.sql.Date fecha_cancelacion;
+	private java.sql.Date fecha_entrega_real;
+	private String dni_cliente;
 	
 	public int getNro_pedido() {
 		return nro_pedido;
