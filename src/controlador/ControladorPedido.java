@@ -94,6 +94,7 @@ public class ControladorPedido extends HttpServlet {
 			ClienteDAO cliDAO = new ClienteDAO();
 			Cliente cli = new Cliente();
 			Pedido ped = new Pedido();
+			Correo correo = new Correo();
 			PedidoDAO pedDAO = new PedidoDAO();
 			HttpSession sesion = request.getSession(true);
 			String usuario_cliente = (String)sesion.getAttribute("usuario_cliente");
@@ -104,9 +105,9 @@ public class ControladorPedido extends HttpServlet {
 			ArrayList<LineaPedido> linea = (ArrayList<LineaPedido>)sesion.getAttribute("carrito"); 
 			int nro_pedido = pedDAO.alta(ped, linea);
 			sesion.setAttribute("nro_pedido", nro_pedido);
-			acceso =  "finalizacionDePedido.jsp";
+			correo.enviar_mail_confirmacion(cli.getMail(), nro_pedido);
+			acceso = "finalizacionDePedido.jsp";
 		}
-		
 		response.sendRedirect(acceso);
 	}
 

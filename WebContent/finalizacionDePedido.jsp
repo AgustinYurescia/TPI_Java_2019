@@ -6,6 +6,10 @@
 <%@ page import = "java.util.Iterator" %>
 <%@ page import = "modelo.Producto" %>
 <%@ page import = "modelo.Pedido" %>
+<%@ page import = "controlador.Correo" %>
+<%@ page import = "modeloDAO.ClienteDAO" %>
+<%@ page import = "modelo.Cliente" %>
+<%@ page import = "java.io.IOException" %>
 
 
 <!DOCTYPE html>

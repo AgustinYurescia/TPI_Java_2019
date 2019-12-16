@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context docBase="/home/tomcat/web">
+    <Resource type="javax.mail.Session"
+            auth="Container"
+            name="mail/gmail"
+            mail.transport.protocol="smtp"
+            mail.smtp.host="smtp.googlemail.com"
+            mail.smtp.port="465"
+            mail.smtp.auth="true"
+            mail.smtp.user="vinotecagatti@gmail.com"
+            password="Vinoteca1234"
+            mail.smtp.starttls.enable="true"
+            mail.smtp.socketFactory.port="465"
+            mail.smtp.socketFactory.class="javax.net.ssl.SSLSocketFactory"
+            mail.smtp.socketFactory.fallback="false"
+            mail.smtp.debug="true"/>
+</Context>
