@@ -144,7 +144,7 @@ public class PedidoDAO {
 		}
 	}
 	
-	public List<Pedido> listar(java.sql.Date fecha_ini, java.sql.Date fecha_fin ) {
+	public ArrayList<Pedido> listar(java.sql.Date fecha_ini, java.sql.Date fecha_fin ) {
 		Statement st = null;
 		ResultSet rs = null;
 		ArrayList<Pedido>lista = new ArrayList<>();
@@ -157,7 +157,42 @@ public class PedidoDAO {
 					Pedido ped = new Pedido();
 					ped.setNro_pedido(rs.getInt("nro_pedido"));
 					ped.setFecha_pedido(rs.getDate("fecha_pedido"));
-					ped.setFecha_entrega_est(rs.getDate("fecha_entraga_est"));
+					ped.setFecha_entrega_est(rs.getDate("fecha_entrega_est"));
+					ped.setMonto(rs.getDouble("monto"));
+					ped.setFecha_cancelacion(rs.getDate("fecha_cancelacion"));
+					ped.setFecha_entrega_real(rs.getDate("fecha_entrega_real"));
+					ped.setDni_cliente(rs.getString("dni_cliente"));
+					lista.add(ped);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs!=null) {rs.close();}
+				if(st!=null) {st.close();}
+				Conexion.getInstancia().desconectar();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return lista;
+	}
+	
+	public ArrayList<Pedido> listar()  {
+		Statement st = null;
+		ResultSet rs = null;
+		ArrayList<Pedido>lista = new ArrayList<>();
+		String sentenciaSQL = "SELECT * FROM pedido ";
+		try {
+			st=Conexion.getInstancia().getConexion().createStatement();
+			rs=st.executeQuery(sentenciaSQL);
+			if(rs!=null) {
+				while(rs.next()) {
+					Pedido ped = new Pedido();
+					ped.setNro_pedido(rs.getInt("nro_pedido"));
+					ped.setFecha_pedido(rs.getDate("fecha_pedido"));
+					ped.setFecha_entrega_est(rs.getDate("fecha_entrega_est"));
 					ped.setMonto(rs.getDouble("monto"));
 					ped.setFecha_cancelacion(rs.getDate("fecha_cancelacion"));
 					ped.setFecha_entrega_real(rs.getDate("fecha_entrega_real"));
