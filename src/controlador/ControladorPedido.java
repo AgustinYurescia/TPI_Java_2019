@@ -114,15 +114,11 @@ public class ControladorPedido extends HttpServlet {
 		}else if (action.equalsIgnoreCase("listadoPedidos")) {
 			String fechaDesde = request.getParameter("fechaDesde");
 			String fechaHasta = request.getParameter("fechaHasta");
-			System.out.println("La fecha desde es: "+fechaDesde);
 		    PedidoDAO pedDAO = new PedidoDAO();
-		    System.out.println("llego a desp de PedidoDAO pedDAO = new PedidoDAO();");
 		    ArrayList<Pedido> pedidos = new  ArrayList<Pedido>();
-		    System.out.println("llego a desp de ArrayList<Pedido> pedidos = new  ArrayList<Pedido>();");
 			try {
 				if (fechaDesde == null | fechaHasta == null) {
 					pedidos = pedDAO.listar();
-					//for (Pedido ped : pedidos) {System.out.println(Integer.toString(ped.getNro_pedido())+" "+ped.getDni_cliente()+" "+ped.getFecha_pedido()+" "+Double.toString(ped.getMonto()));}
 					request.setAttribute("listadoPedidos", pedidos);
 				}//else if((fechaDesde != null | fechaHasta != null)) {
 					
@@ -137,7 +133,8 @@ public class ControladorPedido extends HttpServlet {
 		    acceso = "listarPedidos.jsp";
 			
 		}
-		response.sendRedirect(acceso);
+		RequestDispatcher vista = request.getRequestDispatcher(acceso);
+		vista.forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

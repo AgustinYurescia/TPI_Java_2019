@@ -48,15 +48,11 @@
 	   			</thead>
 	   			<%
 	   				ArrayList<Pedido> pedidos = (ArrayList<Pedido>)request.getAttribute("listadoPedidos");
-	   				if (pedidos == null){System.out.println("pedidos es null");}
 	   				Iterator<Pedido> iter  = pedidos.iterator();
 	   			  	Pedido ped = null;
 	   			  	while (iter.hasNext()){
-	   				  	ped = iter.next();%>
-	   				  	
-	   				 
-	   				
-	   			  
+	   				  	ped = iter.next();
+	   			%>	   				  		   				 	   			  
 	   			<tbody><tr>
 						<td><font face="Calibri" color="Black"><%=ped.getNro_pedido()%></font></td>
 						<td><font face="Calibri" color="Black"><%=ped.getDni_cliente()%></font></td>

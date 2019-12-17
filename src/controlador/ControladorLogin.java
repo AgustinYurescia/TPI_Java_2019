@@ -38,9 +38,7 @@ public class ControladorLogin extends HttpServlet {
 		if(action.equalsIgnoreCase("login")) {
 			String usuario=request.getParameter("usuario_cliente");
 			String contrasena=request.getParameter("contrasena");
-			System.out.println(usuario);
 			rta = cliDAO.existe(usuario, contrasena);
-			System.out.println(rta);
 			if (rta && sesion.getAttribute("usuario_cliente") == null) {
 				sesion.setAttribute("usuario_cliente", usuario);
 				RequestDispatcher vista = request.getRequestDispatcher("index.jsp");
