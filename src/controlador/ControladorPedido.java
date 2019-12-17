@@ -132,6 +132,18 @@ public class ControladorPedido extends HttpServlet {
 			}  
 		    acceso = "listarPedidos.jsp";
 			
+		}else if(action.equalsIgnoreCase("mostrar_pedido")) {
+			String nro_pedido;
+			ArrayList<LineaPedido> lineas = new ArrayList<LineaPedido>();
+			PedidoDAO pdao = new PedidoDAO();
+			Pedido ped;
+			nro_pedido = request.getParameter("nro_pedido");
+			ped = pdao.buscar_pedido(Integer.parseInt(nro_pedido));
+			lineas = pdao.buscar_productos_pedido(Integer.parseInt(nro_pedido));
+			request.setAttribute("pedido", ped);
+			request.setAttribute("productos_pedido", lineas);
+			acceso = "mostrarPedido.jsp";
+			
 		}
 		RequestDispatcher vista = request.getRequestDispatcher(acceso);
 		vista.forward(request, response);

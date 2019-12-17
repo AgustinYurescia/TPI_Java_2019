@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import config.Conexion;
 import modelo.LineaPedido;
 import modelo.Pedido;
+import modelo.Producto;
 
 
 
@@ -212,5 +213,66 @@ public class PedidoDAO {
 			}
 		}
 		return lista;
+	}
+	
+	public Pedido buscar_pedido(int nro_pedido) {
+		Pedido ped = new Pedido();
+		Statement st = null;
+		ResultSet rs = null;
+		String sentenciaParaPorc="SELECT * FROM pedido WHERE nro_pedido = "+nro_pedido+"";
+		try {
+			st=Conexion.getInstancia().getConexion().createStatement();
+			rs=st.executeQuery(sentenciaParaPorc);
+			if (rs.next()) {
+				ped.setNro_pedido(rs.getInt("nro_pedido"));
+				ped.setFecha_pedido(rs.getDate("fecha_pedido"));
+				ped.setFecha_entrega_est(rs.getDate("fecha_entrega_est"));
+				ped.setMonto(rs.getDouble("monto"));
+				ped.setFecha_cancelacion(rs.getDate("fecha_cancelacion"));
+				ped.setFecha_entrega_real(rs.getDate("fecha_entrega_real"));
+				ped.setDni_cliente(rs.getString("dni_cliente"));
+			}
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			try {
+                Conexion.getInstancia().desconectar();
+			} 
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return ped;
+	}
+	
+	public ArrayList<LineaPedido> buscar_productos_pedido(int nro_pedido) {
+		Statement st = null;
+		ResultSet rs = null;
+		ArrayList<LineaPedido> pedido_productos = new ArrayList<LineaPedido>();
+		String sentenciaParaPorc="SELECT * FROM pedido_productos WHERE nro_pedido = "+nro_pedido+"";
+		try {
+			st=Conexion.getInstancia().getConexion().createStatement();
+			rs=st.executeQuery(sentenciaParaPorc);
+			if (rs.next()) {
+				LineaPedido linea = new LineaPedido(rs.getInt(1),rs.getInt(3),0);
+				pedido_productos.add(linea);
+			}
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			try {
+                Conexion.getInstancia().desconectar();
+			} 
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return pedido_productos;
 	}
 }
