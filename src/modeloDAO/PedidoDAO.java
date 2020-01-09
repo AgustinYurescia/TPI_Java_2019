@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -145,10 +146,11 @@ public class PedidoDAO {
 		}
 	}
 	
-	public ArrayList<Pedido> listar(java.sql.Date fecha_ini, java.sql.Date fecha_fin ) {
+	public ArrayList<Pedido> listar(String fecha_ini, String fecha_fin ) {
 		Statement st = null;
 		ResultSet rs = null;
 		ArrayList<Pedido>lista = new ArrayList<>();
+		System.out.println(fecha_ini);
 		String sentenciaSQL = "SELECT * FROM pedido WHERE fecha_pedido >='"+fecha_ini+"' AND fecha <= '"+fecha_fin+"'";
 		try {
 			st=Conexion.getInstancia().getConexion().createStatement();

@@ -35,7 +35,17 @@
     		<a class="py-2 d-none d-md-inline-block" href=""><font face="Calibri" color="Black">xxxxx</font></a>
   		</div>
 	   </nav>
-	   
+	   <div>
+	   	<form action="ControladorPedido">
+		   		<label for="start">Fecha desde:</label>
+				<input 	type="date" class="form-control" id="fechaDesde" name="fechaDesde"
+	       				value="">
+	       		<label for="start">Fecha hasta:</label>
+	       		<input 	type="date" class="form-control" id="fechaHasta" name="fechaHasta"
+	       				value="">
+	    <button type="submit" class="btn btn-primary" name="accion" value="listarPedidos">Filtrar</button>   				
+		</form>
+	   </div>
 	   <div>
 	   		<table class="table table-striped">
 	   			<thead>

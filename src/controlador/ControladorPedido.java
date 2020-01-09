@@ -120,8 +120,10 @@ public class ControladorPedido extends HttpServlet {
 				if (fechaDesde == null | fechaHasta == null) {
 					pedidos = pedDAO.listar();
 					request.setAttribute("listadoPedidos", pedidos);
-				}//else if((fechaDesde != null | fechaHasta != null)) {
-					
+				}else if((fechaDesde != null | fechaHasta != null)) {
+					pedidos = pedDAO.listar( fechaDesde, fechaHasta);
+					request.setAttribute("listadoPedidos", pedidos);
+				}
 				//}else  if ((fechaDesde == null | fechaHasta != null)){
 
 				//}else if ((fechaDesde != null | fechaHasta == null)) {
