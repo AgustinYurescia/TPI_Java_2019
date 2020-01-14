@@ -38,11 +38,9 @@
 	   <div>
 	   	<form action="ControladorPedido">
 		   		<label for="start">Fecha desde:</label>
-				<input 	type="date" class="form-control" id="fechaDesde" name="fechaDesde"
-	       				value="">
+				<input 	type="date" class="form-control" id="fechaDesde" name="fechaDesde">
 	       		<label for="start">Fecha hasta:</label>
-	       		<input 	type="date" class="form-control" id="fechaHasta" name="fechaHasta"
-	       				value="">
+	       		<input 	type="date" class="form-control" id="fechaHasta" name="fechaHasta">
 	    <button type="submit" class="btn btn-primary" name="accion" value="listarPedidos">Filtrar</button>   				
 		</form>
 	   </div>
