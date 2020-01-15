@@ -37,11 +37,19 @@
 	   </nav>
 	   <div>
 	   	<form action="ControladorPedido">
-		   		<label for="start">Fecha desde:</label>
-				<input 	type="date" class="form-control" id="fechaDesde" name="fechaDesde">
-	       		<label for="start">Fecha hasta:</label>
-	       		<input 	type="date" class="form-control" id="fechaHasta" name="fechaHasta">
-	    <button type="submit" class="btn btn-primary" name="accion" value="listadoPedidos">Filtrar</button>   				
+	   		<div class = "form-row">
+	   			<div class="form-group col-md-6">	
+		   			<label for="start">Fecha desde:</label>
+					<input 	type="date" class="form-control" id="fechaDesde" name="fechaDesde">
+				</div>
+				<div class="form-group col-md-6">
+	       			<label for="start">Fecha hasta:</label>
+	       			<input 	type="date" class="form-control" id="fechaHasta" name="fechaHasta">
+	       		</div>
+	       		<div class="form-group col-md-6">
+	       			<button type="submit" class="btn btn-primary" name="accion" value="listadoPedidos">Filtrar</button>
+	       		</div>
+	       	</div> 				
 		</form>
 	   </div>
 	   <div>
