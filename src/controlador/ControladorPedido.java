@@ -120,14 +120,18 @@ public class ControladorPedido extends HttpServlet {
 				if (fechaDesde == null | fechaHasta == null) {
 					pedidos = pedDAO.listar();
 					request.setAttribute("listadoPedidos", pedidos);
-				}else if((fechaDesde != null | fechaHasta != null)) {
+				}
+				else if((fechaDesde != null | fechaHasta != null)) {
 					pedidos = pedDAO.listar( fechaDesde, fechaHasta);
 					request.setAttribute("listadoPedidos", pedidos);
 				}
-				//}else  if ((fechaDesde == null | fechaHasta != null)){
-
-				//}else if ((fechaDesde != null | fechaHasta == null)) {
-					
+				else  if ((fechaDesde == null | fechaHasta != null)){
+					System.out.println("fecha desde");
+					System.out.println(fechaDesde);
+				}else if ((fechaDesde != null | fechaHasta == null)) {
+					System.out.println("fecha hasta");
+					System.out.println(fechaHasta);
+				}
 				
 			} catch (Exception e) {
 				e.printStackTrace();

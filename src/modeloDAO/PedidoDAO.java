@@ -150,7 +150,9 @@ public class PedidoDAO {
 		Statement st = null;
 		ResultSet rs = null;
 		ArrayList<Pedido>lista = new ArrayList<>();
+		System.out.println("Fechas");
 		System.out.println(fecha_ini);
+		System.out.println(fecha_fin);
 		String sentenciaSQL = "SELECT * FROM pedido WHERE fecha_pedido >='"+fecha_ini+"' AND fecha_pedido <= '"+fecha_fin+"'";
 		try {
 			st=Conexion.getInstancia().getConexion().createStatement();

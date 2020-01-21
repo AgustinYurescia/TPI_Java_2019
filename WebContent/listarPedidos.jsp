@@ -52,6 +52,9 @@
 	       	</div> 				
 		</form>
 	   </div>
+	   <form action="ControladorPedido">
+			<button type="submit" class="btn btn-primary" name="accion" value="listadoPedidos">Resetear filtro</button>
+		</form>
 	   <div>
 	   		<table class="table table-striped">
 	   			<thead>
