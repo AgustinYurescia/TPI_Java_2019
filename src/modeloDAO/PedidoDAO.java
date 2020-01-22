@@ -149,11 +149,15 @@ public class PedidoDAO {
 	public ArrayList<Pedido> listar(String fecha_ini, String fecha_fin ) {
 		Statement st = null;
 		ResultSet rs = null;
+		String sentenciaSQL = "";
 		ArrayList<Pedido>lista = new ArrayList<>();
-		System.out.println("Fechas");
-		System.out.println(fecha_ini);
-		System.out.println(fecha_fin);
-		String sentenciaSQL = "SELECT * FROM pedido WHERE fecha_pedido >='"+fecha_ini+"' AND fecha_pedido <= '"+fecha_fin+"'";
+		if(fecha_ini != "" && fecha_fin != "") {
+			sentenciaSQL = "SELECT * FROM pedido WHERE fecha_pedido >='"+fecha_ini+"' AND fecha_pedido <= '"+fecha_fin+"'";
+		}else if(fecha_ini != "" && fecha_fin == "") {
+			sentenciaSQL = "SELECT * FROM pedido WHERE fecha_pedido >='"+fecha_ini+"'";
+		}else if(fecha_ini == "" && fecha_fin != "") {
+			sentenciaSQL = "SELECT * FROM pedido WHERE fecha_pedido <= '"+fecha_fin+"'";
+		}
 		try {
 			st=Conexion.getInstancia().getConexion().createStatement();
 			rs=st.executeQuery(sentenciaSQL);

@@ -101,36 +101,39 @@ public class ControladorPedido extends HttpServlet {
 			PedidoDAO pedDAO = new PedidoDAO();
 			HttpSession sesion = request.getSession(true);
 			String usuario_cliente = (String)sesion.getAttribute("usuario_cliente");
-			cli = cliDAO.buscar_cliente(usuario_cliente);
-			double total = (double)sesion.getAttribute("total");
-			ped.setDni_cliente(cli.getDni());
-			ped.setMonto(total);
-			ArrayList<LineaPedido> linea = (ArrayList<LineaPedido>)sesion.getAttribute("carrito"); 
-			int nro_pedido = pedDAO.alta(ped, linea);
-			sesion.setAttribute("nro_pedido", nro_pedido);
-			correo.enviar_mail_confirmacion(cli.getMail(), nro_pedido);
-			acceso = "finalizacionDePedido.jsp";
+			if(usuario_cliente != null) {
+				cli = cliDAO.buscar_cliente(usuario_cliente);
+				double total = (double)sesion.getAttribute("total");
+				ped.setDni_cliente(cli.getDni());
+				ped.setMonto(total);
+				ArrayList<LineaPedido> linea = (ArrayList<LineaPedido>)sesion.getAttribute("carrito"); 
+				int nro_pedido = pedDAO.alta(ped, linea);
+				sesion.setAttribute("nro_pedido", nro_pedido);
+				correo.enviar_mail_confirmacion(cli.getMail(), nro_pedido);
+				acceso = "finalizacionDePedido.jsp";
+			}
+			else {
+				acceso = "loginClientes.jsp";
+			}
 			
 		}else if (action.equalsIgnoreCase("listadoPedidos")) {
 			String fechaDesde = request.getParameter("fechaDesde");
 			String fechaHasta = request.getParameter("fechaHasta");
+			System.out.println(fechaDesde);
+			System.out.println(fechaHasta);
 		    PedidoDAO pedDAO = new PedidoDAO();
 		    ArrayList<Pedido> pedidos = new  ArrayList<Pedido>();
 			try {
-				if (fechaDesde == null | fechaHasta == null) {
+				if (fechaDesde == "" && fechaHasta == "") {
 					pedidos = pedDAO.listar();
 					request.setAttribute("listadoPedidos", pedidos);
 				}
-				else if((fechaDesde != null | fechaHasta != null)) {
+				else if((fechaDesde != "" | fechaHasta != "") && (fechaDesde != null && fechaHasta != null)) {
 					pedidos = pedDAO.listar( fechaDesde, fechaHasta);
 					request.setAttribute("listadoPedidos", pedidos);
-				}
-				else  if ((fechaDesde == null | fechaHasta != null)){
-					System.out.println("fecha desde");
-					System.out.println(fechaDesde);
-				}else if ((fechaDesde != null | fechaHasta == null)) {
-					System.out.println("fecha hasta");
-					System.out.println(fechaHasta);
+				}else if(fechaDesde == null && fechaHasta == null) {
+					pedidos = pedDAO.listar();
+					request.setAttribute("listadoPedidos", pedidos);
 				}
 				
 			} catch (Exception e) {
