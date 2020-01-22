@@ -114,8 +114,7 @@ public class ControladorPedido extends HttpServlet {
 			}
 			else {
 				acceso = "loginClientes.jsp";
-			}
-			
+			}			
 		}else if (action.equalsIgnoreCase("listadoPedidos")) {
 			String fechaDesde = request.getParameter("fechaDesde");
 			String fechaHasta = request.getParameter("fechaHasta");
@@ -139,8 +138,7 @@ public class ControladorPedido extends HttpServlet {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}  
-		    acceso = "listarPedidos.jsp";
-			
+		    acceso = "listarPedidos.jsp";			
 		}else if(action.equalsIgnoreCase("mostrar_pedido")) {
 			String nro_pedido;
 			ArrayList<LineaPedido> lineas = new ArrayList<LineaPedido>();
@@ -152,8 +150,52 @@ public class ControladorPedido extends HttpServlet {
 			request.setAttribute("pedido", ped);
 			request.setAttribute("productos_pedido", lineas);
 			acceso = "mostrarPedido.jsp";
-			
+		}else if(action.equalsIgnoreCase("mostrar_pedido_cliente")) {
+			String nro_pedido;
+			ArrayList<LineaPedido> lineas = new ArrayList<LineaPedido>();
+			PedidoDAO pdao = new PedidoDAO();
+			Pedido ped;
+			nro_pedido = request.getParameter("nro_pedido");
+			ped = pdao.buscar_pedido(Integer.parseInt(nro_pedido));
+			lineas = pdao.buscar_productos_pedido(Integer.parseInt(nro_pedido));
+			request.setAttribute("pedido", ped);
+			request.setAttribute("productos_pedido", lineas);
+			acceso = "mostrarPedidoCliente.jsp";
+		}else if(action.equalsIgnoreCase("cancelar_Pedido")) {
+			ClienteDAO cliDAO = new ClienteDAO();
+			Cliente cli = new Cliente();
+			Pedido ped = new Pedido();
+			Correo correo = new Correo();
+			PedidoDAO pedDAO = new PedidoDAO();
+			HttpSession sesion = request.getSession(true);
+			String usuario_cliente = (String)sesion.getAttribute("usuario_cliente");
+			int nro_pedido = Integer.parseInt(request.getParameter("nro_pedido"));
+			if(usuario_cliente != null) {
+				pedDAO.cancelar_pedido(nro_pedido);
+				cli = cliDAO.buscar_cliente(usuario_cliente);
+				correo.enviar_mail_cancelacion(cli.getMail());
+				acceso = "confirmacionCancelacion.jsp";
+			}
+			else {
+				acceso = "loginClientes.jsp";
+			}			
+		}else if (action.equalsIgnoreCase("listadoPedidosCliente")) {
+			ClienteDAO cliDAO = new ClienteDAO();
+			Cliente cli = new Cliente();
+			PedidoDAO pedDAO = new PedidoDAO();
+			HttpSession sesion = request.getSession(true);
+			String usuario_cliente = (String)sesion.getAttribute("usuario_cliente");
+		    ArrayList<Pedido> pedidos = new  ArrayList<Pedido>();
+			try{
+			    cli = cliDAO.buscar_cliente(usuario_cliente);
+				pedidos = pedDAO.listar_pedidos_pendientes_cliente(cli.getDni());
+				request.setAttribute("listadoPedidosCliente", pedidos);						
+			}catch (Exception e) {
+				e.printStackTrace();
+			}  
+		    acceso = "listarPedidosCliente.jsp";
 		}
+		
 		RequestDispatcher vista = request.getRequestDispatcher(acceso);
 		vista.forward(request, response);
 	}

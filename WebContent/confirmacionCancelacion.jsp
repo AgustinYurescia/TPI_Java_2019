@@ -1,10 +1,14 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ page import = "java.util.ArrayList" %>
 <%@ page import = "modelo.LineaPedido" %>
 <%@ page import = "modeloDAO.ProductoDAO" %>
 <%@ page import = "java.util.Iterator" %>
 <%@ page import = "modelo.Producto" %>
+<%@ page import = "modelo.Pedido" %>
+<%@ page import = "controlador.Correo" %>
+<%@ page import = "modeloDAO.ClienteDAO" %>
+<%@ page import = "modelo.Cliente" %>
+<%@ page import = "java.io.IOException" %>
 
 
 <!DOCTYPE html>
@@ -12,10 +16,10 @@
 	<head>
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 		<meta charset="ISO-8859-1">
-		<title>Confirmar Pedido</title>
+		<title>Confirmación de la cancelación</title>
 	</head>
 	<body>
-			   <% 	HttpSession sesion = request.getSession(true);
+	   <% 	HttpSession sesion = request.getSession(true);
 	   		if (sesion.getAttribute("usuario_cliente") == null) { %>
 	    		<nav class="site-header sticky-top py-1">
   					<div class="container d-flex flex-column flex-md-row justify-content-between">
@@ -44,42 +48,11 @@
   					</div>
 	   			</nav>
 	   	<% } %>
-		<% ArrayList linea = (ArrayList<LineaPedido>)sesion.getAttribute("carrito"); %>
 	   	   <div>
-			<h1>Confirmación del pedido</h1>
-			<table class="table table-striped">
-				<thead>
-					<tr>
-						<th><font face="Calibri" color="Black">Imagen</font></th>
-						<th><font face="Calibri" color="Black">Nombre</font></th>
-						<th><font face="Calibri" color="Black">Precio Venta</font></th>
-						<th><font face="Calibri" color="Black">Cantidad</font></th>
-						<th><font face="Calibri" color="Black">Subtotal</font></th>
-					</tr>
-				</thead>
-						<% 
-							ProductoDAO proDAO = new ProductoDAO(); 
-							Iterator<LineaPedido>iter = linea.iterator();
-							LineaPedido lin;
-							Producto pro;
-							while(iter.hasNext()){
-								lin=iter.next();
-								pro = proDAO.buscar_producto(lin.getCodigo_producto());
-						%>
-				<tbody>
-					<tr>
-						<td><img src="ControladorDeImagenes?codigo=<%=pro.getCodigo()%>" width="80" height="80"/></td>
-						<td><font face="Calibri" color="Blue"><%=pro.getNombre()%></font></td>
-						<td><font face="Calibri" color="Black"><%=pro.getPrecioVenta()%></font></td>
-						<td><font face="Calibri" color="Black"><%=lin.getCantidad()%></font></td>
-						<td><font face="Calibri" color="Black"><%=lin.getSubtotal()%></font></td>
-					</tr>
-					<%}%>
-				</tbody>
-			</table>
-			<% double total = (double)sesion.getAttribute("total"); %>
-			<p align="right"><b><font face="calibri" color="black" size="6">Total: $<%=total%>&nbsp; &nbsp;</font></b></p>
-			<p align="right"><a class="py-0 d-none d-md-inline-block" href="ControladorPedido?accion=FinalizarPedido"><button type="submit" class="btn btn-primary">Finalizar compra</button></a>&nbsp;&nbsp;&nbsp;&nbsp;</p>
+			<h1>Confirmación de la cancelación</h1>
+			<p align="center"><b><font face="calibri" color="black" size="6">MUCHAS GRACIAS</font></b></p>
+			<p align="center"><b><font face="calibri" color="black" size="3">Su pedido ha sido cancelado con éxito</font></b></p>
+			<p align="center"><a class="py-0 d-none d-md-inline-block" href="ControladorDeLinks?accion=indexCliente"><button type="submit" class="btn btn-primary">Volver al inicio</button></a></p>
 		</div>
 	</body>
 </html>

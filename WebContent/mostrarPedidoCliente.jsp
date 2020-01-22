@@ -19,23 +19,23 @@
 	</head>
 	<body>
 		<% HttpSession sesion = request.getSession(true);
-	   	   if (sesion.getAttribute("usuario_admin") != null) { %>
+	   	   if (sesion.getAttribute("usuario_cliente") != null) { %>
 	   <nav class="site-header sticky-top py-1">
   		<div class="container d-flex flex-column flex-md-row justify-content-between">
-    		<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=indexAdmin"><img class="mb-4" src="https://proveedorespvriviera.com/wp-content/uploads/2018/10/LogoVINOTECA_negro.png" alt="" width="100" height="30"></a>
-    		<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=indexAdmin"><font face="Calibri" color="Black">Home</font></a>
-    		<a class="py-2 d-none d-md-inline-block" href="ControladorProducto?accion=listarAdmin&filtrar_por=TODOS"><font face="Calibri" color="Black">Listado de productos</font></a>
-    		<a class="py-2 d-none d-md-inline-block" href="ControladorPedido?accion=listadoPedidos"><font face="Calibri" color="Black">Listado de Pedidos</font></a>
-    		<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=altaProducto"><font face="Calibri" color="Black">Alta Producto</font></a>
-    		<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=actualizarStock"><font face="Calibri" color="Black">Actualizar Stock</font></a>
-    		<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=editarProducto"><font face="Calibri" color="Black">Editar Producto</font></a>
-    		<a class="py-2 d-none d-md-inline-block" href="ControladorLoginAdmin?accion=logout"><font face="Calibri" color="Black">Cerrar Sesión</font></a>
+    		<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=indexCliente"><img class="mb-4" src="https://proveedorespvriviera.com/wp-content/uploads/2018/10/LogoVINOTECA_negro.png" alt="" width="100" height="30"></a>
+    		<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=indexCliente"><font face="Calibri" color="Black">Home</font></a>
+    		<a class="py-2 d-none d-md-inline-block" href="ControladorProducto?accion=listar&filtrar_por=TODOS"><font face="Calibri" color="Black">Listado de productos</font></a>
+    		<a class="py-2 d-none d-md-inline-block" href="ControladorPedido?accion=listadoPedidosCliente"><font face="Calibri" color="Black">Listado de pedidos</font></a>
+    		<a class="py-2 d-none d-md-inline-block" href=""><font face="Calibri" color="Black">xxxxx</font></a>
+    		<a class="py-2 d-none d-md-inline-block" href=""><font face="Calibri" color="Black">xxxxx</font></a>
+    		<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=carrito"><font face="Calibri" color="Black">Carrito</font></a>
+    		<a class="py-2 d-none d-md-inline-block" href="ControladorLogin?accion=logout"><font face="Calibri" color="Black">Cerrar Sesión</font></a>
   		</div>
 	   </nav>
 	   <div>
 	   <% Pedido ped = (Pedido)request.getAttribute("pedido"); %>
-	   <p align="left"><b><font face="calibri" color="black" size="3">Nro pedido: <%=ped.getNro_pedido()%>&nbsp;-&nbsp;Dni cliente: <%=ped.getDni_cliente()%>&nbsp;-&nbsp;Fecha pedido: <%=ped.getFecha_pedido()%></font></b></p>
-	   <p align="left"><b><font face="calibri" color="black" size="3">Fecha entrega estimada: <%=ped.getFecha_entrega_est()%>&nbsp;-&nbsp;Fecha entrega real: <%=ped.getFecha_entrega_real()%>&nbsp;-&nbsp;Fecha cancelación: <%=ped.getFecha_cancelacion()%></font></b></p>
+	   <p align="left"><b><font face="calibri" color="black" size="3">Nro pedido: <%=ped.getNro_pedido()%>&nbsp;-&nbsp;Fecha pedido: <%=ped.getFecha_pedido()%></font></b></p>
+	   <p align="left"><b><font face="calibri" color="black" size="3">Fecha entrega estimada: <%=ped.getFecha_entrega_est()%></font></b></p>
 	   <p align="left"><b><font face="calibri" color="black" size="3">Monto total: $<%=ped.getMonto()%></font></b></p>	  
 	   <p align="left"><b><font face="calibri" color="black" size="3">Resúmen de productos:</font></b></p>	 
 	   		<table class="table table-striped">
@@ -62,6 +62,7 @@
 	   			</tbody>
 	   		</table>
 	   </div>
+	   <p align="center"><a class="py-0 d-none d-md-inline-block" href="ControladorPedido?accion=cancelar_pedido&nro_pedido=<%=ped.getNro_pedido()%>"><button type="submit" class="btn btn-primary">Cancelar pedido</button></a>&nbsp;&nbsp;&nbsp;&nbsp;</p>
 	   <%}%>
 	</body>
 </html>

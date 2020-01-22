@@ -227,10 +227,10 @@ public class PedidoDAO {
 		Pedido ped = new Pedido();
 		Statement st = null;
 		ResultSet rs = null;
-		String sentenciaParaPorc="SELECT * FROM pedido WHERE nro_pedido = "+nro_pedido+"";
+		String sentenciaSQL="SELECT * FROM pedido WHERE nro_pedido = "+nro_pedido+"";
 		try {
 			st=Conexion.getInstancia().getConexion().createStatement();
-			rs=st.executeQuery(sentenciaParaPorc);
+			rs=st.executeQuery(sentenciaSQL);
 			if (rs.next()) {
 				ped.setNro_pedido(rs.getInt("nro_pedido"));
 				ped.setFecha_pedido(rs.getDate("fecha_pedido"));
@@ -260,13 +260,15 @@ public class PedidoDAO {
 		Statement st = null;
 		ResultSet rs = null;
 		ArrayList<LineaPedido> pedido_productos = new ArrayList<LineaPedido>();
-		String sentenciaParaPorc="SELECT * FROM pedido_productos WHERE nro_pedido = "+nro_pedido+"";
+		String sentenciaSQL="SELECT * FROM pedido_productos WHERE nro_pedido = "+nro_pedido+"";
 		try {
 			st=Conexion.getInstancia().getConexion().createStatement();
-			rs=st.executeQuery(sentenciaParaPorc);
-			if (rs.next()) {
-				LineaPedido linea = new LineaPedido(rs.getInt(1),rs.getInt(3),0);
-				pedido_productos.add(linea);
+			rs=st.executeQuery(sentenciaSQL);
+			if (rs != null) {
+				while(rs.next()) {
+					LineaPedido linea = new LineaPedido(rs.getInt(1),rs.getInt(3),0);
+					pedido_productos.add(linea);
+				}
 			}
 		} 
 		catch (Exception e) {
@@ -282,5 +284,57 @@ public class PedidoDAO {
 		}
 		
 		return pedido_productos;
+	}
+	
+	public void cancelar_pedido(int nro_pedido) {
+		PreparedStatement st = null;
+		String sentenciaSQL="UPDATE pedido SET fecha_cancelacion = current_date WHERE nro_pedido="+nro_pedido+"";
+		try {
+			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			st.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+                Conexion.getInstancia().desconectar();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public ArrayList<Pedido> listar_pedidos_pendientes_cliente(String dni_cliente)  {
+		Statement st = null;
+		ResultSet rs = null;
+		ArrayList<Pedido>lista = new ArrayList<>();
+		String sentenciaSQL = "SELECT * FROM pedido WHERE dni_cliente="+dni_cliente+" AND fecha_cancelacion is null AND fecha_entrega_real is null";
+		try {
+			st=Conexion.getInstancia().getConexion().createStatement();
+			rs=st.executeQuery(sentenciaSQL);
+			if(rs!=null) {
+				while(rs.next()) {
+					Pedido ped = new Pedido();
+					ped.setNro_pedido(rs.getInt("nro_pedido"));
+					ped.setFecha_pedido(rs.getDate("fecha_pedido"));
+					ped.setFecha_entrega_est(rs.getDate("fecha_entrega_est"));
+					ped.setMonto(rs.getDouble("monto"));
+					ped.setFecha_cancelacion(rs.getDate("fecha_cancelacion"));
+					ped.setFecha_entrega_real(rs.getDate("fecha_entrega_real"));
+					ped.setDni_cliente(rs.getString("dni_cliente"));
+					lista.add(ped);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs!=null) {rs.close();}
+				if(st!=null) {st.close();}
+				Conexion.getInstancia().desconectar();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return lista;
 	}
 }

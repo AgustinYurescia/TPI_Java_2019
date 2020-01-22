@@ -1,5 +1,6 @@
 package modelo;
 import modelo.Producto;
+import modeloDAO.ProductoDAO;
 public class LineaPedido {
 	
 	private int codigo_producto;
@@ -31,6 +32,11 @@ public class LineaPedido {
 	}
 	public void setCantidad(int cantidad) {
 		this.cantidad = cantidad;
+	}
+	public Producto getProducto(int codigo_producto) {
+		ProductoDAO prodDAO = new ProductoDAO();
+		Producto prod = prodDAO.buscar_producto(codigo_producto);
+		return prod;
 	}
 	
 	

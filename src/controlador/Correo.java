@@ -114,7 +114,7 @@ public void enviar_mail_cancelacion(String destinatario) throws IOException {
 		    message.addRecipients(Message.RecipientType.TO, InternetAddress.parse(emailDestination));
 			
 
-			message.setSubject("Confirmación del cancelación");
+			message.setSubject("Confirmación de cancelación");
 
 			BodyPart messageBodyPart = new MimeBodyPart();
 			messageBodyPart.setText("Su pedido ha sido cancelado exitosamente");
