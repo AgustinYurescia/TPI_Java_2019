@@ -160,6 +160,17 @@ public class ClienteDAO {
 		return cli;
 	}
 	
+	public Cliente modificacion_cliente(Cliente cli) {
+		PreparedStatement ps = null;
+		String sentencia = "UPDATE cliente SET nombre = ?, apellido = ?, mail = ?, direccion = ?, telefono = ? WHERE dni = ?";
+		try {
+			ps = Conexion.getInstancia().getConexion().prepareStatement(sentencia);
+			ps.execute();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 }
 
 

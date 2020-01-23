@@ -55,7 +55,8 @@ public class ControladorCliente extends HttpServlet {
 					cliente.setCliente_contrasena(contrasena);
 					cliDAO.alta(cliente);
 					acceso = login;
-				}else {
+				}
+				else {
 					request.setAttribute("registroClienteError","Las contraseñas ingresadas no coinciden");
 					acceso = registroClienteError;
 					RequestDispatcher vista = request.getRequestDispatcher(acceso);
@@ -63,6 +64,36 @@ public class ControladorCliente extends HttpServlet {
 				}
 			}	
 		}
+		else if(action.equalsIgnoreCase("modificacion_cliente")){
+			if (cliDAO.yaExisteUsuario(request.getParameter("usuario"))) {  //cambiar eso por usuario solamente
+				Cliente cli = cliDAO.buscar_cliente(request.getParameter("usuario"));
+				boolean cambios = false;
+				if ((request.getParameter("nombre") != "") && (request.getParameter("nombre") != null)) {
+					cli.setNombre(request.getParameter("nombre"));
+					cambios = true;
+				}
+				if ((request.getParameter("apellido") != "") && (request.getParameter("apellido") != null)) {
+					cli.setApellido(request.getParameter("apellido"));
+					cambios = true;
+				}
+				if ((request.getParameter("mail") != "") && (request.getParameter("mail") != null)) {
+					cli.setMail(request.getParameter("mail"));
+					cambios = true;
+				}
+				if ((request.getParameter("direccion") != "") && (request.getParameter("direccion") != null)) {
+					cli.setDireccion(request.getParameter("direccion"));
+					cambios = true;
+				}
+				if ((request.getParameter("telefono") != "") && (request.getParameter("telefono") != null)) {
+					cli.setTelefono(request.getParameter("telefono"));
+					cambios = true;
+				}
+				if (cambios == true) {
+					cliDAO.modificacion_cliente(cli);        //Programar este método
+				}
+			}
+		}
+		
 		RequestDispatcher vista = request.getRequestDispatcher(acceso);
 		vista.forward(request, response);
 		/*doGet(request, response);*/
