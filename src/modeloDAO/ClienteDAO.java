@@ -160,11 +160,19 @@ public class ClienteDAO {
 		return cli;
 	}
 	
-	public Cliente modificacion_cliente(Cliente cli) {
+	public void modificacion_cliente(Cliente cli) {
 		PreparedStatement ps = null;
-		String sentencia = "UPDATE cliente SET nombre = ?, apellido = ?, mail = ?, direccion = ?, telefono = ? WHERE dni = ?";
+		/* "INSERT INTO cliente(dni,cliente_usuario,cliente_contrasena,nombre,apellido,mail,telefono,direccion,fecha_baja_socio)VALUES(?,?,?,?,?,?,?,?,current_date)" */
+		String sentencia = "UPDATE cliente SET nombre = ?, apellido = ?, mail = ?, direccion = ?, telefono = ? WHERE dni = ?) VALUES (?, ?, ?,?, ?, ?)";
 		try {
-			ps = Conexion.getInstancia().getConexion().prepareStatement(sentencia);
+			ps = Conexion.getInstancia().getConexion().prepareStatement(sentencia); //PreparedStatement.SUCCESS_NO_INFO
+			ps.execute();
+			ps.setString(1,cli.getNombre());
+			ps.setString(2,cli.getApellido());
+			ps.setString(3,cli.getMail());
+			ps.setString(4,cli.getDireccion());
+			ps.setString(5,cli.getTelefono());
+			ps.setString(6,cli.getDni());
 			ps.execute();
 		}catch(Exception e) {
 			e.printStackTrace();
