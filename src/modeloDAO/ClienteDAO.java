@@ -166,14 +166,13 @@ public class ClienteDAO {
 		String sentencia = "UPDATE cliente SET nombre = ?, apellido = ?, mail = ?, direccion = ?, telefono = ? WHERE dni = ?) VALUES (?, ?, ?,?, ?, ?)";
 		try {
 			ps = Conexion.getInstancia().getConexion().prepareStatement(sentencia); //PreparedStatement.SUCCESS_NO_INFO
-			ps.execute();
 			ps.setString(1,cli.getNombre());
 			ps.setString(2,cli.getApellido());
 			ps.setString(3,cli.getMail());
 			ps.setString(4,cli.getDireccion());
 			ps.setString(5,cli.getTelefono());
 			ps.setString(6,cli.getDni());
-			ps.execute();
+			ps.executeUpdate();
 		}catch(Exception e) {
 			e.printStackTrace();
 		}

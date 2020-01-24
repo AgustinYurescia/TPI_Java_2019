@@ -55,6 +55,14 @@ public class ControladorDeLinks extends HttpServlet {
 		}else if(action.equalsIgnoreCase("registroCliente")) {
 			response.sendRedirect("registroCliente.jsp");
 		}
+		else if (action.equalsIgnoreCase("modificar_cliente")) {
+			HttpSession sesion = request.getSession(true);
+			if (sesion.getAttribute("usuario_cliente") == null) {
+				response.sendRedirect("loginClientes.jsp");
+			}else {
+				response.sendRedirect("editarCliente.jsp");
+			}
+		}
 		
 		//RequestDispatcher vista = request.getRequestDispatcher(acceso);
 		//vista.forward(request, response);

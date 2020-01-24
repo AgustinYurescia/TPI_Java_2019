@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.sql.Date;
 import modeloDAO.ClienteDAO;
 import modelo.Cliente;
@@ -65,9 +66,17 @@ public class ControladorCliente extends HttpServlet {
 			}	
 		}
 		else if(action.equalsIgnoreCase("modificacion_cliente")){
-			if (cliDAO.yaExisteUsuario(request.getParameter("usuario"))) {  //cambiar eso por usuario solamente
-				Cliente cli = cliDAO.buscar_cliente(request.getParameter("usuario"));
+			HttpSession sesion = request.getSession(true);
+			String usuario = sesion.getAttribute("usuario_cliente").toString();
+			if (cliDAO.yaExisteUsuario(usuario)) {  //cambiar eso por usuario solamente
+				Cliente cli = cliDAO.buscar_cliente(usuario);
 				boolean cambios = false;
+				/*System.out.println(request.getParameter("nombre"));
+				System.out.println(request.getParameter("apellido"));
+				System.out.println(request.getParameter("mail"));
+				System.out.println(request.getParameter("direccion"));
+				System.out.println(request.getParameter("telefono"));*/
+				
 				if ((request.getParameter("nombre") != "") && (request.getParameter("nombre") != null)) {
 					cli.setNombre(request.getParameter("nombre"));
 					cambios = true;
@@ -89,10 +98,11 @@ public class ControladorCliente extends HttpServlet {
 					cambios = true;
 				}
 				if (cambios == true) {
-					cliDAO.modificacion_cliente(cli);        //Programar este método
+					cliDAO.modificacion_cliente(cli);        
 				}
 			}
-		}
+			acceso = "index.jsp";
+		} 
 		
 		RequestDispatcher vista = request.getRequestDispatcher(acceso);
 		vista.forward(request, response);
