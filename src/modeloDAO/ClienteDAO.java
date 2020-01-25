@@ -163,7 +163,7 @@ public class ClienteDAO {
 	public void modificacion_cliente(Cliente cli) {
 		PreparedStatement ps = null;
 		/* "INSERT INTO cliente(dni,cliente_usuario,cliente_contrasena,nombre,apellido,mail,telefono,direccion,fecha_baja_socio)VALUES(?,?,?,?,?,?,?,?,current_date)" */
-		String sentencia = "UPDATE cliente SET nombre = ?, apellido = ?, mail = ?, direccion = ?, telefono = ? WHERE dni = ?) VALUES (?, ?, ?,?, ?, ?)";
+		String sentencia = "UPDATE cliente SET nombre = ?, apellido = ?, mail = ?, direccion = ?, telefono = ? WHERE dni = ? ";
 		try {
 			ps = Conexion.getInstancia().getConexion().prepareStatement(sentencia); //PreparedStatement.SUCCESS_NO_INFO
 			ps.setString(1,cli.getNombre());
@@ -172,13 +172,18 @@ public class ClienteDAO {
 			ps.setString(4,cli.getDireccion());
 			ps.setString(5,cli.getTelefono());
 			ps.setString(6,cli.getDni());
-			ps.executeUpdate();
+			ps.executeUpdate(); //no anda porque hay campos que son null como la direccion 
 		}catch(Exception e) {
 			e.printStackTrace();
+		}finally {
+			try {
+				if(ps!=null) {ps.close();}
+				Conexion.getInstancia().desconectar();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
-	
 }
-
 
 

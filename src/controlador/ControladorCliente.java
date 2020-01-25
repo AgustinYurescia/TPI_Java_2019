@@ -71,11 +71,6 @@ public class ControladorCliente extends HttpServlet {
 			if (cliDAO.yaExisteUsuario(usuario)) {  //cambiar eso por usuario solamente
 				Cliente cli = cliDAO.buscar_cliente(usuario);
 				boolean cambios = false;
-				/*System.out.println(request.getParameter("nombre"));
-				System.out.println(request.getParameter("apellido"));
-				System.out.println(request.getParameter("mail"));
-				System.out.println(request.getParameter("direccion"));
-				System.out.println(request.getParameter("telefono"));*/
 				
 				if ((request.getParameter("nombre") != "") && (request.getParameter("nombre") != null)) {
 					cli.setNombre(request.getParameter("nombre"));
