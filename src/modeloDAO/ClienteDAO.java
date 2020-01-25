@@ -159,10 +159,39 @@ public class ClienteDAO {
 		}
 		return cli;
 	}
+	public Cliente buscar_cliente_2 (String usuario) {
+		PreparedStatement ps = null;
+		String sentencia = "SELECT dni, nombre, apellido, mail, telefono, direccion FROM cliente WHERE cliente_usuario = ?";
+		ResultSet rs = null;
+		Cliente cli = new Cliente();
+		try{
+			ps = Conexion.getInstancia().getConexion().prepareStatement(sentencia);
+			ps.setString(1, usuario);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				cli.setDni(rs.getString(1));
+				cli.setNombre(rs.getString(2));
+				cli.setApellido(rs.getString(3));
+				cli.setMail(rs.getString(4));
+				cli.setTelefono(rs.getString(5));
+				cli.setDireccion(rs.getString(6));
+			}
+			return cli;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(ps!=null) {ps.close();}
+				Conexion.getInstancia().desconectar();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return cli;     
+	}
 	
 	public void modificacion_cliente(Cliente cli) {
 		PreparedStatement ps = null;
-		/* "INSERT INTO cliente(dni,cliente_usuario,cliente_contrasena,nombre,apellido,mail,telefono,direccion,fecha_baja_socio)VALUES(?,?,?,?,?,?,?,?,current_date)" */
 		String sentencia = "UPDATE cliente SET nombre = ?, apellido = ?, mail = ?, direccion = ?, telefono = ? WHERE dni = ? ";
 		try {
 			ps = Conexion.getInstancia().getConexion().prepareStatement(sentencia); //PreparedStatement.SUCCESS_NO_INFO
@@ -172,7 +201,7 @@ public class ClienteDAO {
 			ps.setString(4,cli.getDireccion());
 			ps.setString(5,cli.getTelefono());
 			ps.setString(6,cli.getDni());
-			ps.executeUpdate(); //no anda porque hay campos que son null como la direccion 
+			ps.executeUpdate(); //esto no funciona, todavia no se por que  
 		}catch(Exception e) {
 			e.printStackTrace();
 		}finally {

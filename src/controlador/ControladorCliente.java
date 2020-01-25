@@ -69,7 +69,7 @@ public class ControladorCliente extends HttpServlet {
 			HttpSession sesion = request.getSession(true);
 			String usuario = sesion.getAttribute("usuario_cliente").toString();
 			if (cliDAO.yaExisteUsuario(usuario)) {  //cambiar eso por usuario solamente
-				Cliente cli = cliDAO.buscar_cliente(usuario);
+				Cliente cli = cliDAO.buscar_cliente_2 (usuario);
 				boolean cambios = false;
 				
 				if ((request.getParameter("nombre") != "") && (request.getParameter("nombre") != null)) {
