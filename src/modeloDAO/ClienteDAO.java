@@ -139,9 +139,14 @@ public class ClienteDAO {
 			rs = st.executeQuery();
 			if(rs.next()) {
 				cli.setDni(rs.getString(1));
+				cli.setCliente_usuario(rs.getString(2));
+				cli.setCliente_contrasena(rs.getString(3));
 				cli.setNombre(rs.getString(4));
 				cli.setApellido(rs.getString(5));
 				cli.setMail(rs.getString(6));
+				cli.setTelefono(rs.getString(7));
+				cli.setDireccion(rs.getString(8));
+				cli.setFecha_baja_socio(rs.getDate(9));
 				return cli;
 			}else {
 				return cli;
