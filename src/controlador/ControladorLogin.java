@@ -44,7 +44,8 @@ public class ControladorLogin extends HttpServlet {
 				RequestDispatcher vista = request.getRequestDispatcher("index.jsp");
 				vista.forward(request, response);
 			}else {
-				RequestDispatcher vista = request.getRequestDispatcher("loginClientesError.jsp");
+				request.setAttribute("loginClienteError", "Usuario y/o contraseña incorrectos");
+				RequestDispatcher vista = request.getRequestDispatcher("loginClientes.jsp");
 				vista.forward(request, response);
 			}
 			

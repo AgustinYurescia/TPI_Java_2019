@@ -38,6 +38,9 @@
   		<input type="text" id="usuario_admin" name="usuario_admin" class="form-control" placeholder="Usuario" required>
   		<label for="contrasena" class="sr-only">Contraseña</label>
   		<input type="password" id="contrasena" name="contrasena" class="form-control" placeholder="Contraseña" required>
+  		<%if(request.getAttribute("loginAdminError") != null){%>
+  		<div class="alert alert-danger" role="alert"><%= request.getAttribute("loginAdminError") %></div>
+  		<%}%>
   		<button class="btn btn-lg btn-primary btn-block" type="submit" name="accion" value="login">Iniciar Sesión</button>
   		<p class="mt-5 mb-3 text-muted">&copy; 2017-2019</p>
 	</form>

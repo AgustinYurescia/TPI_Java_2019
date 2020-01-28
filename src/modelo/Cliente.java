@@ -10,6 +10,7 @@ public class Cliente {
 	private String telefono;
 	private String direccion;
 	private java.sql.Date fecha_baja_socio;
+	private java.sql.Date fecha_baja;
 	
 	public String getDni() {
 		return dni;
@@ -65,5 +66,10 @@ public class Cliente {
 	public void setFecha_baja_socio(java.sql.Date fecha_baja_socio) {
 		this.fecha_baja_socio = fecha_baja_socio;
 	}
-	
+	public java.sql.Date getFecha_baja() {
+		return fecha_baja;
+	}
+	public void setFecha_baja(java.sql.Date fecha_baja) {
+		this.fecha_baja = fecha_baja;
+	}
 }

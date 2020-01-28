@@ -97,7 +97,23 @@ public class ControladorCliente extends HttpServlet {
 				}
 			}
 			acceso = "index.jsp";
-		} 
+		}else if(action.equalsIgnoreCase("baja_cliente")){
+			HttpSession sesion = request.getSession(true);
+			String usuario=request.getParameter("usuario_cliente");
+			String contrasena=request.getParameter("contrasena");
+			Boolean rta = cliDAO.existe(usuario, contrasena);
+			if (rta) {
+				cliDAO.baja(usuario, contrasena);
+				request.setAttribute("bajaClienteMensaje", "Baja realizada con éxito");
+				sesion.invalidate();
+				RequestDispatcher vista = request.getRequestDispatcher("bajaCliente.jsp");
+				vista.forward(request, response);
+			}else {
+				request.setAttribute("bajaClienteMensaje", "Usuario y/o contraseña incorrectos");
+				RequestDispatcher vista = request.getRequestDispatcher("bajaCliente.jsp");
+				vista.forward(request, response);
+			}
+		}
 		
 		RequestDispatcher vista = request.getRequestDispatcher(acceso);
 		vista.forward(request, response);

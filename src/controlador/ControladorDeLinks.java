@@ -62,6 +62,8 @@ public class ControladorDeLinks extends HttpServlet {
 			}else {
 				response.sendRedirect("editarCliente.jsp");
 			}
+		}else if (action.equalsIgnoreCase("bajaCliente")) {
+			response.sendRedirect("bajaCliente.jsp");
 		}
 		
 		//RequestDispatcher vista = request.getRequestDispatcher(acceso);

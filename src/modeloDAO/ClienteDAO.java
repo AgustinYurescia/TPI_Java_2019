@@ -43,7 +43,7 @@ public class ClienteDAO {
 	public Boolean existe(String usuario, String contrasena) {
 		PreparedStatement st = null;
 		ResultSet rs=null;
-		String sentenciaSQL="SELECT * FROM cliente WHERE cliente_usuario='"+usuario+"' AND cliente_contrasena='"+contrasena+"'";
+		String sentenciaSQL="SELECT * FROM cliente WHERE cliente_usuario='"+usuario+"' AND cliente_contrasena='"+contrasena+"' and fecha_baja is null";
 		try {
 			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
 			rs = st.executeQuery();
@@ -68,7 +68,7 @@ public class ClienteDAO {
 	
 	public void baja(String usuario, String contrasena) {
 		PreparedStatement st = null;
-		String sentenciaSQL="DELETE FROM cliente WHERE cliente_usuario='"+usuario+"' AND cliente_contrasena='"+contrasena+"'";
+		String sentenciaSQL="UPDATE cliente SET fecha_baja = current_date WHERE cliente_usuario='"+usuario+"' AND cliente_contrasena='"+contrasena+"' and fecha_baja is null";
 		try {
 			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
 			st.executeUpdate();
@@ -87,7 +87,7 @@ public class ClienteDAO {
 	public void cambio_contrasena(String usuario, String contrasena_vieja, String contrasena_nueva) {
 		PreparedStatement st = null;
 		String sentenciaSQL="UPDATE cliente SET cliente_contrasena = '"+contrasena_nueva+"' WHERE cliente_usuario='"+usuario+"'"
-				+ " AND cliente_contrasena='"+contrasena_vieja+"'";
+				+ " AND cliente_contrasena='"+contrasena_vieja+"' and fecha_baja is null";
 		try {
 			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
 			st.executeUpdate();
@@ -106,7 +106,7 @@ public class ClienteDAO {
 	public Boolean yaExisteUsuario(String usuario) {
 		PreparedStatement st = null;
 		ResultSet rs=null;
-		String sentenciaSQL="SELECT * FROM cliente WHERE cliente_usuario='"+usuario+"'";
+		String sentenciaSQL="SELECT * FROM cliente WHERE cliente_usuario='"+usuario+"' and fecha_baja is null";
 		try {
 			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
 			rs = st.executeQuery();
@@ -133,7 +133,7 @@ public class ClienteDAO {
 		Cliente cli = new Cliente();
 		PreparedStatement st = null;
 		ResultSet rs=null;
-		String sentenciaSQL="SELECT * FROM cliente WHERE cliente_usuario='"+usuario+"'";
+		String sentenciaSQL="SELECT * FROM cliente WHERE cliente_usuario='"+usuario+"' and fecha_baja is null";
 		try {
 			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
 			rs = st.executeQuery();
@@ -166,7 +166,7 @@ public class ClienteDAO {
 	}
 	public Cliente buscar_cliente_2 (String usuario) {
 		PreparedStatement ps = null;
-		String sentencia = "SELECT dni, nombre, apellido, mail, telefono, direccion FROM cliente WHERE cliente_usuario = ?";
+		String sentencia = "SELECT dni, nombre, apellido, mail, telefono, direccion FROM cliente WHERE cliente_usuario = ? and fecha_baja is null";
 		ResultSet rs = null;
 		Cliente cli = new Cliente();
 		try{
@@ -197,7 +197,7 @@ public class ClienteDAO {
 	
 	public void modificacion_cliente(Cliente cli) {
 		PreparedStatement ps = null;
-		String sentencia = "UPDATE cliente SET nombre = ?, apellido = ?, mail = ?, direccion = ?, telefono = ? WHERE dni = ? ";
+		String sentencia = "UPDATE cliente SET nombre = ?, apellido = ?, mail = ?, direccion = ?, telefono = ? WHERE dni = ? and fecha_baja is null";
 		try {
 			ps = Conexion.getInstancia().getConexion().prepareStatement(sentencia); //PreparedStatement.SUCCESS_NO_INFO
 			ps.setString(1,cli.getNombre());
