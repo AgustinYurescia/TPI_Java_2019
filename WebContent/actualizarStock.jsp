@@ -8,13 +8,13 @@
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
-	<head>
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-		<meta charset="ISO-8859-1">
-		<title>Actualizar Stock</title>
-	</head>
-	<body>
-		<% HttpSession sesion = request.getSession(true);
+<head>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<meta charset="ISO-8859-1">
+	<title>Actualizar Stock</title>
+</head>
+<body>
+	<% 	HttpSession sesion = request.getSession(true);
 	   	if (sesion.getAttribute("usuario_admin") != null){%>
 			<nav class="site-header sticky-top py-1">
   				<div class="container d-flex flex-column flex-md-row justify-content-between">
@@ -58,5 +58,5 @@
 			response.sendRedirect("loginAdmin.jsp");
 	  	  }
 	 	%>
-	</body>
+</body>
 </html>
