@@ -71,24 +71,39 @@ public class ControladorCliente extends HttpServlet {
 			if (cliDAO.yaExisteUsuario(usuario)) {  //cambiar eso por usuario solamente
 				Cliente cli = cliDAO.buscar_cliente_2 (usuario);
 				boolean cambios = false;
+				boolean invalid = false;
 				
 				if ((request.getParameter("nombre") != "") && (request.getParameter("nombre") != null)) {
-					cli.setNombre(request.getParameter("nombre"));
-					cambios = true;
+					if (request.getParameter("nombre").length() < 25) {
+						cli.setNombre(request.getParameter("nombre"));
+						cambios = true;
+					}else {
+						invalid = true;
+					}
 				}
 				if ((request.getParameter("apellido") != "") && (request.getParameter("apellido") != null)) {
-					cli.setApellido(request.getParameter("apellido"));
-					cambios = true;
+					if (request.getParameter("apellido").length() < 25) {
+						cli.setApellido(request.getParameter("apellido"));
+						cambios = true;
+					}else {
+						invalid = true;
+					}
 				}
 				if ((request.getParameter("mail") != "") && (request.getParameter("mail") != null)) {
-					cli.setMail(request.getParameter("mail"));
-					cambios = true;
+					if (request.getParameter("mail").length() < 55) {
+						cli.setMail(request.getParameter("mail"));
+						cambios = true;
+					} else {
+						invalid = true;
+					}
 				}
 				if ((request.getParameter("direccion") != "") && (request.getParameter("direccion") != null)) {
+					if (request.getParameter("direccion").length() < 55)
 					cli.setDireccion(request.getParameter("direccion"));
 					cambios = true;
 				}
 				if ((request.getParameter("telefono") != "") && (request.getParameter("telefono") != null)) {
+					
 					cli.setTelefono(request.getParameter("telefono"));
 					cambios = true;
 				}
