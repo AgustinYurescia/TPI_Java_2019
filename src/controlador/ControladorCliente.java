@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import exceptions.NotValidValueCustomException;
 import java.sql.Date;
 import modeloDAO.ClienteDAO;
 import modelo.Cliente;
@@ -107,8 +108,14 @@ public class ControladorCliente extends HttpServlet {
 					cli.setTelefono(request.getParameter("telefono"));
 					cambios = true;
 				}
-				if (cambios == true) {
-					cliDAO.modificacion_cliente(cli);        
+				if (invalid == false){
+					if (cambios == true) {
+						cliDAO.modificacion_cliente(cli);        
+					}
+				}else {
+					RequestDispatcher vista = request.getRequestDispatcher("error.jsp");
+					vista.forward(request, response);
+					return;		//hbsbdasmfasd,bfhvasdfbh,asbdfabdhsfkldasf		
 				}
 			}
 			acceso = "index.jsp";
@@ -127,6 +134,7 @@ public class ControladorCliente extends HttpServlet {
 				request.setAttribute("bajaClienteMensaje", "Usuario y/o contraseña incorrectos");
 				RequestDispatcher vista = request.getRequestDispatcher("bajaCliente.jsp");
 				vista.forward(request, response);
+				return; // dnfljdskhfkasdhjkahjsdljhsdfljhfdasdfldaslhfsalfhskljdf
 			}
 		}
 		
