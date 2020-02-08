@@ -1,4 +1,5 @@
 <%@page import="java.util.Iterator"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page import="modeloDAO.ProductoDAO"%>
 <%@page import="modelo.Producto"%>
@@ -83,14 +84,8 @@
 					</tr>
 				</thead>
 						<% 
-							ProductoDAO pr = new ProductoDAO(); 
-							List<Producto> lista = pr.obtener_todos();
-							Iterator<Producto>iter = lista.iterator();
-							Producto prod = null;
-							String filtro = (String)request.getAttribute("filtro");
-							if (filtro.equalsIgnoreCase("TODOS")){
-							while(iter.hasNext()){
-								prod=iter.next();
+							ArrayList<Producto> lista = (ArrayList<Producto>)request.getAttribute("listado");
+							for (Producto prod : lista){
 						%>
 				<tbody>
 					<tr>
@@ -100,19 +95,7 @@
 						<td><font face="Calibri" color="Black"><%=prod.getPrecioVenta()%></font></td>
 						<td><font face="Calibri" color="Black"><%=prod.getStock()%></font></td>
 					</tr>
-					<% }} else {
-						while(iter.hasNext()){
-								prod=iter.next();
-								if (prod.getCodigo_categoria()==Integer.parseInt(filtro)){
-					%>
-					<tr>
-						<td><font face="Calibri" color="Black"><%=prod.getCodigo()%></font></td>
-						<td><img src="ControladorDeImagenes?codigo=<%=prod.getCodigo()%>" width="80" height="80"/></td>
-						<td><font face="Calibri" color="Blue"><a class="py-2 d-none d-md-inline-block" href="ControladorProducto?accion=mostrar_producto&codigo_producto=<%=prod.getCodigo()%>"><%=prod.getNombre()%></a></font></td>
-						<td><font face="Calibri" color="Black"><%=prod.getPrecioVenta()%></font></td>
-						<td><font face="Calibri" color="Black"><%=prod.getStock()%></font></td>
-					</tr>
-					<%}}}%>
+						<% }%> 
 				</tbody>
 			</table>
 		</div>

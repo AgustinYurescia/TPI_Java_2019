@@ -128,6 +128,42 @@ public class ProductoDAO {
 		}
 		
 	}
+	
+	
+	public List<Producto> obtener_por_codigo_categoria(int codigo_categoria) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		ArrayList<Producto>lista = new ArrayList<>();
+		String sentenciaSQL = "SELECT * FROM producto WHERE fecha_baja is null and codigo_categoria = ? order by nombre asc";
+		try {
+			ps=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			ps.setInt(1, codigo_categoria);
+			rs=ps.executeQuery();
+			if(rs!=null) {
+				while(rs.next()) {
+					Producto prod = new Producto();
+					prod.setCodigo(rs.getInt("codigo"));
+					prod.setNombre(rs.getString("nombre"));
+					prod.set_imagen(rs.getBinaryStream("imagen"));
+					prod.setStock(rs.getInt("stock"));
+					prod.setPrecioVenta(rs.getDouble("precio_venta"));
+					prod.setCodigo_categoria(Integer.parseInt(rs.getString("codigo_categoria")));
+					lista.add(prod);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs!=null) {rs.close();}
+				if(ps!=null) {ps.close();}
+				Conexion.getInstancia().desconectar();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return lista;
+	}
 
 	
 	public void baja(int codigo_producto_baja) {

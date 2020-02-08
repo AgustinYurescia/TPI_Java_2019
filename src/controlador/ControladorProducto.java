@@ -2,6 +2,7 @@ package controlador;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -47,12 +48,18 @@ public class ControladorProducto extends HttpServlet {
 		}else if(action.equalsIgnoreCase("listar")) {
 			CategoriaDAO catDAO = new CategoriaDAO();
 			String nombre_filtro = request.getParameter("filtrar_por");
-			if (nombre_filtro.equalsIgnoreCase("TODOS")){
-				request.setAttribute("filtro", "TODOS");
+			ProductoDAO pr = new ProductoDAO();
+			if (nombre_filtro.equalsIgnoreCase("TODOS")){ 
+				ArrayList<Producto> lista = (ArrayList<Producto>) pr.obtener_todos();
+				//Iterator<Producto>iter = lista.iterator();
+				//Producto prod = null;
+				//String filtro = (String)request.getAttribute("filtro");
+				//request.setAttribute("filtro", "TODOS");
+				request.setAttribute("listado", lista);
 			}else {
-				int codigo_filtro = catDAO.getCodigoCategoria(nombre_filtro);
-				if (codigo_filtro != 0) {
-					request.setAttribute("filtro", Integer.toString(codigo_filtro));
+				int codigo_categoria = catDAO.getCodigoCategoria(nombre_filtro);
+				if (codigo_categoria != 0) {
+					request.setAttribute("listado", pr.obtener_por_codigo_categoria(codigo_categoria));
 				}
 			}
 			acceso = listar;
