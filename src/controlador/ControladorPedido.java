@@ -195,6 +195,14 @@ public class ControladorPedido extends HttpServlet {
 				e.printStackTrace();
 			}  
 		    acceso = "listarPedidosCliente.jsp";
+		}else if (action.equalsIgnoreCase("entregaPedido")){
+			HttpSession sesion = request.getSession(true);
+			if(sesion.getAttribute("usuario_admin")!= null) {
+				int numeroPedido = Integer.parseInt(request.getParameter("numero_pedido"));
+				PedidoDAO pedDAO = new PedidoDAO();
+				pedDAO.set_fecha_entrega_real(numeroPedido);
+			}
+			acceso = "ControladorPedido?accion=listadoPedidos";
 		}
 		
 		RequestDispatcher vista = request.getRequestDispatcher(acceso);

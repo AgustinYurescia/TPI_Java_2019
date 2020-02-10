@@ -337,4 +337,25 @@ public class PedidoDAO {
 		}
 		return lista;
 	}
+	
+	public void set_fecha_entrega_real(int numeroPedido) {
+		PreparedStatement ps= null;
+		String sentenciaSQL="UPDATE pedido SET fecha_entrega_real = current_date WHERE nro_pedido = ?";
+		try {
+			ps=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			ps.setInt(1, numeroPedido);
+			ps.executeUpdate();
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			try {
+                Conexion.getInstancia().desconectar();
+			} 
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }
