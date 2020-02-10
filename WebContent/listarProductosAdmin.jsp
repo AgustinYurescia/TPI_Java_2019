@@ -1,5 +1,6 @@
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.List"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="modeloDAO.ProductoDAO"%>
 <%@page import="modelo.Producto"%>
 <%@page import="modeloDAO.CategoriaDAO"%>
@@ -31,12 +32,12 @@
     		<a class="py-2 d-none d-md-inline-block" href="ControladorLoginAdmin?accion=logout"><font face="Calibri" color="Black">Cerrar Sesión</font></a>
   		</div>
 	   </nav>
-	   	   <h5><font face="Calibri" color="Black"><label for="filtrar_por">Categoría</label></font></h5>
+	   	   <h5><font face="Calibri" color="Black"><label for="codigo_filtro">Categoría</label></font></h5>
 	   <form action="ControladorProducto">
   			<div class="form-row">
     			<div class="form-group col-md-6">
-      				<select id="filtrar_por" name="filtrar_por" class="form-control"  >
-        				<option value = "TODOS" selected>Todos</option>
+      				<select id="codigo_filtro" name="codigo_filtro" class="form-control"  >
+        				<option value = "0" selected>Todos</option>
         				<% 
 						CategoriaDAO catDAO = new CategoriaDAO(); 
 						List<Categoria> listaCat = catDAO.obtener_todos();
@@ -45,12 +46,12 @@
 						while(iterCat.hasNext()){
 								cat=iterCat.next();
 						%>
-        				<option value="<%=cat.getDescripcion()%>"><%=cat.getDescripcion()%></option>
+        				<option value="<%=cat.getCodigo()%>"><%=cat.getDescripcion()%></option>
         				<%}%>
      				</select>														
     			</div>
     			<div class="form-group col-md-6">
-    			<button type="submit" class="btn btn-primary" name="accion" value="listarAdmin">Filtrar</button>	
+    			<button type="submit" class="btn btn-primary" name="accion" value="listar">Filtrar</button>	
     			</div>
     		</div>
 		</form>
@@ -69,14 +70,8 @@
 					</tr>
 				</thead>
 						<% 
-							ProductoDAO pr = new ProductoDAO(); 
-							List<Producto> lista = pr.obtener_todos();
-							Iterator<Producto>iter = lista.iterator();
-							Producto prod = null;
-							String filtro = (String)request.getAttribute("filtro");
-							if (filtro.equalsIgnoreCase("TODOS")){
-							while(iter.hasNext()){
-								prod=iter.next();
+						ArrayList<Producto> lista = (ArrayList<Producto>)request.getAttribute("listado");
+						for (Producto prod : lista){
 						%>
 				<tbody>
 					<tr>
@@ -86,21 +81,8 @@
 						<td><font face="Calibri" color="Black"><%=prod.getPrecioVenta()%></font></td>
 						<td><font face="Calibri" color="Black"><%=prod.getStock()%></font></td>
 						<td><font face="Calibri" color="Black"><a href="ControladorProducto?accion=BajaProducto&codigo_producto_baja=<%=prod.getCodigo()%>">Dar de baja</a></font></td>
-					</tr>
-					<% }} else {
-						while(iter.hasNext()){
-								prod=iter.next();
-								if (prod.getCodigo_categoria()==Integer.parseInt(filtro)){
-					%>
-					<tr>
-						<td><font face="Calibri" color="Black"><%=prod.getCodigo()%></font></td>
-						<td><img src="ControladorDeImagenes?codigo=<%=prod.getCodigo()%>" width="80" height="80"/></td>
-						<td><font face="Calibri" color="Blue"><%=prod.getNombre()%></font></td>
-						<td><font face="Calibri" color="Black"><%=prod.getPrecioVenta()%></font></td>
-						<td><font face="Calibri" color="Black"><%=prod.getStock()%></font></td>
-						<td><font face="Calibri" color="Black"><a href="ControladorProducto?accion=BajaProducto&codigo_producto_baja=<%=prod.getCodigo()%>">Dar de baja</a></font></td>
-					</tr>
-					<%}}}%>
+					</tr>					
+					<%}%>
 				</tbody>
 			</table>
 		</div>

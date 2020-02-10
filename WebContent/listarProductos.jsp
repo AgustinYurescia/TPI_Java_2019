@@ -22,7 +22,7 @@
   					<div class="container d-flex flex-column flex-md-row justify-content-between">
     					<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=indexCliente"><img class="mb-4" src="https://proveedorespvriviera.com/wp-content/uploads/2018/10/LogoVINOTECA_negro.png" alt="" width="100" height="30"></a>
     					<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=indexCliente"><font face="Calibri" color="Black">Home</font></a>
-    					<a class="py-2 d-none d-md-inline-block" href="ControladorProducto?accion=listar&filtrar_por=TODOS"><font face="Calibri" color="Black">Listado de productos</font></a>
+    					<a class="py-2 d-none d-md-inline-block" href="ControladorProducto?accion=listar&codigo_filtro=0"><font face="Calibri" color="Black">Listado de productos</font></a>
     					<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=inicioSesionCliente"><font face="Calibri" color="Black">Iniciar Sesión</font></a>
     					<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=inicioSesionAdmin"><font face="Calibri" color="Black">Iniciar Sesion Admin</font></a>
     					<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=carrito"><font face="Calibri" color="Black">Carrito</font></a>
@@ -37,7 +37,7 @@
   					<div class="container d-flex flex-column flex-md-row justify-content-between">
     					<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=indexCliente"><img class="mb-4" src="https://proveedorespvriviera.com/wp-content/uploads/2018/10/LogoVINOTECA_negro.png" alt="" width="100" height="30"></a>
     					<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=indexCliente"><font face="Calibri" color="Black">Home</font></a>
-    					<a class="py-2 d-none d-md-inline-block" href="ControladorProducto?accion=listar&filtrar_por=TODOS"><font face="Calibri" color="Black">Listado de productos</font></a>
+    					<a class="py-2 d-none d-md-inline-block" href="ControladorProducto?accion=listar&codigo_filtro=0"><font face="Calibri" color="Black">Listado de productos</font></a>
     					<a class="py-2 d-none d-md-inline-block" href="ControladorPedido?accion=listadoPedidosCliente"><font face="Calibri" color="Black">Listado de pedidos</font></a>
     					<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=modificar_cliente"><font face="Calibri" color="Black">Modificar mis datos</font></a>
     					<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=carrito"><font face="Calibri" color="Black">Carrito</font></a>
@@ -46,12 +46,12 @@
   					</div>
 	   			</nav>
 	   	<% } %>
-	   <h5><font face="Calibri" color="Black"><label for="filtrar_por">Categoría</label></font></h5>
+	   <h5><font face="Calibri" color="Black"><label for="codigo_filtro">Categoría</label></font></h5>
 	   <form action="ControladorProducto">
   			<div class="form-row">
     			<div class="form-group col-md-6">
-      				<select id="filtrar_por" name="filtrar_por" class="form-control"  >
-        				<option value = "TODOS" selected>Todos</option>
+      				<select id="codigo_filtro" name="codigo_filtro" class="form-control"  >
+        				<option value = "0" selected>Todos</option>
         				<% 
 						CategoriaDAO catDAO = new CategoriaDAO(); 
 						List<Categoria> listaCat = catDAO.obtener_todos();
@@ -60,7 +60,7 @@
 						while(iterCat.hasNext()){
 								cat=iterCat.next();
 						%>
-        				<option value="<%=cat.getDescripcion()%>"><%=cat.getDescripcion()%></option>
+        				<option value="<%=cat.getCodigo()%>"><%=cat.getDescripcion()%></option>
         				<%}%>
      				</select>														
     			</div>

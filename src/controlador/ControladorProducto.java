@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import modelo.Producto;
@@ -46,37 +47,22 @@ public class ControladorProducto extends HttpServlet {
 			prodDAO.alta(prod, cuil_proveedor, precio);
 			
 		}else if(action.equalsIgnoreCase("listar")) {
-			CategoriaDAO catDAO = new CategoriaDAO();
-			String nombre_filtro = request.getParameter("filtrar_por");
+			int codigo_categoria = Integer.parseInt(request.getParameter("codigo_filtro"));
 			ProductoDAO pr = new ProductoDAO();
-			if (nombre_filtro.equalsIgnoreCase("TODOS")){ 
+			if (codigo_categoria == 0){ 
 				ArrayList<Producto> lista = (ArrayList<Producto>) pr.obtener_todos();
-				//Iterator<Producto>iter = lista.iterator();
-				//Producto prod = null;
-				//String filtro = (String)request.getAttribute("filtro");
-				//request.setAttribute("filtro", "TODOS");
 				request.setAttribute("listado", lista);
 			}else {
-				int codigo_categoria = catDAO.getCodigoCategoria(nombre_filtro);
-				if (codigo_categoria != 0) {
 					request.setAttribute("listado", pr.obtener_por_codigo_categoria(codigo_categoria));
-				}
 			}
-			acceso = listar;
-			
-		}else if(action.equalsIgnoreCase("listarAdmin")) {
-			CategoriaDAO catDAO = new CategoriaDAO();
-			String nombre_filtro = request.getParameter("filtrar_por");
-			if (nombre_filtro.equalsIgnoreCase("TODOS")){
-				request.setAttribute("filtro", "TODOS");
-			}else {
-				int codigo_filtro = catDAO.getCodigoCategoria(nombre_filtro);
-				if (codigo_filtro != 0) {
-					request.setAttribute("filtro", Integer.toString(codigo_filtro));
-				}
+			HttpSession sesion = request.getSession(true);
+			String usuario_admin = (String)sesion.getAttribute("usuario_admin");
+			if (usuario_admin == null) {
+				acceso = listar;
 			}
-			acceso = listarAdmin;
-			
+			else {
+				acceso = listarAdmin;
+			}			
 		}else if(action.equalsIgnoreCase("mostrar_producto")) {
 			String codigo_producto;
 			ProductoDAO pdao = new ProductoDAO();
