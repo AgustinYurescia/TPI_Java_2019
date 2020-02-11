@@ -12,6 +12,96 @@ public class Cliente {
 	private java.sql.Date fecha_baja_socio;
 	private java.sql.Date fecha_baja;
 	
+	public static boolean isValid(String dni ,String nombre ,String apellido ,String telefono ,String direccion ,String mail ,String contrasena) {
+		boolean valid = true;
+		
+		if (dni.length() != 8) {
+			valid=false;
+			}else {
+				for(int i = 0; i < dni.length(); i++) {
+					try {
+					Integer.parseInt(dni.substring(i,i+1));
+					}catch(Exception e){
+						valid = false;
+						break;
+					}
+				}
+		}
+		
+		if ((nombre == "") || (nombre.length() > 25)) {
+			valid=false;
+		}
+		
+		if ((apellido == "") || (apellido.length() > 25)) {
+			valid=false;
+		}
+		
+		if ((telefono.length() < 5) || (nombre.length() > 30)) {
+			valid=false;
+			}else {
+				for(int i = 0; i < telefono.length(); i++) {
+					try {
+					Integer.parseInt(telefono.substring(i,i+1));
+					}catch(Exception e){
+						valid = false;
+						break;
+					}
+				}
+		}
+		
+		if ((direccion == "") || (direccion.length() > 25)) {
+			valid=false;
+		}
+		
+		if ((mail == "") || (mail.length() > 25)) {
+			valid=false;
+		}
+		
+		if ((contrasena == "") || (contrasena.length() > 45)) {
+			valid=false;
+		}
+		
+		return valid;
+	}
+	
+	
+	
+	public static boolean isValid(String nombre ,String apellido ,String telefono ,String direccion ,String mail ) {
+		boolean valid = true;
+			
+		if ((nombre == "") || (nombre.length() > 25)) {
+			valid=false;
+		}
+		
+		if ((apellido == "") || (apellido.length() > 25)) {
+			valid=false;
+		}
+		
+		if ((telefono.length() < 5) || (nombre.length() > 30)) {
+			valid=false;
+			}else {
+				for(int i = 0; i < telefono.length(); i++) {
+					try {
+					Integer.parseInt(telefono.substring(i,i+1));
+					}catch(Exception e){
+						valid = false;
+						break;
+					}
+				}
+		}
+		
+		if ((direccion == "") || (direccion.length() > 25)) {
+			valid=false;
+		}
+		
+		if ((mail == "") || (mail.length() > 25)) {
+			valid=false;
+		}
+		
+		return valid;
+	}
+
+	
 	public String getDni() {
 		return dni;
 	}
