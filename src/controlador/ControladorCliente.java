@@ -76,15 +76,15 @@ public class ControladorCliente extends HttpServlet {
 		else if(action.equalsIgnoreCase("modificacion_cliente")){
 			HttpSession sesion = request.getSession(true);
 			String usuario = sesion.getAttribute("usuario_cliente").toString();
-			if (cliDAO.yaExisteUsuario(usuario)) {
+			String nombre = request.getParameter("nombre");
+			String apellido = request.getParameter("apellido");
+			String telefono = request.getParameter("telefono");
+			String direccion = request.getParameter("direccion");
+			String mail = request.getParameter("mail");
+			
+			if (cliDAO.yaExisteUsuario(usuario) && (Cliente.isValid(nombre, apellido, telefono, direccion, mail)) ) {
 				
-				String nombre = request.getParameter("nombre");
-				String apellido = request.getParameter("apellido");
-				String telefono = request.getParameter("telefono");
-				String direccion = request.getParameter("direccion");
-				String mail = request.getParameter("mail");
-				
-				if (Cliente.isValid(nombre, apellido, telefono, direccion, mail)) {
+
 					Cliente cliente = cliDAO.buscar_cliente_2 (usuario);
 					
 					cliente.setNombre(nombre);
@@ -94,13 +94,11 @@ public class ControladorCliente extends HttpServlet {
 					cliente.setMail(mail);
 
 					cliDAO.modificacion_cliente(cliente);
-						
-					}
-				}else {
-					RequestDispatcher vista = request.getRequestDispatcher("error.jsp");
-					vista.forward(request, response);
-					return;		//hbsbdasmfasd,bfhvasdfbh,asbdfabdhsfkldasf		
-				}
+			}else {
+				RequestDispatcher vista = request.getRequestDispatcher("error.jsp");
+				vista.forward(request, response);
+				return;		
+			}
 			//acceso = "index.jsp";
 		}else if(action.equalsIgnoreCase("baja_cliente")){
 			HttpSession sesion = request.getSession(true);

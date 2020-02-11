@@ -38,7 +38,9 @@
   					</div>
 	   			</nav>
 	   	<% } %>
-		<div class="text-danger">
-			<p class="h2">Ha ocurrido un error</p>
+	   	<div class="m-3">
+			<div class="alert alert-danger" role="alert" align = "center">
+  				¡Ha ocurrido un error, vuelva a intentarlo!
+			</div>
 		</div>
 </html>
