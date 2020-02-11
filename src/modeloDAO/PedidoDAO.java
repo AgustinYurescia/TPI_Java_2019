@@ -152,11 +152,11 @@ public class PedidoDAO {
 		String sentenciaSQL = "";
 		ArrayList<Pedido>lista = new ArrayList<>();
 		if(fecha_ini != "" && fecha_fin != "") {
-			sentenciaSQL = "SELECT * FROM pedido WHERE fecha_pedido >='"+fecha_ini+"' AND fecha_pedido <= '"+fecha_fin+"'";
+			sentenciaSQL = "SELECT * FROM pedido WHERE fecha_pedido >= '"+fecha_ini+"' AND fecha_pedido <= '"+fecha_fin+"' AND fecha_cancelacion is null";
 		}else if(fecha_ini != "" && fecha_fin == "") {
-			sentenciaSQL = "SELECT * FROM pedido WHERE fecha_pedido >='"+fecha_ini+"'";
+			sentenciaSQL = "SELECT * FROM pedido WHERE fecha_pedido >= '"+fecha_ini+"' AND fecha_cancelacion is null";
 		}else if(fecha_ini == "" && fecha_fin != "") {
-			sentenciaSQL = "SELECT * FROM pedido WHERE fecha_pedido <= '"+fecha_fin+"'";
+			sentenciaSQL = "SELECT * FROM pedido WHERE fecha_pedido <= '"+fecha_fin+"' AND fecha_cancelacion is null";
 		}
 		try {
 			st=Conexion.getInstancia().getConexion().createStatement();
@@ -192,7 +192,7 @@ public class PedidoDAO {
 		Statement st = null;
 		ResultSet rs = null;
 		ArrayList<Pedido>lista = new ArrayList<>();
-		String sentenciaSQL = "SELECT * FROM pedido ";
+		String sentenciaSQL = "SELECT * FROM pedido WHERE fecha_cancelacion is null";
 		try {
 			st=Conexion.getInstancia().getConexion().createStatement();
 			rs=st.executeQuery(sentenciaSQL);
