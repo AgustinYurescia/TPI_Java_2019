@@ -15,7 +15,9 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import modelo.Producto;
+import modelo.Proveedor;
 import modeloDAO.ProductoDAO;
+import modeloDAO.ProveedorDAO;
 import modeloDAO.CategoriaDAO;
 
 
@@ -32,21 +34,7 @@ public class ControladorProducto extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String acceso = "";
 		String action = request.getParameter("accion");
-		if(action.equalsIgnoreCase("Agregar")) {
-			String nombre = request.getParameter("nombre");
-			int categoria = Integer.parseInt(request.getParameter("codigo_categoria"));
-			Part imagen = request.getPart("imagen");
-			InputStream imagenInputStream = imagen.getInputStream();
-			int stock = Integer.parseInt(request.getParameter("stock"));
-			String cuil_proveedor = request.getParameter("cuil_proveedor");
-			Double precio = Double.parseDouble(request.getParameter("precio"));
-			prod.setNombre(nombre);
-			prod.set_imagen(imagenInputStream);
-			prod.setStock(stock);
-			prod.setCodigo_categoria(categoria);
-			prodDAO.alta(prod, cuil_proveedor, precio);
-			
-		}else if(action.equalsIgnoreCase("listar")) {
+		if(action.equalsIgnoreCase("listar")) {
 			int codigo_categoria = Integer.parseInt(request.getParameter("codigo_filtro"));
 			ProductoDAO pr = new ProductoDAO();
 			if (codigo_categoria == 0){ 
@@ -103,7 +91,37 @@ public class ControladorProducto extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
-		doGet(request, response);
+		String acceso = "";
+		String action = request.getParameter("accion");
+		if(action.equalsIgnoreCase("Agregar")) {
+			String nombre = request.getParameter("nombre");
+			int categoria = Integer.parseInt(request.getParameter("codigo_categoria"));
+			Part imagen = request.getPart("imagen");
+			InputStream imagenInputStream = imagen.getInputStream();
+			int stock = Integer.parseInt(request.getParameter("stock"));
+			String cuil_proveedor = request.getParameter("cuil_proveedor");
+			Double precio = Double.parseDouble(request.getParameter("precio"));
+			if(Producto.es_valido(nombre, categoria, imagenInputStream, stock, cuil_proveedor, precio)) {
+				if(ProveedorDAO.buscar_proveedor(cuil_proveedor)) {
+					prod.setNombre(nombre);
+					prod.set_imagen(imagenInputStream);
+					prod.setStock(stock);
+					prod.setCodigo_categoria(categoria);
+					prodDAO.alta(prod, cuil_proveedor, precio);
+					request.setAttribute("mensaje_de_altaProducto","Alta realizada con éxito");
+					acceso = "altaProducto.jsp";
+				}else {
+					request.setAttribute("mensaje_de_altaProducto","El proveedor ingresado no existe, si el mismo es nuevo, proceda a registrarlo");
+					acceso = "altaProducto.jsp";
+				}
+			}
+			else {
+				request.setAttribute("mensaje_de_altaProducto","Error, revise los datos del alta e intente nuevamente");
+				acceso = "altaProducto.jsp";
+			}
+		}
+		
+		RequestDispatcher vista = request.getRequestDispatcher(acceso);
+		vista.forward(request, response);
 	}
 }

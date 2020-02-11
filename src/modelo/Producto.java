@@ -54,5 +54,32 @@ public class Producto {
 	public void setFecha_baja(java.sql.Date fecha_baja) {
 		this.fecha_baja = fecha_baja;
 	}
+	public static boolean es_valido(String nombre, int categoria, InputStream imagen, int stock, String cuil, Double precio) {
+		boolean es_valido = true;
+		if (nombre.length() <= 6 ){
+			es_valido = false;
+			}
+			else{
+				if(nombre.length() > 45) {
+					es_valido = false;
+				}
+			}
+		if (categoria == 0) {
+			es_valido = false;
+		}
+		if (imagen == null) {
+			es_valido = false;
+		}
+		if (stock == 0) {
+			es_valido = false;
+		}
+		if (cuil.length() != 13) {
+			es_valido = false;
+		}
+		if (precio == 0) {
+			es_valido = false;
+		}
+		return es_valido;
+	}
 }
 

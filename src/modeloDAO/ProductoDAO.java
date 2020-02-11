@@ -86,7 +86,7 @@ public class ProductoDAO {
 	public void alta(Producto prod, String cuil_proveedor, Double precio) {
 		PreparedStatement st = null;
 		ResultSet keyResultSet=null;
-		String sentenciaSQL="INSERT INTO producto(nombre,url_imagen,stock,codigo_categoria)VALUES(?,?,?,?)";
+		String sentenciaSQL="INSERT INTO producto(nombre,imagen,stock,codigo_categoria)VALUES(?,?,?,?)";
 		try {
 			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL,PreparedStatement.RETURN_GENERATED_KEYS);
 			st.setString(1, prod.getNombre());

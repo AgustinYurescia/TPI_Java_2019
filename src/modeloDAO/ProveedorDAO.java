@@ -2,8 +2,10 @@ package modeloDAO;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 
 import config.Conexion;
+import modelo.Producto;
 import modelo.Proveedor;
 
 public class ProveedorDAO {
@@ -34,8 +36,33 @@ public class ProveedorDAO {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		}	
+	}
+	
+	public static Boolean buscar_proveedor(String cuil) {
+		PreparedStatement st = null;
+		ResultSet rs=null;
+		String sentenciaSQL="SELECT * FROM proveedor WHERE cuil='"+cuil+"'";
+		try {
+			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			rs = st.executeQuery();
+			if(rs.next()) {
+				return true;
+			}else {
+				return false;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(st!=null) {st.close();}
+				Conexion.getInstancia().desconectar();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
-		
+		return false;
 	}
 
 }
