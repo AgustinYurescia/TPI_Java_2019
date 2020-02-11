@@ -163,15 +163,19 @@ public class ControladorPedido extends HttpServlet {
 			request.setAttribute("productos_pedido", lineas);
 			acceso = "mostrarPedidoCliente.jsp";
 		}else if(action.equalsIgnoreCase("cancelar_Pedido")) {
+			ProductoDAO prodDAO = new ProductoDAO();
 			ClienteDAO cliDAO = new ClienteDAO();
 			Cliente cli = new Cliente();
-			Pedido ped = new Pedido();
 			Correo correo = new Correo();
 			PedidoDAO pedDAO = new PedidoDAO();
 			HttpSession sesion = request.getSession(true);
 			String usuario_cliente = (String)sesion.getAttribute("usuario_cliente");
 			int nro_pedido = Integer.parseInt(request.getParameter("nro_pedido"));
+			ArrayList<LineaPedido> lineas = pedDAO.buscar_productos_pedido(nro_pedido);
 			if(usuario_cliente != null) {
+				for(LineaPedido l : lineas) {
+					prodDAO.actualizar_stock(l.getCodigo_producto(),l.getCantidad());
+				}
 				pedDAO.cancelar_pedido(nro_pedido);
 				cli = cliDAO.buscar_cliente(usuario_cliente);
 				correo.enviar_mail_cancelacion(cli.getMail());
