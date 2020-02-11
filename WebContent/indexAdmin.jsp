@@ -29,7 +29,7 @@
     		<div class="container">
       		<h1 class="display-3"><a class="py-2 d-none d-md-inline-block" href="ControladorProducto?accion=index"><img class="mb-4" src="https://proveedorespvriviera.com/wp-content/uploads/2018/10/LogoVINOTECA_negro.png" alt="" width="400" height="150"></a></h1>
       		<p>Bienvenido al menú de admin</p>
-      		<p><a class="btn btn-primary btn-lg" href="ControladorProducto?accion=listar&filtrar_por=TODOS" role="button">Ver Productos &raquo;</a></p>
+      		<p><a class="btn btn-primary btn-lg" href="ControladorProducto?accion=listar&codigo_filtro=0" role="button">Ver Productos &raquo;</a></p>
     		</div>
   		</div>
 	</body>

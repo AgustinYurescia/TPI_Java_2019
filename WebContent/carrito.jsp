@@ -50,7 +50,7 @@
 			if (linea == null || linea.isEmpty()) {
 		%>
 				<div class="alert alert-info">Su carrito se encuentra vacío</div>
-				<a class="py-2 d-none d-md-inline-block" href="ControladorProducto?accion=listar&filtrar_por=TODOS"><button type="submit" class="btn btn-primary">Ir a comprar</button></a>
+				<a class="py-2 d-none d-md-inline-block" href="ControladorProducto?accion=listar&codigo_filtro=0"><button type="submit" class="btn btn-primary">Ir a comprar</button></a>
 		<% 
 			}else {
 				linea = (ArrayList<LineaPedido>)sesion.getAttribute("carrito");	
