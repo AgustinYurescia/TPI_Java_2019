@@ -110,7 +110,8 @@ public class ControladorCliente extends HttpServlet {
 				}
 				if (invalid == false){
 					if (cambios == true) {
-						cliDAO.modificacion_cliente(cli);        
+						cliDAO.modificacion_cliente(cli);
+						acceso = "index.jsp";
 					}
 				}else {
 					RequestDispatcher vista = request.getRequestDispatcher("error.jsp");
@@ -118,7 +119,7 @@ public class ControladorCliente extends HttpServlet {
 					return;		//hbsbdasmfasd,bfhvasdfbh,asbdfabdhsfkldasf		
 				}
 			}
-			acceso = "index.jsp";
+			//acceso = "index.jsp";
 		}else if(action.equalsIgnoreCase("baja_cliente")){
 			HttpSession sesion = request.getSession(true);
 			String usuario=request.getParameter("usuario_cliente");
