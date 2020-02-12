@@ -46,7 +46,13 @@
 	   			</nav>
 	   	<% } %>
 					
-	   <% 	ArrayList<LineaPedido> linea = (ArrayList<LineaPedido>)sesion.getAttribute("carrito");
+	   <% 	String errorStock = (String)request.getAttribute("errorStock");
+	   		ArrayList<LineaPedido> linea = (ArrayList<LineaPedido>)sesion.getAttribute("carrito");
+	   		if(errorStock != null){ %>
+	   			<div class="alert alert-info"><%=errorStock%></div>
+				<a class="py-2 d-none d-md-inline-block" href="ControladorProducto?accion=listar&codigo_filtro=0"><button type="submit" class="btn btn-primary">Ir a comprar</button></a>
+	   			
+	   	<% 	}else{
 			if (linea == null || linea.isEmpty()) {
 		%>
 				<div class="alert alert-info">Su carrito se encuentra vacío</div>
@@ -89,7 +95,7 @@
 				</tbody>
 			</table>
 			<a class="py-2 d-none d-md-inline-block" href="ControladorPedido?accion=ConfirmarCarrito"><button type="submit" class="btn btn-primary">Comprar</button></a>
-			<% } %>
+			<% }} %>
 		</div>
 	</body>
 </html>

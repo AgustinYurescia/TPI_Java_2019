@@ -43,6 +43,7 @@ public class PedidoDAO {
 	}
 
 	public void generar_pedido_productos(int nroPedido, ArrayList<LineaPedido> lin ) { 
+		ProductoDAO prodDAO = new ProductoDAO();
 		PreparedStatement st = null;
 		ResultSet keyResultSet=null;
 		String sentenciaSQL="INSERT INTO pedido_productos(codigo_producto,nro_pedido,cantidad)values(?,?,?)";
@@ -57,6 +58,7 @@ public class PedidoDAO {
 				st.setInt(2, nroPedido);
 				st.setInt(3, l.getCantidad());
 				st.executeUpdate();
+				prodDAO.descontar_stock(l.getCodigo_producto(), l.getCantidad());
 			}
 		}catch (Exception e) {
 			e.printStackTrace();

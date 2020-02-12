@@ -53,38 +53,20 @@ public class ControladorPedido extends HttpServlet {
 					if (codigo_producto == l.getCodigo_producto()) {
 						ProductoDAO prodDAO = new ProductoDAO();                                     //CAMBIOS
 						Producto prod = prodDAO.buscar_producto(l.getCodigo_producto());
-						if (cantidad <= prod.getStock()) {
-							l.setCantidad(l.getCantidad() + cantidad);
-							prodDAO.descontar_stock(codigo_producto, cantidad);
-							l.setSubtotal(prod.getPrecioVenta() * l.getCantidad());
-							ya_existe = true;
-							acceso = "ControladorProducto?accion=listar&codigo_filtro=0";
-							break;
-						}
-						else {
-							request.setAttribute("producto", prod);
-							request.setAttribute("mensajeError", "No hay stock suficiente para agregar a carrito, pruebe otra cantidad");
-							acceso = "producto.jsp";
-							break;
+						l.setCantidad(l.getCantidad() + cantidad);
+						l.setSubtotal(prod.getPrecioVenta() * l.getCantidad());
+						ya_existe = true;
+						acceso = "ControladorProducto?accion=listar&codigo_filtro=0";
+						break;
 						}
 					} 
 				}
-			}
 			if (ya_existe == false) {
 				ProductoDAO prodDAO = new ProductoDAO();
-				Producto prod = prodDAO.buscar_producto(codigo_producto);
-				if (cantidad <= prod.getStock()) {
-					prodDAO.descontar_stock(codigo_producto, cantidad);
-					subtotal = cantidad * prod.getPrecioVenta();     																		//CAMBIOS
-					linea.add(new LineaPedido(codigo_producto,cantidad,subtotal));
-					acceso = "ControladorProducto?accion=listar&codigo_filtro=0";
-				}
-				else {
-					request.setAttribute("producto", prod);
-					request.setAttribute("mensajeError", "No hay stock suficiente para agregar a carrito, pruebe otra cantidad");
-					acceso = "producto.jsp";
-				}
-				
+				Producto prod = prodDAO.buscar_producto(codigo_producto);	
+				subtotal = cantidad * prod.getPrecioVenta();     																		//CAMBIOS
+				linea.add(new LineaPedido(codigo_producto,cantidad,subtotal));
+				acceso = "ControladorProducto?accion=listar&codigo_filtro=0";				
 			}
 			sesion.setAttribute("carrito", linea);
 		}else if(action.equalsIgnoreCase("eliminarDelCarrito")) {
@@ -95,7 +77,6 @@ public class ControladorPedido extends HttpServlet {
 			System.out.println(codigo);
 			for (LineaPedido l: linea) {
 				if(l.getCodigo_producto() == codigo) {
-					prodDAO.actualizar_stock(l.getCodigo_producto(), l.getCantidad());
 					linea.remove(l);
 					break;
 				}
@@ -115,10 +96,13 @@ public class ControladorPedido extends HttpServlet {
 			acceso =  "confirmarPedido.jsp";
 			}
 		}else if(action.equalsIgnoreCase("FinalizarPedido")) {
+			boolean hayStock = true;
 			ClienteDAO cliDAO = new ClienteDAO();
+			ProductoDAO prodDAO = new ProductoDAO();
 			Cliente cli = new Cliente();
 			Pedido ped = new Pedido();
 			Correo correo = new Correo();
+			Producto prod = new Producto();
 			PedidoDAO pedDAO = new PedidoDAO();
 			HttpSession sesion = request.getSession(true);
 			String usuario_cliente = (String)sesion.getAttribute("usuario_cliente");
@@ -128,10 +112,27 @@ public class ControladorPedido extends HttpServlet {
 				ped.setDni_cliente(cli.getDni());
 				ped.setMonto(total);
 				ArrayList<LineaPedido> linea = (ArrayList<LineaPedido>)sesion.getAttribute("carrito"); 
-				int nro_pedido = pedDAO.alta(ped, linea);
-				sesion.setAttribute("nro_pedido", nro_pedido);
-				correo.enviar_mail_confirmacion(cli.getMail(), nro_pedido);
-				acceso = "finalizacionDePedido.jsp";
+				for (LineaPedido l: linea) {
+					prod = prodDAO.buscar_producto(l.getCodigo_producto());
+					if(prod.getStock() - l.getCantidad() < 0) {
+						hayStock = false;
+						break;
+					}
+					else { }
+				}
+				if(hayStock) {
+					int nro_pedido = pedDAO.alta(ped, linea);
+					sesion.setAttribute("nro_pedido", nro_pedido);
+					correo.enviar_mail_confirmacion(cli.getMail(), nro_pedido);
+					acceso = "finalizacionDePedido.jsp";
+				}else {
+					request.setAttribute("errorStock", "No poseemos stock de uno o mas de los productos seleccionados. Puede ser que haya "
+							+ "habido cuando usted agregó los productos al carrito y que alguien haya finalizado la compra más rápido que "
+							+ "usted. O tambíen que haya cargado un stock mayor al mostrado como disponible en la pagina de selección del"
+							+ "producto.");
+					sesion.setAttribute("carrito", null);
+					acceso = "carrito.jsp";
+				}				
 			}
 			else {
 				acceso = "loginClientes.jsp";
