@@ -40,7 +40,8 @@
   					</div>
 	   			</nav>
 	   	<% } %>
-	   <% Producto prod = (Producto)request.getAttribute("producto"); %>
+	   <% 	Producto prod = (Producto)request.getAttribute("producto"); 
+	   		String mensaje = (String)request.getAttribute("mensajeError");%>
 	   <h1>Información de producto</h1><br>
 	   <div class="media position-relative">
 	   		<img src="ControladorDeImagenes?codigo=<%=prod.getCodigo()%>" class="mr-3" width="400" height="400">
@@ -54,6 +55,9 @@
     					<input type="text" class="form-control" id="cantidad" name="cantidad" placeholder="Cantidad">
     					<input type="hidden" id="codigo_producto" name="codigo_producto" value="<%=prod.getCodigo()%>">
   					</div>
+  					<% if(mensaje != null){ %>
+  					<div class="alert alert-danger" role="alert" align = "center"><%=mensaje%></div>
+  					<%}%>
   					<button type="submit" class="btn btn-primary mb-2" name="accion" value="agregarAlCarrito">Agregar al carrito</button>
 				</form>
 	 		</div>

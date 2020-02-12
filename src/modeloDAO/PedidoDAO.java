@@ -4,18 +4,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
-import java.util.List;
-
-import javax.servlet.http.HttpSession;
 
 import config.Conexion;
 import modelo.LineaPedido;
 import modelo.Pedido;
-import modelo.Producto;
-
-
 
 public class PedidoDAO {
 
@@ -50,7 +43,6 @@ public class PedidoDAO {
 	}
 
 	public void generar_pedido_productos(int nroPedido, ArrayList<LineaPedido> lin ) { 
-		ProductoDAO proDAO = new ProductoDAO();
 		PreparedStatement st = null;
 		ResultSet keyResultSet=null;
 		String sentenciaSQL="INSERT INTO pedido_productos(codigo_producto,nro_pedido,cantidad)values(?,?,?)";
@@ -65,7 +57,6 @@ public class PedidoDAO {
 				st.setInt(2, nroPedido);
 				st.setInt(3, l.getCantidad());
 				st.executeUpdate();
-				proDAO.descontar_stock(l.getCodigo_producto(), l.getCantidad());
 			}
 		}catch (Exception e) {
 			e.printStackTrace();

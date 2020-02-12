@@ -51,30 +51,51 @@ public class ControladorPedido extends HttpServlet {
 			if (linea.size() > 0) {
 				for (LineaPedido l : linea) {
 					if (codigo_producto == l.getCodigo_producto()) {
-						l.setCantidad(l.getCantidad() + cantidad);
 						ProductoDAO prodDAO = new ProductoDAO();                                     //CAMBIOS
 						Producto prod = prodDAO.buscar_producto(l.getCodigo_producto());
-						l.setSubtotal(prod.getPrecioVenta() * l.getCantidad());
-						ya_existe = true;
-						break;
+						if (cantidad <= prod.getStock()) {
+							l.setCantidad(l.getCantidad() + cantidad);
+							prodDAO.descontar_stock(codigo_producto, cantidad);
+							l.setSubtotal(prod.getPrecioVenta() * l.getCantidad());
+							ya_existe = true;
+							acceso = "ControladorProducto?accion=listar&codigo_filtro=0";
+							break;
+						}
+						else {
+							request.setAttribute("producto", prod);
+							request.setAttribute("mensajeError", "No hay stock suficiente para agregar a carrito, pruebe otra cantidad");
+							acceso = "producto.jsp";
+							break;
+						}
 					} 
 				}
 			}
 			if (ya_existe == false) {
 				ProductoDAO prodDAO = new ProductoDAO();
 				Producto prod = prodDAO.buscar_producto(codigo_producto);
-				subtotal = cantidad * prod.getPrecioVenta();     																		//CAMBIOS
-				linea.add(new LineaPedido(codigo_producto,cantidad,subtotal));
+				if (cantidad <= prod.getStock()) {
+					prodDAO.descontar_stock(codigo_producto, cantidad);
+					subtotal = cantidad * prod.getPrecioVenta();     																		//CAMBIOS
+					linea.add(new LineaPedido(codigo_producto,cantidad,subtotal));
+					acceso = "ControladorProducto?accion=listar&codigo_filtro=0";
+				}
+				else {
+					request.setAttribute("producto", prod);
+					request.setAttribute("mensajeError", "No hay stock suficiente para agregar a carrito, pruebe otra cantidad");
+					acceso = "producto.jsp";
+				}
+				
 			}
 			sesion.setAttribute("carrito", linea);
-			acceso = "carrito.jsp";
 		}else if(action.equalsIgnoreCase("eliminarDelCarrito")) {
+			ProductoDAO prodDAO = new ProductoDAO();
 			HttpSession sesion = request.getSession(true);
 			ArrayList<LineaPedido> linea = (ArrayList<LineaPedido>)sesion.getAttribute("carrito");
 			int codigo = Integer.parseInt(request.getParameter("codigo_prod"));
 			System.out.println(codigo);
 			for (LineaPedido l: linea) {
 				if(l.getCodigo_producto() == codigo) {
+					prodDAO.actualizar_stock(l.getCodigo_producto(), l.getCantidad());
 					linea.remove(l);
 					break;
 				}
