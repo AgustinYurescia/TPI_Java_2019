@@ -82,8 +82,7 @@ public class ControladorProducto extends HttpServlet {
 			ProductoDAO pdao = new ProductoDAO();
 			String codigo_producto_baja = request.getParameter("codigo_producto_baja");
 			pdao.baja(Integer.parseInt(codigo_producto_baja));
-			request.setAttribute("filtro", "TODOS");
-			acceso = listarAdmin;
+			acceso = "ControladorProducto?accion=listar&codigo_filtro=0";
 		}
 		
 		RequestDispatcher vista = request.getRequestDispatcher(acceso);
