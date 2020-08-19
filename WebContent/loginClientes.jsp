@@ -31,6 +31,8 @@
     <link href="signin.css" rel="stylesheet">
   </head>
   <body class="text-center">
+  	<jsp:include page="menu.jsp"/>
+  	<div class="container">
     <form class="form-signin" action="ControladorLogin" method="post">
   		<img class="mb-4" src="https://proveedorespvriviera.com/wp-content/uploads/2018/10/LogoVINOTECA_negro.png" alt="" width="200" height="72">
   		<h1 class="h3 mb-3 font-weight-normal">Iniciar Sesion</h1>
@@ -45,5 +47,6 @@
   		<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=registroCliente"><font face="Calibri" color="Blue">¿Aún no tiene una cuenta? Registrese aquí</font></a>
   		<p class="mt-5 mb-3 text-muted">&copy; 2019</p>
 	</form>
+	</div>
   </body>
 </html>

@@ -29,18 +29,8 @@
     <link href="signin.css" rel="stylesheet">
 </head>
 <body class="text-center">
-	<nav class="site-header sticky-top py-1">
-  		<div class="container d-flex flex-column flex-md-row justify-content-between">
-    		<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=indexCliente"><img class="mb-4" src="https://proveedorespvriviera.com/wp-content/uploads/2018/10/LogoVINOTECA_negro.png" alt="" width="100" height="30"></a>
-    		<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=indexCliente"><font face="Calibri" color="Black">Home</font></a>
-    		<a class="py-2 d-none d-md-inline-block" href="ControladorProducto?accion=listar&codigo_filtro=0"><font face="Calibri" color="Black">Listado de productos</font></a>
-    		<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=inicioSesionCliente"><font face="Calibri" color="Black">Iniciar Sesión</font></a>
-    		<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=inicioSesionAdmin"><font face="Calibri" color="Black">Iniciar Sesion Admin</font></a>
-    		<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=carrito"><font face="Calibri" color="Black">Carrito</font></a>
-    		<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=registroCliente"><font face="Calibri" color="Black">Registrarse</font></a>
-    		<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=bajaCliente"><font face="Calibri" color="Black">Darse de Baja</font></a>
-  		</div>
-	 </nav>
+	<jsp:include page="menu.jsp"/>
+	<div class="container">
 	<form class="form-signin" action="ControladorCliente" method="post">
   		<img class="mb-4" src="https://proveedorespvriviera.com/wp-content/uploads/2018/10/LogoVINOTECA_negro.png" alt="" width="200" height="72">
   		<h1 class="h3 mb-3 font-weight-normal">Dar de Baja</h1>
@@ -54,5 +44,6 @@
   		<button class="btn btn-lg btn-primary btn-block" type="submit" name="accion" value="baja_cliente">Aceptar</button>
   		<p class="mt-5 mb-3 text-muted">&copy; 2019</p>
 	</form>
+	</div>
   </body>
 </html>

@@ -41,7 +41,7 @@ public class ControladorLoginAdmin extends HttpServlet {
 			rta = adDAO.existe(usuario, contrasena);
 			if (rta) {
 				sesion.setAttribute("usuario_admin", usuario);
-				RequestDispatcher vista = request.getRequestDispatcher("indexAdmin.jsp");
+				RequestDispatcher vista = request.getRequestDispatcher("index.jsp");
 				vista.forward(request, response);
 			}else {
 				request.setAttribute("loginAdminError","Usuario y/o contraseña incorrectos");

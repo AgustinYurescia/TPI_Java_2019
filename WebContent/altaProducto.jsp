@@ -13,20 +13,10 @@
 	<title>Alta de productos</title>
 </head>
 <body>
+	<jsp:include page="menu.jsp"/>
 	<% 	HttpSession sesion = request.getSession(true);
 	  	if (sesion.getAttribute("usuario_admin") != null) { %>
-		<nav class="site-header sticky-top py-1">
-  			<div class="container d-flex flex-column flex-md-row justify-content-between">
-    			<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=indexAdmin"><img class="mb-4" src="https://proveedorespvriviera.com/wp-content/uploads/2018/10/LogoVINOTECA_negro.png" alt="" width="100" height="30"></a>
-    			<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=indexAdmin"><font face="Calibri" color="Black">Home</font></a>
-    			<a class="py-2 d-none d-md-inline-block" href="ControladorProducto?accion=listar&codigo_filtro=0"><font face="Calibri" color="Black">Listado de productos</font></a>
-    			<a class="py-2 d-none d-md-inline-block" href="ControladorPedido?accion=listadoPedidos"><font face="Calibri" color="Black">Listado de Pedidos</font></a>
-    			<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=altaProducto"><font face="Calibri" color="Black">Alta Producto</font></a>
-    			<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=actualizarStock"><font face="Calibri" color="Black">Actualizar Stock</font></a>
-    			<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=editarProducto"><font face="Calibri" color="Black">Editar Producto</font></a>
-    			<a class="py-2 d-none d-md-inline-block" href="ControladorLoginAdmin?accion=logout"><font face="Calibri" color="Black">Cerrar Sesion</font></a>
-  	   		</div>
-	   	</nav>
+	<div class="container">
 	<h1>Agregar Producto</h1>
 	<form action="ControladorProducto" enctype="multipart/form-data" method = "post">
   		<div class="form-row">
@@ -53,22 +43,18 @@
   		</div>
   		<div class="form-row">
     		<div class="form-group col-md-6">
-      			<label for="cuil_proveedor">Cuil proveedor producto</label>
-      			<input type="text" class="form-control" id="cuil_proveedor" name="cuil_proveedor" placeholder="xx-xxxxxxxx-x">
-    		</div>
-    		<div class="form-group col-md-6">
-      			<label for="imagen">Imagen del producto</label> </br>
-      			<input type="file" id="imagen" name="imagen" class="">
-    		</div>
-  		</div>
-  		<div class="form-row">
-    		<div class="form-group col-md-6">
       			<label for="stock">Cantidad adquirida</label>
       			<input type="text" class="form-control" id="stock" name="stock" placeholder="Ejemplo: 100" value="0">
     		</div>
     		<div class="form-group col-md-6">
       			<label for="precio">Precio unitario</label>
       			<input type="text" id="precio" name="precio" class="form-control" placeholder="Ejemplo: 175.50" value="0">
+    		</div>
+  		</div>
+  		<div class="form-row">
+    		<div class="form-group col-md-6">
+      			<label for="imagen">Imagen del producto</label> </br>
+      			<input type="file" id="imagen" name="imagen" class="">
     		</div>
   		</div>
   		<% 	String mensaje = (String)request.getAttribute("mensaje_de_altaProducto");
@@ -80,6 +66,7 @@
 		<% } %>
   		<button type="submit" class="btn btn-primary" name="accion" value="Agregar">Agregar</button>
 	</form>
+	</div>
 	<%}else{
 		response.sendRedirect("loginAdmin.jsp");
 	  }

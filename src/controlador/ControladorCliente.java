@@ -117,6 +117,16 @@ public class ControladorCliente extends HttpServlet {
 				vista.forward(request, response);
 				return; // dnfljdskhfkasdhjkahjsdljhsdfljhfdasdfldaslhfsalfhskljdf
 			}
+		}else if(action.equalsIgnoreCase("buscar")){
+			String dni = request.getParameter("dni");
+			Cliente cliente = cliDAO.buscar_cliente_por_dni(dni);
+			request.setAttribute("cliente", cliente);
+			acceso = "hacerSocio.jsp";
+		}else if(action.equalsIgnoreCase("registrar_socio")){
+			String dni = request.getParameter("dni_cli");
+			cliDAO.registrar_socio(dni);
+			request.setAttribute("mensaje_exito", "Socio registrado con éxito");
+			acceso = "hacerSocio.jsp";
 		}
 		
 		RequestDispatcher vista = request.getRequestDispatcher(acceso);

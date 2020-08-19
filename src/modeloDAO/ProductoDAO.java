@@ -12,8 +12,6 @@ import java.io.OutputStream;
 import java.sql.*;
 import config.Conexion;
 import modelo.Producto;
-import modelo.Producto_Proveedor;
-import modeloDAO.Producto_ProveedorDAO;
 import modelo.Precio;
 import modeloDAO.PrecioDAO;
 
@@ -83,7 +81,7 @@ public class ProductoDAO {
 	}
 
 	
-	public void alta(Producto prod, String cuil_proveedor, Double precio) {
+	public void alta(Producto prod, Double precio) {
 		PreparedStatement st = null;
 		ResultSet keyResultSet=null;
 		String sentenciaSQL="INSERT INTO producto(nombre,imagen,stock,codigo_categoria)VALUES(?,?,?,?)";
@@ -97,21 +95,6 @@ public class ProductoDAO {
 			keyResultSet=st.getGeneratedKeys();
 			if(keyResultSet!=null && keyResultSet.next()) {
 				prod.setCodigo(keyResultSet.getInt(1));
-				Producto_Proveedor pp = new Producto_Proveedor();
-				Producto_ProveedorDAO ppDAO = new Producto_ProveedorDAO();
-				Precio pre = new Precio();
-				PrecioDAO preDAO = new PrecioDAO();
-				pp.setCodigo_producto(keyResultSet.getInt(1));
-				pp.setCuil_proveedor(cuil_proveedor);
-				pre.setCodigo_producto(prod.getCodigo());
-				pre.setCuil_proveedor(cuil_proveedor);
-				java.util.Date utilDate = new java.util.Date();
-				long lnMilisegundos = utilDate.getTime();
-				java.sql.Date fecha = new java.sql.Date(lnMilisegundos);
-				pre.setFecha_desde(fecha);
-				pre.setPrecio(precio);
-				ppDAO.alta(pp);
-				preDAO.alta(pre);
 				calcular_precio_venta_nuevo_producto(keyResultSet.getInt(1),precio);
 				
 			}

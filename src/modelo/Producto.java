@@ -54,7 +54,7 @@ public class Producto {
 	public void setFecha_baja(java.sql.Date fecha_baja) {
 		this.fecha_baja = fecha_baja;
 	}
-	public static boolean es_valido(String nombre, int categoria, InputStream imagen, int stock, String cuil, Double precio) {
+	public static boolean es_valido(String nombre, int categoria, InputStream imagen, int stock, Double precio) {
 		boolean es_valido = true;
 		if (nombre.length() <= 6 ){
 			es_valido = false;
@@ -71,9 +71,6 @@ public class Producto {
 			es_valido = false;
 		}
 		if (stock == 0) {
-			es_valido = false;
-		}
-		if (cuil.length() != 13) {
 			es_valido = false;
 		}
 		if (precio == 0) {

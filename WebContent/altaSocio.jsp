@@ -4,18 +4,19 @@
 <%@page import="modelo.Categoria"%>
 <%@page import="javax.servlet.http.HttpSession"%>
 <%@page import="javax.servlet.http.HttpServletResponse"%>
-<%@page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
 	<head>
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 		<meta charset="ISO-8859-1">
-		<title>Sign In</title>
+		<title>Nuevo Socio</title>
 	</head>
 	<body>
-		<jsp:include page="menu.jsp"/>
-		<div class="container">
+	<jsp:include page="menu.jsp"/>
+	<% HttpSession sesion = request.getSession(true);
+	   if (sesion.getAttribute("usuario_admin") != null) { %>
+	   	<div class="container">
 		<h1>Formulario de Registro</h1>
 		<form action="ControladorCliente" method="post">
   			<div class="form-row">
@@ -58,12 +59,20 @@
     			<div class="form-group col-md-4">
       				<label for="contrasena2">Repita la contraseña</label>
       				<input type="Password" id="contrasena2" name="contrasena2" class="form-control" placeholder="">
+      				<input type="hidden" id="es_socio" name="es_socio" value="1" >
     			</div> 
   			</div>
   			<div class="form-row">
-    			<button type="submit" class="btn btn-primary" name="accion" value="alta">Registrar</button>
+  				<a class="py-2 d-none d-md-inline-block" href="hacerSocio.jsp"><font face="Calibri" color="blue">El cliente ya se encuentra registrado</font></a>
   			</div>
+  			<div class="form-row">
+    			<button type="submit" class="btn btn-primary" name="accion" value="alta">Registrar</button>
+  			</div>  			
 		</form>
+		<%}else{
+			response.sendRedirect("loginAdmin.jsp");
+	  		}
+	 	%>
 		</div>
 	</body>
 </html>
