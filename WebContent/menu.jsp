@@ -77,6 +77,16 @@
               		<a class="dropdown-item" href="ControladorProducto?accion=listar&codigo_filtro=0">Listado de Productos</a>
             	</div>
           	</li>
+          	
+          	<li class="nav-item dropdown">
+            	<a class="nav-link dropdown-toggle" href="#" id="postulacionDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              	Pedidos
+            	</a>
+            	<div class="dropdown-menu" aria-labelledby="productosCliDropdown">
+              		<a class="dropdown-item" href="ControladorPedido?accion=listadoPedidosCliente">Mis pedidos</a>
+            	</div>
+          	</li>
+          	
         </ul>
         
         <ul class="navbar-nav mr-right">
