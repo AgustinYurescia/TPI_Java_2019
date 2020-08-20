@@ -34,10 +34,14 @@
 	<form class="form-signin" action="ControladorCliente" method="post">
   		<img class="mb-4" src="https://proveedorespvriviera.com/wp-content/uploads/2018/10/LogoVINOTECA_negro.png" alt="" width="200" height="72">
   		<h1 class="h3 mb-3 font-weight-normal">Dar de Baja</h1>
-  		<label for="usuario_cliente" class="sr-only">Usuario</label>
-  		<input type="text" id="usuario_cliente" name="usuario_cliente" class="form-control" placeholder="Usuario" required>
-  		<label for="contrasena" class="sr-only">Contraseña</label>
-  		<input type="password" id="contrasena" name="contrasena" class="form-control" placeholder="Contraseña" required>
+  		<div class="form-group">
+  			<label for="usuario_cliente" class="sr-only">Usuario</label>
+  			<input type="text" id="usuario_cliente" name="usuario_cliente" class="form-control" placeholder="Usuario" required>
+  		</div>
+  		<div class="form-group">
+  			<label for="contrasena" class="sr-only">Contraseña</label>
+  			<input type="password" id="contrasena" name="contrasena" class="form-control" placeholder="Contraseña" required>
+  		</div>
   		<%if(request.getAttribute("bajaClienteMensaje") != null){%>
   		<div class="alert alert-danger" role="alert"><%= request.getAttribute("bajaClienteMensaje") %></div>
   		<%}%>
