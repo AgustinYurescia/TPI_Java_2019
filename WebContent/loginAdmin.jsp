@@ -32,8 +32,9 @@
   </head>
   <body class="text-center">
   	<jsp:include page="menu.jsp"/>
-  	<div class="container">
-    <form class="form-signin" action="ControladorLoginAdmin" method="post">
+  	<br>
+  	<div class="d-flex justify-content-center align-items-center container">
+    <form class="center-form" action="ControladorLoginAdmin" method="post">
   		<img class="mb-4" src="https://proveedorespvriviera.com/wp-content/uploads/2018/10/LogoVINOTECA_negro.png" alt="" width="200" height="72">
   		<h1 class="h3 mb-3 font-weight-normal">Iniciar Sesion Admin</h1>
   		<div class="form-group">
