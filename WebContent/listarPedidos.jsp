@@ -31,26 +31,23 @@
 	       			<label for="start">Fecha hasta:</label>
 	       			<input 	type="date" class="form-control" id="fechaHasta" name="fechaHasta">
 	       		</div>
+	       	</div>
+	       	<div class="form-row"> 
 	       		<div class="form-group col-md-6">
 	       			<button type="submit" class="btn btn-primary" name="accion" value="listadoPedidos">Filtrar</button>
 	       		</div>
-	       	</div> 				
+	       	</div>				
 		</form>
-	   </div>
-	   <form action="ControladorPedido">
-			<button type="submit" class="btn btn-primary" name="accion" value="listadoPedidos">Resetear filtro</button>
-		</form>
-	   <div>
-	   		<table class="table table-striped">
-	   			<thead>
-	   				<tr>
-	   					<th><font face="Calibri" color="Black">Codigo</font></th>
-						<th><font face="Calibri" color="Black">DNI Cliente</font></th>
-						<th><font face="Calibri" color="Black">Fecha de realización</font></th>
-						<th><font face="Calibri" color="Black">Monto</font></th>
-						<th><font face="Calibri" color="Black"></font></th>
-	   				</tr>
-	   			</thead>
+	   	<table class="table table-striped">
+	   		<thead>
+	   			<tr>
+	   				<th><font face="Calibri" color="Black">Codigo</font></th>
+					<th><font face="Calibri" color="Black">DNI Cliente</font></th>
+					<th><font face="Calibri" color="Black">Fecha de realización</font></th>
+					<th><font face="Calibri" color="Black">Monto</font></th>
+					<th><font face="Calibri" color="Black"></font></th>
+	   			</tr>
+	   		</thead>
 	   			<%
 	   				ArrayList<Pedido> pedidos = (ArrayList<Pedido>)request.getAttribute("listadoPedidos");
 	   				Iterator<Pedido> iter  = pedidos.iterator();
@@ -58,16 +55,17 @@
 	   			  	while (iter.hasNext()){
 	   				  	ped = iter.next();
 	   			%>	   				  		   				 	   			  
-	   			<tbody><tr>
-						<td><font face="Calibri" color="Black"><%=ped.getNro_pedido()%></font></td>
-						<td><font face="Calibri" color="Black"><%=ped.getDni_cliente()%></font></td>
-						<td><font face="Calibri" color="Black"><%=ped.getFecha_pedido()%></font></td>
-						<td><font face="Calibri" color="Black"><%=ped.getMonto()%></font></td>
-						<td><font face="Calibri" color="Black"><a class="py-0 d-none d-md-inline-block" href="ControladorPedido?accion=mostrar_pedido&nro_pedido=<%=ped.getNro_pedido()%>"><button type="submit" class="btn btn-primary">Ver</button></a></font></td>
-					</tr>
-				<%}%>
-	   			</tbody>
-	   		</table>
+	   		<tbody>
+	   			<tr>
+					<td><font face="Calibri" color="Black"><%=ped.getNro_pedido()%></font></td>
+					<td><font face="Calibri" color="Black"><%=ped.getDni_cliente()%></font></td>
+					<td><font face="Calibri" color="Black"><%=ped.getFecha_pedido()%></font></td>
+					<td><font face="Calibri" color="Black"><%=ped.getMonto()%></font></td>
+					<td><font face="Calibri" color="Black"><a class="py-0 d-none d-md-inline-block" href="ControladorPedido?accion=mostrar_pedido&nro_pedido=<%=ped.getNro_pedido()%>"><button type="submit" class="btn btn-primary">Ver</button></a></font></td>
+				</tr>
+			<%}%>
+	   		</tbody>
+	   	</table>
 	   </div>
 	   <%}%>
 	   </body>

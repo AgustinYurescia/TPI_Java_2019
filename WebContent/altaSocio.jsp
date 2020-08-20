@@ -62,10 +62,10 @@
       				<input type="hidden" id="es_socio" name="es_socio" value="1" >
     			</div> 
   			</div>
-  			<div class="form-row">
+  			<div>
   				<a class="py-2 d-none d-md-inline-block" href="hacerSocio.jsp"><font face="Calibri" color="blue">El cliente ya se encuentra registrado</font></a>
   			</div>
-  			<div class="form-row">
+  			<div>
     			<button type="submit" class="btn btn-primary" name="accion" value="alta">Registrar</button>
   			</div>  			
 		</form>

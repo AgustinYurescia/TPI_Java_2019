@@ -54,7 +54,7 @@
           	</li>
         </ul>
         
-        <ul>          
+        <ul class="navbar-nav mr-right">          
           <li>
             <a href="ControladorLoginAdmin?accion=logout" class="nav-link">
               <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-file-person" fill="currentColor" xmlns="http://www.w3.org/2000/svg">

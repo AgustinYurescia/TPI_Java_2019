@@ -25,32 +25,34 @@
 			<h1>Formulario de Registro</h1>
 			<form action="ControladorCliente" method="post">
 	  			<div class="form-row">
-	    			<div class="form-group col-md-4">
+	    			<div class="form-group col-md-6">
 	      				<label for="dni">Nombre</label>
 	      				<input type="text" value=<%=cli.getNombre()%> class="form-control" id="nombre" name="nombre">
 	    			</div>
-	    			<div class="form-group col-md-4">
+	    			<div class="form-group col-md-6">
 	      				<label for="Apellido">Apellido</label>
 	      				<input type="text" value=<%=cli.getApellido()%> class="form-control" id="apellido" name="apellido">
 	    			</div>
 	  			</div>
 	  			<div class="form-row">
-	    			<div class="form-group col-md-4">
+	    			<div class="form-group col-md-6">
 	      				<label for="telefono">Télefono celular</label>
 	      				<input type="text" value=<%=cli.getTelefono()%> class="form-control" id="telefono" name="telefono">
 	    			</div>
-	    			<div class="form-group col-md-4">
+	    			<div class="form-group col-md-6">
 	      				<label for="direccion">Dirección (Calle-nro-piso-depto)</label>
 	      				<input type="text" value="<%=cli.getDireccion()%>" id="direccion" name="direccion" class="form-control">
 	    			</div>
-	    			<div class="form-group col-md-4">
+	    		</div>
+	    		<div class="form-row">
+	    			<div class="form-group col-md-12">
 	      				<label for="mail">E-Mail</label>
 	      				<input type="text" value=<%=cli.getMail()%> id="mail" name="mail" class="form-control">
 	    			</div>
 	  			</div>
 	  			<div class="form-row">
-	  				<div class="m-3">
-	    				<button type="submit" class="btn btn-dark" name="accion" value="modificacion_cliente">Registrar</button>
+	  				<div class="m-1">
+	    				<button type="submit" class="btn btn-primary" name="accion" value="modificacion_cliente">Registrar</button>
 	    			</div>
 	  			</div>
 			</form>
