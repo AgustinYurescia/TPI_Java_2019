@@ -17,16 +17,6 @@
 	<% HttpSession sesion = request.getSession(true);
 	   if (sesion.getAttribute("usuario_admin") != null) { %>
 	   	<div class="container">
-	   	<% 
-	   	String mensaje = (String)request.getAttribute("mensaje_exito"); 
-	   	if(mensaje != null){
-	   	%>
-	   	<div class="alert alert-success" role="alert">
-	   		<%=mensaje%>
-		</div>
-	   	<%	
-	   	}
-	   	%>
 	   	<h1>Formulario de Socio</h1>
 	   	<form action="ControladorCliente" method="post">
 	   		<div class="form-row">
@@ -38,6 +28,15 @@
     			</div>
   			</div>
 	   	</form>
+	   		<% 
+	   	String mensaje = (String)request.getAttribute("mensaje_exito"); 
+	   	if(mensaje != null){
+	   	%>
+	   	<br>
+	   	<div class="alert alert-success" role="alert">
+	   		<%=mensaje%>
+		</div>
+	   	<%}%>
 	   	<% 
 	   	Cliente cliente = (Cliente)request.getAttribute("cliente");
       	if (cliente != null){
