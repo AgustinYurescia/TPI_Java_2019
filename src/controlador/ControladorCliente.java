@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import exceptions.NotValidValueCustomException;
 import java.sql.Date;
+import java.util.ArrayList;
+
 import modeloDAO.ClienteDAO;
 import modelo.Cliente;
 
@@ -127,6 +129,18 @@ public class ControladorCliente extends HttpServlet {
 			cliDAO.registrar_socio(dni);
 			request.setAttribute("mensaje_exito", "Socio registrado con éxito");
 			acceso = "hacerSocio.jsp";
+		}else if(action.equalsIgnoreCase("cambio_contrasena")) {
+			HttpSession sesion = request.getSession(true);
+			String usuario = sesion.getAttribute("usuario_cliente").toString();
+			System.out.println(usuario);
+			String contrasena_actual = request.getParameter("cont_act");
+			System.out.println(contrasena_actual);
+			String contrasena_nueva = request.getParameter("cont_nueva");
+			String contrasena_nueva_rep = request.getParameter("cont_nueva_rep");
+			ArrayList<String>mensajes = cliDAO.cambioContrasena(usuario, contrasena_actual, contrasena_nueva, contrasena_nueva_rep);
+			request.setAttribute("ok_mensaje", mensajes.get(0));
+			request.setAttribute("error_mensaje", mensajes.get(1));
+			acceso="cambiarContrasena.jsp";
 		}
 		
 		RequestDispatcher vista = request.getRequestDispatcher(acceso);

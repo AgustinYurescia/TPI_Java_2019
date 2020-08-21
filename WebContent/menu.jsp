@@ -13,7 +13,7 @@
 <body>
 	<% HttpSession sesion = request.getSession(true); %>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  	<a class="navbar-brand" href="ControladorDeLinks?accion=indexCliente"><img src="https://proveedorespvriviera.com/wp-content/uploads/2018/10/LogoVINOTECA_negro.png" alt="Logo" width="100" height="30"></img></a>
+  	<a class="navbar-brand" href="ControladorDeLinks?accion=indexCliente"><img src="Images/logo.png" alt="Logo" width="100" height="30"></img></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
    		<span class="navbar-toggler-icon"></span>
     </button>
@@ -93,6 +93,7 @@
               Cuenta
             </a>
             <div class="dropdown-menu" aria-labelledby="cuentaCliDropdown">
+            		<a class="dropdown-item" href="ControladorDeLinks?accion=cambioContrasena">Cambiar Contraseña</a>
               		<a class="dropdown-item" href="ControladorDeLinks?accion=modificar_cliente">Editar Datos</a>
               		<a class="dropdown-item" href="ControladorDeLinks?accion=bajaCliente">Darse de Baja</a>
               		<a class="dropdown-item" href="ControladorLogin?accion=logout">Cerrar Sesión</a>

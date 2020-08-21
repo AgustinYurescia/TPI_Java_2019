@@ -10,7 +10,7 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Jekyll v3.8.5">
-    <title>Iniciar Sesión Admin</title>
+    <title>Iniciar Sesión</title>
     <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/sign-in/">
 	<link href="/docs/4.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <style>
@@ -30,27 +30,39 @@
     </style>
     <link href="signin.css" rel="stylesheet">
   </head>
+  <% HttpSession sesion = request.getSession(true);
+	   	   if (sesion.getAttribute("usuario_cliente") != null) { %>
   <body class="text-center">
   	<jsp:include page="menu.jsp"/>
   	<br>
   	<div class="d-flex justify-content-center align-items-center container">
-    <form class="center-form" action="ControladorLoginAdmin" method="post">
+    <form class="form-signin" action="ControladorCliente" method="post">
   		<img class="mb-4" src="Images/logo.png" alt="" width="200" height="72">
-  		<h1 class="h3 mb-3 font-weight-normal">Iniciar Sesion Admin</h1>
+  		<h1 class="h3 mb-3 font-weight-normal">Cambio de Contraseña</h1>
   		<div class="form-group">
-  			<label for="usuario_admin" class="sr-only">Usuario</label>
-  			<input type="text" id="usuario_admin" name="usuario_admin" class="form-control" placeholder="Usuario" required>
+  			<label for="cont_act" class="sr-only">Contraseña actual</label>
+  			<input type="password" id="cont_act" name="cont_act" class="form-control" placeholder="Contraseña actual" required>
   		</div>
   		<div class="form-group">
-  			<label for="contrasena" class="sr-only">Contraseña</label>
-  			<input type="password" id="contrasena" name="contrasena" class="form-control" placeholder="Contraseña" required>
+  			<label for="cont_nueva" class="sr-only">Contraseña nueva</label>
+  			<input type="password" id="cont_nueva" name="cont_nueva" class="form-control" placeholder="Contraseña nueva" required>
   		</div>
-  		<%if(request.getAttribute("loginAdminError") != null){%>
-  		<div class="alert alert-danger" role="alert"><%= request.getAttribute("loginAdminError") %></div>
+  		<div class="form-group">
+  			<label for="cont_nueva_rep" class="sr-only">Repita la contraseña</label>
+  			<input type="password" id="cont_nueva_rep" name="cont_nueva_rep" class="form-control" placeholder="Repita la contraseña" required>
+  		</div>
+  		<%if(request.getAttribute("error_mensaje") != null){%>
+  		<div class="alert alert-danger" role="alert"><%= request.getAttribute("error_mensaje") %></div>
   		<%}%>
-  		<button class="btn btn-lg btn-primary btn-block" type="submit" name="accion" value="login">Iniciar Sesión</button>
-  		<p class="mt-5 mb-3 text-muted">&copy; 2017-2019</p>
+  		<%if(request.getAttribute("ok_mensaje") != null){%>
+  		<div class="alert alert-primary" role="alert"><%= request.getAttribute("ok_mensaje") %></div>
+  		<%}%>
+  		<button class="btn btn-lg btn-primary btn-block" type="submit" name="accion" value="cambio_contrasena">Cambiar</button>
 	</form>
 	</div>
   </body>
+  <%}else{
+	  response.sendRedirect("loginClientes.jsp");
+  }
+  %>
 </html>

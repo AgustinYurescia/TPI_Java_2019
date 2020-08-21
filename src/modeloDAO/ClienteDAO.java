@@ -3,8 +3,11 @@ package modeloDAO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+
 import config.Conexion;
 import modelo.Cliente;
+import modelo.Pedido;
 
 public class ClienteDAO {
 	
@@ -69,25 +72,6 @@ public class ClienteDAO {
 	public void baja(String usuario, String contrasena) {
 		PreparedStatement st = null;
 		String sentenciaSQL="UPDATE cliente SET fecha_baja = current_date WHERE cliente_usuario='"+usuario+"' AND cliente_contrasena='"+contrasena+"' and fecha_baja is null";
-		try {
-			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
-			st.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if(st!=null) {st.close();}
-				Conexion.getInstancia().desconectar();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	public void cambio_contrasena(String usuario, String contrasena_vieja, String contrasena_nueva) {
-		PreparedStatement st = null;
-		String sentenciaSQL="UPDATE cliente SET cliente_contrasena = '"+contrasena_nueva+"' WHERE cliente_usuario='"+usuario+"'"
-				+ " AND cliente_contrasena='"+contrasena_vieja+"' and fecha_baja is null";
 		try {
 			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
 			st.executeUpdate();
@@ -264,8 +248,65 @@ public class ClienteDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
-			Conexion.getInstancia().desconectar();
+			try {
+				if(st!=null) {st.close();}
+				Conexion.getInstancia().desconectar();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
+	}
+	
+	public ArrayList<String> cambioContrasena(String usuario, String contrasena_actual, String contrasena_nueva, String contrasena_nueva_rep) {
+		ArrayList<String>mensajes = new ArrayList<>();
+		String ok_mensaje = "Contraseña cambiada exitosamente";
+		String error_mensaje = null;
+		String sentenciaSQL="UPDATE cliente SET cliente_contrasena=? WHERE cliente_usuario=? AND cliente_contrasena=? and fecha_baja is null";
+		PreparedStatement st = null;
+		if (existe(usuario, contrasena_actual)) {
+			if (Cliente.isValid(contrasena_nueva)) {
+				if(contrasena_nueva.equals(contrasena_nueva_rep)) {
+					try {
+						st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+						st.setString(1, contrasena_nueva);
+						st.setString(2, usuario);
+						st.setString(3, contrasena_actual);
+						st.executeUpdate();				
+					}catch(Exception e){
+						e.printStackTrace();
+					}finally {
+						try {
+							if(st!=null) {st.close();}
+							Conexion.getInstancia().desconectar();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				}
+				else {
+					error_mensaje = "Las contraseñas ingresadas (contraseña nueva y contraseña nueva repetida) no coinciden";
+					ok_mensaje = null;
+					mensajes.add(0, ok_mensaje);
+					mensajes.add(1, error_mensaje);
+					return mensajes;
+				}
+			}else {
+				error_mensaje = "La contraseña nueva debe tener longitud mayor o igual a 4 y menor o igual a 45";
+				ok_mensaje = null;
+				mensajes.add(0, ok_mensaje);
+				mensajes.add(1, error_mensaje);
+				return mensajes;
+			}
+		}else {
+			error_mensaje = "La contraseña actual es incorrecta";
+			ok_mensaje = null;
+			mensajes.add(0, ok_mensaje);
+			mensajes.add(1, error_mensaje);
+			return mensajes;
+		}
+		mensajes.add(0, ok_mensaje);
+		mensajes.add(1, error_mensaje);
+		return mensajes;
 	}
 	
 }

@@ -100,6 +100,16 @@ public class Cliente {
 		
 		return valid;
 	}
+	
+	public static boolean isValid(String contrasena) {
+		boolean valid = true;
+		
+		if ((contrasena == "") || (contrasena.length() > 45) || (contrasena.length() < 4)) {
+			valid=false;
+		}
+		
+		return valid;
+	}
 
 	
 	public String getDni() {
