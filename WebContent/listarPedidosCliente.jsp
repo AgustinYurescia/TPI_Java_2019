@@ -20,11 +20,28 @@
 		<jsp:include page="menu.jsp"/>
 		<% HttpSession sesion = request.getSession(true);
 	   	   if (sesion.getAttribute("usuario_cliente") != null) { %>
-	   <div>
-	   	<form action="ControladorPedido">		
+	   <div class="m-2">
+	   <h5>Estado del pedido:</h5>
+	   	<form action="ControladorPedido">
+	   		<div class = "form-row">
+				<div class="form-group col-md-2">
+      				<select id="estado" name="estado" class="form-control">
+      					<option selected>-</option>
+        				<option>Pendiente</option>
+        				<option>Entregado</option>
+        				<option>Cancelado</option>
+     				</select>
+	       		</div>
+	       		<div class="form-group col-md-6">
+	       			<button id="button" type="submit" class="btn btn-primary" name="accion" value="listadoPedidosCliente">Filtrar</button>
+	       		</div>
+	       	</div>		
 		</form>
 	   </div>
-	   <div>
+	   <% 	ArrayList<Pedido> pedidos = (ArrayList<Pedido>)request.getAttribute("listadoPedidosCliente");
+	   		if(pedidos != null){
+	   %>
+	   <div class="m-2">
 	   		<table class="table table-striped">
 	   			<thead>
 	   				<tr>
@@ -35,7 +52,6 @@
 	   				</tr>
 	   			</thead>
 	   			<%
-	   				ArrayList<Pedido> pedidos = (ArrayList<Pedido>)request.getAttribute("listadoPedidosCliente");
 	   				Iterator<Pedido> iter  = pedidos.iterator();
 	   			  	Pedido ped = null;
 	   			  	while (iter.hasNext()){
@@ -45,12 +61,16 @@
 						<td><font face="Calibri" color="Black"><%=ped.getNro_pedido()%></font></td>
 						<td><font face="Calibri" color="Black"><%=ped.getFecha_pedido()%></font></td>
 						<td><font face="Calibri" color="Black"><%=ped.getMonto()%></font></td>
-						<td><font face="Calibri" color="Black"><a class="py-0 d-none d-md-inline-block" href="ControladorPedido?accion=mostrar_pedido_cliente&nro_pedido=<%=ped.getNro_pedido()%>"><button type="submit" class="btn btn-primary">Ver</button></a></font></td>
+						<td>
+							<a class="py-0 d-none d-md-inline-block" href="ControladorPedido?accion=mostrar_pedido_cliente&nro_pedido=<%=ped.getNro_pedido()%>">
+								<jsp:include page="SVG/ojo.svg"/>
+							</a>
+						</td>
 					</tr>
 				<%}%>
 	   			</tbody>
 	   		</table>
 	   </div>
-	   <%}%>
+	   <%}}%>
 	   </body>
 	   </html>

@@ -296,11 +296,20 @@ public class PedidoDAO {
 		}
 	}
 	
-	public ArrayList<Pedido> listar_pedidos_pendientes_cliente(String dni_cliente)  {
+	public ArrayList<Pedido> listar_pedidos_cliente(String dni_cliente, String estado)  {
 		Statement st = null;
 		ResultSet rs = null;
 		ArrayList<Pedido>lista = new ArrayList<>();
-		String sentenciaSQL = "SELECT * FROM pedido WHERE dni_cliente="+dni_cliente+" AND fecha_cancelacion is null AND fecha_entrega_real is null";
+		String sentenciaSQL = "";
+		if (estado.equalsIgnoreCase("pendiente")) {
+			sentenciaSQL = "SELECT * FROM pedido WHERE dni_cliente="+dni_cliente+" AND fecha_cancelacion is null AND fecha_entrega_real is null";
+		}else if (estado.equalsIgnoreCase("entregado")) {
+			sentenciaSQL = "SELECT * FROM pedido WHERE dni_cliente="+dni_cliente+" AND fecha_cancelacion is null AND fecha_entrega_real is not null";
+		}else if (estado.equalsIgnoreCase("cancelado")) {
+			sentenciaSQL = "SELECT * FROM pedido WHERE dni_cliente="+dni_cliente+" AND fecha_cancelacion is not null";
+		}else if (estado.equalsIgnoreCase("-")) {
+			sentenciaSQL = "SELECT * FROM pedido WHERE dni_cliente="+dni_cliente+"";
+		}
 		try {
 			st=Conexion.getInstancia().getConexion().createStatement();
 			rs=st.executeQuery(sentenciaSQL);
@@ -330,6 +339,7 @@ public class PedidoDAO {
 		}
 		return lista;
 	}
+	
 	
 	public void set_fecha_entrega_real(int numeroPedido) {
 		PreparedStatement ps= null;

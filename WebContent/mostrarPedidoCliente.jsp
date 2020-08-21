@@ -23,6 +23,7 @@
 	   	   if (sesion.getAttribute("usuario_cliente") != null) { %>
 	   <% Pedido ped = (Pedido)request.getAttribute("pedido"); %>
 	   <div class="m-3">
+	   <h2>Datos del pedido</h2>
 	   <form>
 	   		<div class="form-row">
 	   			<div class="form-group col-md-6">	
@@ -52,7 +53,7 @@
 				<%}%>
 			</div>
 			<div class="form-row">
-				<%if(ped.getFecha_entrega_real() != null){%>
+				<%if(ped.getFecha_cancelacion() != null){%>
 				<div class="form-group col-md-6">	
 		   			<label for="fecha_canc">Fecha de cancelación:</label>
 					<input 	type="date" id="fecha_canc" class="form-control" value=<%=ped.getFecha_cancelacion()%> disabled/>

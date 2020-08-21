@@ -20,7 +20,7 @@
 		<jsp:include page="menu.jsp"/>
 		<% HttpSession sesion = request.getSession(true);
 	   	   if (sesion.getAttribute("usuario_admin") != null) { %>
-	   <div>
+	   <div class="m-2">
 	   	<form action="ControladorPedido">
 	   		<div class = "form-row">
 	   			<div class="form-group col-md-6">	
@@ -61,7 +61,11 @@
 					<td><font face="Calibri" color="Black"><%=ped.getDni_cliente()%></font></td>
 					<td><font face="Calibri" color="Black"><%=ped.getFecha_pedido()%></font></td>
 					<td><font face="Calibri" color="Black"><%=ped.getMonto()%></font></td>
-					<td><font face="Calibri" color="Black"><a class="py-0 d-none d-md-inline-block" href="ControladorPedido?accion=mostrar_pedido&nro_pedido=<%=ped.getNro_pedido()%>"><button type="submit" class="btn btn-primary">Ver</button></a></font></td>
+					<td>
+						<a class="py-0 d-none d-md-inline-block" href="ControladorPedido?accion=mostrar_pedido&nro_pedido=<%=ped.getNro_pedido()%>">
+							<jsp:include page="SVG/ojo.svg"/>
+						</a>
+					</td>
 				</tr>
 			<%}%>
 	   		</tbody>

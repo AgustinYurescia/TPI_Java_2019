@@ -69,7 +69,11 @@
 						<td><font face="Calibri" color="Blue"><%=prod.getNombre()%></font></td>
 						<td><font face="Calibri" color="Black"><%=prod.getPrecioVenta()%></font></td>
 						<td><font face="Calibri" color="Black"><%=prod.getStock()%></font></td>
-						<td><font face="Calibri" color="Black"><a href="ControladorProducto?accion=BajaProducto&codigo_producto_baja=<%=prod.getCodigo()%>">Dar de baja</a></font></td>
+						<td>
+							<a href="ControladorProducto?accion=BajaProducto&codigo_producto_baja=<%=prod.getCodigo()%>">
+								<jsp:include page="SVG/basura.svg"/>
+							</a>
+						</td>
 					</tr>					
 					<%}%>
 				</tbody>

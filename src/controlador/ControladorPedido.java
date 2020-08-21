@@ -212,10 +212,11 @@ public class ControladorPedido extends HttpServlet {
 			PedidoDAO pedDAO = new PedidoDAO();
 			HttpSession sesion = request.getSession(true);
 			String usuario_cliente = (String)sesion.getAttribute("usuario_cliente");
+			String estado = request.getParameter("estado");
 		    ArrayList<Pedido> pedidos = new  ArrayList<Pedido>();
 			try{
 			    cli = cliDAO.buscar_cliente(usuario_cliente);
-				pedidos = pedDAO.listar_pedidos_pendientes_cliente(cli.getDni());
+				pedidos = pedDAO.listar_pedidos_cliente(cli.getDni(), estado);
 				request.setAttribute("listadoPedidosCliente", pedidos);						
 			}catch (Exception e) {
 				e.printStackTrace();
