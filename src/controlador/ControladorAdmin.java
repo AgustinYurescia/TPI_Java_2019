@@ -1,6 +1,7 @@
 package controlador;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,25 +10,24 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import exceptions.NotValidValueCustomException;
-import java.sql.Date;
-import java.util.ArrayList;
 
 import modeloDAO.AdminDAO;
+import modeloDAO.ClienteDAO;
 import modelo.Admin;
+import modelo.Cliente;
 
-@WebServlet("/ControladorCliente")
-public class ControladorCliente extends HttpServlet {
+@WebServlet("/ControladorAdmin")
+public class ControladorAdmin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	String registroClienteError = "registroClienteError.jsp";
-	String login = "loginClientes.jsp";
-    public ControladorCliente() {
+       
+    public ControladorAdmin() {
         super();
-        // TODO Auto-generated constructor stub
     }
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		AdminDAO adDAO = new AdminDAO();
 		String acceso = "";
@@ -41,12 +41,13 @@ public class ControladorCliente extends HttpServlet {
 			ArrayList<String>mensajes = adDAO.cambioContrasena(usuario, contrasena_actual, contrasena_nueva, contrasena_nueva_rep);
 			request.setAttribute("ok_mensaje", mensajes.get(0));
 			request.setAttribute("error_mensaje", mensajes.get(1));
-			acceso="cambiarContrasena.jsp";
+			acceso="cambiarContrasenaAdmin.jsp";
 		}
 		
 		RequestDispatcher vista = request.getRequestDispatcher(acceso);
 		vista.forward(request, response);
 		/*doGet(request, response);*/
 	}
-
 }
+
+

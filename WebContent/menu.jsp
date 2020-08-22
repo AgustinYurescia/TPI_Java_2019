@@ -54,7 +54,18 @@
           	</li>
         </ul>
         
-        <ul class="navbar-nav mr-right">          
+        <ul class="navbar-nav mr-right">  
+        
+        	<li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="cuentaAdminDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <jsp:include page="SVG/login.svg"/>
+              Cuenta
+            </a>
+            <div class="dropdown-menu" aria-labelledby="cuentaAdminDropdown">
+            		<a class="dropdown-item" href="ControladorDeLinks?accion=cambioContrasenaAdmin">Cambiar Contraseña</a>
+            </div>  
+          </li>	
+        	        
           <li>
             <a href="ControladorLoginAdmin?accion=logout" class="nav-link">
               <jsp:include page="SVG/login.svg"/>

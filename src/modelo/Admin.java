@@ -16,4 +16,14 @@ public class Admin {
 	public void setAdmin_contrasena(String admin_contrasena) {
 		this.admin_contrasena = admin_contrasena;
 	}
+	
+	public static boolean isValid(String contrasena) {
+		boolean valid = true;
+		
+		if ((contrasena == "") || (contrasena.length() > 45) || (contrasena.length() < 4)) {
+			valid=false;
+		}
+		
+		return valid;
+	}
 }

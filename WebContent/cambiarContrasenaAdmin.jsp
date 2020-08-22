@@ -31,12 +31,12 @@
     <link href="signin.css" rel="stylesheet">
   </head>
   <% HttpSession sesion = request.getSession(true);
-	   	   if (sesion.getAttribute("usuario_cliente") != null) { %>
+	   	   if (sesion.getAttribute("usuario_admin") != null) { %>
   <body class="text-center">
   	<jsp:include page="menu.jsp"/>
   	<br>
   	<div class="d-flex justify-content-center align-items-center container">
-    <form class="form-signin" action="ControladorCliente" method="post">
+    <form class="form-signin" action="ControladorAdmin" method="post">
   		<img class="mb-4" src="Images/logo.png" alt="" width="200" height="72">
   		<h1 class="h3 mb-3 font-weight-normal">Cambio de Contraseña</h1>
   		<div class="form-group">
@@ -62,7 +62,7 @@
 	</div>
   </body>
   <%}else{
-	  response.sendRedirect("loginClientes.jsp");
+	  response.sendRedirect("loginAdmin.jsp");
   }
   %>
 </html>

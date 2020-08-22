@@ -68,6 +68,8 @@ public class ControladorDeLinks extends HttpServlet {
 			response.sendRedirect("listarPedidosCliente.jsp");
 		}else if (action.equalsIgnoreCase("cambioContrasena")) {
 			response.sendRedirect("cambiarContrasena.jsp");
+		}else if (action.equalsIgnoreCase("cambioContrasenaAdmin")) {
+			response.sendRedirect("cambiarContrasenaAdmin.jsp");
 		}
 		
 		//RequestDispatcher vista = request.getRequestDispatcher(acceso);
