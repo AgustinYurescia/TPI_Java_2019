@@ -19,10 +19,10 @@
 	   	   if (sesion.getAttribute("usuario_admin") != null) { %>
 	   	<div class="container">
 		<h1>Actualizar Producto</h1>
-		<form action="ControladorProducto">
+		<h5>Seleccionar producto</h5>
+		<form action="ControladorProducto" method="post">
   			<div class="form-row">
     			<div class="form-group col-md-4">
-      				<label for="codigo_producto">Nombre del producto</label>
       				<select id="codigo_producto" name="codigo_producto" class="form-control">
         				<option selected>-</option>
         				<% 
@@ -38,20 +38,41 @@
      				</select>
     			</div>
     			<div class="form-group col-md-4">
-      				<label for="nombre">Nuevo nombre</label>
-      				<input type="text" class="form-control" id="nuevo_nombre" name="nuevo_nombre" placeholder="">
+    				<button type="submit" class="btn btn-primary" name="accion" value="BuscarProductoEditar">Buscar</button>
     			</div>
-    			<div class="form-group col-md-4">
-      				<label for="nombre">Nueva imagen</label></br>
-      				<input type="file" class="" id="nueva_imagen" name="nueva_imagen">
-    			</div>
-  			</div>
+    		</div>
+    	</form>
+    	<% 
+    	Producto producto = (Producto)request.getAttribute("producto");
+    	if (producto != null){
+    	%>
+    	<form action="ControladorProducto" enctype="multipart/form-data" method="post">
+    		<input type="hidden" class="form-control" id="codigo_producto" name="codigo_producto" value="<%=producto.getCodigo()%>">
+    			<div class="form-row">
+    		<div class="form-group col-md-6">
+      			<label for="nombre">Nombre del producto</label>
+      			<input type="text" class="form-control" id="nombre" name="nombre" value="<%=producto.getNombre()%>">
+    		</div>
+    		<div class="form-group col-md-6">
+      			<label for="precio">Precio unitario de venta</label>
+      			<input type="text" id="precio" name="precio" class="form-control" placeholder="Ejemplo: 175.50" value="<%=producto.getPrecioVenta()%>">
+    		</div>
+  		</div>
+  		<div class="form-row">
+    		
+  		</div>
+  		<div class="form-row">
+    		<div class="form-group col-md-6">
+      			<label for="imagen">Imagen del producto</label> <br>
+      			<input type="file" id="imagen" name="imagen" value="">
+    		</div>
+  		</div>
   			<button type="submit" class="btn btn-primary" name="accion" value="EditarProducto">Guardar</button>
 		</form>
-		</div>
-		<%}else{
+		<%}}else{
 			response.sendRedirect("loginAdmin.jsp");
 	  	  }
 	 	%>
+	 	</div>
 	</body>
 </html>

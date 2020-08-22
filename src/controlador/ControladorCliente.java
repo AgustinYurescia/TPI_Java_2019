@@ -13,8 +13,8 @@ import exceptions.NotValidValueCustomException;
 import java.sql.Date;
 import java.util.ArrayList;
 
-import modeloDAO.AdminDAO;
-import modelo.Admin;
+import modeloDAO.ClienteDAO;
+import modelo.Cliente;
 
 @WebServlet("/ControladorCliente")
 public class ControladorCliente extends HttpServlet {
@@ -29,16 +29,16 @@ public class ControladorCliente extends HttpServlet {
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		AdminDAO adDAO = new AdminDAO();
+		ClienteDAO cliDAO = new ClienteDAO();
 		String acceso = "";
 		String action = request.getParameter("accion");
 		if(action.equalsIgnoreCase("cambio_contrasena")) {
 			HttpSession sesion = request.getSession(true);
-			String usuario = sesion.getAttribute("usuario_admin").toString();
+			String usuario = sesion.getAttribute("usuario_cliente").toString();
 			String contrasena_actual = request.getParameter("cont_act");
 			String contrasena_nueva = request.getParameter("cont_nueva");
 			String contrasena_nueva_rep = request.getParameter("cont_nueva_rep");
-			ArrayList<String>mensajes = adDAO.cambioContrasena(usuario, contrasena_actual, contrasena_nueva, contrasena_nueva_rep);
+			ArrayList<String>mensajes = cliDAO.cambioContrasena(usuario, contrasena_actual, contrasena_nueva, contrasena_nueva_rep);
 			request.setAttribute("ok_mensaje", mensajes.get(0));
 			request.setAttribute("error_mensaje", mensajes.get(1));
 			acceso="cambiarContrasena.jsp";
@@ -48,5 +48,4 @@ public class ControladorCliente extends HttpServlet {
 		vista.forward(request, response);
 		/*doGet(request, response);*/
 	}
-
 }

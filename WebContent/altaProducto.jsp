@@ -57,11 +57,18 @@
       			<input type="file" id="imagen" name="imagen" class="">
     		</div>
   		</div>
-  		<% 	String mensaje = (String)request.getAttribute("mensaje_de_altaProducto");
-  			if(mensaje != null){
+  		<% 	String mensaje_error = (String)request.getAttribute("mensaje_error_altaProducto");
+  			if(mensaje_error != null){
   		%>
   				<div class="alert alert-danger" role="alert">
-  					<%=mensaje%>
+  					<%=mensaje_error%>
+				</div>
+		<% } %>
+		<% 	String mensaje_ok = (String)request.getAttribute("mensaje_ok_altaProducto");
+  			if(mensaje_ok != null){
+  		%>
+  				<div class="alert alert-primary" role="alert">
+  					<%=mensaje_ok%>
 				</div>
 		<% } %>
   		<button type="submit" class="btn btn-primary" name="accion" value="Agregar">Agregar</button>

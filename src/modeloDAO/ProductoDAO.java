@@ -202,14 +202,26 @@ public class ProductoDAO {
 	}
 	
 	
-	public void editar_producto(int codigo_producto, String nuevo_nombre, InputStream imagen) {
+	public void editar_producto(Producto prod) {
 		PreparedStatement st = null;
-		String sentenciaSQL="UPDATE producto SET nombre=?,imagen=? WHERE codigo=?";
+		String sentenciaSQL="UPDATE producto SET nombre=?,imagen=?,precio_venta=? WHERE codigo=?";
 		try {
-			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
-			st.setString(1, nuevo_nombre);
-			st.setBlob(3, imagen);
-			st.setInt(3, codigo_producto);
+			if (prod.get_imagen() != null) 
+			{
+				st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+				st.setString(1, prod.getNombre());
+				st.setBlob(2, prod.get_imagen());
+				st.setDouble(3, prod.getPrecioVenta());
+				st.setInt(4, prod.getCodigo());
+			}
+			else
+			{
+				sentenciaSQL="UPDATE producto SET nombre=?,precio_venta=? WHERE codigo=?";
+				st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+				st.setString(1, prod.getNombre());
+				st.setDouble(2, prod.getPrecioVenta());
+				st.setInt(3, prod.getCodigo());
+			}
 			st.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -66,16 +66,6 @@ public class ControladorProducto extends HttpServlet {
 			cantidad = request.getParameter("cantidad");
 			pdao.actualizar_stock(Integer.parseInt(codigo_producto), Integer.parseInt(cantidad));
 			acceso="indexAdmin.jsp";
-		}else if(action.equalsIgnoreCase("EditarProducto")) {
-			String codigo_producto;
-			String nuevo_nombre;
-			Part imagen = request.getPart("nueva_imagen");
-			InputStream nuevaImagenInputStream = imagen.getInputStream();
-			ProductoDAO pdao = new ProductoDAO();
-			codigo_producto = request.getParameter("codigo_producto");
-			nuevo_nombre = request.getParameter("nuevo_nombre");
-			pdao.editar_producto(Integer.parseInt(codigo_producto), nuevo_nombre,nuevaImagenInputStream);
-			acceso="indexAdmin.jsp";
 		}else if(action.equalsIgnoreCase("BajaProducto")) {
 			ProductoDAO pdao = new ProductoDAO();
 			String codigo_producto_baja = request.getParameter("codigo_producto_baja");
@@ -90,29 +80,59 @@ public class ControladorProducto extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String acceso = "";
 		String action = request.getParameter("accion");
-		if(action.equalsIgnoreCase("Agregar")) {
+		if(action.equalsIgnoreCase("Agregar")) 
+		{
 			String nombre = request.getParameter("nombre");
 			int categoria = Integer.parseInt(request.getParameter("codigo_categoria"));
 			Part imagen = request.getPart("imagen");
 			InputStream imagenInputStream = imagen.getInputStream();
 			int stock = Integer.parseInt(request.getParameter("stock"));
 			Double precio = Double.parseDouble(request.getParameter("precio"));
-			if(Producto.es_valido(nombre, categoria, imagenInputStream, stock, precio)) {
+			if(Producto.es_valido(nombre, categoria, imagenInputStream, stock, precio)) 
+			{
 				prod.setNombre(nombre);
 				prod.set_imagen(imagenInputStream);
 				prod.setStock(stock);
 				prod.setCodigo_categoria(categoria);
 				prodDAO.alta(prod, precio);
-				request.setAttribute("mensaje_de_altaProducto","Alta realizada con éxito");
+				request.setAttribute("mensaje_ok_altaProducto","Alta realizada con éxito");
 				acceso = "altaProducto.jsp";	
 			}
-			else {
-				request.setAttribute("mensaje_de_altaProducto","Error, revise los datos del alta e intente nuevamente");
+			else 
+			{
+				request.setAttribute("mensaje_error_altaProducto","Error, revise los datos del alta e intente nuevamente");
 				acceso = "altaProducto.jsp";
 			}
-		}
+		}else if(action.equalsIgnoreCase("EditarProducto")) {
+			Part imagen = request.getPart("imagen");
+			InputStream ImagenInputStream = null;
+			if (imagen.getSize() != 0) 
+			{
+				ImagenInputStream = imagen.getInputStream();
+			}
+			ProductoDAO pdao = new ProductoDAO();
+			String codigo_producto = request.getParameter("codigo_producto");
+			String nombre = request.getParameter("nombre");
+			String precio = request.getParameter("precio");
+			prod.setCodigo((Integer.parseInt(codigo_producto)));
+			prod.setNombre(nombre);
+			prod.set_imagen(ImagenInputStream);
+			prod.setPrecioVenta(Double.parseDouble(precio));
+			pdao.editar_producto(prod);
+			acceso="indexAdmin.jsp";
 		
 		RequestDispatcher vista = request.getRequestDispatcher(acceso);
 		vista.forward(request, response);
+		}else if(action.equalsIgnoreCase("BuscarProductoEditar")) {
+			String codigo_producto;
+			ProductoDAO pdao = new ProductoDAO();
+			codigo_producto = request.getParameter("codigo_producto");
+			prod = pdao.buscar_producto(Integer.parseInt(codigo_producto));
+			request.setAttribute("producto", prod);
+			acceso="editarProducto.jsp";
+		
+		RequestDispatcher vista = request.getRequestDispatcher(acceso);
+		vista.forward(request, response);
+		}
 	}
 }

@@ -263,6 +263,7 @@ public class ClienteDAO {
 		String error_mensaje = null;
 		String sentenciaSQL="UPDATE cliente SET cliente_contrasena=? WHERE cliente_usuario=? AND cliente_contrasena=? and fecha_baja is null";
 		PreparedStatement st = null;
+		System.out.println(usuario);
 		if (existe(usuario, contrasena_actual)) {
 			if (Cliente.isValid(contrasena_nueva)) {
 				if(contrasena_nueva.equals(contrasena_nueva_rep)) {
