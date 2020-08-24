@@ -61,6 +61,12 @@
       				<input type="hidden" id="es_socio" name="es_socio" value="0" >
     			</div> 
   			</div>
+  			<%if(request.getAttribute("registroClienteError") != null){%>
+  			<div class="alert alert-danger" role="alert"><%= request.getAttribute("registroClienteError") %></div>
+  			<%}%>
+  			<%if(request.getAttribute("registroClienteOk") != null){%>
+  			<div class="alert alert-primary" role="alert"><%= request.getAttribute("registroClienteOk") %></div>
+  			<%}%>
   			<div class="form-row">
     			<button type="submit" class="btn btn-primary" name="accion" value="alta">Registrar</button>
   			</div>

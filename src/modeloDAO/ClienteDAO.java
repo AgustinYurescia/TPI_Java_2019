@@ -11,40 +11,62 @@ import modelo.Pedido;
 
 public class ClienteDAO {
 	
-	public void alta(Cliente cli, int es_socio) {
+	public ArrayList<String> alta(Cliente cli, int es_socio, String contrasena_rep) {
+		ArrayList<String>mensajes = new ArrayList<>();
 		PreparedStatement st = null;
 		ResultSet keyResultSet=null;
-		String sentenciaSQL="INSERT INTO cliente(dni,cliente_usuario,cliente_contrasena,nombre,apellido,mail,telefono,direccion,fecha_baja_socio)VALUES(?,?,?,?,?,?,?,?,current_date)";
+		String mensaje_ok = null;
+		String ya_existe_mensaje = null;
+		String contrasenas_error = null;
+		String sentenciaSQL="INSERT INTO cliente(dni,cliente_usuario,cliente_contrasena,nombre,apellido,mail,telefono,direccion,fecha_baja_socio)VALUES(?,?,?,?,?,?,?,?,current_date,NULL)";
 		if (es_socio == 1)
 		{
-			sentenciaSQL="INSERT INTO cliente(dni,cliente_usuario,cliente_contrasena,nombre,apellido,mail,telefono,direccion,fecha_baja_socio)VALUES(?,?,?,?,?,?,?,?,NULL)";
+			sentenciaSQL="INSERT INTO cliente(dni,cliente_usuario,cliente_contrasena,nombre,apellido,mail,telefono,direccion,fecha_baja_socio)VALUES(?,?,?,?,?,?,?,?,NULL,NULL)";
 		}
-		try {
-			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL,PreparedStatement.RETURN_GENERATED_KEYS);
-			st.setString(1, cli.getDni());
-			st.setString(2, cli.getCliente_usuario());
-			st.setString(3, cli.getCliente_contrasena());
-			st.setString(4, cli.getNombre());
-			st.setString(5, cli.getApellido());
-			st.setString(6, cli.getMail());
-			st.setString(7, cli.getTelefono());
-			st.setString(8, cli.getDireccion());
-			st.executeUpdate();
-			keyResultSet=st.getGeneratedKeys();
-			if(keyResultSet!=null && keyResultSet.next()) {
+		if (yaExisteUsuario(cli.getCliente_usuario(), cli.getMail()))
+		{
+			ya_existe_mensaje = "El usuario y/o el mail ingresados ya existen";
+		}
+		else 
+		{
+			if (!cli.getCliente_contrasena().equalsIgnoreCase(contrasena_rep))
+			{
+			contrasenas_error = "Las contraseñas ingresadas no coinciden";
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}finally {
-			try {
-				if(keyResultSet!=null) {keyResultSet.close();}
-                if(st!=null) {st.close();}
-                Conexion.getInstancia().desconectar();
-			} catch (Exception e) {
-				e.printStackTrace();
+			else
+			{
+				try {
+					st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL,PreparedStatement.RETURN_GENERATED_KEYS);
+					st.setString(1, cli.getDni());
+					st.setString(2, cli.getCliente_usuario());
+					st.setString(3, cli.getCliente_contrasena());
+					st.setString(4, cli.getNombre());
+					st.setString(5, cli.getApellido());
+					st.setString(6, cli.getMail());
+					st.setString(7, cli.getTelefono());
+					st.setString(8, cli.getDireccion());
+					st.executeUpdate();
+					keyResultSet=st.getGeneratedKeys();
+					if(keyResultSet!=null && keyResultSet.next()) {
+						mensaje_ok = "Ha sido registrado exitosamente";
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}finally {
+					try {
+						if(keyResultSet!=null) {keyResultSet.close();}
+		                if(st!=null) {st.close();}
+		                Conexion.getInstancia().desconectar();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
 			}
 		}
-		
+		mensajes.add(0, mensaje_ok);
+		mensajes.add(1, ya_existe_mensaje);
+		mensajes.add(2, contrasenas_error);
+		return mensajes;
 	}
 	
 	public Boolean existe(String usuario, String contrasena) {
@@ -91,10 +113,10 @@ public class ClienteDAO {
 		}
 	}
 	
-	public Boolean yaExisteUsuario(String usuario) {
+	public Boolean yaExisteUsuario(String usuario, String mail) {
 		PreparedStatement st = null;
 		ResultSet rs=null;
-		String sentenciaSQL="SELECT * FROM cliente WHERE cliente_usuario='"+usuario+"' and fecha_baja is null";
+		String sentenciaSQL="SELECT * FROM cliente WHERE cliente_usuario='"+usuario+"' and mail='"+mail+"' and fecha_baja is null";
 		try {
 			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
 			rs = st.executeQuery();

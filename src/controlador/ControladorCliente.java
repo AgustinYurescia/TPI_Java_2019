@@ -19,8 +19,6 @@ import modelo.Cliente;
 @WebServlet("/ControladorCliente")
 public class ControladorCliente extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	String registroClienteError = "registroClienteError.jsp";
-	String login = "loginClientes.jsp";
     public ControladorCliente() {
         super();
         // TODO Auto-generated constructor stub
@@ -35,57 +33,39 @@ public class ControladorCliente extends HttpServlet {
 		String action = request.getParameter("accion");
 		if(action.equalsIgnoreCase("alta")) {
 			String nombre_usuario = request.getParameter("usuario");
-			if(cliDAO.yaExisteUsuario(nombre_usuario)) 
-			{
-				request.setAttribute("registroClienteError", "El usuario ingresado ya existe");
-				acceso = registroClienteError;
-				RequestDispatcher vista = request.getRequestDispatcher(acceso);
-				vista.forward(request, response);
+			String mail = request.getParameter("mail");
+			String dni = request.getParameter("dni");
+			String nombre = request.getParameter("nombre");
+			String apellido = request.getParameter("apellido");
+			String telefono = request.getParameter("telefono");
+			String direccion = request.getParameter("direccion");
+			String contrasena = request.getParameter("contrasena");
+			cliente.setDni(dni);
+			cliente.setNombre(nombre);
+			cliente.setApellido(apellido);
+			cliente.setTelefono(telefono);
+			cliente.setDireccion(direccion);
+			cliente.setMail(mail);
+			cliente.setCliente_usuario(nombre_usuario);
+			cliente.setCliente_contrasena(contrasena);
+			ArrayList <String> mensajes = null;
+			if (request.getParameter("es_socio").equals("1")) {
+				mensajes = cliDAO.alta(cliente, 1, request.getParameter("contrasena2"));
+			}else {
+				mensajes = cliDAO.alta(cliente, 0, request.getParameter("contrasena2"));
 			}
-			else
-			{
-				if (request.getParameter("contrasena").equals(request.getParameter("contrasena2"))) 
-				{
-					String dni = request.getParameter("dni");
-					String nombre = request.getParameter("nombre");
-					String apellido = request.getParameter("apellido");
-					String telefono = request.getParameter("telefono");
-					String direccion = request.getParameter("direccion");
-					String mail = request.getParameter("mail");
-					String contrasena = request.getParameter("contrasena");
-					boolean valido = Cliente.isValid(dni, nombre, apellido, telefono, direccion, mail, contrasena);
-					if (valido)
-					{
-						cliente.setDni(dni);
-						cliente.setNombre(nombre);
-						cliente.setApellido(apellido);
-						cliente.setTelefono(telefono);
-						cliente.setDireccion(direccion);
-						cliente.setMail(mail);
-						cliente.setCliente_usuario(nombre_usuario);
-						cliente.setCliente_contrasena(contrasena);
-						if (request.getParameter("es_socio").equals("1")) {
-							cliDAO.alta(cliente, 1);
-						}else {
-							cliDAO.alta(cliente, 0);
-						}
-					}
-					cliente.setDni(dni);
-					cliente.setNombre(nombre);
-					cliente.setApellido(apellido);
-					cliente.setTelefono(telefono);
-					cliente.setDireccion(direccion);
-					cliente.setMail(mail);
-					cliente.setCliente_usuario(nombre_usuario);
-					cliente.setCliente_contrasena(contrasena);
-					if (request.getParameter("es_socio").equals("1")) {
-						cliDAO.alta(cliente, 1);
-					}else {
-						cliDAO.alta(cliente, 0);
-					}
-					acceso = "index.jsp";
-				}
+			if (mensajes.get(0) != null){
+				request.setAttribute("registroClienteOk", mensajes.get(0));
 			}
+			else if (mensajes.get(1) != null)
+			{
+				request.setAttribute("registroClienteError", mensajes.get(1));
+			}
+			else if (mensajes.get(1) != null)
+			{
+				request.setAttribute("registroClienteError", mensajes.get(2));
+			}
+			acceso = "registroCliente.jsp";
 		}
 		else if(action.equalsIgnoreCase("cambio_contrasena")) {
 			HttpSession sesion = request.getSession(true);
@@ -133,7 +113,7 @@ public class ControladorCliente extends HttpServlet {
 			String telefono = request.getParameter("telefono");
 			String direccion = request.getParameter("direccion");
 			String mail = request.getParameter("mail");
-			if (cliDAO.yaExisteUsuario(usuario) && (Cliente.isValid(nombre, apellido, telefono, direccion, mail)) ) {
+			if (cliDAO.yaExisteUsuario(usuario, mail) && (Cliente.isValid(nombre, apellido, telefono, direccion, mail)) ) {
 					Cliente cli = cliDAO.buscar_cliente_por_usuario (usuario);
 					cli.setNombre(nombre);
 					cli.setApellido(apellido);
