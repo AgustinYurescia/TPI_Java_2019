@@ -95,22 +95,38 @@ public class ClienteDAO {
 		return false;
 	}
 	
-	public void baja(String usuario, String contrasena) {
+	public ArrayList<String> baja(String usuario, String contrasena) {
+		ArrayList<String>mensajes = new ArrayList<>();
 		PreparedStatement st = null;
-		String sentenciaSQL="UPDATE cliente SET fecha_baja = current_date WHERE cliente_usuario='"+usuario+"' AND cliente_contrasena='"+contrasena+"' and fecha_baja is null";
-		try {
-			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
-			st.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
+		String mensajeOk = null;
+		String mensajeError = null;
+		if (existe(usuario, contrasena))
+		{
+			String sentenciaSQL="UPDATE cliente SET fecha_baja = current_date WHERE cliente_usuario=? AND cliente_contrasena=? and fecha_baja is null";
 			try {
-				if(st!=null) {st.close();}
-				Conexion.getInstancia().desconectar();
+				st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+				st.setString(1, usuario);
+				st.setString(2, contrasena);
+				st.executeUpdate();
+				mensajeOk = "Baja realizada con éxito";
 			} catch (Exception e) {
 				e.printStackTrace();
+			} finally {
+				try {
+					if(st!=null) {st.close();}
+					Conexion.getInstancia().desconectar();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
+		else
+		{
+			mensajeError = "No existe ningún cliente con los datos ingresados";
+		}
+		mensajes.add(0, mensajeOk);
+		mensajes.add(1, mensajeError);
+		return mensajes;
 	}
 	
 	public Boolean yaExisteUsuario(String usuario, String mail) {

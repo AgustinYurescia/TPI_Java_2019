@@ -29,6 +29,10 @@
     <link href="signin.css" rel="stylesheet">
 </head>
 <body class="text-center">
+	<%
+		String mensajeOk = (String)request.getAttribute("mensajeOk");
+		String mensajeError = (String)request.getAttribute("mensajeError");
+	%>
 	<jsp:include page="menu.jsp"/>
 	<div class="d-flex justify-content-center align-items-center container">
 	<form class="form-signin" action="ControladorCliente" method="post">
@@ -42,8 +46,11 @@
   			<label for="contrasena" class="sr-only">Contraseña</label>
   			<input type="password" id="contrasena" name="contrasena" class="form-control" placeholder="Contraseña" required>
   		</div>
-  		<%if(request.getAttribute("bajaClienteMensaje") != null){%>
-  		<div class="alert alert-danger" role="alert"><%= request.getAttribute("bajaClienteMensaje") %></div>
+  		<%if(mensajeOk != null){%>
+  		<div class="alert alert-primary" role="alert"><%= mensajeOk %></div>
+  		<%}%>
+  		<%if(mensajeError != null){%>
+  		<div class="alert alert-danger" role="alert"><%= mensajeError %></div>
   		<%}%>
   		<button class="btn btn-lg btn-primary btn-block" type="submit" name="accion" value="baja_cliente">Aceptar</button>
   		<p class="mt-5 mb-3 text-muted">&copy; 2019</p>
