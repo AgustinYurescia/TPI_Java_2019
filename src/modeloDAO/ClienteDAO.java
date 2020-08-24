@@ -11,10 +11,14 @@ import modelo.Pedido;
 
 public class ClienteDAO {
 	
-	public void alta(Cliente cli) {
+	public void alta(Cliente cli, int es_socio) {
 		PreparedStatement st = null;
 		ResultSet keyResultSet=null;
 		String sentenciaSQL="INSERT INTO cliente(dni,cliente_usuario,cliente_contrasena,nombre,apellido,mail,telefono,direccion,fecha_baja_socio)VALUES(?,?,?,?,?,?,?,?,current_date)";
+		if (es_socio == 1)
+		{
+			sentenciaSQL="INSERT INTO cliente(dni,cliente_usuario,cliente_contrasena,nombre,apellido,mail,telefono,direccion,fecha_baja_socio)VALUES(?,?,?,?,?,?,?,?,NULL)";
+		}
 		try {
 			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL,PreparedStatement.RETURN_GENERATED_KEYS);
 			st.setString(1, cli.getDni());
@@ -148,7 +152,7 @@ public class ClienteDAO {
 		}
 		return cli;
 	}
-	public Cliente buscar_cliente_2 (String usuario) {
+	public Cliente buscar_cliente_por_usuario (String usuario) {
 		PreparedStatement ps = null;
 		String sentencia = "SELECT dni, nombre, apellido, mail, telefono, direccion FROM cliente WHERE cliente_usuario = ? and fecha_baja is null";
 		ResultSet rs = null;

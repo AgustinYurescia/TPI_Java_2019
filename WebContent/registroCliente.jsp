@@ -58,6 +58,7 @@
     			<div class="form-group col-md-4">
       				<label for="contrasena2">Repita la contraseña</label>
       				<input type="Password" id="contrasena2" name="contrasena2" class="form-control" placeholder="">
+      				<input type="hidden" id="es_socio" name="es_socio" value="0" >
     			</div> 
   			</div>
   			<div class="form-row">
