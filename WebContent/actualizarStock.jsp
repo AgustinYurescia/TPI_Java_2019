@@ -21,7 +21,7 @@
 			<h1>Actualizar Stock</h1>
 			<form action="ControladorProducto">
   				<div class="form-row">
-    				<div class="form-group col-md-6">
+    				<div class="form-group col-md-4">
       					<label for="codigo_producto">Nombre del producto</label>
       					<select id="codigo_producto" name="codigo_producto" class="form-control">
         				<option selected>-</option>
@@ -37,9 +37,13 @@
         						<%}%>
      					</select>
     				</div>
-    			<div class="form-group col-md-6">
+    			<div class="form-group col-md-4">
       				<label for="nombre">Cantidad</label>
       				<input type="text" class="form-control" id="cantidad" name="cantidad" placeholder="Ej: 200">
+    			</div>
+    			<div class="form-group col-md-4">
+      				<label for="nombre">Precio Unitario</label>
+      				<input type="text" class="form-control" id="precio" name="precio" placeholder="">
     			</div>
   			</div>
   			<button type="submit" class="btn btn-primary" name="accion" value="ActualizarStock">Actualizar</button>

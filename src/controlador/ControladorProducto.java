@@ -59,12 +59,11 @@ public class ControladorProducto extends HttpServlet {
 			acceso = mostrar_producto;
 			
 		}else if(action.equalsIgnoreCase("ActualizarStock")) {
-			String codigo_producto;
-			String cantidad;
 			ProductoDAO pdao = new ProductoDAO();
-			codigo_producto = request.getParameter("codigo_producto");
-			cantidad = request.getParameter("cantidad");
-			pdao.actualizar_stock(Integer.parseInt(codigo_producto), Integer.parseInt(cantidad));
+			String codigo_producto = request.getParameter("codigo_producto");
+			String cantidad = request.getParameter("cantidad");
+			String precio = request.getParameter("precio");
+			pdao.reponer_stock(Integer.parseInt(codigo_producto), Integer.parseInt(cantidad), Double.parseDouble(precio));
 			acceso="indexAdmin.jsp";
 		}else if(action.equalsIgnoreCase("BajaProducto")) {
 			ProductoDAO pdao = new ProductoDAO();

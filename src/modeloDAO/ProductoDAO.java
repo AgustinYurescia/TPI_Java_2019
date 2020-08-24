@@ -95,7 +95,7 @@ public class ProductoDAO {
 			keyResultSet=st.getGeneratedKeys();
 			if(keyResultSet!=null && keyResultSet.next()) {
 				prod.setCodigo(keyResultSet.getInt(1));
-				calcular_precio_venta_nuevo_producto(keyResultSet.getInt(1),precio);
+				calcular_precio_venta(keyResultSet.getInt(1),precio);
 				
 			}
 		} catch (Exception e) {
@@ -167,6 +167,24 @@ public class ProductoDAO {
 	}
 	
 	
+	public void reponer_stock(int codigo_producto, int cantidad, double precio) {
+		PreparedStatement st = null;
+		String sentenciaSQL="UPDATE producto SET stock=stock+"+cantidad+" WHERE codigo="+codigo_producto+"";
+		try {
+			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			st.executeUpdate();
+			calcular_precio_venta(codigo_producto, precio);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+                Conexion.getInstancia().desconectar();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public void actualizar_stock(int codigo_producto, int cantidad) {
 		PreparedStatement st = null;
 		String sentenciaSQL="UPDATE producto SET stock=stock+"+cantidad+" WHERE codigo="+codigo_producto+"";
@@ -235,7 +253,7 @@ public class ProductoDAO {
 	}
 	
 	
-	public void calcular_precio_venta_nuevo_producto(int codigo_producto, Double precio) {
+	public void calcular_precio_venta(int codigo_producto, Double precio) {
 		Double porcGan;
 		Double precio_venta;
 		Statement st = null;
