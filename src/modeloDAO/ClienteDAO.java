@@ -22,8 +22,7 @@ public class ClienteDAO {
 
 		if (yaExisteUsuario(cli.getCliente_usuario(), cli.getMail()))
 		{
-			throw new ExistentUserException();
-			//ya_existe_mensaje = "El usuario y/o el mail ingresados ya existen";
+			throw new ExistentUserException("El usuario y/o el mail ingresados ya existen");
 		}
 		else 
 		{
@@ -121,7 +120,7 @@ public class ClienteDAO {
 	public Boolean yaExisteUsuario(String usuario, String mail) {
 		PreparedStatement st = null;
 		ResultSet rs=null;
-		String sentenciaSQL="SELECT * FROM cliente WHERE cliente_usuario='"+usuario+"' and mail='"+mail+"' and fecha_baja is null";
+		String sentenciaSQL="SELECT * FROM cliente WHERE cliente_usuario='"+usuario+"' or mail='"+mail+"' and fecha_baja is null";
 		try {
 			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
 			rs = st.executeQuery();

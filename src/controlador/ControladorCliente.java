@@ -9,18 +9,24 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import exceptions.ExistentUserException;
 import exceptions.NotValidValueCustomException;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import modeloDAO.ClienteDAO;
+import services.CustomerService;
 import modelo.Cliente;
 
 @WebServlet("/ControladorCliente")
 public class ControladorCliente extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private CustomerService _customerService;
     public ControladorCliente() {
         super();
+        _customerService = new CustomerService();
         // TODO Auto-generated constructor stub
     }
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -33,30 +39,32 @@ public class ControladorCliente extends HttpServlet {
 		String action = request.getParameter("accion");
 		
 		if(action.equalsIgnoreCase("alta")) {
+			
 			cliente = new Cliente(request.getParameter("dni"),request.getParameter("usuario"),request.getParameter("contrasena"), 
 					request.getParameter("nombre"), request.getParameter("apellido"),request.getParameter("mail"),
 					request.getParameter("telefono"),request.getParameter("direccion")
 					);
 			
-			ArrayList <String> mensajes = null;
-			if (request.getParameter("es_socio").equals("1")) {
-				mensajes = cliDAO.alta(cliente, 1, request.getParameter("contrasena2"));
+			if (_customerService.ValidateEqualPasswords(request.getParameter("contrasena"), request.getParameter("contrasena2"))){
+				try
+				{
+					_customerService.RegisterCustomer(cliente);
+					request.setAttribute("registroClienteOk", "El usuario ha sido registrado en el sistema");
+				}
+				catch (ExistentUserException e)
+				{
+					request.setAttribute("registroClienteError", e.getMessage());
+				} catch (Exception e) {
+					
+					request.setAttribute("registroClienteError", "Error interno del servidor");
+				}
 			}else {
-				mensajes = cliDAO.alta(cliente, 0, request.getParameter("contrasena2"));
+				request.setAttribute("registroClienteError", "Las contraseñas no coinciden");
 			}
-			if (mensajes.get(0) != null){
-				request.setAttribute("registroClienteOk", mensajes.get(0));
-			}
-			else if (mensajes.get(1) != null)
-			{
-				request.setAttribute("registroClienteError", mensajes.get(1));
-			}
-			else if (mensajes.get(1) != null)
-			{
-				request.setAttribute("registroClienteError", mensajes.get(2));
-			}
+			
 			acceso = "registroCliente.jsp";
 		}
+		
 		else if(action.equalsIgnoreCase("cambio_contrasena")) {
 			HttpSession sesion = request.getSession(true);
 			String usuario = sesion.getAttribute("usuario_cliente").toString();

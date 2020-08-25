@@ -7,8 +7,8 @@ public class Conexion {
 	private Connection con=null;
 	private int conectados=0;
 	private String url="jdbc:mysql://localhost:3306/vinoteca_gatti?useTimezone=true&serverTimezone=UTC";
-	private String usuario="root";
-	private String pass="2713";
+	private String usuario="Java";
+	private String pass="Java2019";
 	
 	private Conexion() {
 		try {

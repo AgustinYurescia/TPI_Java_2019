@@ -1,6 +1,7 @@
 package modelo;
 
 public class Cliente {
+	
 	private String dni;
 	private String cliente_usuario;
 	private String cliente_contrasena;
@@ -22,6 +23,10 @@ public class Cliente {
 		this.mail = mail;
 		this.telefono = telefono;
 		this.direccion = direccion;
+	}
+	
+	public Cliente() {
+		super();
 	}
 	
 	public static boolean isValid(String dni ,String nombre ,String apellido ,String telefono ,String direccion ,String mail ,String contrasena) {
