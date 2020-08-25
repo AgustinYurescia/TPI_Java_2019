@@ -12,6 +12,18 @@ public class Cliente {
 	private java.sql.Date fecha_baja_socio;
 	private java.sql.Date fecha_baja;
 	
+	public Cliente(String dni, String cliente_usuario, String cliente_contrasena, String nombre, String apellido,
+			String mail, String telefono, String direccion){
+		this.dni = dni;
+		this.cliente_usuario = cliente_usuario;
+		this.cliente_contrasena = cliente_contrasena;
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.mail = mail;
+		this.telefono = telefono;
+		this.direccion = direccion;
+	}
+	
 	public static boolean isValid(String dni ,String nombre ,String apellido ,String telefono ,String direccion ,String mail ,String contrasena) {
 		boolean valid = true;
 		
@@ -63,9 +75,7 @@ public class Cliente {
 		
 		return valid;
 	}
-	
-	
-	
+
 	public static boolean isValid(String nombre ,String apellido ,String telefono ,String direccion ,String mail ) {
 		boolean valid = true;
 			

@@ -28,26 +28,16 @@ public class ControladorCliente extends HttpServlet {
 	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ClienteDAO cliDAO = new ClienteDAO();
-		Cliente cliente = new Cliente();
+		Cliente cliente = null;
 		String acceso = "";
 		String action = request.getParameter("accion");
+		
 		if(action.equalsIgnoreCase("alta")) {
-			String nombre_usuario = request.getParameter("usuario");
-			String mail = request.getParameter("mail");
-			String dni = request.getParameter("dni");
-			String nombre = request.getParameter("nombre");
-			String apellido = request.getParameter("apellido");
-			String telefono = request.getParameter("telefono");
-			String direccion = request.getParameter("direccion");
-			String contrasena = request.getParameter("contrasena");
-			cliente.setDni(dni);
-			cliente.setNombre(nombre);
-			cliente.setApellido(apellido);
-			cliente.setTelefono(telefono);
-			cliente.setDireccion(direccion);
-			cliente.setMail(mail);
-			cliente.setCliente_usuario(nombre_usuario);
-			cliente.setCliente_contrasena(contrasena);
+			cliente = new Cliente(request.getParameter("dni"),request.getParameter("usuario"),request.getParameter("contrasena"), 
+					request.getParameter("nombre"), request.getParameter("apellido"),request.getParameter("mail"),
+					request.getParameter("telefono"),request.getParameter("direccion")
+					);
+			
 			ArrayList <String> mensajes = null;
 			if (request.getParameter("es_socio").equals("1")) {
 				mensajes = cliDAO.alta(cliente, 1, request.getParameter("contrasena2"));
