@@ -6,7 +6,7 @@ import modelo.Cliente;
 public class CustomerService {
 	
 	private ClienteDAO _clienteDAO;
-
+	//comentario de pruebas
 	public CustomerService() 
 	{
 		_clienteDAO = new ClienteDAO();
