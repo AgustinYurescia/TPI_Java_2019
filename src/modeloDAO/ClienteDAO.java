@@ -12,12 +12,19 @@ import modelo.Cliente;
 
 public class ClienteDAO {
 	
-	public void alta(Cliente cli) throws Exception {
+	public void alta(Cliente cli, int esSocio) throws Exception {
 		
 		PreparedStatement st = null;
 		ResultSet keyResultSet=null;
-		
-		String sentenciaSQL="INSERT INTO cliente(dni,cliente_usuario,cliente_contrasena,nombre,apellido,mail,telefono,direccion,fecha_baja_socio,fecha_baja)VALUES(?,?,?,?,?,?,?,?,current_date,NULL)";
+		String sentenciaSQL= null;
+		if (esSocio == 1)
+		{
+			sentenciaSQL="INSERT INTO cliente(dni,cliente_usuario,cliente_contrasena,nombre,apellido,mail,telefono,direccion,fecha_baja_socio,fecha_baja)VALUES(?,?,?,?,?,?,?,?,NULL,NULL)";
+		}
+		else
+		{
+			sentenciaSQL="INSERT INTO cliente(dni,cliente_usuario,cliente_contrasena,nombre,apellido,mail,telefono,direccion,fecha_baja_socio,fecha_baja)VALUES(?,?,?,?,?,?,?,?,current_date,NULL)";
+		}
 
 		if (yaExisteUsuario(cli.getCliente_usuario(), cli.getMail()))
 		{
@@ -227,55 +234,64 @@ public class ClienteDAO {
 		}
 	}
 	
-	public Cliente buscar_cliente_por_dni(String dni) {
-		Cliente cli = new Cliente();
+	public Cliente buscar_cliente_por_dni(String dni) throws Exception {
+		Cliente cli = null;
 		PreparedStatement st = null;
 		ResultSet rs=null;
-		String sentenciaSQL="SELECT * FROM cliente WHERE dni='"+dni+"'";
-		try {
-			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
-			rs = st.executeQuery();
-			if(rs.next()) {
-				cli.setDni(rs.getString(1));
-				cli.setCliente_usuario(rs.getString(2));
-				cli.setCliente_contrasena(rs.getString(3));
-				cli.setNombre(rs.getString(4));
-				cli.setApellido(rs.getString(5));
-				cli.setMail(rs.getString(6));
-				cli.setTelefono(rs.getString(7));
-				cli.setDireccion(rs.getString(8));
-				return cli;
-			}else {
-				return cli;
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if(st!=null) {st.close();}
-				Conexion.getInstancia().desconectar();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return cli;
-	}
-	
-	public void registrar_socio(String dni) {
-		PreparedStatement st = null;
-		String sentenciaSQL="UPDATE cliente SET fecha_baja_socio=NULL WHERE dni=?";
+		String sentenciaSQL="SELECT * FROM cliente WHERE dni=?";
 		try {
 			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
 			st.setString(1, dni);
-			st.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}finally {
-			try {
+			rs = st.executeQuery();
+			if(rs.next()) {
+				cli = new Cliente(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8));
+				return cli;
+			}
+			else 
+			{
+				throw new NonExistentUserException("No existe usuario con el dni ingresado");
+			}
+		} 
+		catch (Exception e) 
+		{
+			throw e;
+		} 
+		finally 
+		{
+			try 
+			{
 				if(st!=null) {st.close();}
 				Conexion.getInstancia().desconectar();
-			} catch (Exception e) {
+			}
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void registrar_socio(String dni) throws Exception {
+		PreparedStatement st = null;
+		String sentenciaSQL="UPDATE cliente SET fecha_baja_socio=NULL WHERE dni=?";
+		try 
+		{
+			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			st.setString(1, dni);
+			st.executeUpdate();
+		} 
+		catch (Exception e) 
+		{
+			throw e;
+		}
+		finally 
+		{
+			try 
+			{
+				if(st!=null) {st.close();}
+				Conexion.getInstancia().desconectar();
+			} 
+			catch (Exception e) 
+			{
 				e.printStackTrace();
 			}
 		}

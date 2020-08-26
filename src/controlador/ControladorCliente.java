@@ -49,8 +49,16 @@ public class ControladorCliente extends HttpServlet {
 			{
 				try
 				{
-					_customerService.RegisterCustomer(cliente);
-					request.setAttribute("registroClienteOk", "El usuario ha sido registrado en el sistema");
+					if (request.getParameter("es_socio").equals("1"))
+					{
+						_customerService.RegisterCustomer(cliente,1);
+						request.setAttribute("registroClienteOk", "El socio ha sido registrado en el sistema");
+					}
+					else
+					{
+						_customerService.RegisterCustomer(cliente,0);
+						request.setAttribute("registroClienteOk", "El usuario ha sido registrado en el sistema");
+					}
 				}
 				catch (ExistentUserException e)
 				{
@@ -118,19 +126,29 @@ public class ControladorCliente extends HttpServlet {
 			acceso = "bajaCliente.jsp";
 		}
 		
-		else if(action.equalsIgnoreCase("buscar"))
+		else if(action.equalsIgnoreCase("hacer_socio"))
 		{
-			String dni = request.getParameter("dni");
-			Cliente cli = cliDAO.buscar_cliente_por_dni(dni);
-			request.setAttribute("cliente", cli);
-			acceso = "hacerSocio.jsp";
-		}
-		
-		else if(action.equalsIgnoreCase("registrar_socio"))
-		{
-			String dni = request.getParameter("dni_cli");
-			cliDAO.registrar_socio(dni);
-			request.setAttribute("mensaje_exito", "Socio registrado con éxito");
+			try 
+			{
+				if (request.getParameter("dni") != null)
+				{
+					Cliente cli = _customerService.Buscar(request.getParameter("dni"));
+					request.setAttribute("cliente", cli);
+				}
+				else
+				{
+					_customerService.RegistrarSocio(request.getParameter("dni_cli"));
+					request.setAttribute("mensajeOk", "Socio registrado con éxito");					
+				}
+			}
+			catch (NonExistentUserException e)
+			{
+				request.setAttribute("mensajeError", e.getMessage());
+			}
+			catch (Exception e)
+			{
+				request.setAttribute("mensajeError", "Error interno del servidor");
+			}
 			acceso = "hacerSocio.jsp";
 		}
 		

@@ -24,17 +24,20 @@
       				<input type="text" class="form-control" id="dni" name="dni" placeholder="Ingrese el DNI del cliente">
     			</div>
     			<div class="form group col-md-6">
-      				<button type="submit" class="btn btn-primary" name="accion" value="buscar">Hacer Socio</button>
+      				<button type="submit" class="btn btn-primary" name="accion" value="hacer_socio">Hacer Socio</button>
     			</div>
   			</div>
 	   	</form>
-	   		<% 
-	   	String mensaje = (String)request.getAttribute("mensaje_exito"); 
-	   	if(mensaje != null){
-	   	%>
+	   	<% if((String)request.getAttribute("mensajeOk") != null){%>
 	   	<br>
 	   	<div class="alert alert-success" role="alert">
-	   		<%=mensaje%>
+	   		<%=(String)request.getAttribute("mensajeOk")%>
+		</div>
+	   	<%}%>
+	   	<% if((String)request.getAttribute("mensajeError") != null){%>
+	   	<br>
+	   	<div class="alert alert-danger" role="alert">
+	   		<%=(String)request.getAttribute("mensajeError")%>
 		</div>
 	   	<%}%>
 	   	<% 
@@ -44,7 +47,8 @@
       	<br>
 		<form action="ControladorCliente" method="post">
   			<div class="form-row">
-      			<input type="hidden" class="form-control" id="dni_cli" name="dni_cli" value=<%=cliente.getDni()%>>
+      			<input type="hidden" class="form-control" id="dni_cli" name="dni_cli" value=<%=cliente.getDni()%>/>
+      			<input type="hidden" class="form-control" id="es_socio" name="es_socio" value=1/>
     			<div class="form-group col-md-6">
       				<label for="dni">Nombre</label>
       				<input type="text" class="form-control" id="nombre" name="nombre" value=<%=cliente.getNombre()%> disabled>
@@ -79,7 +83,7 @@
     			</div>
   			</div>
   			<div class="form-row">
-    			<button type="submit" class="btn btn-primary" name="accion" value="registrar_socio">Registrar Socio</button>
+    			<button type="submit" class="btn btn-primary" name="accion" value="hacer_socio">Registrar Socio</button>
   			</div>
 		</form>
 		<%}else{}%>

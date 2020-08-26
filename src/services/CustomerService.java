@@ -1,6 +1,7 @@
 package services;
 
 import modeloDAO.ClienteDAO;
+import exceptions.NonExistentUserException;
 import modelo.Cliente;
 
 public class CustomerService {
@@ -17,11 +18,11 @@ public class CustomerService {
 		return(firstPassword.equals(secondPassword));
 	}
 	
-	public void RegisterCustomer(Cliente cliente) throws Exception 
+	public void RegisterCustomer(Cliente cliente, int esSocio) throws Exception 
 	{
 		try
 		{
-			_clienteDAO.alta(cliente);
+			_clienteDAO.alta(cliente,esSocio);
 		}
 		catch(Exception e)
 		{
@@ -44,6 +45,29 @@ public class CustomerService {
 		try
 		{
 			_clienteDAO.baja(usuario, contrasena);
+		}
+		catch(Exception e)
+		{
+			throw e;
+		}
+	}
+	public Cliente Buscar(String dni) throws Exception 
+	{
+		try
+		{
+			Cliente cli = _clienteDAO.buscar_cliente_por_dni(dni);
+			return cli;
+		}
+		catch(Exception e)
+		{
+			throw e;
+		}
+	}
+	public void RegistrarSocio(String dni) throws Exception 
+	{
+		try
+		{
+			_clienteDAO.registrar_socio(dni);
 		}
 		catch(Exception e)
 		{
