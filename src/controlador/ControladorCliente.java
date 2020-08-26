@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import exceptions.ExistentUserException;
+import exceptions.NonExistentUserException;
 import exceptions.NotValidValueCustomException;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -67,13 +68,34 @@ public class ControladorCliente extends HttpServlet {
 		
 		else if(action.equalsIgnoreCase("cambio_contrasena")) {
 			HttpSession sesion = request.getSession(true);
-			String usuario = sesion.getAttribute("usuario_cliente").toString();
-			String contrasena_actual = request.getParameter("cont_act");
-			String contrasena_nueva = request.getParameter("cont_nueva");
-			String contrasena_nueva_rep = request.getParameter("cont_nueva_rep");
-			ArrayList<String>mensajes = cliDAO.cambioContrasena(usuario, contrasena_actual, contrasena_nueva, contrasena_nueva_rep);
-			request.setAttribute("ok_mensaje", mensajes.get(0));
-			request.setAttribute("error_mensaje", mensajes.get(1));
+			if (Cliente.isValid(request.getParameter("cont_nueva")))
+			{
+				if (_customerService.ValidateEqualPasswords(request.getParameter("cont_nueva"),request.getParameter("cont_nueva_rep"))) 
+				{
+					try 
+					{
+						_customerService.CambioContrasena(sesion.getAttribute("usuario_cliente").toString(), request.getParameter("cont_act"), 
+								request.getParameter("cont_nueva"), request.getParameter("cont_nueva_rep"));
+						request.setAttribute("ok_mensaje", "Contraseña modificada con éxito");
+					}
+					catch (NonExistentUserException e)
+					{
+						request.setAttribute("error_mensaje", e.getMessage());
+					}
+					catch (Exception e)
+					{
+						request.setAttribute("error_mensaje", "Error interno del servidor");
+					}
+				}
+				else
+				{
+					request.setAttribute("error_mensaje", "Las contraseñas ingresadas no coinciden");
+				}
+			}
+			else
+			{
+				request.setAttribute("error_mensaje", "La contraseña nueva debe tener longitud mayor o igual a 4 y menor o igual a 45");
+			}
 			acceso="cambiarContrasena.jsp";
 		}else if(action.equalsIgnoreCase("baja_cliente")){
 			String usuario=request.getParameter("usuario_cliente");
