@@ -281,7 +281,7 @@ public class ClienteDAO {
 		}
 	}
 	
-	public void cambioContrasena(String usuario, String contrasena_actual, String contrasena_nueva, String contrasena_nueva_rep) throws Exception {
+	public void cambioContrasena(String usuario, String contrasena_actual, String contrasena_nueva) throws Exception {
 		String sentenciaSQL="UPDATE cliente SET cliente_contrasena=? WHERE cliente_usuario=? AND cliente_contrasena=? and fecha_baja is null";
 		PreparedStatement st = null;
 		if (!existe(usuario, contrasena_actual)) 
