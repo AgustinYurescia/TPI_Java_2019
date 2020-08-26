@@ -75,8 +75,7 @@ public class ControladorCliente extends HttpServlet {
 				{
 					try 
 					{
-						_customerService.CambioContrasena(sesion.getAttribute("usuario_cliente").toString(), request.getParameter("cont_act"), 
-								request.getParameter("cont_nueva"), request.getParameter("cont_nueva_rep"));
+						_customerService.CambioContrasena(sesion.getAttribute("usuario_cliente").toString(), request.getParameter("cont_act"), request.getParameter("cont_nueva"));
 						request.setAttribute("ok_mensaje", "Contraseña modificada con éxito");
 					}
 					catch (NonExistentUserException e)

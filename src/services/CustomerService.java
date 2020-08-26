@@ -28,11 +28,11 @@ public class CustomerService {
 			throw e;
 		}
 	}
-	public void CambioContrasena(String usuario, String contrasena_actual, String contrasena_nueva, String contrasena_nueva_rep) throws Exception 
+	public void CambioContrasena(String usuario, String contrasena_actual, String contrasena_nueva) throws Exception 
 	{
 		try
 		{
-			_clienteDAO.cambioContrasena(usuario, contrasena_actual,contrasena_nueva,contrasena_nueva_rep);
+			_clienteDAO.cambioContrasena(usuario, contrasena_actual, contrasena_nueva);
 		}
 		catch(Exception e)
 		{
