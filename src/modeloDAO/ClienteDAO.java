@@ -82,12 +82,13 @@ public class ClienteDAO {
 		return false;
 	}
 	
-	public ArrayList<String> baja(String usuario, String contrasena) {
-		ArrayList<String>mensajes = new ArrayList<>();
+	public void baja(String usuario, String contrasena) throws Exception {
 		PreparedStatement st = null;
-		String mensajeOk = null;
-		String mensajeError = null;
-		if (existe(usuario, contrasena))
+		if (!existe(usuario, contrasena))
+		{
+			throw new NonExistentUserException("Usuario y/o contraseña incorrectos");
+		}
+		else
 		{
 			String sentenciaSQL="UPDATE cliente SET fecha_baja = current_date WHERE cliente_usuario=? AND cliente_contrasena=? and fecha_baja is null";
 			try {
@@ -95,9 +96,8 @@ public class ClienteDAO {
 				st.setString(1, usuario);
 				st.setString(2, contrasena);
 				st.executeUpdate();
-				mensajeOk = "Baja realizada con éxito";
 			} catch (Exception e) {
-				e.printStackTrace();
+				throw e;
 			} finally {
 				try {
 					if(st!=null) {st.close();}
@@ -107,13 +107,6 @@ public class ClienteDAO {
 				}
 			}
 		}
-		else
-		{
-			mensajeError = "No existe ningún cliente con los datos ingresados";
-		}
-		mensajes.add(0, mensajeOk);
-		mensajes.add(1, mensajeError);
-		return mensajes;
 	}
 	
 	public Boolean yaExisteUsuario(String usuario, String mail) {

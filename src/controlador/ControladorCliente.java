@@ -38,15 +38,15 @@ public class ControladorCliente extends HttpServlet {
 		Cliente cliente = null;
 		String acceso = "";
 		String action = request.getParameter("accion");
+		HttpSession sesion = request.getSession(true);
 		
 		if(action.equalsIgnoreCase("alta")) {
-			
 			cliente = new Cliente(request.getParameter("dni"),request.getParameter("usuario"),request.getParameter("contrasena"), 
 					request.getParameter("nombre"), request.getParameter("apellido"),request.getParameter("mail"),
 					request.getParameter("telefono"),request.getParameter("direccion")
 					);
-			
-			if (_customerService.ValidateEqualPasswords(request.getParameter("contrasena"), request.getParameter("contrasena2"))){
+			if (_customerService.ValidateEqualPasswords(request.getParameter("contrasena"), request.getParameter("contrasena2")))
+			{
 				try
 				{
 					_customerService.RegisterCustomer(cliente);
@@ -55,19 +55,20 @@ public class ControladorCliente extends HttpServlet {
 				catch (ExistentUserException e)
 				{
 					request.setAttribute("registroClienteError", e.getMessage());
-				} catch (Exception e) {
-					
+				} 
+				catch (Exception e) 
+				{					
 					request.setAttribute("registroClienteError", "Error interno del servidor");
 				}
-			}else {
-				request.setAttribute("registroClienteError", "Las contraseñas no coinciden");
 			}
-			
+			else 
+			{
+				request.setAttribute("registroClienteError", "Las contraseñas no coinciden");
+			}			
 			acceso = "registroCliente.jsp";
 		}
 		
 		else if(action.equalsIgnoreCase("cambio_contrasena")) {
-			HttpSession sesion = request.getSession(true);
 			if (Cliente.isValid(request.getParameter("cont_nueva")))
 			{
 				if (_customerService.ValidateEqualPasswords(request.getParameter("cont_nueva"),request.getParameter("cont_nueva_rep"))) 
@@ -97,41 +98,63 @@ public class ControladorCliente extends HttpServlet {
 				request.setAttribute("error_mensaje", "La contraseña nueva debe tener longitud mayor o igual a 4 y menor o igual a 45");
 			}
 			acceso="cambiarContrasena.jsp";
-		}else if(action.equalsIgnoreCase("baja_cliente")){
-			String usuario=request.getParameter("usuario_cliente");
-			String contrasena=request.getParameter("contrasena");
-			ArrayList<String> mensajes = cliDAO.baja(usuario, contrasena);
-			request.setAttribute("mensajeOk", mensajes.get(0));
-			request.setAttribute("mensajeError", mensajes.get(1));
+		}
+		
+		else if(action.equalsIgnoreCase("baja_cliente"))
+		{
+			try
+			{
+			_customerService.Baja(request.getParameter("usuario_cliente"), request.getParameter("contrasena"));
+			request.setAttribute("mensajeOk", "Baja realizada con éxito");
+			sesion.invalidate();
+			}
+			catch (NonExistentUserException e)
+			{
+				request.setAttribute("mensajeError", e.getMessage());
+			}
+			catch (Exception e)
+			{
+				request.setAttribute("mensajeError", "Error interno del servidor");
+			}
 			acceso = "bajaCliente.jsp";
-		}else if(action.equalsIgnoreCase("buscar")){
+		}
+		
+		else if(action.equalsIgnoreCase("buscar"))
+		{
 			String dni = request.getParameter("dni");
 			Cliente cli = cliDAO.buscar_cliente_por_dni(dni);
 			request.setAttribute("cliente", cli);
 			acceso = "hacerSocio.jsp";
-		}else if(action.equalsIgnoreCase("registrar_socio")){
+		}
+		
+		else if(action.equalsIgnoreCase("registrar_socio"))
+		{
 			String dni = request.getParameter("dni_cli");
 			cliDAO.registrar_socio(dni);
 			request.setAttribute("mensaje_exito", "Socio registrado con éxito");
 			acceso = "hacerSocio.jsp";
 		}
-		else if(action.equalsIgnoreCase("modificacion_cliente")){
-			HttpSession sesion = request.getSession(true);
+		
+		else if(action.equalsIgnoreCase("modificacion_cliente"))
+		{
 			String usuario = sesion.getAttribute("usuario_cliente").toString();
 			String nombre = request.getParameter("nombre");
 			String apellido = request.getParameter("apellido");
 			String telefono = request.getParameter("telefono");
 			String direccion = request.getParameter("direccion");
 			String mail = request.getParameter("mail");
-			if (cliDAO.yaExisteUsuario(usuario, mail) && (Cliente.isValid(nombre, apellido, telefono, direccion, mail)) ) {
-					Cliente cli = cliDAO.buscar_cliente_por_usuario (usuario);
-					cli.setNombre(nombre);
-					cli.setApellido(apellido);
-					cli.setTelefono(telefono);
-					cli.setDireccion(direccion);
-					cli.setMail(mail);
-					cliDAO.modificacion_cliente(cli);
-			}else {
+			if (cliDAO.yaExisteUsuario(usuario, mail) && (Cliente.isValid(nombre, apellido, telefono, direccion, mail)) ) 
+			{
+				Cliente cli = cliDAO.buscar_cliente_por_usuario (usuario);
+				cli.setNombre(nombre);
+				cli.setApellido(apellido);
+				cli.setTelefono(telefono);
+				cli.setDireccion(direccion);
+				cli.setMail(mail);
+				cliDAO.modificacion_cliente(cli);
+			}
+			else 
+			{
 				RequestDispatcher vista = request.getRequestDispatcher("error.jsp");
 				vista.forward(request, response);
 				return;		

@@ -39,4 +39,15 @@ public class CustomerService {
 			throw e;
 		}
 	}
+	public void Baja(String usuario, String contrasena) throws Exception 
+	{
+		try
+		{
+			_clienteDAO.baja(usuario, contrasena);
+		}
+		catch(Exception e)
+		{
+			throw e;
+		}
+	}
 }
