@@ -160,23 +160,19 @@ public class ControladorCliente extends HttpServlet {
 			String telefono = request.getParameter("telefono");
 			String direccion = request.getParameter("direccion");
 			String mail = request.getParameter("mail");
-			if (cliDAO.yaExisteUsuario(usuario, mail) && (Cliente.isValid(nombre, apellido, telefono, direccion, mail)) ) 
+			if (Cliente.isValid(nombre, apellido, telefono, direccion, mail) ) 
 			{
-				Cliente cli = cliDAO.buscar_cliente_por_usuario (usuario);
-				cli.setNombre(nombre);
-				cli.setApellido(apellido);
-				cli.setTelefono(telefono);
-				cli.setDireccion(direccion);
-				cli.setMail(mail);
-				cliDAO.modificacion_cliente(cli);
+				try {
+					_customerService.ActualizarCliente( nombre, apellido, telefono, direccion, mail, usuario);
+					acceso = "index.jsp";
+				} catch (Exception e) {
+					acceso = "error.jsp";
+				}
 			}
 			else 
 			{
-				RequestDispatcher vista = request.getRequestDispatcher("error.jsp");
-				vista.forward(request, response);
-				return;		
+				acceso = "error.jsp";
 			}
-			acceso = "index.jsp";
 		}
 		
 		RequestDispatcher vista = request.getRequestDispatcher(acceso);

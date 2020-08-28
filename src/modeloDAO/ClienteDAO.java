@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import config.Conexion;
 import exceptions.ExistentUserException;
+import exceptions.NoRowsAffectedException;
 import exceptions.NonExistentUserException;
 import modelo.Cliente;
 
@@ -179,7 +180,7 @@ public class ClienteDAO {
 		}
 		return cli;
 	}
-	public Cliente buscar_cliente_por_usuario (String usuario) {
+	public Cliente buscar_cliente_por_usuario (String usuario) throws Exception{
 		PreparedStatement ps = null;
 		String sentencia = "SELECT dni, nombre, apellido, mail, telefono, direccion FROM cliente WHERE cliente_usuario = ? and fecha_baja is null";
 		ResultSet rs = null;
@@ -196,7 +197,9 @@ public class ClienteDAO {
 				cli.setTelefono(rs.getString(5));
 				cli.setDireccion(rs.getString(6));
 			}
-			return cli;
+			else {
+				throw new NonExistentUserException("No existe el usuario ingresado");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
@@ -210,7 +213,7 @@ public class ClienteDAO {
 		return cli;     
 	}
 	
-	public void modificacion_cliente(Cliente cli) {
+	public void modificacion_cliente(Cliente cli) throws Exception {
 		PreparedStatement ps = null;
 		String sentencia = "UPDATE cliente SET nombre = ?, apellido = ?, mail = ?, direccion = ?, telefono = ? WHERE dni = ? and fecha_baja is null";
 		try {
@@ -221,9 +224,12 @@ public class ClienteDAO {
 			ps.setString(4,cli.getDireccion());
 			ps.setString(5,cli.getTelefono());
 			ps.setString(6,cli.getDni());
-			ps.executeUpdate(); //esto no funciona, todavia no se por que  
+			int result = ps.executeUpdate(); //esto no funciona, todavia no se por que  
+			if (result == 0 ) {
+				throw new NoRowsAffectedException("No se ha editado ningun usuario");
+			}
 		}catch(Exception e) {
-			e.printStackTrace();
+			throw e;
 		}finally {
 			try {
 				if(ps!=null) {ps.close();}
