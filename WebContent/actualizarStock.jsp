@@ -19,7 +19,7 @@
 	<% 	HttpSession sesion = request.getSession(true);
 	   	if (sesion.getAttribute("usuario_admin") != null){%>
 			<h1>Actualizar Stock</h1>
-			<form action="ControladorProducto">
+			<form action="ControladorProducto" method="POST">
   				<div class="form-row">
     				<div class="form-group col-md-4">
       					<label for="codigo_producto">Nombre del producto</label>

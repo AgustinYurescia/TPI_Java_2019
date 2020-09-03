@@ -75,13 +75,13 @@ public class ProductoDAO {
 		}
 		
 	}
-
 	
-	public void alta(Producto prod, Double precio) {
+	public void alta(Producto prod, Double precio) throws Exception {
 		PreparedStatement st = null;
 		ResultSet keyResultSet=null;
 		String sentenciaSQL="INSERT INTO producto(nombre,imagen,stock,codigo_categoria)VALUES(?,?,?,?)";
-		try {
+		try 
+		{
 			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL,PreparedStatement.RETURN_GENERATED_KEYS);
 			st.setString(1, prod.getNombre());
 			st.setBlob(2, prod.get_imagen());
@@ -89,25 +89,38 @@ public class ProductoDAO {
 			st.setInt(4, prod.getCodigo_categoria());
 			st.executeUpdate();
 			keyResultSet=st.getGeneratedKeys();
-			if(keyResultSet!=null && keyResultSet.next()) {
+			if(keyResultSet!=null && keyResultSet.next()) 
+			{
 				prod.setCodigo(keyResultSet.getInt(1));
-				calcular_precio_venta(keyResultSet.getInt(1),precio);
-				
+				try
+				{
+					calcular_precio_venta(keyResultSet.getInt(1),precio);
+				}
+				catch (Exception e)
+				{
+					throw e;
+				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}finally {
-			try {
+		} 
+		catch (Exception e) 
+		{
+			throw e;
+		}
+		finally 
+		{
+			try 
+			{
 				if(keyResultSet!=null) {keyResultSet.close();}
                 if(st!=null) {st.close();}
                 Conexion.getInstancia().desconectar();
-			} catch (Exception e) {
+			} 
+			catch (Exception e) 
+			{
 				e.printStackTrace();
 			}
 		}
 		
 	}
-	
 	
 	public List<Producto> obtener_por_codigo_categoria(int codigo_categoria) {
 		PreparedStatement ps = null;
@@ -248,33 +261,41 @@ public class ProductoDAO {
 		}
 	}
 	
-	
-	public void calcular_precio_venta(int codigo_producto, Double precio) {
+	@SuppressWarnings("null")
+	public void calcular_precio_venta(int codigo_producto, Double precio) throws Exception {
 		Double porcGan;
 		Double precio_venta;
 		Statement st = null;
 		PreparedStatement st2 = null;
 		ResultSet rs = null;
 		String sentenciaParaPorc="SELECT porcentaje FROM porc_ganancia WHERE fecha_desde = (SELECT MAX(fecha_desde) FROM porc_ganancia WHERE fecha_desde <= current_date)";
-		try {
+		try 
+		{
 			st=Conexion.getInstancia().getConexion().createStatement();
 			rs=st.executeQuery(sentenciaParaPorc);
-			if (rs.next()) {
+			if (rs.next()) 
+			{
 				porcGan=rs.getDouble("porcentaje");
 				precio_venta = (precio*(1+(porcGan/100)));
-				String sentenciaParaUpdate="UPDATE producto SET precio_venta="+precio_venta+" WHERE codigo="+codigo_producto+"";
+				String sentenciaParaUpdate="UPDATE producto SET precio_venta=? WHERE codigo=?";
 				st2=Conexion.getInstancia().getConexion().prepareStatement(sentenciaParaUpdate);
+				st2.setDouble(1, precio_venta);
+				st2.setInt(2, codigo_producto);
 				st2.executeUpdate(); 
 			}
 		} 
-		catch (Exception e) {
-			e.printStackTrace();
+		catch (Exception e) 
+		{
+			throw e;
 		}
-		finally {
-			try {
+		finally 
+		{
+			try 
+			{
                 Conexion.getInstancia().desconectar();
 			} 
-			catch (Exception e) {
+			catch (Exception e) 
+			{
 				e.printStackTrace();
 			}
 		}
@@ -284,7 +305,6 @@ public class ProductoDAO {
 	public Producto buscar_producto(int codigo_producto) {
 		Producto prod = new Producto();
 		Statement st = null;
-		PreparedStatement ps = null;
 		ResultSet rs = null;
 		String sentenciaParaPorc="SELECT * FROM producto WHERE codigo = "+codigo_producto+"";
 		try {

@@ -69,11 +69,10 @@
 						<td><font face="Calibri" color="Blue"><%=prod.getNombre()%></font></td>
 						<td><font face="Calibri" color="Black"><%=prod.getPrecioVenta()%></font></td>
 						<td><font face="Calibri" color="Black"><%=prod.getStock()%></font></td>
-						<td>
-							<a href="ControladorProducto?accion=BajaProducto&codigo_producto_baja=<%=prod.getCodigo()%>">
-								<jsp:include page="SVG/basura.svg"/>
-							</a>
-						</td>
+						<form action="ControladorProducto" method="POST">
+							<input type="hidden" name="codigo_producto_baja" value="<%=prod.getCodigo()%>">
+							<td><button type="submit" class="btn btn-outline-danger" style="color: red;" name="accion" value="BajaProducto"><img src="SVG/Borrar.svg"/> Eliminar</button></td>
+						</form>
 					</tr>					
 					<%}%>
 				</tbody>
