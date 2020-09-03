@@ -3,7 +3,6 @@ package controlador;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -13,10 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
-
 import modelo.Producto;
 import modeloDAO.ProductoDAO;
-import modeloDAO.CategoriaDAO;
 
 
 @MultipartConfig
@@ -32,24 +29,31 @@ public class ControladorProducto extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String acceso = "";
 		String action = request.getParameter("accion");
-		if(action.equalsIgnoreCase("listar")) {
+		if(action.equalsIgnoreCase("listar")) 
+		{
 			int codigo_categoria = Integer.parseInt(request.getParameter("codigo_filtro"));
 			ProductoDAO pr = new ProductoDAO();
-			if (codigo_categoria == 0){ 
+			if (codigo_categoria == 0)
+			{ 
 				ArrayList<Producto> lista = (ArrayList<Producto>) pr.obtener_todos();
 				request.setAttribute("listado", lista);
-			}else {
-					request.setAttribute("listado", pr.obtener_por_codigo_categoria(codigo_categoria));
+			}else 
+			{
+				request.setAttribute("listado", pr.obtener_por_codigo_categoria(codigo_categoria));
 			}
 			HttpSession sesion = request.getSession(true);
 			String usuario_admin = (String)sesion.getAttribute("usuario_admin");
-			if (usuario_admin == null) {
+			if (usuario_admin == null) 
+			{
 				acceso = listar;
 			}
-			else {
+			else 
+			{
 				acceso = listarAdmin;
 			}			
-		}else if(action.equalsIgnoreCase("mostrar_producto")) {
+		}
+		else if(action.equalsIgnoreCase("mostrar_producto")) 
+		{
 			String codigo_producto;
 			ProductoDAO pdao = new ProductoDAO();
 			Producto prod;
@@ -57,21 +61,23 @@ public class ControladorProducto extends HttpServlet {
 			prod = pdao.buscar_producto(Integer.parseInt(codigo_producto));
 			request.setAttribute("producto", prod);
 			acceso = mostrar_producto;
-			
-		}else if(action.equalsIgnoreCase("ActualizarStock")) {
+		}
+		else if(action.equalsIgnoreCase("ActualizarStock")) 
+		{
 			ProductoDAO pdao = new ProductoDAO();
 			String codigo_producto = request.getParameter("codigo_producto");
 			String cantidad = request.getParameter("cantidad");
 			String precio = request.getParameter("precio");
 			pdao.reponer_stock(Integer.parseInt(codigo_producto), Integer.parseInt(cantidad), Double.parseDouble(precio));
 			acceso="indexAdmin.jsp";
-		}else if(action.equalsIgnoreCase("BajaProducto")) {
+		}
+		else if(action.equalsIgnoreCase("BajaProducto")) 
+		{
 			ProductoDAO pdao = new ProductoDAO();
 			String codigo_producto_baja = request.getParameter("codigo_producto_baja");
 			pdao.baja(Integer.parseInt(codigo_producto_baja));
 			acceso = "ControladorProducto?accion=listar&codigo_filtro=0";
 		}
-		
 		RequestDispatcher vista = request.getRequestDispatcher(acceso);
 		vista.forward(request, response);
 	}
@@ -102,7 +108,9 @@ public class ControladorProducto extends HttpServlet {
 				request.setAttribute("mensaje_error_altaProducto","Error, revise los datos del alta e intente nuevamente");
 				acceso = "altaProducto.jsp";
 			}
-		}else if(action.equalsIgnoreCase("EditarProducto")) {
+		}
+		else if(action.equalsIgnoreCase("EditarProducto")) 
+		{
 			Part imagen = request.getPart("imagen");
 			InputStream ImagenInputStream = null;
 			if (imagen.getSize() != 0) 
@@ -119,19 +127,19 @@ public class ControladorProducto extends HttpServlet {
 			prod.setPrecioVenta(Double.parseDouble(precio));
 			pdao.editar_producto(prod);
 			acceso="indexAdmin.jsp";
-		
-		RequestDispatcher vista = request.getRequestDispatcher(acceso);
-		vista.forward(request, response);
-		}else if(action.equalsIgnoreCase("BuscarProductoEditar")) {
+			RequestDispatcher vista = request.getRequestDispatcher(acceso);
+			vista.forward(request, response);
+		}
+		else if(action.equalsIgnoreCase("BuscarProductoEditar")) 
+		{
 			String codigo_producto;
 			ProductoDAO pdao = new ProductoDAO();
 			codigo_producto = request.getParameter("codigo_producto");
 			prod = pdao.buscar_producto(Integer.parseInt(codigo_producto));
 			request.setAttribute("producto", prod);
-			acceso="editarProducto.jsp";
-		
-		RequestDispatcher vista = request.getRequestDispatcher(acceso);
-		vista.forward(request, response);
+			acceso="editarProducto.jsp";		
+			RequestDispatcher vista = request.getRequestDispatcher(acceso);
+			vista.forward(request, response);
 		}
 	}
 }

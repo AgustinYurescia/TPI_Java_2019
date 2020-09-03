@@ -9,15 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import exceptions.ExistentUserException;
 import exceptions.NonExistentUserException;
-import exceptions.NotValidValueCustomException;
-import java.sql.Date;
-import java.sql.SQLException;
-import java.util.ArrayList;
-
-import modeloDAO.ClienteDAO;
 import services.CustomerService;
 import modelo.Cliente;
 
@@ -34,7 +27,6 @@ public class ControladorCliente extends HttpServlet {
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		ClienteDAO cliDAO = new ClienteDAO();
 		Cliente cliente = null;
 		String acceso = "";
 		String action = request.getParameter("accion");

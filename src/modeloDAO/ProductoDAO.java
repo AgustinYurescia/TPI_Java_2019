@@ -2,9 +2,7 @@ package modeloDAO;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.InputStream;
@@ -12,8 +10,6 @@ import java.io.OutputStream;
 import java.sql.*;
 import config.Conexion;
 import modelo.Producto;
-import modelo.Precio;
-import modeloDAO.PrecioDAO;
 
 public class ProductoDAO {
 		

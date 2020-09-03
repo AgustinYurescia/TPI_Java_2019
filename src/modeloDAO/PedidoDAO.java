@@ -104,12 +104,10 @@ public class PedidoDAO {
 	
 	//CONTROLAR QUE ESTÉ BIEN
 	public void setear_fecha_entrega_estimada(int nro_pedido) { 
-		java.sql.Date fecha_ent_est = null;
 		int cantidad_de_dias;
 		Statement st = null;
 		PreparedStatement st2 = null;
 		ResultSet rs = null;
-		ResultSet keyResultSet=null;
 		String sentenciaParaDias="SELECT cantidad_de_dias "
 				+ "FROM tardanza_preparacion_pedido "
 				+ "WHERE fecha_desde = ("

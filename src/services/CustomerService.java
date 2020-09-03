@@ -100,4 +100,12 @@ public class CustomerService {
 		
 	}
 	
+	public void IniciarSesion(String usuario, String contrasena)  throws Exception
+	{
+		if (!(_clienteDAO.existe(usuario, contrasena)))
+		{
+			throw new NonExistentUserException("Usuario y/o contraseña incorrectos"); 
+		}
+	}
+	
 }

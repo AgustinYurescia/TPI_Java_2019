@@ -10,13 +10,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import modeloDAO.ClienteDAO;
+import exceptions.NonExistentUserException;
+import services.CustomerService;
 
 
 @WebServlet("/ControladorLogin")
 public class ControladorLogin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	ClienteDAO cliDAO = new ClienteDAO();
+	CustomerService _servicioCliente;
     public ControladorLogin() {
         super();
         
@@ -30,34 +31,32 @@ public class ControladorLogin extends HttpServlet {
 			vista.forward(request, response);
 		}
 	}
-
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String acceso = "";
 		HttpSession sesion = request.getSession();
-		Boolean rta;
 		String action=request.getParameter("accion");
+		_servicioCliente = new CustomerService();
 		if(action.equalsIgnoreCase("login")) {
-			String usuario=request.getParameter("usuario_cliente");
-			String contrasena=request.getParameter("contrasena");
-			rta = cliDAO.existe(usuario, contrasena);
-			if (rta && sesion.getAttribute("usuario_cliente") == null) {
-				sesion.setAttribute("usuario_cliente", usuario);
-				RequestDispatcher vista = request.getRequestDispatcher("index.jsp");
-				vista.forward(request, response);
-			}else {
-				request.setAttribute("loginClienteError", "Usuario y/o contraseña incorrectos");
-				RequestDispatcher vista = request.getRequestDispatcher("loginClientes.jsp");
-				vista.forward(request, response);
+			try
+			{
+				_servicioCliente.IniciarSesion(request.getParameter("usuario_cliente"), request.getParameter("contrasena"));
+				sesion.setAttribute("usuario_cliente", request.getParameter("usuario_cliente"));
+				acceso = "index.jsp";
 			}
-			
-		}else if(action.equalsIgnoreCase("logout")) {
-			sesion.invalidate();
-			RequestDispatcher vista = request.getRequestDispatcher("index.jsp");
-			vista.forward(request, response);
-		}else if(action.equalsIgnoreCase("iniciosesion")) {
-			RequestDispatcher vista = request.getRequestDispatcher("loginClientes.jsp");
-			vista.forward(request, response);
+			catch (NonExistentUserException e)
+			{
+				request.setAttribute("loginClienteError", e.getMessage());
+				acceso = "loginClientes.jsp";
+			}
+			catch (Exception e)
+			{
+				request.setAttribute("loginClienteError", "Error interno del servidor");
+				acceso = "loginClientes.jsp";
+			}
 		}
+		RequestDispatcher vista = request.getRequestDispatcher(acceso);
+		vista.forward(request, response);
 		/*doGet(request, response);*/
 	}
-
 }
