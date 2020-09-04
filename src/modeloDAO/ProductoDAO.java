@@ -158,18 +158,27 @@ public class ProductoDAO {
 	}
 
 	
-	public void baja(int codigo_producto_baja) {
+	public void baja(int codigo_producto_baja) throws Exception {
 		PreparedStatement st = null;
-		String sentenciaSQL="UPDATE producto SET fecha_baja = current_date WHERE codigo="+codigo_producto_baja+"";
-		try {
+		String sentenciaSQL="UPDATE producto SET fecha_baja = current_date WHERE codigo=?";
+		try 
+		{
 			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			st.setInt(1, codigo_producto_baja);
 			st.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}finally {
-			try {
+		} 
+		catch (Exception e) 
+		{
+			throw e;
+		}
+		finally 
+		{
+			try 
+			{
                 Conexion.getInstancia().desconectar();
-			} catch (Exception e) {
+			} 
+			catch (Exception e) 
+			{
 				e.printStackTrace();
 			}
 		}

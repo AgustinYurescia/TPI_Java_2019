@@ -33,7 +33,7 @@
               		<a class="dropdown-item" href="ControladorDeLinks?accion=actualizarStock">Actualizar stock</a>
               		<a class="dropdown-item" href="ControladorDeLinks?accion=altaProducto">Alta Producto</a>
               		<a class="dropdown-item" href="ControladorDeLinks?accion=editarProducto">Editar Producto</a>
-              		<a class="dropdown-item" href="ControladorProducto?accion=listar&codigo_filtro=0">Listado de Productos</a>
+              		<a class="dropdown-item" href="ControladorDeLinks?accion=listarProductosAdmin">Listado de Productos</a>
            		 </div>
           	</li>
           	<li class="nav-item dropdown">
@@ -41,7 +41,7 @@
               		Pedidos
            		</a>
             	<div class="dropdown-menu" aria-labelledby="pedidosDropdown">
-              		<a class="dropdown-item" href="ControladorPedido?accion=listadoPedidos">Listado de Pedidos</a>
+              		<a class="dropdown-item" href="ControladorPedido?accion=listadoPedidos">Listado de Pedidos Pendientes</a>
             	</div>
           	</li>
           	<li class="nav-item dropdown">
@@ -75,7 +75,7 @@
               	Productos
             	</a>
             	<div class="dropdown-menu" aria-labelledby="productosCliDropdown">
-              		<a class="dropdown-item" href="ControladorProducto?accion=listar&codigo_filtro=0">Listado de Productos</a>
+              		<a class="dropdown-item" href="ControladorDeLinks?accion=listarProductosCliente">Listado de Productos</a>
             	</div>
           	</li>
           	
@@ -116,7 +116,7 @@
        	}else{
       	%>
        		<li class="nav-item">
-  				<a class="nav-link" href="ControladorProducto?accion=listar&codigo_filtro=0">Productos</a>
+  				<a class="nav-link" href="ControladorDeLinks?accion=listarProductosCliente">Productos</a>
 			</li>
 		</ul>
 		<ul class="navbar-nav mr-right">

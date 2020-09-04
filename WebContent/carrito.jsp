@@ -11,11 +11,13 @@
 <html>
 	<head>
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+		<link rel="stylesheet" href="CSS/vinoteca.css">
 		<meta charset="ISO-8859-1">
 		<title>VinotecaGatti</title>
 	</head>
 	<body>
 	<jsp:include page="menu.jsp"/>
+	<div class="container">
 		<%HttpSession sesion = request.getSession(true);
 		String errorStock = (String)request.getAttribute("errorStock");
 		ArrayList<LineaPedido> linea = (ArrayList<LineaPedido>)sesion.getAttribute("carrito");
@@ -35,14 +37,14 @@
 		%>
 	   	   <div>
 			<h1>Productos</h1>
-			<table class="table table-striped">
+			<table class="table">
 				<thead>
 					<tr>
-						<th><font face="Calibri" color="Black">Imagen</font></th>
-						<th><font face="Calibri" color="Black">Nombre</font></th>
-						<th><font face="Calibri" color="Black">Precio Venta</font></th>
-						<th><font face="Calibri" color="Black">Cantidad</font></th>
-						<th><font face="Calibri" color="Black"></font></th>
+						<th>Imagen</th>
+						<th>Nombre</th>
+						<th>Precio Venta</th>
+						<th>Cantidad</th>
+						<th></th>
 					</tr>
 				</thead>
 						<% 
@@ -57,10 +59,17 @@
 				<tbody>
 					<tr>
 						<td><img src="ControladorDeImagenes?codigo=<%=pro.getCodigo()%>" width="80" height="80"/></td>
-						<td><font face="Calibri" color="Blue"><%=pro.getNombre()%></font></td>
-						<td><font face="Calibri" color="Black"><%=pro.getPrecioVenta()%></font></td>
-						<td><font face="Calibri" color="Black"><%=lin.getCantidad()%></font></td>
-						<td><font face="Calibri" color="Black"><a href="ControladorPedido?accion=eliminarDelCarrito&codigo_prod=<%=lin.getCodigo_producto()%>">Eliminar</a></font></td>
+						<td><%=pro.getNombre()%></td>
+						<td><%=pro.getPrecioVenta()%></td>
+						<td><%=lin.getCantidad()%></td>
+						<td>					
+							<a href="ControladorPedido?accion=eliminarDelCarrito&codigo_prod=<%=lin.getCodigo_producto()%>">
+								<button type="submit" class="btn btn-outline-danger" style="color: red;" name="" value="">
+									<img src="SVG/Borrar.svg"/> 
+									Eliminar
+								</button>
+							</a>			
+						</td>
 					</tr>
 					<% } %>				
 				</tbody>
@@ -68,5 +77,6 @@
 			<a class="py-2 d-none d-md-inline-block" href="ControladorPedido?accion=ConfirmarCarrito"><button type="submit" class="btn btn-primary">Comprar</button></a>
 			<% }} %>
 		</div>
+	</div>
 	</body>
 </html>

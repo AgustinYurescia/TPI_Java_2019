@@ -24,6 +24,18 @@ public class ServicioProducto {
 		}
 	}
 	
+	public void EliminarProducto(int codigoProducto) throws Exception {
+		
+		try
+		{
+			_productoDAO.baja(codigoProducto);
+		}
+		catch (Exception e)
+		{
+			throw e;
+		}
+	}
+	
 	public void EditarProducto(Producto prod) throws Exception {
 		
 		try

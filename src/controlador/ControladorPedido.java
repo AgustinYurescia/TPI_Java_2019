@@ -140,15 +140,15 @@ public class ControladorPedido extends HttpServlet {
 		    ArrayList<Pedido> pedidos = new  ArrayList<Pedido>();
 			try {
 				if (fechaDesde == "" && fechaHasta == "") {
-					pedidos = pedDAO.listar();
+					pedidos = pedDAO.listar(request.getParameter("estado"));
 					request.setAttribute("listadoPedidos", pedidos);
 				}
 				else if((fechaDesde != "" | fechaHasta != "") && (fechaDesde != null && fechaHasta != null)) {
-					pedidos = pedDAO.listar( fechaDesde, fechaHasta);
+					pedidos = pedDAO.listar( fechaDesde, fechaHasta, request.getParameter("estado"));
 					request.setAttribute("listadoPedidos", pedidos);
 				}
 				else if(fechaDesde == null && fechaHasta == null) {
-					pedidos = pedDAO.listar();
+					pedidos = pedDAO.listar(request.getParameter("estado"));
 					request.setAttribute("listadoPedidos", pedidos);
 				}
 				

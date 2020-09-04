@@ -11,16 +11,20 @@
 	</head>
 	<body>
 		<jsp:include page="menu.jsp"/>
+		<div class="container">
 	    <% 	
 	   		Producto prod = (Producto)request.getAttribute("producto"); 
 	   		String mensaje = (String)request.getAttribute("mensajeError");%>
-	   <h1>Información de producto</h1><br>
+	   <br/>
+	   <br/>
 	   <div class="media position-relative">
 	   		<img src="ControladorDeImagenes?codigo=<%=prod.getCodigo()%>" class="mr-3" width="400" height="400">
 	   		<div class="media-body">
 	     		<h5 class="mt-0"><%=prod.getNombre()%></h5>
-	     		<p><font face="Calibri" color="Black">Stock disponible = <%=prod.getStock()%></font></p>
-	     		<p><font face="Calibri" color="Black">Precio = <%=prod.getPrecioVenta()%></font></p>
+	     		<p>
+	     			<font face="Calibri" color="Black">Stock disponible = <%=prod.getStock()%></font><br/>
+	     			<font face="Calibri" color="Black">Precio = <%=prod.getPrecioVenta()%></font>
+	     		</p>
 	     		<form class="form-inline" action="ControladorPedido">
   					<div class="form-group mb-2">
     					<label for="cantidad" class="sr-only">Cantidad</label>
@@ -33,6 +37,7 @@
   					<button type="submit" class="btn btn-primary mb-2" name="accion" value="agregarAlCarrito">Agregar al carrito</button>
 				</form>
 	 		</div>
+	 	</div>
 	 	</div>
 	</body>
 </html>

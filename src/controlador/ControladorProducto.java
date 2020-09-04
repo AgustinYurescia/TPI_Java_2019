@@ -20,9 +20,6 @@ import services.ServicioProducto;;
 @WebServlet("/ControladorProducto")
 public class ControladorProducto extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	String listar = "listarProductos.jsp";
-	String listarAdmin = "listarProductosAdmin.jsp";
-	String mostrar_producto = "producto.jsp";
 	Producto prod = new Producto();
 	ProductoDAO prodDAO = new ProductoDAO();
 	ServicioProducto _servicioProducto;
@@ -52,11 +49,11 @@ public class ControladorProducto extends HttpServlet {
 			String usuario_admin = (String)sesion.getAttribute("usuario_admin");
 			if (usuario_admin == null) 
 			{
-				acceso = listar;
+				acceso = "listarProductos.jsp";
 			}
 			else 
 			{
-				acceso = listarAdmin;
+				acceso = "listarProductosAdmin.jsp";
 			}			
 		}
 		else if(action.equalsIgnoreCase("mostrar_producto")) 
@@ -67,7 +64,7 @@ public class ControladorProducto extends HttpServlet {
 			codigo_producto = request.getParameter("codigo_producto");
 			prod = pdao.buscar_producto(Integer.parseInt(codigo_producto));
 			request.setAttribute("producto", prod);
-			acceso = mostrar_producto;
+			acceso = "producto.jsp";
 		}
 		
 		RequestDispatcher vista = request.getRequestDispatcher(acceso);
@@ -133,10 +130,16 @@ public class ControladorProducto extends HttpServlet {
 		}
 		else if(action.equalsIgnoreCase("BajaProducto")) 
 		{
-			ProductoDAO pdao = new ProductoDAO();
-			String codigo_producto_baja = request.getParameter("codigo_producto_baja");
-			pdao.baja(Integer.parseInt(codigo_producto_baja));
-			acceso = "indexAdmin.jsp";
+			try
+			{
+				_servicioProducto.EliminarProducto(Integer.parseInt(request.getParameter("codigo_producto_baja")));
+				request.setAttribute("mensajeOk", "Producto dado de baja con éxito");
+			}
+			catch (Exception e)
+			{
+				request.setAttribute("mensajeError", "Error interno del servidor");
+			}
+			acceso = "listarProductosAdmin.jsp";
 		}
 		else if(action.equalsIgnoreCase("ActualizarStock")) 
 		{
@@ -148,6 +151,29 @@ public class ControladorProducto extends HttpServlet {
 			acceso="indexAdmin.jsp";
 		}
 		
+		else if(action.equalsIgnoreCase("listar")) 
+		{
+			int codigo_categoria = Integer.parseInt(request.getParameter("codigo_filtro"));
+			ProductoDAO pr = new ProductoDAO();
+			if (codigo_categoria == 0)
+			{ 
+				ArrayList<Producto> lista = (ArrayList<Producto>) pr.obtener_todos();
+				request.setAttribute("listado", lista);
+			}else 
+			{
+				request.setAttribute("listado", pr.obtener_por_codigo_categoria(codigo_categoria));
+			}
+			HttpSession sesion = request.getSession(true);
+			String usuario_admin = (String)sesion.getAttribute("usuario_admin");
+			if (usuario_admin == null) 
+			{
+				acceso = "listarProductos.jsp";
+			}
+			else 
+			{
+				acceso = "listarProductosAdmin.jsp";
+			}			
+		}
 		RequestDispatcher vista = request.getRequestDispatcher(acceso);
 		vista.forward(request, response);
 	}
