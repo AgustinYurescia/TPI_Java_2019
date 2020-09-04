@@ -23,4 +23,16 @@ public class ServicioProducto {
 			throw e;
 		}
 	}
+	
+	public void EditarProducto(Producto prod) throws Exception {
+		
+		try
+		{
+			_productoDAO.editar_producto(prod);
+		}
+		catch (Exception e)
+		{
+			throw e;
+		}
+	}
 }

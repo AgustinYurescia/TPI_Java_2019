@@ -25,6 +25,15 @@ public class Producto {
 		this.codigo_categoria = codigo_categoria;
 	}
 	
+	public Producto(int codigo, String nombre, InputStream imagen, Double precioVenta) 
+	{
+		super();
+		this.codigo = codigo;
+		this.nombre = nombre;
+		this.imagen = imagen;
+		this.precioVenta = precioVenta;
+	}
+	
 	public int getCodigo() {
 		return codigo;
 	}

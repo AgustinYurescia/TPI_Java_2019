@@ -229,7 +229,7 @@ public class ProductoDAO {
 	}
 	
 	
-	public void editar_producto(Producto prod) {
+	public void editar_producto(Producto prod) throws Exception {
 		PreparedStatement st = null;
 		String sentenciaSQL="UPDATE producto SET nombre=?,imagen=?,precio_venta=? WHERE codigo=?";
 		try {
@@ -250,18 +250,24 @@ public class ProductoDAO {
 				st.setInt(3, prod.getCodigo());
 			}
 			st.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}finally {
-			try {
+		} 
+		catch (Exception e) 
+		{
+			throw e;
+		}
+		finally 
+		{
+			try 
+			{
                 Conexion.getInstancia().desconectar();
-			} catch (Exception e) {
+			} 
+			catch (Exception e) 
+			{
 				e.printStackTrace();
 			}
 		}
 	}
 	
-	@SuppressWarnings("null")
 	public void calcular_precio_venta(int codigo_producto, Double precio) throws Exception {
 		Double porcGan;
 		Double precio_venta;

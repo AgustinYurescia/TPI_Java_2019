@@ -82,7 +82,7 @@ public class ControladorProducto extends HttpServlet {
 			Part imagen = request.getPart("imagen");
 			InputStream imagenInputStream = imagen.getInputStream();
 			Double precio = Double.parseDouble(request.getParameter("precio"));
-			prod = new Producto(request.getParameter("nombre"), imagenInputStream, Integer.parseInt(request.getParameter("stock")),Integer.parseInt(request.getParameter("codigo_categoria")));
+			prod = new Producto(request.getParameter("nombre"), imagenInputStream, Integer.parseInt(request.getParameter("stock")), Integer.parseInt(request.getParameter("codigo_categoria")));
 			if(Producto.es_valido(prod.getNombre(), prod.getCodigo_categoria(), imagenInputStream, prod.getStock(), precio)) 
 			{
 				try 
@@ -110,16 +110,17 @@ public class ControladorProducto extends HttpServlet {
 			{
 				ImagenInputStream = imagen.getInputStream();
 			}
-			ProductoDAO pdao = new ProductoDAO();
-			String codigo_producto = request.getParameter("codigo_producto");
-			String nombre = request.getParameter("nombre");
-			String precio = request.getParameter("precio");
-			prod.setCodigo((Integer.parseInt(codigo_producto)));
-			prod.setNombre(nombre);
-			prod.set_imagen(ImagenInputStream);
-			prod.setPrecioVenta(Double.parseDouble(precio));
-			pdao.editar_producto(prod);
-			acceso="indexAdmin.jsp";
+			prod = new Producto(Integer.parseInt(request.getParameter("codigo_producto")), request.getParameter("nombre"), ImagenInputStream, Double.parseDouble(request.getParameter("precio")));
+			try
+			{
+				_servicioProducto.EditarProducto(prod);
+				request.setAttribute("mensajeOk", "Modificación realizada con éxito");
+			}
+			catch (Exception e)
+			{
+				request.setAttribute("mensajeError", "Error interno del servidor");
+			}
+			acceso="editarProducto.jsp";
 		}
 		else if(action.equalsIgnoreCase("BuscarProductoEditar")) 
 		{
