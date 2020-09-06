@@ -59,10 +59,10 @@
 				<tbody>
 					<tr>
 						<td><img src="ControladorDeImagenes?codigo=<%=pro.getCodigo()%>" width="80" height="80"/></td>
-						<td><%=pro.getNombre()%></td>
-						<td><%=pro.getPrecioVenta()%></td>
-						<td><%=lin.getCantidad()%></td>
-						<td>					
+						<td style="padding-top: 40px"><%=pro.getNombre()%></td>
+						<td style="padding-top: 40px"><%=pro.getPrecioVenta()%></td>
+						<td style="padding-top: 40px"><%=lin.getCantidad()%></td>
+						<td style="padding-top: 30px">					
 							<a href="ControladorPedido?accion=eliminarDelCarrito&codigo_prod=<%=lin.getCodigo_producto()%>">
 								<button type="submit" class="btn btn-outline-danger" style="color: red;" name="" value="">
 									<img src="SVG/Borrar.svg"/> 
