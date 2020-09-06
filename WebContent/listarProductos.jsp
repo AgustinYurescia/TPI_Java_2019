@@ -62,19 +62,19 @@
 						%>
 				<tbody>
 					<tr>
-						<td><%=prod.getCodigo()%></td>
+						<td style="padding-top: 40px"><%=prod.getCodigo()%></td>
 						<td>
-							<a class="py-2 d-none d-md-inline-block" href="ControladorProducto?accion=mostrar_producto&codigo_producto=<%=prod.getCodigo()%>">
+							<a class="" href="ControladorProducto?accion=mostrar_producto&codigo_producto=<%=prod.getCodigo()%>">
 								<img src="ControladorDeImagenes?codigo=<%=prod.getCodigo()%>" width="80" height="80"/>
 							</a>
 						</td>
-						<td>							
-							<a class="py-2 d-none d-md-inline-block" href="ControladorProducto?accion=mostrar_producto&codigo_producto=<%=prod.getCodigo()%>">
+						<td style="padding-top: 40px">							
+							<a class="" href="ControladorProducto?accion=mostrar_producto&codigo_producto=<%=prod.getCodigo()%>">
 								<%=prod.getNombre()%>
 							</a>
 						</td>
-						<td><%=prod.getPrecioVenta()%></td>
-						<td><%=prod.getStock()%></td>
+						<td style="padding-top: 40px"><%=prod.getPrecioVenta()%></td>
+						<td style="padding-top: 40px"><%=prod.getStock()%></td>
 					</tr>
 						<% }}%> 
 				</tbody>

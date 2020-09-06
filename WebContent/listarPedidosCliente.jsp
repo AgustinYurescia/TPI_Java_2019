@@ -63,21 +63,21 @@
 	   				  	ped = iter.next();
 	   			%>	   				  		   				 	   			  
 	   			<tbody><tr>
-						<td><%=ped.getNro_pedido()%></td>
-						<td><%=ped.getFecha_pedido()%></td>
-						<td><%=ped.getMonto()%></td>
-						<td><%=ped.getFecha_entrega_est()%></td>
+						<td style="padding-top: 20px"><%=ped.getNro_pedido()%></td>
+						<td style="padding-top: 20px"><%=ped.getFecha_pedido()%></td>
+						<td style="padding-top: 20px"><%=ped.getMonto()%></td>
+						<td style="padding-top: 20px"><%=ped.getFecha_entrega_est()%></td>
 						<%
 						if (ped.getFecha_entrega_real() !=  null)
 						{
 						%>
-						<td><%=ped.getFecha_entrega_real()%></td>
+						<td style="padding-top: 20px"><%=ped.getFecha_entrega_real()%></td>
 						<%	
 						}
 						else
 						{
 						%>
-						<td>-</td>
+						<td style="padding-top: 20px">-</td>
 						<% 
 						}
 						%>
@@ -85,13 +85,13 @@
 						if (ped.getFecha_cancelacion() !=  null)
 						{
 						%>
-						<td><%=ped.getFecha_cancelacion()%></td>
+						<td style="padding-top: 20px"><%=ped.getFecha_cancelacion()%></td>
 						<%	
 						}
 						else
 						{
 						%>
-						<td>-</td>
+						<td style="padding-top: 20px">-</td>
 						<% 
 						}
 						%>
