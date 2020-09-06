@@ -1,7 +1,6 @@
 package controlador;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,18 +9,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import modeloDAO.AdminDAO;
-import modeloDAO.ClienteDAO;
-import modelo.Admin;
+import exceptions.NonExistentUserException;
 import modelo.Cliente;
+import services.ServicioAdmin;
 
 @WebServlet("/ControladorAdmin")
 public class ControladorAdmin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    public ControladorAdmin() {
+	private ServicioAdmin _servicioAdmin;
+	public ControladorAdmin() {
         super();
+        _servicioAdmin = new ServicioAdmin();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -29,21 +27,39 @@ public class ControladorAdmin extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		AdminDAO adDAO = new AdminDAO();
 		String acceso = "";
 		String action = request.getParameter("accion");
+		HttpSession sesion = request.getSession(true);
 		if(action.equalsIgnoreCase("cambio_contrasena")) {
-			HttpSession sesion = request.getSession(true);
-			String usuario = sesion.getAttribute("usuario_admin").toString();
-			String contrasena_actual = request.getParameter("cont_act");
-			String contrasena_nueva = request.getParameter("cont_nueva");
-			String contrasena_nueva_rep = request.getParameter("cont_nueva_rep");
-			ArrayList<String>mensajes = adDAO.cambioContrasena(usuario, contrasena_actual, contrasena_nueva, contrasena_nueva_rep);
-			request.setAttribute("ok_mensaje", mensajes.get(0));
-			request.setAttribute("error_mensaje", mensajes.get(1));
+			if (Cliente.isValid(request.getParameter("cont_nueva")))
+			{
+				if (_servicioAdmin.ValidateEqualPasswords(request.getParameter("cont_nueva"),request.getParameter("cont_nueva_rep"))) 
+				{
+					try 
+					{
+						_servicioAdmin.CambioContrasena(sesion.getAttribute("usuario_admin").toString(), request.getParameter("cont_act"), request.getParameter("cont_nueva"));
+						request.setAttribute("ok_mensaje", "Contraseña modificada con éxito");
+					}
+					catch (NonExistentUserException e)
+					{
+						request.setAttribute("error_mensaje", e.getMessage());
+					}
+					catch (Exception e)
+					{
+						request.setAttribute("error_mensaje", "Error interno del servidor");
+					}
+				}
+				else
+				{
+					request.setAttribute("error_mensaje", "Las contraseñas ingresadas no coinciden");
+				}
+			}
+			else
+			{
+				request.setAttribute("error_mensaje", "La contraseña nueva debe tener longitud mayor o igual a 4 y menor o igual a 45");
+			}
 			acceso="cambiarContrasenaAdmin.jsp";
 		}
-		
 		RequestDispatcher vista = request.getRequestDispatcher(acceso);
 		vista.forward(request, response);
 		/*doGet(request, response);*/

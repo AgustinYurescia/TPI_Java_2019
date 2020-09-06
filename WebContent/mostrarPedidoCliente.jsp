@@ -14,11 +14,13 @@
 <html>
 	<head>
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+		<link rel="stylesheet" href="CSS/vinoteca.css">
 		<meta charset="ISO-8859-1">
 		<title>Mostrar Pedido</title>
 	</head>
 	<body>
 		<jsp:include page="menu.jsp"/>
+		<div class="container">
 		<% HttpSession sesion = request.getSession(true);
 	   	   if (sesion.getAttribute("usuario_cliente") != null) { %>
 	   <% Pedido ped = (Pedido)request.getAttribute("pedido"); %>
@@ -71,12 +73,12 @@
 			</div>
 	   </form>
 	   <label>Resumen de productos:</label>	 
-	   <table class="table table-striped">
+	   <table class="table">
 	   		<thead>
 	   			<tr>
-	   				<th><font face="Calibri" color="Black">Codigo Producto</font></th>
-	   				<th><font face="Calibri" color="Black">Nombre</font></th>
-					<th><font face="Calibri" color="Black">Cantidad</font></th>
+	   				<th>Codigo Producto</th>
+	   				<th>Nombre</th>
+					<th>Cantidad</th>
 	   			</tr>
 	   		</thead>
 	   		<%
@@ -88,9 +90,9 @@
 	   		%>	   				  		   				 	   			  
 	   		<tbody>
 	   			<tr>
-					<td><font face="Calibri" color="Black"><%=lin.getCodigo_producto()%></font></td>
-					<td><font face="Calibri" color="Black"><%=lin.getProducto(lin.getCodigo_producto()).getNombre()%></font></td>
-					<td><font face="Calibri" color="Black"><%=lin.getCantidad()%></font></td>
+					<td><%=lin.getCodigo_producto()%></td>
+					<td><%=lin.getProducto(lin.getCodigo_producto()).getNombre()%></td>
+					<td><%=lin.getCantidad()%></td>
 				</tr>
 			<%}%>
 	   		</tbody>
@@ -104,5 +106,6 @@
 		</form>
 	</div>
 	<%}}%>
+	</div>
 	</body>
 </html>

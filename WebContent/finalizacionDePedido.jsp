@@ -16,22 +16,24 @@
 <html>
 	<head>
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+		<link rel="stylesheet" href="CSS/vinoteca.css">
 		<meta charset="ISO-8859-1">
 		<title>Finalización del pedido</title>
 	</head>
 	<body>
 		<jsp:include page="menu.jsp"/>
+		<div class="container">
 	   <% 	HttpSession sesion = request.getSession(true);
 	   		ArrayList linea = (ArrayList<LineaPedido>)sesion.getAttribute("carrito"); %>
 	   	   <div>
 			<h1>Resumen del pedido</h1>
-			<table class="table table-striped">
+			<table class="table">
 				<thead>
 					<tr>
-						<th><font face="Calibri" color="Black">Nombre</font></th>
-						<th><font face="Calibri" color="Black">Precio Venta</font></th>
-						<th><font face="Calibri" color="Black">Cantidad</font></th>
-						<th><font face="Calibri" color="Black">Subtotal</font></th>
+						<th>Nombre</th>
+						<th>Precio Venta</th>
+						<th>Cantidad</th>
+						<th>Subtotal</th>
 					</tr>
 				</thead>
 						<% 
@@ -45,10 +47,10 @@
 						%>
 				<tbody>
 					<tr>
-						<td><font face="Calibri" color="Blue"><%=pro.getNombre()%></font></td>
-						<td><font face="Calibri" color="Black"><%=pro.getPrecioVenta()%></font></td>
-						<td><font face="Calibri" color="Black"><%=lin.getCantidad()%></font></td>
-						<td><font face="Calibri" color="Black"><%=lin.getSubtotal()%></font></td>
+						<td><%=pro.getNombre()%></td>
+						<td><%=pro.getPrecioVenta()%></td>
+						<td><%=lin.getCantidad()%></td>
+						<td><%=lin.getSubtotal()%></td>
 					</tr>
 					<%}%>
 				</tbody>
@@ -60,6 +62,7 @@
 			<p align="center"><b><font face="calibri" color="black" size="6">MUCHAS GRACIAS POR SU COMPRA</font></b></p>
 			<p align="center"><b><font face="calibri" color="black" size="3">Recuerde que debe pasar a retirar y abonar el pedido en tres dás hábiles por el local informando el siguiente número de pedido: <%=nro_pedido%>.</font></b></p>
 			<p align="center"><a class="py-0 d-none d-md-inline-block" href="ControladorDeLinks?accion=indexCliente"><button type="submit" class="btn btn-primary">Volver al inicio</button></a></p>
+		</div>
 		</div>
 	</body>
 </html>

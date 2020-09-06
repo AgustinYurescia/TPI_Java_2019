@@ -3,7 +3,6 @@ package modelo;
 import java.io.InputStream;
 
 public class Producto {
-	
 	private int codigo;
 	private String nombre;
 	private InputStream imagen;
@@ -11,6 +10,30 @@ public class Producto {
 	private Double precioVenta;
 	private int codigo_categoria;
 	private java.sql.Date fecha_baja;
+	
+	public Producto() 
+	{
+		super();
+	}
+	
+	public Producto(String nombre, InputStream imagen, int stock, int codigo_categoria) 
+	{
+		super();
+		this.nombre = nombre;
+		this.imagen = imagen;
+		this.stock = stock;
+		this.codigo_categoria = codigo_categoria;
+	}
+	
+	public Producto(int codigo, String nombre, InputStream imagen, Double precioVenta) 
+	{
+		super();
+		this.codigo = codigo;
+		this.nombre = nombre;
+		this.imagen = imagen;
+		this.precioVenta = precioVenta;
+	}
+	
 	public int getCodigo() {
 		return codigo;
 	}

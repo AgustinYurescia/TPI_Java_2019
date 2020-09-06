@@ -104,12 +104,10 @@ public class PedidoDAO {
 	
 	//CONTROLAR QUE ESTÉ BIEN
 	public void setear_fecha_entrega_estimada(int nro_pedido) { 
-		java.sql.Date fecha_ent_est = null;
 		int cantidad_de_dias;
 		Statement st = null;
 		PreparedStatement st2 = null;
 		ResultSet rs = null;
-		ResultSet keyResultSet=null;
 		String sentenciaParaDias="SELECT cantidad_de_dias "
 				+ "FROM tardanza_preparacion_pedido "
 				+ "WHERE fecha_desde = ("
@@ -139,17 +137,24 @@ public class PedidoDAO {
 		}
 	}
 	
-	public ArrayList<Pedido> listar(String fecha_ini, String fecha_fin ) {
+	public ArrayList<Pedido> listar(String fecha_ini, String fecha_fin, String estado ) {
 		Statement st = null;
 		ResultSet rs = null;
 		String sentenciaSQL = "";
 		ArrayList<Pedido>lista = new ArrayList<>();
 		if(fecha_ini != "" && fecha_fin != "") {
-			sentenciaSQL = "SELECT * FROM pedido WHERE fecha_pedido >= '"+fecha_ini+"' AND fecha_pedido <= '"+fecha_fin+"' AND fecha_cancelacion is null";
+			sentenciaSQL = "SELECT * FROM pedido WHERE fecha_pedido >= '"+fecha_ini+"' AND fecha_pedido <= '"+fecha_fin+"'";
 		}else if(fecha_ini != "" && fecha_fin == "") {
-			sentenciaSQL = "SELECT * FROM pedido WHERE fecha_pedido >= '"+fecha_ini+"' AND fecha_cancelacion is null";
+			sentenciaSQL = "SELECT * FROM pedido WHERE fecha_pedido >= '"+fecha_ini+"'";
 		}else if(fecha_ini == "" && fecha_fin != "") {
-			sentenciaSQL = "SELECT * FROM pedido WHERE fecha_pedido <= '"+fecha_fin+"' AND fecha_cancelacion is null";
+			sentenciaSQL = "SELECT * FROM pedido WHERE fecha_pedido <= '"+fecha_fin+"'";
+		}
+		if (estado.equalsIgnoreCase("pendiente")) {
+			sentenciaSQL = sentenciaSQL + " AND fecha_entrega_real is null AND fecha_cancelacion is null order by fecha_pedido desc";
+		}else if (estado.equalsIgnoreCase("entregado")) {
+			sentenciaSQL = sentenciaSQL + " AND fecha_cancelacion is null AND fecha_entrega_real is not null order by fecha_pedido desc";
+		}else if (estado.equalsIgnoreCase("cancelado")) {
+			sentenciaSQL = sentenciaSQL + " AND fecha_cancelacion is not null order by fecha_pedido desc";
 		}
 		try {
 			st=Conexion.getInstancia().getConexion().createStatement();
@@ -181,11 +186,18 @@ public class PedidoDAO {
 		return lista;
 	}
 	
-	public ArrayList<Pedido> listar()  {
+	public ArrayList<Pedido> listar(String estado)  {
 		Statement st = null;
 		ResultSet rs = null;
 		ArrayList<Pedido>lista = new ArrayList<>();
-		String sentenciaSQL = "SELECT * FROM pedido WHERE fecha_cancelacion is null";
+		String sentenciaSQL = "SELECT * FROM pedido";
+		if (estado.equalsIgnoreCase("pendiente")) {
+			sentenciaSQL = sentenciaSQL + " WHERE fecha_entrega_real is null AND fecha_cancelacion is null order by fecha_pedido desc";
+		}else if (estado.equalsIgnoreCase("entregado")) {
+			sentenciaSQL = sentenciaSQL + " WHERE fecha_cancelacion is null AND fecha_entrega_real is not null order by fecha_pedido desc";
+		}else if (estado.equalsIgnoreCase("cancelado")) {
+			sentenciaSQL = sentenciaSQL + " WHERE fecha_cancelacion is not null order by fecha_pedido desc";
+		}
 		try {
 			st=Conexion.getInstancia().getConexion().createStatement();
 			rs=st.executeQuery(sentenciaSQL);
@@ -302,13 +314,13 @@ public class PedidoDAO {
 		ArrayList<Pedido>lista = new ArrayList<>();
 		String sentenciaSQL = "";
 		if (estado.equalsIgnoreCase("pendiente")) {
-			sentenciaSQL = "SELECT * FROM pedido WHERE dni_cliente="+dni_cliente+" AND fecha_cancelacion is null AND fecha_entrega_real is null";
+			sentenciaSQL = "SELECT * FROM pedido WHERE dni_cliente="+dni_cliente+" AND fecha_cancelacion is null AND fecha_entrega_real is null order by fecha_pedido desc";
 		}else if (estado.equalsIgnoreCase("entregado")) {
-			sentenciaSQL = "SELECT * FROM pedido WHERE dni_cliente="+dni_cliente+" AND fecha_cancelacion is null AND fecha_entrega_real is not null";
+			sentenciaSQL = "SELECT * FROM pedido WHERE dni_cliente="+dni_cliente+" AND fecha_cancelacion is null AND fecha_entrega_real is not null order by fecha_pedido desc";
 		}else if (estado.equalsIgnoreCase("cancelado")) {
-			sentenciaSQL = "SELECT * FROM pedido WHERE dni_cliente="+dni_cliente+" AND fecha_cancelacion is not null";
+			sentenciaSQL = "SELECT * FROM pedido WHERE dni_cliente="+dni_cliente+" AND fecha_cancelacion is not null order by fecha_pedido desc";
 		}else if (estado.equalsIgnoreCase("-")) {
-			sentenciaSQL = "SELECT * FROM pedido WHERE dni_cliente="+dni_cliente+"";
+			sentenciaSQL = "SELECT * FROM pedido WHERE dni_cliente="+dni_cliente+" order by fecha_pedido desc";
 		}
 		try {
 			st=Conexion.getInstancia().getConexion().createStatement();

@@ -9,14 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat; 
-
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Date;
-
 import modelo.Cliente;
 import modelo.LineaPedido;
 import modelo.Producto;
@@ -32,6 +26,7 @@ public class ControladorPedido extends HttpServlet {
     public ControladorPedido() {
         super();
     }
+	@SuppressWarnings("unchecked")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getParameter("accion");
 		String acceso = "";
@@ -70,7 +65,6 @@ public class ControladorPedido extends HttpServlet {
 			}
 			sesion.setAttribute("carrito", linea);
 		}else if(action.equalsIgnoreCase("eliminarDelCarrito")) {
-			ProductoDAO prodDAO = new ProductoDAO();
 			HttpSession sesion = request.getSession(true);
 			ArrayList<LineaPedido> linea = (ArrayList<LineaPedido>)sesion.getAttribute("carrito");
 			int codigo = Integer.parseInt(request.getParameter("codigo_prod"));
@@ -146,15 +140,15 @@ public class ControladorPedido extends HttpServlet {
 		    ArrayList<Pedido> pedidos = new  ArrayList<Pedido>();
 			try {
 				if (fechaDesde == "" && fechaHasta == "") {
-					pedidos = pedDAO.listar();
+					pedidos = pedDAO.listar(request.getParameter("estado"));
 					request.setAttribute("listadoPedidos", pedidos);
 				}
 				else if((fechaDesde != "" | fechaHasta != "") && (fechaDesde != null && fechaHasta != null)) {
-					pedidos = pedDAO.listar( fechaDesde, fechaHasta);
+					pedidos = pedDAO.listar( fechaDesde, fechaHasta, request.getParameter("estado"));
 					request.setAttribute("listadoPedidos", pedidos);
 				}
 				else if(fechaDesde == null && fechaHasta == null) {
-					pedidos = pedDAO.listar();
+					pedidos = pedDAO.listar(request.getParameter("estado"));
 					request.setAttribute("listadoPedidos", pedidos);
 				}
 				
