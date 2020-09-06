@@ -63,6 +63,8 @@
 	   			</tr>
 	   		</thead>
 	   			<%
+	   				if (request.getAttribute("listadoPedidos") != null)
+	   				{
 	   				ArrayList<Pedido> pedidos = (ArrayList<Pedido>)request.getAttribute("listadoPedidos");
 	   				Iterator<Pedido> iter  = pedidos.iterator();
 	   			  	Pedido ped = null;
@@ -116,7 +118,7 @@
 	   		</tbody>
 	   	</table>
 	   </div>
-	   <%}%>
+	   <%}}%>
 	   </div>
 	   </body>
 	   </html>

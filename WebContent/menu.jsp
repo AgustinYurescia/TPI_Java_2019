@@ -41,7 +41,7 @@
               		Pedidos
            		</a>
             	<div class="dropdown-menu" aria-labelledby="pedidosDropdown">
-              		<a class="dropdown-item" href="ControladorPedido?accion=listadoPedidos">Listado de Pedidos Pendientes</a>
+              		<a class="dropdown-item" href="ControladorDeLinks?accion=listarPedidosAdmin">Listado de Pedidos Pendientes</a>
             	</div>
           	</li>
           	<li class="nav-item dropdown">
