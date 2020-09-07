@@ -46,22 +46,37 @@ public class ControladorPedido extends HttpServlet {
 			if (linea.size() > 0) {
 				for (LineaPedido l : linea) {
 					if (codigo_producto == l.getCodigo_producto()) {
-						ProductoDAO prodDAO = new ProductoDAO();                                     //CAMBIOS
-						Producto prod = prodDAO.buscar_producto(l.getCodigo_producto());
-						l.setCantidad(l.getCantidad() + cantidad);
-						l.setSubtotal(prod.getPrecioVenta() * l.getCantidad());
-						ya_existe = true;
-						acceso = "ControladorProducto?accion=listar&codigo_filtro=0";
-						break;
+						ProductoDAO prodDAO = new ProductoDAO();
+						try
+						{
+							Producto prod = prodDAO.buscarProducto(l.getCodigo_producto());
+							l.setCantidad(l.getCantidad() + cantidad);
+							l.setSubtotal(prod.getPrecioVenta() * l.getCantidad());
+							ya_existe = true;
+							acceso = "listarProductos.jsp";
+							break;
 						}
-					} 
-				}
+						catch (Exception e)
+						{
+							
+						}
+						
+					}
+				} 
+			}
 			if (ya_existe == false) {
 				ProductoDAO prodDAO = new ProductoDAO();
-				Producto prod = prodDAO.buscar_producto(codigo_producto);	
-				subtotal = cantidad * prod.getPrecioVenta();     																		//CAMBIOS
-				linea.add(new LineaPedido(codigo_producto,cantidad,subtotal));
-				acceso = "ControladorProducto?accion=listar&codigo_filtro=0";				
+				try
+				{
+					Producto prod = prodDAO.buscarProducto(codigo_producto);	
+					subtotal = cantidad * prod.getPrecioVenta();     																		//CAMBIOS
+					linea.add(new LineaPedido(codigo_producto,cantidad,subtotal));
+				}
+				catch (Exception e)
+				{
+					
+				}
+				acceso = "listarProductos.jsp";				
 			}
 			sesion.setAttribute("carrito", linea);
 		}else if(action.equalsIgnoreCase("eliminarDelCarrito")) {
@@ -107,12 +122,19 @@ public class ControladorPedido extends HttpServlet {
 				ped.setMonto(total);
 				ArrayList<LineaPedido> linea = (ArrayList<LineaPedido>)sesion.getAttribute("carrito"); 
 				for (LineaPedido l: linea) {
-					prod = prodDAO.buscar_producto(l.getCodigo_producto());
-					if(prod.getStock() - l.getCantidad() < 0) {
-						hayStock = false;
-						break;
+					try
+					{
+						prod = prodDAO.buscarProducto(l.getCodigo_producto());
+						if(prod.getStock() - l.getCantidad() < 0) {
+							hayStock = false;
+							break;
+						}
+						else { }
 					}
-					else { }
+					catch (Exception e)
+					{
+						
+					}
 				}
 				if(hayStock) {
 					int nro_pedido = pedDAO.alta(ped, linea);
@@ -190,7 +212,7 @@ public class ControladorPedido extends HttpServlet {
 			ArrayList<LineaPedido> lineas = pedDAO.buscar_productos_pedido(nro_pedido);
 			if(usuario_cliente != null) {
 				for(LineaPedido l : lineas) {
-					prodDAO.actualizar_stock(l.getCodigo_producto(),l.getCantidad());
+					prodDAO.actualizarStock(l.getCodigo_producto(),l.getCantidad());
 				}
 				pedDAO.cancelar_pedido(nro_pedido);
 				cli = cliDAO.buscar_cliente(usuario_cliente);

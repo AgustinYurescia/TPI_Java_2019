@@ -58,7 +58,7 @@ public class PedidoDAO {
 				st.setInt(2, nroPedido);
 				st.setInt(3, l.getCantidad());
 				st.executeUpdate();
-				prodDAO.descontar_stock(l.getCodigo_producto(), l.getCantidad());
+				prodDAO.descontarStock(l.getCodigo_producto(), l.getCantidad());
 			}
 		}catch (Exception e) {
 			e.printStackTrace();

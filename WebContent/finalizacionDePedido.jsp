@@ -43,7 +43,7 @@
 							Producto pro;
 							while(iter.hasNext()){
 								lin=iter.next();
-								pro = proDAO.buscar_producto(lin.getCodigo_producto());
+								pro = proDAO.buscarProducto(lin.getCodigo_producto());
 						%>
 				<tbody>
 					<tr>

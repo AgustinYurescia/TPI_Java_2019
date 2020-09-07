@@ -12,19 +12,20 @@
     
 <!DOCTYPE html>
 <html>
-	<head>
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-		<link rel="stylesheet" href="CSS/vinoteca.css">
-		<meta charset="ISO-8859-1">
-		<title>Listar Productos</title>
-	</head>
-	<body>
-		<jsp:include page="menu.jsp"/>
-		<div class="container">
-		<% HttpSession sesion = request.getSession(true);
-	   	   if (sesion.getAttribute("usuario_admin") != null) { %>
-	   	  <br/>
-	   <form action="ControladorProducto" method="POST">
+<head>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="CSS/vinoteca.css">
+	<meta charset="ISO-8859-1">
+	<title>Listar Productos</title>
+</head>
+<body>
+	<jsp:include page="menu.jsp"/>
+	<div class="container">
+		<% 
+		HttpSession sesion = request.getSession(true);
+	   	if (sesion.getAttribute("usuario_admin") != null) { %>
+		<br/>
+	   	<form action="ControladorProducto" method="POST">
   			<div class="form-row">
     			<div class="form-group col-md-11">
       				<select id="codigo_filtro" name="codigo_filtro" class="form-control"  >
@@ -35,33 +36,29 @@
 						Iterator<Categoria>iterCat = listaCat.iterator();
 						Categoria cat = null;
 						while(iterCat.hasNext()){
-								cat=iterCat.next();
+							cat=iterCat.next();
 						%>
         				<option value="<%=cat.getCodigo()%>"><%=cat.getDescripcion()%></option>
         				<%}%>
      				</select>														
     			</div>
     			<div class="form-group col-md-1">
-    			<button type="submit" class="btn btn-primary" name="accion" value="listar">Listar</button>	
+    				<button type="submit" class="btn btn-primary" name="accion" value="listar">Listar</button>	
     			</div>
     		</div>
 		</form>
-	   <div>
+	   	<div>
 			<h1>Productos</h1>
-		<% 	
+			<% 	
   			if(request.getAttribute("mensajeError") != null){
-  		%>
-  				<div class="alert alert-danger" role="alert">
-  					<%=request.getAttribute("mensajeError")%>
-				</div>
-		<% } %>
-		<% 	
+  			%>
+  			<div class="alert alert-danger" role="alert"><%=request.getAttribute("mensajeError")%></div>
+			<%}%>
+			<% 	
   			if(request.getAttribute("mensajeOk") != null){
-  		%>
-  				<div class="alert alert-primary" role="alert">
-  					<%=request.getAttribute("mensajeOk")%>
-				</div>
-		<% } %>
+  			%>
+  			<div class="alert alert-primary" role="alert"><%=request.getAttribute("mensajeOk")%></div>
+			<%}%>
 			<table class="table">
 				<thead>
 					<tr>
@@ -73,13 +70,13 @@
 						<th></th>
 					</tr>
 				</thead>
-						<%
-						if (request.getAttribute("listado") != null)
-						{
-							ArrayList<Producto> lista = (ArrayList<Producto>)request.getAttribute("listado");
-							for (Producto prod : lista){
-						%>
 				<tbody>
+					<%
+					if (request.getAttribute("listado") != null)
+					{
+						ArrayList<Producto> lista = (ArrayList<Producto>)request.getAttribute("listado");
+						for (Producto prod : lista){
+					%>
 					<tr>
 						<td style="padding-top: 40px"><%=prod.getCodigo()%></td>
 						<td><img src="ControladorDeImagenes?codigo=<%=prod.getCodigo()%>" width="80" height="80"/></td>
@@ -100,5 +97,5 @@
 	  	  }
 	 	%>
 	 </div>
-	</body>
+</body>
 </html>

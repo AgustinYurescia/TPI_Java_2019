@@ -33,37 +33,18 @@ public class ControladorProducto extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String acceso = "";
 		String action = request.getParameter("accion");
-		if(action.equalsIgnoreCase("listar")) 
+	if(action.equalsIgnoreCase("mostrar_producto")) 
 		{
-			int codigo_categoria = Integer.parseInt(request.getParameter("codigo_filtro"));
-			ProductoDAO pr = new ProductoDAO();
-			if (codigo_categoria == 0)
-			{ 
-				ArrayList<Producto> lista = (ArrayList<Producto>) pr.obtener_todos();
-				request.setAttribute("listado", lista);
-			}else 
-			{
-				request.setAttribute("listado", pr.obtener_por_codigo_categoria(codigo_categoria));
-			}
-			HttpSession sesion = request.getSession(true);
-			String usuario_admin = (String)sesion.getAttribute("usuario_admin");
-			if (usuario_admin == null) 
-			{
-				acceso = "listarProductos.jsp";
-			}
-			else 
-			{
-				acceso = "listarProductosAdmin.jsp";
-			}			
-		}
-		else if(action.equalsIgnoreCase("mostrar_producto")) 
-		{
-			String codigo_producto;
-			ProductoDAO pdao = new ProductoDAO();
 			Producto prod;
-			codigo_producto = request.getParameter("codigo_producto");
-			prod = pdao.buscar_producto(Integer.parseInt(codigo_producto));
-			request.setAttribute("producto", prod);
+			try
+			{
+				prod = _servicioProducto.MostrarProducto(Integer.parseInt(request.getParameter("codigo_producto")));
+				request.setAttribute("producto", prod);
+			}
+			catch (Exception e)
+			{
+				request.setAttribute("mensajeError", "Error interno del servidor");
+			}
 			acceso = "producto.jsp";
 		}
 		
@@ -74,6 +55,7 @@ public class ControladorProducto extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String acceso = "";
 		String action = request.getParameter("accion");
+		
 		if(action.equalsIgnoreCase("Agregar")) 
 		{
 			Part imagen = request.getPart("imagen");
@@ -84,9 +66,9 @@ public class ControladorProducto extends HttpServlet {
 			{
 				try 
 				{					
-				_servicioProducto.AltaProducto(prod, precio);
-				request.setAttribute("mensajeOk","Alta realizada con éxito");
-				acceso = "altaProducto.jsp";
+					_servicioProducto.AltaProducto(prod, precio);
+					request.setAttribute("mensajeOk","Alta realizada con éxito");
+					acceso = "altaProducto.jsp";
 				}
 				catch (Exception e)
 				{
@@ -99,6 +81,7 @@ public class ControladorProducto extends HttpServlet {
 				acceso = "altaProducto.jsp";
 			}
 		}
+		
 		else if(action.equalsIgnoreCase("EditarProducto")) 
 		{
 			Part imagen = request.getPart("imagen");
@@ -119,15 +102,21 @@ public class ControladorProducto extends HttpServlet {
 			}
 			acceso="editarProducto.jsp";
 		}
+		
 		else if(action.equalsIgnoreCase("BuscarProductoEditar")) 
 		{
-			String codigo_producto;
-			ProductoDAO pdao = new ProductoDAO();
-			codigo_producto = request.getParameter("codigo_producto");
-			prod = pdao.buscar_producto(Integer.parseInt(codigo_producto));
-			request.setAttribute("producto", prod);
+			try
+			{
+				prod = _servicioProducto.BuscarProductoEditar(Integer.parseInt(request.getParameter("codigo_producto")));
+				request.setAttribute("producto", prod);
+			}
+			catch (Exception e)
+			{
+				request.setAttribute("mensajeError", "Error interno del servidor");
+			}
 			acceso="editarProducto.jsp";		
 		}
+		
 		else if(action.equalsIgnoreCase("BajaProducto")) 
 		{
 			try
@@ -141,27 +130,44 @@ public class ControladorProducto extends HttpServlet {
 			}
 			acceso = "listarProductosAdmin.jsp";
 		}
+		
 		else if(action.equalsIgnoreCase("ActualizarStock")) 
 		{
-			ProductoDAO pdao = new ProductoDAO();
-			String codigo_producto = request.getParameter("codigo_producto");
-			String cantidad = request.getParameter("cantidad");
-			String precio = request.getParameter("precio");
-			pdao.reponer_stock(Integer.parseInt(codigo_producto), Integer.parseInt(cantidad), Double.parseDouble(precio));
-			acceso="indexAdmin.jsp";
-		}
-		
-		else if(action.equalsIgnoreCase("listar")) 
-		{
-			int codigo_categoria = Integer.parseInt(request.getParameter("codigo_filtro"));
-			ProductoDAO pr = new ProductoDAO();
-			if (codigo_categoria == 0)
-			{ 
-				ArrayList<Producto> lista = (ArrayList<Producto>) pr.obtener_todos();
-				request.setAttribute("listado", lista);
-			}else 
+			if (Integer.parseInt(request.getParameter("cantidad")) > 0)
 			{
-				request.setAttribute("listado", pr.obtener_por_codigo_categoria(codigo_categoria));
+				if (Integer.parseInt(request.getParameter("precio")) > 0)
+				{
+					try
+					{
+						_servicioProducto.ReponerStock(Integer.parseInt(request.getParameter("codigo_producto")), Integer.parseInt(request.getParameter("cantidad")), Double.parseDouble(request.getParameter("precio")));
+						request.setAttribute("mensajeOk", "Stock actualizado con éxito");
+					}
+					catch (Exception e)
+					{
+						request.setAttribute("mensajeError", "Error al actualizar el stock, error interno del servidor");
+					}
+				}
+				else
+				{
+					request.setAttribute("mensajeError", "Error, el precio unitario debe ser mayor que cero");
+				}
+			}
+			else
+			{
+				request.setAttribute("mensajeError", "Error, la cantidad debe ser mayor que cero");
+			}
+			acceso="actualizarStock.jsp";
+		}
+		else if(action.equalsIgnoreCase("listar")) 
+		{	
+			try
+			{
+				ArrayList<Producto> lista = (ArrayList<Producto>) _servicioProducto.ObtenerProductos(Integer.parseInt(request.getParameter("codigo_filtro")));
+				request.setAttribute("listado", lista);
+			}
+			catch (Exception e)
+			{
+				request.setAttribute("mensajeError", "Error interno del servidor al intentar obtener los productos de la categoría seleccionada");
 			}
 			HttpSession sesion = request.getSession(true);
 			String usuario_admin = (String)sesion.getAttribute("usuario_admin");

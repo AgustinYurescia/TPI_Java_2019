@@ -27,27 +27,27 @@
 	  			<div class="form-row">
 	    			<div class="form-group col-md-6">
 	      				<label for="dni">Nombre</label>
-	      				<input type="text" value=<%=cli.getNombre()%> class="form-control" id="nombre" name="nombre">
+	      				<input type="text" value=<%=cli.getNombre()%> class="form-control" id="nombre" name="nombre" required>
 	    			</div>
 	    			<div class="form-group col-md-6">
 	      				<label for="Apellido">Apellido</label>
-	      				<input type="text" value=<%=cli.getApellido()%> class="form-control" id="apellido" name="apellido">
+	      				<input type="text" value=<%=cli.getApellido()%> class="form-control" id="apellido" name="apellido" required>
 	    			</div>
 	  			</div>
 	  			<div class="form-row">
 	    			<div class="form-group col-md-6">
 	      				<label for="telefono">Télefono celular</label>
-	      				<input type="text" value=<%=cli.getTelefono()%> class="form-control" id="telefono" name="telefono">
+	      				<input type="text" value=<%=cli.getTelefono()%> class="form-control" id="telefono" name="telefono" required>
 	    			</div>
 	    			<div class="form-group col-md-6">
 	      				<label for="direccion">Dirección (Calle-nro-piso-depto)</label>
-	      				<input type="text" value="<%=cli.getDireccion()%>" id="direccion" name="direccion" class="form-control">
+	      				<input type="text" value="<%=cli.getDireccion()%>" id="direccion" name="direccion" class="form-control" required>
 	    			</div>
 	    		</div>
 	    		<div class="form-row">
 	    			<div class="form-group col-md-12">
 	      				<label for="mail">E-Mail</label>
-	      				<input type="text" value=<%=cli.getMail()%> id="mail" name="mail" class="form-control">
+	      				<input type="text" value=<%=cli.getMail()%> id="mail" name="mail" class="form-control" required>
 	    			</div>
 	  			</div>
 	  			<div class="form-row">

@@ -14,69 +14,71 @@
 </head>
 <body>
 	<jsp:include page="menu.jsp"/>
-	<% 	HttpSession sesion = request.getSession(true);
-	  	if (sesion.getAttribute("usuario_admin") != null) { %>
+	<% 	
+	HttpSession sesion = request.getSession(true);
+	if (sesion.getAttribute("usuario_admin") != null) 
+	{
+	%>
 	<div class="container">
-	<h1>Agregar Producto</h1>
-	<form action="ControladorProducto" enctype="multipart/form-data" method = "post">
-  		<div class="form-row">
-    		<div class="form-group col-md-6">
-      			<label for="nombre">Nombre del producto</label>
-      			<input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre del producto">
-    		</div>
-    		<div class="form-group col-md-6">
-      			<label for="codigo_categoria">Categoria</label>
-      			<select id="codigo_categoria" name="codigo_categoria" class="form-control">
-        			<option value="0" selected>-</option>
-        			<% 
-						CategoriaDAO catDAO = new CategoriaDAO(); 
-						List<Categoria> lista = catDAO.obtener_todos();
-						Iterator<Categoria>iter = lista.iterator();
-						Categoria cat = null;
-						while(iter.hasNext()){
+		<h1>Agregar Producto</h1>
+		<form action="ControladorProducto" enctype="multipart/form-data" method = "post">
+  			<div class="form-row">
+    			<div class="form-group col-md-6">
+      				<label for="nombre">Nombre del producto</label>
+      				<input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre del producto" required>
+    			</div>
+    			<div class="form-group col-md-6">
+      				<label for="codigo_categoria">Categoria</label>
+      				<select id="codigo_categoria" name="codigo_categoria" class="form-control" required>
+        				<option selected></option>
+        				<% 
+							CategoriaDAO catDAO = new CategoriaDAO(); 
+							List<Categoria> lista = catDAO.obtener_todos();
+							Iterator<Categoria>iter = lista.iterator();
+							Categoria cat = null;
+							while(iter.hasNext()){
 								cat=iter.next();
-					%>
-        			<option value="<%=cat.getCodigo()%>"><%=cat.getDescripcion()%></option>
-        			<%}%>
-     			</select>
-    		</div>
-  		</div>
-  		<div class="form-row">
-    		<div class="form-group col-md-6">
-      			<label for="stock">Cantidad adquirida</label>
-      			<input type="text" class="form-control" id="stock" name="stock" placeholder="Ejemplo: 100" value="0">
-    		</div>
-    		<div class="form-group col-md-6">
-      			<label for="precio">Precio unitario</label>
-      			<input type="text" id="precio" name="precio" class="form-control" placeholder="Ejemplo: 175.50" value="0">
-    		</div>
-  		</div>
-  		<div class="form-row">
-    		<div class="form-group col-md-6">
-      			<label for="imagen">Imagen del producto</label> </br>
-      			<input type="file" id="imagen" name="imagen" class="">
-    		</div>
-  		</div>
-  		<% 	
+						%>
+        				<option value="<%=cat.getCodigo()%>"><%=cat.getDescripcion()%></option>
+        				<%}%>
+     				</select>
+    			</div>
+  			</div>
+  			<div class="form-row">
+    			<div class="form-group col-md-6">
+      				<label for="stock">Cantidad adquirida</label>
+      				<input type="text" class="form-control" id="stock" name="stock" placeholder="Ejemplo: 100" value="0">
+    			</div>
+    			<div class="form-group col-md-6">
+      				<label for="precio">Precio unitario</label>
+      				<input type="text" id="precio" name="precio" class="form-control" placeholder="Ejemplo: 175.50" value="0">
+    			</div>
+  			</div>
+  			<div class="form-row">
+    			<div class="form-group col-md-6">
+      				<label for="imagen">Imagen del producto</label> </br>
+      				<input type="file" id="imagen" name="imagen" class="" required>
+    			</div>
+  			</div>
+  			<% 	
   			if(request.getAttribute("mensajeError") != null){
-  		%>
-  				<div class="alert alert-danger" role="alert">
-  					<%=request.getAttribute("mensajeError")%>
-				</div>
-		<% } %>
-		<% 	
+  			%>
+  				<div class="alert alert-danger" role="alert"><%=request.getAttribute("mensajeError")%></div>
+			<%}%>
+			<% 	
   			if(request.getAttribute("mensajeOk") != null){
-  		%>
-  				<div class="alert alert-primary" role="alert">
-  					<%=request.getAttribute("mensajeOk")%>
-				</div>
-		<% } %>
-  		<button type="submit" class="btn btn-primary" name="accion" value="Agregar">Agregar</button>
-	</form>
+  			%>
+  				<div class="alert alert-primary" role="alert"><%=request.getAttribute("mensajeOk")%></div>
+			<%}%>
+  			<button type="submit" class="btn btn-primary" name="accion" value="Agregar">Agregar</button>
+		</form>
 	</div>
-	<%}else{
+	<%
+	}
+	else
+	{
 		response.sendRedirect("loginAdmin.jsp");
-	  }
-	 %>
+	}
+	%>
 </body>
 </html>

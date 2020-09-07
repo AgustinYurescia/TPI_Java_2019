@@ -21,7 +21,7 @@
 	   	<form action="ControladorCliente" method="post">
 	   		<div class="form-row">
     			<div class="form group col-md-6">
-      				<input type="text" class="form-control" id="dni" name="dni" placeholder="Ingrese el DNI del cliente">
+      				<input type="text" class="form-control" id="dni" name="dni" placeholder="Ingrese el DNI del cliente" required>
     			</div>
     			<div class="form group col-md-6">
       				<button type="submit" class="btn btn-primary" name="accion" value="hacer_socio">Hacer Socio</button>
