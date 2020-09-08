@@ -39,20 +39,6 @@ public class ServicioProducto {
 		}
 	}
 	
-	public Producto BuscarProductoEditar(int codigo_producto) throws Exception {
-		
-		Producto prod = null;
-		try
-		{
-			prod = _productoDAO.buscarProducto(codigo_producto);
-			return prod;
-		}
-		catch (Exception e)
-		{
-			throw e;
-		}
-	}
-	
 	public void EditarProducto(Producto prod) throws Exception {
 		
 		try
@@ -65,7 +51,7 @@ public class ServicioProducto {
 		}
 	}
 	
-	public Producto MostrarProducto(int codigo_producto) throws Exception {
+	public Producto GetProducto(int codigo_producto) throws Exception {
 		
 		try
 		{

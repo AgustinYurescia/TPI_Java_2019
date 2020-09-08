@@ -41,7 +41,7 @@ public class ControladorProducto extends HttpServlet {
 		Producto prod;
 		try
 		{
-			prod = _servicioProducto.MostrarProducto(Integer.parseInt(request.getParameter("codigo_producto")));
+			prod = _servicioProducto.GetProducto(Integer.parseInt(request.getParameter("codigo_producto")));
 			request.setAttribute("producto", prod);
 		}
 		catch (Exception e)
@@ -126,7 +126,7 @@ public class ControladorProducto extends HttpServlet {
 		{
 			try
 			{
-				prod = _servicioProducto.BuscarProductoEditar(Integer.parseInt(request.getParameter("codigo_producto")));
+				prod = _servicioProducto.GetProducto(Integer.parseInt(request.getParameter("codigo_producto")));
 				request.setAttribute("producto", prod);
 			}
 			catch (Exception e)
