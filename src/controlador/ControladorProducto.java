@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import modelo.Producto;
 import modeloDAO.ProductoDAO;
+import services.ServicioCategoria;
 import services.ServicioProducto;;
 
 @MultipartConfig
@@ -23,10 +24,12 @@ public class ControladorProducto extends HttpServlet {
 	Producto prod = new Producto();
 	ProductoDAO prodDAO = new ProductoDAO();
 	ServicioProducto _servicioProducto;
+	ServicioCategoria _servicioCategoria;
 
 	public ControladorProducto() {
         super();
         _servicioProducto = new ServicioProducto();
+        _servicioCategoria =  new ServicioCategoria();
         // TODO Auto-generated constructor stub
     }
 	
@@ -34,19 +37,34 @@ public class ControladorProducto extends HttpServlet {
 		String acceso = "";
 		String action = request.getParameter("accion");
 	if(action.equalsIgnoreCase("mostrar_producto")) 
+	{
+		Producto prod;
+		try
 		{
-			Producto prod;
-			try
-			{
-				prod = _servicioProducto.MostrarProducto(Integer.parseInt(request.getParameter("codigo_producto")));
-				request.setAttribute("producto", prod);
-			}
-			catch (Exception e)
-			{
-				request.setAttribute("mensajeError", "Error interno del servidor");
-			}
-			acceso = "producto.jsp";
+			prod = _servicioProducto.MostrarProducto(Integer.parseInt(request.getParameter("codigo_producto")));
+			request.setAttribute("producto", prod);
 		}
+		catch (Exception e)
+		{
+			request.setAttribute("mensajeError", "Error interno del servidor");
+		}
+		acceso = "producto.jsp";
+	}
+	else if(action.equalsIgnoreCase("listarCliente")) 
+	{
+		request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
+		acceso="listarProductos.jsp";
+	}
+	else if(action.equalsIgnoreCase("listarAdmin")) 
+	{
+		request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
+		acceso="listarProductosAdmin.jsp";
+	}
+	else if(action.equalsIgnoreCase("alta")) 
+	{
+		request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
+		acceso="altaProducto.jsp";
+	}
 		
 		RequestDispatcher vista = request.getRequestDispatcher(acceso);
 		vista.forward(request, response);
@@ -58,6 +76,7 @@ public class ControladorProducto extends HttpServlet {
 		
 		if(action.equalsIgnoreCase("Agregar")) 
 		{
+			request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
 			Part imagen = request.getPart("imagen");
 			InputStream imagenInputStream = imagen.getInputStream();
 			Double precio = Double.parseDouble(request.getParameter("precio"));
@@ -160,6 +179,7 @@ public class ControladorProducto extends HttpServlet {
 		}
 		else if(action.equalsIgnoreCase("listar")) 
 		{	
+			request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
 			try
 			{
 				ArrayList<Producto> lista = (ArrayList<Producto>) _servicioProducto.ObtenerProductos(Integer.parseInt(request.getParameter("codigo_filtro")));

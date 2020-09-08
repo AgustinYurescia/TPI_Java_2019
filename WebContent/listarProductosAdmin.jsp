@@ -1,9 +1,5 @@
-<%@page import="java.util.Iterator"%>
-<%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="modeloDAO.ProductoDAO"%>
 <%@page import="modelo.Producto"%>
-<%@page import="modeloDAO.CategoriaDAO"%>
 <%@page import="modelo.Categoria"%>
 <%@page import="javax.servlet.http.HttpSession"%>
 <%@page import="javax.servlet.http.HttpServletResponse"%>
@@ -31,14 +27,10 @@
       				<select id="codigo_filtro" name="codigo_filtro" class="form-control"  >
         				<option value = "0">Todos</option>
         				<% 
-						CategoriaDAO catDAO = new CategoriaDAO(); 
-						List<Categoria> listaCat = catDAO.obtener_todos();
-						Iterator<Categoria>iterCat = listaCat.iterator();
-						Categoria cat = null;
-						while(iterCat.hasNext()){
-							cat=iterCat.next();
+						for (Categoria c: (ArrayList<Categoria>) request.getAttribute("categorias"))
+						{
 						%>
-        				<option value="<%=cat.getCodigo()%>"><%=cat.getDescripcion()%></option>
+        				<option value="<%=c.getCodigo()%>"><%=c.getDescripcion()%></option>
         				<%}%>
      				</select>														
     			</div>
