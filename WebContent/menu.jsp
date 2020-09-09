@@ -34,6 +34,7 @@
               		<a class="dropdown-item" href="ControladorDeLinks?accion=altaProducto">Alta Producto</a>
               		<a class="dropdown-item" href="ControladorDeLinks?accion=editarProducto">Editar Producto</a>
               		<a class="dropdown-item" href="ControladorDeLinks?accion=listarProductosAdmin">Listado de Productos</a>
+              		<a class="dropdown-item" href="ControladorDeLinks?accion=altaCategoria">Nueva Categoría</a>
            		 </div>
           	</li>
           	<li class="nav-item dropdown">

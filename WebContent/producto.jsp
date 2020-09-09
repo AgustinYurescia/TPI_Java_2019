@@ -4,20 +4,20 @@
     
 <!DOCTYPE html>
 <html>
-	<head>
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-		<meta charset="ISO-8859-1">
-		<title>Producto</title>
-	</head>
-	<body>
-		<jsp:include page="menu.jsp"/>
-		<div class="container">
-	    <% 	
-	   		Producto prod = (Producto)request.getAttribute("producto"); 
-	   		String mensaje = (String)request.getAttribute("mensajeError");%>
-	   <br/>
-	   <br/>
-	   <div class="media position-relative">
+<head>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<meta charset="ISO-8859-1">
+	<title>Producto</title>
+</head>
+<body>
+	<jsp:include page="menu.jsp"/>
+	<div class="container">
+	<% 	
+		Producto prod = (Producto)request.getAttribute("producto"); 
+	   	String mensaje = (String)request.getAttribute("mensajeError");%>
+	   	<br/>
+	   	<br/>
+	   	<div class="media position-relative">
 	   		<img src="ControladorDeImagenes?codigo=<%=prod.getCodigo()%>" class="mr-3" width="400" height="400">
 	   		<div class="media-body">
 	     		<h5 class="mt-0"><%=prod.getNombre()%></h5>
@@ -28,16 +28,18 @@
 	     		<form class="form-inline" action="ControladorPedido">
   					<div class="form-group mb-2">
     					<label for="cantidad" class="sr-only">Cantidad</label>
-    					<input type="text" class="form-control" id="cantidad" name="cantidad" placeholder="Cantidad">
+    					<input type="number" class="form-control" id="cantidad" name="cantidad" placeholder="Cantidad" value="1">
     					<input type="hidden" id="codigo_producto" name="codigo_producto" value="<%=prod.getCodigo()%>">
   					</div>
   					<% if(mensaje != null){ %>
   					<div class="alert alert-danger" role="alert" align = "center"><%=mensaje%></div>
   					<%}%>
-  					<button type="submit" class="btn btn-primary mb-2" name="accion" value="agregarAlCarrito">Agregar al carrito</button>
+  					<div style="padding-left:20px">
+  						<button type="submit" class="btn btn-primary mb-2" name="accion" value="agregarAlCarrito">Agregar al carrito</button>
+  					</div>
 				</form>
 	 		</div>
 	 	</div>
-	 	</div>
-	</body>
+	 </div>
+</body>
 </html>

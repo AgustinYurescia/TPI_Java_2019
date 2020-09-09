@@ -1,6 +1,9 @@
 package services;
 
 import modeloDAO.ProductoDAO;
+
+import java.util.ArrayList;
+
 import modelo.Producto;
 
 public class ServicioProducto {
@@ -40,11 +43,64 @@ public class ServicioProducto {
 		
 		try
 		{
-			_productoDAO.editar_producto(prod);
+			_productoDAO.editarProducto(prod);
 		}
 		catch (Exception e)
 		{
 			throw e;
 		}
 	}
+	
+	public Producto GetProducto(int codigo_producto) throws Exception {
+		
+		try
+		{
+			Producto prod = _productoDAO.buscarProducto(codigo_producto);
+			return prod;
+		}
+		catch (Exception e)
+		{
+			throw e;
+		}
+	}
+
+	public void ReponerStock(int codigo_producto, int cantidad, double precio) throws Exception {
+	
+		try
+		{
+			_productoDAO.reponerStock(codigo_producto, cantidad, precio);
+		}
+		catch (Exception e)
+		{
+			throw e;
+		}
+	}
+		
+	public ArrayList<Producto> ObtenerProductos(int codigoCategoria) throws Exception {
+		
+		if (codigoCategoria == 0) {
+			try
+			{
+				ArrayList<Producto> productos = (ArrayList<Producto>) _productoDAO.obtenerTodos();
+				return productos;
+			}
+			catch (Exception e)
+			{
+				throw e;
+			}
+		}
+		else
+		{
+			try
+			{
+				ArrayList<Producto> productos = (ArrayList<Producto>) _productoDAO.obtenerPorCategoria(codigoCategoria);
+				return productos;
+			}
+			catch (Exception e)
+			{
+				throw e;
+			}
+		}
+	}
+
 }

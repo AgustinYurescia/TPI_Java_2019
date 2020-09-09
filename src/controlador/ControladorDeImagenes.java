@@ -19,7 +19,7 @@ public class ControladorDeImagenes extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int codigo = Integer.parseInt(request.getParameter("codigo"));
 		ProductoDAO proDAO = new ProductoDAO();
-		proDAO.listar_imagen(codigo, response);
+		proDAO.listarImagen(codigo, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

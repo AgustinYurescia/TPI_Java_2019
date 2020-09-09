@@ -13,7 +13,7 @@ import modelo.Producto;
 
 public class ProductoDAO {
 		
-	public List<Producto> obtener_todos() {
+	public List<Producto> obtenerTodos() throws Exception {
 		Statement st = null;
 		ResultSet rs = null;
 		ArrayList<Producto>lista = new ArrayList<>();
@@ -21,8 +21,10 @@ public class ProductoDAO {
 		try {
 			st=Conexion.getInstancia().getConexion().createStatement();
 			rs=st.executeQuery(sentenciaSQL);
-			if(rs!=null) {
-				while(rs.next()) {
+			if(rs!=null) 
+			{
+				while(rs.next()) 
+				{
 					Producto prod = new Producto();
 					prod.setCodigo(rs.getInt("codigo"));
 					prod.setNombre(rs.getString("nombre"));
@@ -33,14 +35,21 @@ public class ProductoDAO {
 					lista.add(prod);
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
+		} 
+		catch (Exception e) 
+		{
+			throw e;
+		} 
+		finally 
+		{
+			try 
+			{
 				if(rs!=null) {rs.close();}
 				if(st!=null) {st.close();}
 				Conexion.getInstancia().desconectar();
-			} catch (Exception e) {
+			} 
+			catch (Exception e) 
+			{
 				e.printStackTrace();
 			}
 		}
@@ -48,35 +57,43 @@ public class ProductoDAO {
 	}
 	
 	
-	public void listar_imagen(int codigo, HttpServletResponse response) {
-		Statement st = null;
+	public void listarImagen(int codigo, HttpServletResponse response) 
+	{
+		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sentenciaSQL = "SELECT * FROM producto WHERE codigo="+codigo;
+		String sentenciaSQL = "SELECT * FROM producto WHERE codigo=?";
 		InputStream inputStream = null;
 		OutputStream outputStream = null;
 		BufferedInputStream bufferedInputStream = null;
 		BufferedOutputStream bufferedOutputStream = null;
 		response.setContentType("image/*");
-		try {
+		try 
+		{
 			outputStream = response.getOutputStream();
-			st=Conexion.getInstancia().getConexion().createStatement();
-			rs=st.executeQuery(sentenciaSQL);
-			if(rs.next()) {
+			ps=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			ps.setInt(1, codigo);
+			rs=ps.executeQuery();
+			if(rs.next()) 
+			{
 				inputStream = rs.getBinaryStream("imagen");
 			}
 			bufferedInputStream = new BufferedInputStream(inputStream);
 			bufferedOutputStream = new BufferedOutputStream(outputStream);
 			int i = 0;
-			while ((i=bufferedInputStream.read()) != -1) {
+			while ((i=bufferedInputStream.read()) != -1) 
+			{
 				bufferedOutputStream.write(i);
 			}
-		}catch(Exception e){
-			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
 		}
 		
 	}
 	
-	public void alta(Producto prod, Double precio) throws Exception {
+	public void alta(Producto prod, Double precio) throws Exception 
+	{
 		PreparedStatement st = null;
 		ResultSet keyResultSet=null;
 		String sentenciaSQL="INSERT INTO producto(nombre,imagen,stock,codigo_categoria)VALUES(?,?,?,?)";
@@ -94,7 +111,7 @@ public class ProductoDAO {
 				prod.setCodigo(keyResultSet.getInt(1));
 				try
 				{
-					calcular_precio_venta(keyResultSet.getInt(1),precio);
+					calcularPrecioVenta(keyResultSet.getInt(1),precio);
 				}
 				catch (Exception e)
 				{
@@ -122,7 +139,8 @@ public class ProductoDAO {
 		
 	}
 	
-	public List<Producto> obtener_por_codigo_categoria(int codigo_categoria) {
+	public List<Producto> obtenerPorCategoria(int codigo_categoria) throws Exception 
+	{
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		ArrayList<Producto>lista = new ArrayList<>();
@@ -143,14 +161,21 @@ public class ProductoDAO {
 					lista.add(prod);
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
+		} 
+		catch (Exception e) 
+		{
+			throw e;
+		} 
+		finally 
+		{
+			try 
+			{
 				if(rs!=null) {rs.close();}
 				if(ps!=null) {ps.close();}
 				Conexion.getInstancia().desconectar();
-			} catch (Exception e) {
+			} 
+			catch (Exception e) 
+			{
 				e.printStackTrace();
 			}
 		}
@@ -158,7 +183,8 @@ public class ProductoDAO {
 	}
 
 	
-	public void baja(int codigo_producto_baja) throws Exception {
+	public void baja(int codigo_producto_baja) throws Exception 
+	{
 		PreparedStatement st = null;
 		String sentenciaSQL="UPDATE producto SET fecha_baja = current_date WHERE codigo=?";
 		try 
@@ -185,63 +211,97 @@ public class ProductoDAO {
 	}
 	
 	
-	public void reponer_stock(int codigo_producto, int cantidad, double precio) {
-		PreparedStatement st = null;
-		String sentenciaSQL="UPDATE producto SET stock=stock+"+cantidad+" WHERE codigo="+codigo_producto+"";
-		try {
-			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
-			st.executeUpdate();
-			calcular_precio_venta(codigo_producto, precio);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}finally {
-			try {
+	public void reponerStock(int codigo_producto, int cantidad, double precio) throws Exception
+	{
+		PreparedStatement ps = null;
+		String sentenciaSQL="UPDATE producto SET stock=stock+? WHERE codigo=?";
+		try 
+		{
+			ps=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			ps.setInt(1,cantidad);
+			ps.setInt(2, codigo_producto);
+			ps.executeUpdate();
+			calcularPrecioVenta(codigo_producto, precio);
+		} 
+		catch (Exception e) 
+		{
+			throw e;
+		}
+		finally 
+		{
+			try 
+			{
                 Conexion.getInstancia().desconectar();
-			} catch (Exception e) {
+			} catch (Exception e) 
+			{
 				e.printStackTrace();
 			}
 		}
 	}
 	
-	public void actualizar_stock(int codigo_producto, int cantidad) {
-		PreparedStatement st = null;
-		String sentenciaSQL="UPDATE producto SET stock=stock+"+cantidad+" WHERE codigo="+codigo_producto+"";
-		try {
-			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
-			st.executeUpdate();
-		} catch (Exception e) {
+	public void actualizarStock(int codigo_producto, int cantidad) 
+	{
+		PreparedStatement ps = null;
+		String sentenciaSQL="UPDATE producto SET stock=stock+? WHERE codigo=?";
+		try 
+		{
+			ps=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			ps.setInt(1, cantidad);
+			ps.setInt(2, codigo_producto);
+			ps.executeUpdate();
+		} 
+		catch (Exception e) 
+		{
 			e.printStackTrace();
-		}finally {
-			try {
+		}
+		finally 
+		{
+			try 
+			{
                 Conexion.getInstancia().desconectar();
-			} catch (Exception e) {
+			} 
+			catch (Exception e) 
+			{
 				e.printStackTrace();
 			}
 		}
 	}
 	
-	public void descontar_stock(int codigo_producto, int cantidad) {
-		PreparedStatement st = null;
-		String sentenciaSQL="UPDATE producto SET stock=stock-"+cantidad+" WHERE codigo="+codigo_producto+"";
-		try {
-			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
-			st.executeUpdate();
-		} catch (Exception e) {
+	public void descontarStock(int codigo_producto, int cantidad) 
+	{
+		PreparedStatement ps = null;
+		String sentenciaSQL="UPDATE producto SET stock=stock-? WHERE codigo=?";
+		try 
+		{
+			ps=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			ps.setInt(1, cantidad);
+			ps.setInt(2, codigo_producto);
+			ps.executeUpdate();
+		} 
+		catch (Exception e) 
+		{
 			e.printStackTrace();
-		}finally {
-			try {
+		}
+		finally 
+		{
+			try 
+			{
                 Conexion.getInstancia().desconectar();
-			} catch (Exception e) {
+			}
+			catch (Exception e) 
+			{
 				e.printStackTrace();
 			}
 		}
 	}
 	
 	
-	public void editar_producto(Producto prod) throws Exception {
+	public void editarProducto(Producto prod) throws Exception 
+	{
 		PreparedStatement st = null;
 		String sentenciaSQL="UPDATE producto SET nombre=?,imagen=?,precio_venta=? WHERE codigo=?";
-		try {
+		try 
+		{
 			if (prod.get_imagen() != null) 
 			{
 				st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
@@ -277,7 +337,8 @@ public class ProductoDAO {
 		}
 	}
 	
-	public void calcular_precio_venta(int codigo_producto, Double precio) throws Exception {
+	public void calcularPrecioVenta(int codigo_producto, Double precio) throws Exception 
+	{
 		Double porcGan;
 		Double precio_venta;
 		Statement st = null;
@@ -316,16 +377,19 @@ public class ProductoDAO {
 		}
 	}
 	
-	
-	public Producto buscar_producto(int codigo_producto) {
+	public Producto buscarProducto(int codigo_producto) throws Exception 
+	{
 		Producto prod = new Producto();
-		Statement st = null;
+		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sentenciaParaPorc="SELECT * FROM producto WHERE codigo = "+codigo_producto+"";
-		try {
-			st=Conexion.getInstancia().getConexion().createStatement();
-			rs=st.executeQuery(sentenciaParaPorc);
-			if (rs.next()) {
+		String sentenciaSQL="SELECT * FROM producto WHERE codigo = ?";
+		try 
+		{
+			ps=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			ps.setInt(1, codigo_producto);
+			rs=ps.executeQuery();
+			if (rs.next()) 
+			{
 				prod.setCodigo(rs.getInt(1));
 				prod.setNombre(rs.getString(2));
 				prod.set_imagen(rs.getBinaryStream(3));
@@ -333,14 +397,18 @@ public class ProductoDAO {
 				prod.setPrecioVenta(rs.getDouble(5));
 			}
 		} 
-		catch (Exception e) {
-			e.printStackTrace();
+		catch (Exception e) 
+		{
+			throw e;
 		}
-		finally {
-			try {
+		finally 
+		{
+			try 
+			{
                 Conexion.getInstancia().desconectar();
 			} 
-			catch (Exception e) {
+			catch (Exception e) 
+			{
 				e.printStackTrace();
 			}
 		}

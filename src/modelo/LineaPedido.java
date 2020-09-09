@@ -35,7 +35,16 @@ public class LineaPedido {
 	}
 	public Producto getProducto(int codigo_producto) {
 		ProductoDAO prodDAO = new ProductoDAO();
-		Producto prod = prodDAO.buscar_producto(codigo_producto);
+		Producto prod = null;
+		try
+		{
+			prod = prodDAO.buscarProducto(codigo_producto);
+			return prod;
+		}
+		catch (Exception e)
+		{
+			
+		}
 		return prod;
 	}
 	

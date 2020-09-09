@@ -46,7 +46,7 @@ public class ControladorDeLinks extends HttpServlet {
 			if (sesion.getAttribute("usuario_admin") == null) {
 				response.sendRedirect("loginAdmin.jsp");   
 			}else {
-				response.sendRedirect("altaProducto.jsp");
+				response.sendRedirect("ControladorProducto?accion=alta");
 			}
 		}else if(action.equalsIgnoreCase("carrito")) {
 			response.sendRedirect("carrito.jsp");
@@ -71,9 +71,11 @@ public class ControladorDeLinks extends HttpServlet {
 		}else if (action.equalsIgnoreCase("cambioContrasenaAdmin")) {
 			response.sendRedirect("cambiarContrasenaAdmin.jsp");
 		}else if (action.equalsIgnoreCase("listarProductosAdmin")) {
-			response.sendRedirect("listarProductosAdmin.jsp");
+			response.sendRedirect("ControladorProducto?accion=listarAdmin");
 		}else if (action.equalsIgnoreCase("listarProductosCliente")) {
-			response.sendRedirect("listarProductos.jsp");
+			response.sendRedirect("ControladorProducto?accion=listarCliente");
+		}else if (action.equalsIgnoreCase("altaCategoria")) {
+			response.sendRedirect("ControladorCategoria?accion=alta");
 		}
 		
 		//RequestDispatcher vista = request.getRequestDispatcher(acceso);
