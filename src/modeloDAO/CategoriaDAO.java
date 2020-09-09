@@ -87,6 +87,34 @@ public class CategoriaDAO {
 		}
 		
 	}
+	public void baja(int codigoCategoria) throws Exception 
+	{
+		PreparedStatement st = null;
+		String sentenciaSQL="DELETE FROM categoria WHERE codigo=?";
+		try 
+		{
+			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			st.setInt(1, codigoCategoria);
+			st.executeUpdate();		
+		} 
+		catch (Exception e) 
+		{
+			throw e;
+		}
+		finally 
+		{
+			try 
+			{
+                if(st!=null) {st.close();}
+                Conexion.getInstancia().desconectar();
+			} 
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+		}
+		
+	}
 	public boolean existeCategoria(String descripcion_categoria) throws Exception 
 	{
 		PreparedStatement ps = null;
@@ -96,6 +124,41 @@ public class CategoriaDAO {
 		{
 			ps=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
 			ps.setString(1, descripcion_categoria);
+			rs=ps.executeQuery();
+			if(rs!=null && rs.next()) 
+			{
+				return true;
+			}
+		} 
+		catch (Exception e) 
+		{
+			throw e;
+		}
+		finally 
+		{
+			try 
+			{
+				if(rs!=null) {rs.close();}
+                if(ps!=null) {ps.close();}
+                Conexion.getInstancia().desconectar();
+			} 
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
+	
+	public boolean existeCategoria(int codigoCategoria) throws Exception 
+	{
+		PreparedStatement ps = null;
+		ResultSet rs=null;
+		String sentenciaSQL="SELECT * FROM categoria WHERE codigo = ?";
+		try 
+		{
+			ps=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			ps.setInt(1, codigoCategoria);
 			rs=ps.executeQuery();
 			if(rs!=null && rs.next()) 
 			{

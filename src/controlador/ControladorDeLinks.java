@@ -76,6 +76,8 @@ public class ControladorDeLinks extends HttpServlet {
 			response.sendRedirect("ControladorProducto?accion=listarCliente");
 		}else if (action.equalsIgnoreCase("altaCategoria")) {
 			response.sendRedirect("ControladorCategoria?accion=alta");
+		}else if (action.equalsIgnoreCase("bajaCategoria")) {
+			response.sendRedirect("ControladorCategoria?accion=baja");
 		}
 		
 		//RequestDispatcher vista = request.getRequestDispatcher(acceso);

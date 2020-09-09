@@ -34,7 +34,15 @@
               		<a class="dropdown-item" href="ControladorDeLinks?accion=altaProducto">Alta Producto</a>
               		<a class="dropdown-item" href="ControladorDeLinks?accion=editarProducto">Editar Producto</a>
               		<a class="dropdown-item" href="ControladorDeLinks?accion=listarProductosAdmin">Listado de Productos</a>
+           		 </div>
+          	</li>
+          	<li class="nav-item dropdown">
+          		<a class="nav-link dropdown-toggle" href="#" id="productosDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              		Categorías de Producto
+            	</a>
+            	<div class="dropdown-menu" aria-labelledby="productosDropdown">
               		<a class="dropdown-item" href="ControladorDeLinks?accion=altaCategoria">Nueva Categoría</a>
+              		<a class="dropdown-item" href="ControladorDeLinks?accion=bajaCategoria">Baja Categoría</a>
            		 </div>
           	</li>
           	<li class="nav-item dropdown">

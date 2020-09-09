@@ -15,6 +15,7 @@ import modelo.Cliente;
 import modelo.LineaPedido;
 import modelo.Producto;
 import modeloDAO.ProductoDAO;
+import services.ServicioCategoria;
 import modelo.Pedido;
 import modeloDAO.ClienteDAO;
 import modeloDAO.PedidoDAO;
@@ -31,6 +32,7 @@ public class ControladorPedido extends HttpServlet {
 		String action = request.getParameter("accion");
 		String acceso = "";
 		if(action.equalsIgnoreCase("agregarAlCarrito")) {
+			ServicioCategoria _servicioCategoria = new ServicioCategoria();
 			int codigo_producto = Integer.parseInt(request.getParameter("codigo_producto"));
 			int cantidad = Integer.parseInt(request.getParameter("cantidad"));
 			double subtotal = 0.0 ;                                              //CAMBIO
@@ -53,6 +55,7 @@ public class ControladorPedido extends HttpServlet {
 							l.setCantidad(l.getCantidad() + cantidad);
 							l.setSubtotal(prod.getPrecioVenta() * l.getCantidad());
 							ya_existe = true;
+							request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
 							acceso = "listarProductos.jsp";
 							break;
 						}
@@ -76,6 +79,7 @@ public class ControladorPedido extends HttpServlet {
 				{
 					
 				}
+				request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
 				acceso = "listarProductos.jsp";				
 			}
 			sesion.setAttribute("carrito", linea);

@@ -210,6 +210,33 @@ public class ProductoDAO {
 		}
 	}
 	
+	public void bajaPorCategoria(int codigoCategoria) throws Exception 
+	{
+		PreparedStatement st = null;
+		String sentenciaSQL="DELETE FROM producto WHERE codigo_categoria=?";
+		try 
+		{
+			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			st.setInt(1, codigoCategoria);
+			st.executeUpdate();
+		} 
+		catch (Exception e) 
+		{
+			throw e;
+		}
+		finally 
+		{
+			try 
+			{
+                Conexion.getInstancia().desconectar();
+			} 
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	
 	public void reponerStock(int codigo_producto, int cantidad, double precio) throws Exception
 	{
