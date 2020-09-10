@@ -10,16 +10,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import exceptions.ExistentCategoryException;
+import exceptions.NonExistentCategoryException;
 import services.ServicioCategoria;
+import services.ServicioProducto;
 
 @WebServlet("/ControladorCategoria")
 public class ControladorCategoria extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private ServicioCategoria _servicioCategoria;
+    private ServicioProducto _servicioProducto;
 	
     public ControladorCategoria() {
         super();
         _servicioCategoria = new ServicioCategoria(); 
+        _servicioProducto = new ServicioProducto(); 
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -29,6 +33,11 @@ public class ControladorCategoria extends HttpServlet {
 		{
 			request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
 			acceso="altaCategoria.jsp";
+		}
+		else if (action.equalsIgnoreCase("baja"))
+		{
+			request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
+			acceso="bajaCategoria.jsp";
 		}
 		
 		RequestDispatcher vista = request.getRequestDispatcher(acceso);
@@ -40,7 +49,6 @@ public class ControladorCategoria extends HttpServlet {
 		String action = request.getParameter("accion");
 		if (action.equalsIgnoreCase("alta"))
 		{
-			request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
 			try
 			{
 				_servicioCategoria.Alta(request.getParameter("categoria"));
@@ -54,7 +62,27 @@ public class ControladorCategoria extends HttpServlet {
 			{
 				request.setAttribute("mensajeError", "Error interno del servidor");
 			}
+			request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
 			acceso="altaCategoria.jsp";
+		}
+		else if (action.equalsIgnoreCase("baja"))
+		{
+			try
+			{
+				_servicioProducto.BajaPorCategoria(Integer.parseInt(request.getParameter("codigoCategoria")));
+				_servicioCategoria.Baja(Integer.parseInt(request.getParameter("codigoCategoria")));
+				request.setAttribute("mensajeOk", "Baja realizada con éxito");
+			}
+			catch (NonExistentCategoryException e)
+			{
+				request.setAttribute("mensajeError", e.getMessage());
+			}
+			catch (Exception e)
+			{
+				request.setAttribute("mensajeError", "Error interno del servidor");
+			}
+			request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
+			acceso="bajaCategoria.jsp";
 		}
 		
 		RequestDispatcher vista = request.getRequestDispatcher(acceso);

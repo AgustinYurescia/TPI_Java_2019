@@ -177,13 +177,14 @@ public class ControladorProducto extends HttpServlet {
 			}
 			acceso="actualizarStock.jsp";
 		}
-		else if(action.equalsIgnoreCase("listar")) 
+		else if(action.equalsIgnoreCase("listar") || action.equalsIgnoreCase("listarParaBajaCat")) 
 		{	
 			request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
 			try
 			{
 				ArrayList<Producto> lista = (ArrayList<Producto>) _servicioProducto.ObtenerProductos(Integer.parseInt(request.getParameter("codigo_filtro")));
 				request.setAttribute("listado", lista);
+				request.setAttribute("categoria", request.getParameter("codigo_filtro"));
 			}
 			catch (Exception e)
 			{
@@ -191,14 +192,21 @@ public class ControladorProducto extends HttpServlet {
 			}
 			HttpSession sesion = request.getSession(true);
 			String usuario_admin = (String)sesion.getAttribute("usuario_admin");
-			if (usuario_admin == null) 
+			if (action.equalsIgnoreCase("listar"))
 			{
-				acceso = "listarProductos.jsp";
+				if (usuario_admin == null) 
+				{
+					acceso = "listarProductos.jsp";
+				}
+				else 
+				{
+					acceso = "listarProductosAdmin.jsp";
+				}
 			}
-			else 
+			else
 			{
-				acceso = "listarProductosAdmin.jsp";
-			}			
+				acceso = "bajaCategoria.jsp";
+			}
 		}
 		RequestDispatcher vista = request.getRequestDispatcher(acceso);
 		vista.forward(request, response);

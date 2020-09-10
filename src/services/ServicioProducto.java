@@ -102,5 +102,16 @@ public class ServicioProducto {
 			}
 		}
 	}
+	
+	public void BajaPorCategoria(int codigoCategoria) throws Exception {
+		try
+		{
+			_productoDAO.bajaPorCategoria(codigoCategoria);
+		}
+		catch (Exception e)
+		{
+			throw e;
+		}
+	}
 
 }

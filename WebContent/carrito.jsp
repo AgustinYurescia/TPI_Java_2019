@@ -24,13 +24,13 @@
 	   	if(errorStock != null){%>
 	   		<br>
 	   		<div class="alert alert-info"><%=errorStock%></div>
-			<a class="py-2 d-none d-md-inline-block" href="ControladorProducto?accion=listar&codigo_filtro=0"><button type="submit" class="btn btn-primary">Ir a comprar</button></a>	
+			<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=listarProductosCliente"><button type="submit" class="btn btn-primary">Ir a comprar</button></a>	
 	   	<%}else{
 			if (linea == null || linea.isEmpty()) {
 		%>
 			<br>
 			<div class="alert alert-info">Su carrito se encuentra vacío</div>
-			<a class="py-2 d-none d-md-inline-block" href="ControladorProducto?accion=listar&codigo_filtro=0"><button type="submit" class="btn btn-primary">Ir a comprar</button></a>
+			<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=listarProductosCliente"><button type="submit" class="btn btn-primary">Ir a comprar</button></a>
 		<% 
 			}else {
 				linea = (ArrayList<LineaPedido>)sesion.getAttribute("carrito");	

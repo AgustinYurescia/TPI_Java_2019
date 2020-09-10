@@ -1,6 +1,7 @@
 package services;
 
 import exceptions.ExistentCategoryException;
+import exceptions.NonExistentCategoryException;
 import modeloDAO.CategoriaDAO;
 import java.util.ArrayList;
 import modelo.Categoria;
@@ -24,6 +25,25 @@ public class ServicioCategoria {
 			else
 			{
 				_categoriaDAO.alta(categoria);
+			}
+		}
+		catch (Exception e)
+		{
+			throw e;
+		}
+	}
+	
+	public void Baja(int codigoCategoria) throws Exception
+	{
+		try
+		{
+			if (_categoriaDAO.existeCategoria(codigoCategoria))
+			{
+				_categoriaDAO.baja(codigoCategoria);
+			}
+			else
+			{
+				throw new NonExistentCategoryException("La categoría no existe");
 			}
 		}
 		catch (Exception e)
