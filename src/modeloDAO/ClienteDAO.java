@@ -2,9 +2,13 @@ package modeloDAO;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+
 import config.Conexion;
 import exceptions.ExistentUserException;
 import exceptions.NoRowsAffectedException;
+import exceptions.NonExistentPartnerException;
 import exceptions.NonExistentUserException;
 import modelo.Cliente;
 
@@ -327,6 +331,46 @@ public class ClienteDAO {
 			}
 		}
 
+	}
+	
+	public ArrayList<String> ObtenerDniSociosActivos() throws Exception {
+		ArrayList <String> dniSocios = new ArrayList<String>();
+		String sentenciaSQL="SELECT dni FROM cliente WHERE fecha_baja is null AND fecha_baja_socio is null";
+		Statement st = null;
+		ResultSet rs = null;
+		try 
+		{
+			st=Conexion.getInstancia().getConexion().createStatement();
+			rs = st.executeQuery(sentenciaSQL);
+			if (rs.next())
+			{
+				while (rs.next())
+				{
+					dniSocios.add(rs.getString("dni"));
+				}
+				return dniSocios;
+			}
+			else
+			{
+				throw new NonExistentPartnerException("No existen socios");
+			}
+		}
+		catch(Exception e)
+		{
+			throw e;
+		}
+		finally 
+		{
+			try 
+			{
+				if(st!=null) {st.close();}
+				Conexion.getInstancia().desconectar();
+			} 
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+		}
 	}
 }
 	

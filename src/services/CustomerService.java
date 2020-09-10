@@ -1,6 +1,10 @@
 package services;
 
 import modeloDAO.ClienteDAO;
+
+import java.util.ArrayList;
+
+import exceptions.NonExistentPartnerException;
 import exceptions.NonExistentUserException;
 import modelo.Cliente;
 
@@ -105,6 +109,24 @@ public class CustomerService {
 		if (!(_clienteDAO.existe(usuario, contrasena)))
 		{
 			throw new NonExistentUserException("Usuario y/o contraseña incorrectos"); 
+		}
+	}
+	
+	public ArrayList<String> ObtenerDniSociosActivos()  throws Exception
+	{
+		ArrayList<String> dniSocios = null;
+		try
+		{
+			dniSocios = _clienteDAO.ObtenerDniSociosActivos();
+			return dniSocios;
+		}
+		catch(NonExistentPartnerException e)
+		{
+			throw e;
+		}
+		catch(Exception e)
+		{
+			throw e;
 		}
 	}
 	
