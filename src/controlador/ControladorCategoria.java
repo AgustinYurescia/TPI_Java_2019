@@ -18,10 +18,12 @@ import services.ServicioProducto;
 public class ControladorCategoria extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private ServicioCategoria _servicioCategoria;
+    private ServicioProducto _servicioProducto;
 	
     public ControladorCategoria() {
         super();
         _servicioCategoria = new ServicioCategoria(); 
+        _servicioProducto = new ServicioProducto(); 
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -67,7 +69,6 @@ public class ControladorCategoria extends HttpServlet {
 		{
 			try
 			{
-				ServicioProducto _servicioProducto = new ServicioProducto(); 
 				_servicioProducto.BajaPorCategoria(Integer.parseInt(request.getParameter("codigoCategoria")));
 				_servicioCategoria.Baja(Integer.parseInt(request.getParameter("codigoCategoria")));
 				request.setAttribute("mensajeOk", "Baja realizada con éxito");
