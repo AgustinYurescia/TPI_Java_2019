@@ -7,14 +7,16 @@ public class Cuota
 	private String dniCliente;
 	private int mes;
 	private int anio;
+	private double valor;
 	private java.sql.Date fechaPago;
 	
-	public Cuota(String dniCliente, int mes, int anio, Date fechaPago) 
+	public Cuota(String dniCliente, int mes, int anio, double valor, Date fechaPago) 
 	{
 		super();
 		this.dniCliente = dniCliente;
 		this.mes = mes;
 		this.anio = anio;
+		this.valor = valor;
 		this.fechaPago = fechaPago;
 	}
 
@@ -46,6 +48,16 @@ public class Cuota
 	public void setAnio(int anio) 
 	{
 		this.anio = anio;
+	}
+	
+	public double getValor()
+	{
+		return valor;
+	}
+
+	public void setValor(double valor) 
+	{
+		this.valor = valor;
 	}
 
 	public java.sql.Date getFechaPago() 

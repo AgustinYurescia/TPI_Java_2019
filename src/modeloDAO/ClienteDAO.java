@@ -335,7 +335,7 @@ public class ClienteDAO {
 	
 	public ArrayList<String> ObtenerDniSociosActivos() throws Exception {
 		ArrayList <String> dniSocios = new ArrayList<String>();
-		String sentenciaSQL="SELECT dni FROM cliente WHERE fecha_baja is null AND fecha_baja_socio is null";
+		String sentenciaSQL="SELECT dni FROM cliente WHERE fecha_baja is null AND fecha_baja_socio is null AND dni not in (SELECT dni_cliente FROM cuota WHERE mes=MONTH(current_date) and anio=YEAR(current_date))";
 		Statement st = null;
 		ResultSet rs = null;
 		try 
@@ -344,6 +344,7 @@ public class ClienteDAO {
 			rs = st.executeQuery(sentenciaSQL);
 			if (rs.next())
 			{
+				dniSocios.add(rs.getString("dni"));
 				while (rs.next())
 				{
 					dniSocios.add(rs.getString("dni"));
@@ -352,7 +353,7 @@ public class ClienteDAO {
 			}
 			else
 			{
-				throw new NonExistentPartnerException("No existen socios");
+				throw new NonExistentPartnerException("No existen socios activos sin cuotas generadas");
 			}
 		}
 		catch(Exception e)

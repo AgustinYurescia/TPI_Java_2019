@@ -2,6 +2,7 @@ package controlador;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,8 +11,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import exceptions.NonExistentFeeException;
 import exceptions.NonExistentFeeValueException;
 import exceptions.NonExistentPartnerException;
+import modelo.Cuota;
 import services.ServicioCuota;
 
 @WebServlet("/ControladorCuota")
@@ -62,7 +65,42 @@ public class ControladorCuota extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+		String acceso = "";
+		String action = request.getParameter("accion");
+		if(action.equalsIgnoreCase("buscarCuotas"))
+		{
+			try
+			{
+				request.setAttribute("cuotasAnio", (ArrayList<Cuota>)_servicioCuota.ObtenerCuotasAnioActual(request.getParameter("dniCliente")));
+			}
+			catch(NonExistentFeeException e)
+			{
+				request.setAttribute("mensajeError", e.getMessage());
+			}
+			catch(Exception e)
+			{
+				request.setAttribute("mensajeError", "Error interno del servidor");
+			}
+			
+			acceso="pagoCuotas.jsp";
+		}
+		else if(action.equalsIgnoreCase("registrarPago"))
+		{
+			try
+			{
+				_servicioCuota.RegistrarPago(request.getParameter("dniCliente"), Integer.parseInt(request.getParameter("mesCuota")), Integer.parseInt(request.getParameter("anioCuota")));
+				request.setAttribute("mensajeOk", "Pago registrado con éxito, puede volver a buscar las cuotas del cliente para comprobarlo");
+			}
+			catch(Exception e)
+			{
+				request.setAttribute("mensajeError", "No se pudo registrar el pago debido a un error interno del servidor");
+			}
+			
+			acceso="pagoCuotas.jsp";
+		}
+		
+		RequestDispatcher vista = request.getRequestDispatcher(acceso);
+		vista.forward(request, response);
 	}
 
 }
