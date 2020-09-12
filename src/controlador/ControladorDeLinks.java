@@ -78,6 +78,8 @@ public class ControladorDeLinks extends HttpServlet {
 			response.sendRedirect("ControladorCategoria?accion=alta");
 		}else if (action.equalsIgnoreCase("bajaCategoria")) {
 			response.sendRedirect("ControladorCategoria?accion=baja");
+		}else if (action.equalsIgnoreCase("modificacionCategoria")) {
+			response.sendRedirect("ControladorCategoria?accion=modificacion");
 		}else if (action.equalsIgnoreCase("pagoCuotas")) {
 			response.sendRedirect("pagoCuotas.jsp");
 		}

@@ -17,11 +17,11 @@
 	   	<h1>Formulario de Socio</h1>
 	   	<form action="ControladorCliente" method="post">
 	   		<div class="form-row">
-    			<div class="form group col-md-6">
+    			<div class="form group col-md-10">
       				<input type="text" class="form-control" id="dni" name="dni" placeholder="Ingrese el DNI del cliente" required>
     			</div>
-    			<div class="form group col-md-6">
-      				<button type="submit" class="btn btn-primary" name="accion" value="hacer_socio">Hacer Socio</button>
+    			<div class="form group col-md-2">
+      				<button type="submit" class="btn btn-primary" name="accion" value="hacer_socio" style="width: 175px">Hacer Socio</button>
     			</div>
   			</div>
 	   	</form>
@@ -79,7 +79,7 @@
       				<input type="Password" id="contrasena" name="contrasena" class="form-control" value=<%=cliente.getCliente_contrasena()%> disabled>
     			</div>
   			</div>
-  			<div class="form-row">
+  			<div class="form-row" style="margin-left: 1px">
     			<button type="submit" class="btn btn-primary" name="accion" value="hacer_socio">Registrar Socio</button>
   			</div>
 		</form>

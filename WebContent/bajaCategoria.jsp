@@ -11,10 +11,11 @@
 </head>
 <body>
 	<div class="container">
-		</br>
+	   	<h1>Eliminar Categoria</h1>
 	   	<form action="ControladorProducto" method="POST">
   			<div class="form-row">
     			<div class="form-group col-md-10">
+      				<label for="codigo_filtro">Seleccione la categoría a dar de baja:</label>
       				<select id="codigo_filtro" name="codigo_filtro" class="form-control"  >
       					<option></option>
         				<% 
@@ -25,7 +26,7 @@
         				<%}%>
      				</select>														
     			</div>
-    			<div class="form-group col-md-2">
+    			<div class="form-group col-md-2" style="padding-top: 31px">
     				<button type="submit" class="btn btn-primary" name="accion" value="listarParaBajaCat">Borrar Categoria</button>	
     			</div>
     		</div>
@@ -45,7 +46,7 @@
 	   		if (request.getAttribute("listado") != null)
 			{
 	   		%>
-			<h3>Al borrar la categoría se borrarán también los siguientes productos</h3>
+			<h5>Al borrar la categoría se borrarán también los siguientes productos</h5>
 			<table class="table">
 				<thead>
 					<tr>					

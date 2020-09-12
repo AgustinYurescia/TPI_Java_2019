@@ -17,6 +17,7 @@
 	if (sesion.getAttribute("usuario_admin") != null) { 
 	%>
 	<div class="m-2">
+		<h1>Buscar Cuotas</h1>
 		<form action="ControladorCuota" method="post">
 	   		<div class = "form-row">
 	       		<div class="form-group col-md-10">
@@ -24,7 +25,7 @@
       				<input type="text" id="dniCliente" name="dniCliente" class="form-control" required/>
 	       		</div>
 	       		<div class="form-group col-md-2" style="padding-top: 31px">
-	       			<button type="submit" class="btn btn-primary" name="accion" value="buscarCuotas">Buscar Cuotas</button>
+	       			<button type="submit" class="btn btn-primary" name="accion" value="buscarCuotas" style="width: 175px;">Buscar Cuotas</button>
 	       		</div>
 	       	</div>
 		</form>
