@@ -2,9 +2,13 @@ package modeloDAO;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+
 import config.Conexion;
 import exceptions.ExistentUserException;
 import exceptions.NoRowsAffectedException;
+import exceptions.NonExistentPartnerException;
 import exceptions.NonExistentUserException;
 import modelo.Cliente;
 
@@ -327,6 +331,64 @@ public class ClienteDAO {
 			}
 		}
 
+	}
+	
+	public ArrayList<String> ObtenerDniSociosActivos() throws Exception {
+		ArrayList <String> dniSocios = new ArrayList<String>();
+		String sentenciaSQL="SELECT dni FROM cliente WHERE fecha_baja is null AND fecha_baja_socio is null AND dni not in (SELECT dni_cliente FROM cuota WHERE mes=MONTH(current_date) and anio=YEAR(current_date))";
+		Statement st = null;
+		ResultSet rs = null;
+		try 
+		{
+			st=Conexion.getInstancia().getConexion().createStatement();
+			rs = st.executeQuery(sentenciaSQL);
+			if (rs.next())
+			{
+				dniSocios.add(rs.getString("dni"));
+				while (rs.next())
+				{
+					dniSocios.add(rs.getString("dni"));
+				}
+				return dniSocios;
+			}
+			else
+			{
+				throw new NonExistentPartnerException("No existen socios activos sin cuotas generadas");
+			}
+		}
+		catch(Exception e)
+		{
+			throw e;
+		}
+		finally 
+		{
+			try 
+			{
+				if(st!=null) {st.close();}
+				Conexion.getInstancia().desconectar();
+			} 
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public int BajaSociosDeudores() throws Exception
+	{
+		int nroBajas = 0;
+		PreparedStatement ps = null;
+		String sentenciaSQL = "UPDATE cliente SET fecha_baja_socio=current_date WHERE dni in (SELECT dni_cliente FROM cuota WHERE fecha_pago is null GROUP BY dni_cliente HAVING COUNT(dni_cliente) > 3)";
+		try
+		{
+			ps = Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL, Statement.RETURN_GENERATED_KEYS);
+			nroBajas = ps.executeUpdate();
+			return nroBajas;
+		}
+		catch(Exception e)
+		{
+			throw e;
+		}
 	}
 }
 	

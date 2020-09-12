@@ -7,13 +7,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-	<link rel="stylesheet" href="CSS/vinoteca.css">
-	<meta charset="ISO-8859-1">
-	<title>Alta Categoría</title>
+	<jsp:include page="menu.jsp"/>
 </head>
 <body>
-	<jsp:include page="menu.jsp"/>
 	<div class="container">
 		<% 	
 		HttpSession sesion = request.getSession(true);
@@ -67,6 +63,7 @@
 		}
 		%>
 	</div>
+	<jsp:include page="footer.jsp"/>
 		<%
 		}
 		else
