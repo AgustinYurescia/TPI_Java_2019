@@ -24,7 +24,40 @@ public class ControladorCliente extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		String acceso = "";
+		String action = request.getParameter("accion");
+		HttpSession sesion = request.getSession(true);
+		if(action.equalsIgnoreCase("bajaSociosDeudores"))
+		{
+			if (sesion.getAttribute("usuario_admin") != null)
+			{
+				try
+				{
+					int nroBajas = _customerService.BajaSociosDeudores();
+					if (nroBajas == 0)
+					{
+						request.setAttribute("mensajeOk", "El proceso se llevó a cabo con éxito, no se encontraron socios deudores");
+					}
+					else
+					{
+						request.setAttribute("mensajeOk", "El proceso se llevó a cabo con éxito y fueron dados de baja "+Integer.toString(nroBajas)+" socios deudores");
+					}
+				}
+				catch(Exception e)
+				{
+					request.setAttribute("mensajeError", "Error interno del seervidor al intentar hacer las bajas correspondientes");
+				}
+				
+				acceso = "index.jsp";
+			}
+			else
+			{
+				acceso = "loginAdmin.jsp";
+			}
+		}
+		
+		RequestDispatcher vista = request.getRequestDispatcher(acceso);
+		vista.forward(request, response);
 	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Cliente cliente = null;

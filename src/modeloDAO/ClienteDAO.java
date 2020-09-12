@@ -373,6 +373,23 @@ public class ClienteDAO {
 			}
 		}
 	}
+	
+	public int BajaSociosDeudores() throws Exception
+	{
+		int nroBajas = 0;
+		PreparedStatement ps = null;
+		String sentenciaSQL = "UPDATE cliente SET fecha_baja_socio=current_date WHERE dni in (SELECT dni_cliente FROM cuota WHERE fecha_pago is null GROUP BY dni_cliente HAVING COUNT(dni_cliente) > 3)";
+		try
+		{
+			ps = Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL, Statement.RETURN_GENERATED_KEYS);
+			nroBajas = ps.executeUpdate();
+			return nroBajas;
+		}
+		catch(Exception e)
+		{
+			throw e;
+		}
+	}
 }
 	
 

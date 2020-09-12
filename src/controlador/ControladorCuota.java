@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import exceptions.NonExistentFeeException;
 import exceptions.NonExistentFeeValueException;
@@ -30,33 +31,41 @@ public class ControladorCuota extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String acceso = "";
 		String action = request.getParameter("accion");
+		HttpSession sesion = request.getSession(true);
 		if(action.equalsIgnoreCase("generarCuotas"))
 		{
-			try
+			if (sesion.getAttribute("usuario_admin") != null)
 			{
-				_servicioCuota.GenerarCuotas();
-				request.setAttribute("mensajeOk", "Cuotas generadas correctamente");
-			}
-			catch(NonExistentPartnerException e)
-			{
-				request.setAttribute("mensajeError", e.getMessage());
-			}
-			catch(NonExistentFeeValueException e)
-			{
-				request.setAttribute("mensajeError", e.getMessage());
-			}
-			catch(SQLException e)
-			{
-				if(e.getErrorCode() == 1062)
+				try
 				{
-					request.setAttribute("mensajeError", "Las cuotas correspondientes al mes actual ya fueron generadas anteriormente");
+					_servicioCuota.GenerarCuotas();
+					request.setAttribute("mensajeOk", "Cuotas generadas correctamente");
 				}
+				catch(NonExistentPartnerException e)
+				{
+					request.setAttribute("mensajeError", e.getMessage());
+				}
+				catch(NonExistentFeeValueException e)
+				{
+					request.setAttribute("mensajeError", e.getMessage());
+				}
+				catch(SQLException e)
+				{
+					if(e.getErrorCode() == 1062)
+					{
+						request.setAttribute("mensajeError", "Las cuotas correspondientes al mes actual ya fueron generadas anteriormente");
+					}
+				}
+				catch(Exception e)
+				{
+					request.setAttribute("mensajeError", "Error interno del servidor");
+				}
+				acceso="generacionDeCuotas.jsp";
 			}
-			catch(Exception e)
+			else
 			{
-				request.setAttribute("mensajeError", "Error interno del servidor");
+				acceso="loginAdmin.jsp";
 			}
-			acceso="generacionDeCuotas.jsp";
 		}
 		
 		RequestDispatcher vista = request.getRequestDispatcher(acceso);

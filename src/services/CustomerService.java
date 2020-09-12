@@ -130,4 +130,18 @@ public class CustomerService {
 		}
 	}
 	
+	public int BajaSociosDeudores()  throws Exception
+	{
+		int nroBajas = 0;
+		try
+		{
+			nroBajas = _clienteDAO.BajaSociosDeudores();
+			return nroBajas;
+		}
+		catch(Exception e)
+		{
+			throw e;
+		}
+	}
+	
 }
