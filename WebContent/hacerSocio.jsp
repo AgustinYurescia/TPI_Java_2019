@@ -8,12 +8,9 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-		<meta charset="ISO-8859-1">
-		<title>Nuevo Socio</title>
+		<jsp:include page="menu.jsp"/>
 	</head>
 	<body>
-		<jsp:include page="menu.jsp"/>
 	<% HttpSession sesion = request.getSession(true);
 	   if (sesion.getAttribute("usuario_admin") != null) { %>
 	   	<div class="container">
@@ -92,5 +89,6 @@
 	  		}
 	 	%>
 		</div>
+		<jsp:include page="footer.jsp"/>
 	</body>
 </html>

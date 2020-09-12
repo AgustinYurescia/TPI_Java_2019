@@ -2,13 +2,12 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<jsp:include page="menu.jsp"/>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Jekyll v3.8.5">
-   	<title>Baja cliente</title>
     <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/sign-in/">
 	<link href="/docs/4.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <style>
@@ -33,7 +32,6 @@
 		String mensajeOk = (String)request.getAttribute("mensajeOk");
 		String mensajeError = (String)request.getAttribute("mensajeError");
 	%>
-	<jsp:include page="menu.jsp"/>
 	<div class="d-flex justify-content-center align-items-center container">
 	<form class="form-signin" action="ControladorCliente" method="post">
   		<img class="mb-4" src="Images/logo.png" alt="" width="200" height="72">
@@ -56,5 +54,6 @@
   		<p class="mt-5 mb-3 text-muted">&copy; 2019</p>
 	</form>
 	</div>
+	<jsp:include page="footer.jsp"/>
   </body>
 </html>
