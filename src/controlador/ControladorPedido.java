@@ -9,13 +9,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import exceptions.NotEnoughStockException;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import modelo.Cliente;
 import modelo.LineaPedido;
 import modelo.Producto;
 import modeloDAO.ProductoDAO;
+import services.CustomerService;
 import services.ServicioCategoria;
+import services.ServicioPedido;
 import services.ServicioProducto;
 import modelo.Pedido;
 import modeloDAO.ClienteDAO;
@@ -27,11 +32,14 @@ public class ControladorPedido extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private ServicioProducto _servicioProducto; 
 	private ServicioCategoria _servicioCategoria;
-       
+	private CustomerService _servicioCliente;
+	private ServicioPedido _servicioPedido;   
+	
     public ControladorPedido() {
         super();
         this._servicioProducto = new ServicioProducto();
         this._servicioCategoria = new ServicioCategoria();
+        this._servicioCliente = new CustomerService();
     }
 	@SuppressWarnings("unchecked")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -117,48 +125,49 @@ public class ControladorPedido extends HttpServlet {
 		
 		}else if(action.equalsIgnoreCase("FinalizarPedido")) {
 			boolean hayStock = true;
-			ClienteDAO cliDAO = new ClienteDAO();
-			ProductoDAO prodDAO = new ProductoDAO();
 			Cliente cli = new Cliente();
 			Pedido ped = new Pedido();
 			Correo correo = new Correo();
 			Producto prod = new Producto();
-			PedidoDAO pedDAO = new PedidoDAO();
+			
 			HttpSession sesion = request.getSession(true);
 			String usuario_cliente = (String)sesion.getAttribute("usuario_cliente");
 			if(usuario_cliente != null) {
-				cli = cliDAO.buscar_cliente(usuario_cliente);
-				double total = (double)sesion.getAttribute("total");
-				ped.setDni_cliente(cli.getDni());
-				ped.setMonto(total);
-				ArrayList<LineaPedido> linea = (ArrayList<LineaPedido>)sesion.getAttribute("carrito"); 
-				for (LineaPedido l: linea) {
-					try
-					{
-						prod = prodDAO.buscarProducto(l.getCodigo_producto());
+				try
+				{
+					cli = _servicioCliente.ObtenerPorNombreDeUsuario(usuario_cliente);
+					double total = (double)sesion.getAttribute("total");
+					ped.setDni_cliente(cli.getDni());
+					ped.setMonto(total);
+					ArrayList<LineaPedido> linea = (ArrayList<LineaPedido>)sesion.getAttribute("carrito"); 
+					for (LineaPedido l: linea) {
+
+						prod = _servicioProducto.GetProducto(l.getCodigo_producto());
 						if(prod.getStock() - l.getCantidad() < 0) {
-							hayStock = false;
-							break;
+							throw new NotEnoughStockException();
 						}
-						else { }
 					}
-					catch (Exception e)
-					{
-						
-					}
-				}
-				if(hayStock) {
-					int nro_pedido = pedDAO.alta(ped, linea);
+					int nro_pedido = _servicioPedido.Alta(ped, linea);
 					sesion.setAttribute("nro_pedido", nro_pedido);
 					correo.enviar_mail_confirmacion(cli.getMail(), nro_pedido);
 					acceso = "finalizacionDePedido.jsp";
-				}else {
+				}
+				catch(NotEnoughStockException ex) {
 					request.setAttribute("errorStock", "No poseemos stock de uno o mas de los productos seleccionados. Puede ser que haya "
 							+ "sucedido una compra desde que cuando usted agregó los productos al carrito. "
 							+ "\n O tambíen que haya cargado un stock mayor al mostrado como disponible en la pagina de selección del"
 							+ "producto.");
 					sesion.setAttribute("carrito", null);
 					acceso = "carrito.jsp";
+				}
+				catch (Exception e)
+				{
+					
+				}
+				if(hayStock) {
+					
+				}else {
+					
 				}				
 			}
 			else {
@@ -188,7 +197,8 @@ public class ControladorPedido extends HttpServlet {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}  
-		    acceso = "listarPedidos.jsp";			
+		    acceso = "listarPedidos.jsp";
+		    
 		}else if(action.equalsIgnoreCase("mostrar_pedido")) {
 			String nro_pedido;
 			ArrayList<LineaPedido> lineas = new ArrayList<LineaPedido>();
@@ -200,6 +210,7 @@ public class ControladorPedido extends HttpServlet {
 			request.setAttribute("pedido", ped);
 			request.setAttribute("productos_pedido", lineas);
 			acceso = "mostrarPedido.jsp";
+		
 		}else if(action.equalsIgnoreCase("mostrar_pedido_cliente")) {
 			String nro_pedido;
 			ArrayList<LineaPedido> lineas = new ArrayList<LineaPedido>();

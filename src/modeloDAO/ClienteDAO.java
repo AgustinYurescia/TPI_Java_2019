@@ -146,7 +146,7 @@ public class ClienteDAO {
 		return false;
 	}
 	
-	public Cliente buscar_cliente(String usuario) {
+	public Cliente buscar_cliente(String usuario) throws Exception {
 		Cliente cli = new Cliente();
 		PreparedStatement st = null;
 		ResultSet rs=null;
@@ -166,11 +166,12 @@ public class ClienteDAO {
 				cli.setFecha_baja_socio(rs.getDate(9));
 				return cli;
 			}else {
-				return cli;
+				throw new NonExistentUserException();
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw e;
+			
 		} finally {
 			try {
 				if(st!=null) {st.close();}
@@ -179,7 +180,6 @@ public class ClienteDAO {
 				e.printStackTrace();
 			}
 		}
-		return cli;
 	}
 	public Cliente buscar_cliente_por_usuario (String usuario) throws Exception{
 		PreparedStatement ps = null;
