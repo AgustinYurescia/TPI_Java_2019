@@ -16,16 +16,22 @@ import modelo.LineaPedido;
 import modelo.Producto;
 import modeloDAO.ProductoDAO;
 import services.ServicioCategoria;
+import services.ServicioProducto;
 import modelo.Pedido;
 import modeloDAO.ClienteDAO;
 import modeloDAO.PedidoDAO;
+import services.ServicioProducto;;
 
 @WebServlet("/ControladorPedido")
 public class ControladorPedido extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private ServicioProducto _servicioProducto; 
+	private ServicioCategoria _servicioCategoria;
        
     public ControladorPedido() {
         super();
+        this._servicioProducto = new ServicioProducto();
+        this._servicioCategoria = new ServicioCategoria();
     }
 	@SuppressWarnings("unchecked")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -48,10 +54,9 @@ public class ControladorPedido extends HttpServlet {
 			if (linea.size() > 0) {
 				for (LineaPedido l : linea) {
 					if (codigo_producto == l.getCodigo_producto()) {
-						ProductoDAO prodDAO = new ProductoDAO();
 						try
 						{
-							Producto prod = prodDAO.buscarProducto(l.getCodigo_producto());
+							Producto prod = _servicioProducto.GetProducto(l.getCodigo_producto());
 							l.setCantidad(l.getCantidad() + cantidad);
 							l.setSubtotal(prod.getPrecioVenta() * l.getCantidad());
 							ya_existe = true;
@@ -61,28 +66,28 @@ public class ControladorPedido extends HttpServlet {
 						}
 						catch (Exception e)
 						{
-							
+							 
 						}
 						
 					}
 				} 
 			}
 			if (ya_existe == false) {
-				ProductoDAO prodDAO = new ProductoDAO();
 				try
 				{
-					Producto prod = prodDAO.buscarProducto(codigo_producto);	
+					Producto prod = _servicioProducto.GetProducto(codigo_producto);	
 					subtotal = cantidad * prod.getPrecioVenta();     																		//CAMBIOS
 					linea.add(new LineaPedido(codigo_producto,cantidad,subtotal));
 				}
 				catch (Exception e)
 				{
-					
+					//manage this error showing the user the problem
 				}
 				request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
 				acceso = "listarProductos.jsp";				
 			}
 			sesion.setAttribute("carrito", linea);
+			
 		}else if(action.equalsIgnoreCase("eliminarDelCarrito")) {
 			HttpSession sesion = request.getSession(true);
 			ArrayList<LineaPedido> linea = (ArrayList<LineaPedido>)sesion.getAttribute("carrito");
@@ -96,6 +101,7 @@ public class ControladorPedido extends HttpServlet {
 			}
 			sesion.setAttribute("carrito", linea);
 			acceso = "carrito.jsp";
+			
 		}else if(action.equalsIgnoreCase("ConfirmarCarrito")) {
 			HttpSession sesion = request.getSession(true);
 			ArrayList<LineaPedido> linea = (ArrayList<LineaPedido>)sesion.getAttribute("carrito"); 
@@ -108,6 +114,7 @@ public class ControladorPedido extends HttpServlet {
 			sesion.setAttribute("total", total);
 			acceso =  "confirmarPedido.jsp";
 			}
+		
 		}else if(action.equalsIgnoreCase("FinalizarPedido")) {
 			boolean hayStock = true;
 			ClienteDAO cliDAO = new ClienteDAO();
@@ -147,8 +154,8 @@ public class ControladorPedido extends HttpServlet {
 					acceso = "finalizacionDePedido.jsp";
 				}else {
 					request.setAttribute("errorStock", "No poseemos stock de uno o mas de los productos seleccionados. Puede ser que haya "
-							+ "habido cuando usted agregó los productos al carrito y que alguien haya finalizado la compra más rápido que "
-							+ "usted. O tambíen que haya cargado un stock mayor al mostrado como disponible en la pagina de selección del"
+							+ "sucedido una compra desde que cuando usted agregó los productos al carrito. "
+							+ "\n O tambíen que haya cargado un stock mayor al mostrado como disponible en la pagina de selección del"
 							+ "producto.");
 					sesion.setAttribute("carrito", null);
 					acceso = "carrito.jsp";
