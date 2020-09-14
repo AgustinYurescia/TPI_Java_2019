@@ -52,11 +52,42 @@ public class ServicioCategoria {
 		}
 	}
 	
+	public void Modificacion(int codigoCategoria, String descripcionCategoria) throws Exception
+	{
+		try
+		{
+			_categoriaDAO.modificacion(codigoCategoria, descripcionCategoria);
+		}
+		catch (Exception e)
+		{
+			throw e;
+		}
+	}
+	
 	public ArrayList<Categoria> obtenerTodas()
 	{
 		ArrayList<Categoria> categorias=null;
 		categorias = (ArrayList<Categoria>)_categoriaDAO.obtenerTodas();
 		return categorias;
+	}
+	
+	public Categoria BuscarCategoria(int codigoCategoria) throws Exception
+	{
+		try
+		{
+			if (_categoriaDAO.existeCategoria(codigoCategoria))
+			{
+				return _categoriaDAO.buscarCategoria(codigoCategoria);
+			}
+			else
+			{
+				throw new NonExistentCategoryException("La categoría no existe");
+			}
+		}
+		catch (Exception e)
+		{
+			throw e;
+		}
 	}
 
 }

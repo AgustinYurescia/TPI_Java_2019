@@ -43,6 +43,7 @@
             	</a>
             	<div class="dropdown-menu" aria-labelledby="productosDropdown">
               		<a class="dropdown-item" href="ControladorDeLinks?accion=altaCategoria">Nueva Categoría</a>
+              		<a class="dropdown-item" href="ControladorDeLinks?accion=modificacionCategoria">Editar Categoría</a>
               		<a class="dropdown-item" href="ControladorDeLinks?accion=bajaCategoria">Baja Categoría</a>
            		 </div>
           	</li>
