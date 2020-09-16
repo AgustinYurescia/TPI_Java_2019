@@ -182,27 +182,49 @@ public class ControladorPedido extends HttpServlet {
 				e.printStackTrace();
 			}  
 		    acceso = "listarPedidos.jsp";			
-		}else if(action.equalsIgnoreCase("mostrar_pedido")) {
+		}else if(action.equalsIgnoreCase("mostrar_pedido") || action.equalsIgnoreCase("buscarPedidoConfirmar")) {
 			String nro_pedido;
 			ArrayList<LineaPedido> lineas = new ArrayList<LineaPedido>();
 			PedidoDAO pdao = new PedidoDAO();
 			Pedido ped;
 			nro_pedido = request.getParameter("nro_pedido");
-			ped = pdao.buscar_pedido(Integer.parseInt(nro_pedido));
-			lineas = pdao.buscar_productos_pedido(Integer.parseInt(nro_pedido));
-			request.setAttribute("pedido", ped);
-			request.setAttribute("productos_pedido", lineas);
-			acceso = "mostrarPedido.jsp";
+			try
+			{
+			
+				ped = pdao.buscar_pedido(Integer.parseInt(nro_pedido));
+				request.setAttribute("pedido", ped);
+				lineas = pdao.buscar_productos_pedido(Integer.parseInt(nro_pedido));
+				request.setAttribute("productos_pedido", lineas);
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+			if(action.equalsIgnoreCase("mostrar_pedido")) 
+			{
+				acceso = "mostrarPedido.jsp";
+			}
+			else
+			{
+				acceso = "confirmarEntrega.jsp";
+			}
 		}else if(action.equalsIgnoreCase("mostrar_pedido_cliente")) {
 			String nro_pedido;
 			ArrayList<LineaPedido> lineas = new ArrayList<LineaPedido>();
 			PedidoDAO pdao = new PedidoDAO();
 			Pedido ped;
 			nro_pedido = request.getParameter("nro_pedido");
+			try
+			{
 			ped = pdao.buscar_pedido(Integer.parseInt(nro_pedido));
 			lineas = pdao.buscar_productos_pedido(Integer.parseInt(nro_pedido));
 			request.setAttribute("pedido", ped);
 			request.setAttribute("productos_pedido", lineas);
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
 			acceso = "mostrarPedidoCliente.jsp";
 		}else if(action.equalsIgnoreCase("cancelar_Pedido")) {
 			ProductoDAO prodDAO = new ProductoDAO();
@@ -247,7 +269,15 @@ public class ControladorPedido extends HttpServlet {
 			if(sesion.getAttribute("usuario_admin")!= null) {
 				int numeroPedido = Integer.parseInt(request.getParameter("numero_pedido"));
 				PedidoDAO pedDAO = new PedidoDAO();
-				pedDAO.set_fecha_entrega_real(numeroPedido);
+				try
+				{
+					pedDAO.RegistrarEntrega(numeroPedido);
+					request.setAttribute("mensajeOk", "Entrega registrada con éxito");
+				}
+				catch (Exception e)
+				{
+					request.setAttribute("mensajeError", "Error interno del servidor");
+				}
 			}
 			acceso = "ControladorPedido?accion=listadoPedidos";
 		}

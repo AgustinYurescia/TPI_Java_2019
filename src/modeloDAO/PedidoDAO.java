@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import config.Conexion;
+import exceptions.NonExistentOrderException;
 import modelo.LineaPedido;
 import modelo.Pedido;
 
@@ -228,15 +229,19 @@ public class PedidoDAO {
 		return lista;
 	}
 	
-	public Pedido buscar_pedido(int nro_pedido) {
+	public Pedido buscar_pedido(int nro_pedido) throws Exception 
+	{
 		Pedido ped = new Pedido();
-		Statement st = null;
+		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sentenciaSQL="SELECT * FROM pedido WHERE nro_pedido = "+nro_pedido+"";
-		try {
-			st=Conexion.getInstancia().getConexion().createStatement();
-			rs=st.executeQuery(sentenciaSQL);
-			if (rs.next()) {
+		String sentenciaSQL="SELECT * FROM pedido WHERE nro_pedido = ?";
+		try 
+		{
+			ps=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			ps.setInt(1, nro_pedido);
+			rs=ps.executeQuery();
+			if (rs.next()) 
+			{
 				ped.setNro_pedido(rs.getInt("nro_pedido"));
 				ped.setFecha_pedido(rs.getDate("fecha_pedido"));
 				ped.setFecha_entrega_est(rs.getDate("fecha_entrega_est"));
@@ -245,15 +250,23 @@ public class PedidoDAO {
 				ped.setFecha_entrega_real(rs.getDate("fecha_entrega_real"));
 				ped.setDni_cliente(rs.getString("dni_cliente"));
 			}
+			else
+			{
+				throw new NonExistentOrderException("El pedido solicitado no existe");
+			}
 		} 
-		catch (Exception e) {
-			e.printStackTrace();
+		catch (Exception e) 
+		{
+			throw e;
 		}
-		finally {
-			try {
+		finally 
+		{
+			try 
+			{
                 Conexion.getInstancia().desconectar();
 			} 
-			catch (Exception e) {
+			catch (Exception e) 
+			{
 				e.printStackTrace();
 			}
 		}
@@ -353,7 +366,7 @@ public class PedidoDAO {
 	}
 	
 	
-	public void set_fecha_entrega_real(int numeroPedido) {
+	public void RegistrarEntrega(int numeroPedido) throws Exception {
 		PreparedStatement ps= null;
 		String sentenciaSQL="UPDATE pedido SET fecha_entrega_real = current_date WHERE nro_pedido = ?";
 		try {
@@ -362,7 +375,7 @@ public class PedidoDAO {
 			ps.executeUpdate();
 		} 
 		catch (Exception e) {
-			e.printStackTrace();
+			throw e;
 		}
 		finally {
 			try {
