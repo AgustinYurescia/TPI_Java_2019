@@ -8,7 +8,7 @@
 </head>
 <body>
 	<div class="container">
-	   	<h1>Nuevo Plazo de Entrega</h1>
+	   	<h1>Nuevo Valor de Cuotas</h1>
 	   	<% 	
   			if(request.getAttribute("mensajeError") != null){
   			%>
@@ -22,11 +22,11 @@
 	   	<form action="ControladorPlazosPrecios" method="POST">
   			<div class="form-row">
     			<div class="form-group col-md-10">
-      				<label for="cantidadDias">Ingresa la cantidad de días para la entrega de pedidos:</label>
-      				<input type="number" class="form-control" name="cantidadDias" id="cantidadDias" required/>														
+      				<label for="valorCuota">Ingrese el nuevo valor de cuotas:</label>
+      				<input type="number" class="form-control" name="valorCuota" id="valorCuota" required/>														
     			</div>
     			<div class="form-group col-md-2" style="padding-top: 31px">
-    				<button type="submit" class="btn btn-primary" name="accion" value="nuevoPlazoEntrega">Registrar</button>	
+    				<button type="submit" class="btn btn-primary" name="accion" value="nuevoValorCuotas">Registrar</button>	
     			</div>
     		</div>
 		</form>

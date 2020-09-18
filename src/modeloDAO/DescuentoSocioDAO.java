@@ -2,25 +2,23 @@ package modeloDAO;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
 import config.Conexion;
 
-public class TardanzaPedidoDAO {
+public class DescuentoSocioDAO {
 	
-	private PreparedStatement ps = null;
-	private String sentenciaSQL = null;
-	private ResultSet rs = null;
+	private PreparedStatement ps;
+	private ResultSet rs;
+	String sentenciaSQL = null;
 	
-	public void Alta(int cantidadDias) throws Exception
-	{
-		sentenciaSQL = "INSERT INTO tardanza_preparacion_pedido(fecha_desde, cantidad_de_dias)VALUES(current_date,?)";
-		try
+	public void Alta(double porcentaje) throws Exception {
+		sentenciaSQL="INSERT INTO descuento_socio(fecha_desde,porcentaje_desc)VALUES(current_date,?)";
+		try 
 		{
-			ps = Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
-			ps.setInt(1, cantidadDias);
+			ps=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			ps.setDouble(1,porcentaje);
 			ps.executeUpdate();
-		}
-		catch(Exception e)
+		} 
+		catch (Exception e) 
 		{
 			throw e;
 		}
@@ -38,13 +36,13 @@ public class TardanzaPedidoDAO {
 		}
 	}
 	
-	public void Modificacion(int cantidadDias) throws Exception
+	public void Modificacion(double porcentaje) throws Exception
 	{	
-		sentenciaSQL = "UPDATE tardanza_preparacion_pedido SET cantidad_de_dias=? WHERE fecha_desde=current_date";
+		sentenciaSQL = "UPDATE descuento_socio SET porcentaje_desc=? WHERE fecha_desde=current_date";
 		try
 		{
 			ps = Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
-			ps.setInt(1, cantidadDias);
+			ps.setDouble(1, porcentaje);
 			ps.executeUpdate();
 		}
 		catch(Exception e)
@@ -67,7 +65,7 @@ public class TardanzaPedidoDAO {
 	
 	public boolean YaExiste() throws Exception
 	{	
-		sentenciaSQL = "SELECT * FROM tardanza_preparacion_pedido WHERE fecha_desde=current_date";
+		sentenciaSQL = "SELECT * FROM descuento_socio WHERE fecha_desde=current_date";
 		try
 		{
 			ps = Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
@@ -99,5 +97,4 @@ public class TardanzaPedidoDAO {
 			}
 		}
 	}
-
 }

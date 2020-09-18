@@ -79,7 +79,10 @@
               		Valores y plazos
             	</a>
             	<div class="dropdown-menu" aria-labelledby="clientesDropdown">
+            		<a class="dropdown-item" href="cambioValorCuotas.jsp">Nuevo valor de cuotas</a>
             		<a class="dropdown-item" href="cambioPlazoEntrega.jsp">Nuevo plazo de entrega</a>
+            		<a class="dropdown-item" href="cambioPorcentajeGanancia.jsp">Nuevo porcentaje de ganancia</a>
+            		<a class="dropdown-item" href="cambioDescuentoSocio.jsp">Nuevo porcentaje descuento para socios</a>
             	</div>
           	</li>
         </ul>
