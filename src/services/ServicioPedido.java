@@ -20,4 +20,10 @@ public class ServicioPedido {
 	{
 		return _pedidoDAO.alta(ped, linea);
 	}
+	public ArrayList<Pedido> Listar(String estado) throws Exception{
+		return _pedidoDAO.listar(estado);
+	}
+	public ArrayList<Pedido> Listar(String fechaDesde,String fechaHasta, String estado) throws Exception{
+		return _pedidoDAO.listar( fechaDesde, fechaHasta, estado);
+	}
 }

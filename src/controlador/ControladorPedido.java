@@ -149,8 +149,8 @@ public class ControladorPedido extends HttpServlet {
 					}
 					int nro_pedido = _servicioPedido.Alta(ped, linea);
 					sesion.setAttribute("nro_pedido", nro_pedido);
-					correo.enviar_mail_confirmacion(cli.getMail(), nro_pedido);
 					acceso = "finalizacionDePedido.jsp";
+					correo.enviar_mail_confirmacion(cli.getMail(), nro_pedido);
 				}
 				catch(NotEnoughStockException ex) {
 					request.setAttribute("errorStock", "No poseemos stock de uno o mas de los productos seleccionados. Puede ser que haya "
@@ -160,14 +160,14 @@ public class ControladorPedido extends HttpServlet {
 					sesion.setAttribute("carrito", null);
 					acceso = "carrito.jsp";
 				}
+				catch(RuntimeException e)
+				{
+					//Do nothing, the email catch throws this exception
+					//TODO log exception
+				}
 				catch (Exception e)
 				{
-					
-				}
-				if(hayStock) {
-					
-				}else {
-					
+					//TODO log exception
 				}				
 			}
 			else {
@@ -176,21 +176,20 @@ public class ControladorPedido extends HttpServlet {
 		}else if (action.equalsIgnoreCase("listadoPedidos")) {
 			String fechaDesde = request.getParameter("fechaDesde");
 			String fechaHasta = request.getParameter("fechaHasta");
-			System.out.println(fechaDesde);
-			System.out.println(fechaHasta);
-		    PedidoDAO pedDAO = new PedidoDAO();
+			//TODO validate dates
+
 		    ArrayList<Pedido> pedidos = new  ArrayList<Pedido>();
 			try {
-				if (fechaDesde == "" && fechaHasta == "") {
-					pedidos = pedDAO.listar(request.getParameter("estado"));
+				if ((fechaDesde == "" && fechaHasta == "") || (fechaDesde == null && fechaHasta == null)) 
+				{
+					pedidos = _servicioPedido.Listar(request.getParameter("estado"));
 					request.setAttribute("listadoPedidos", pedidos);
 				}
-				else if((fechaDesde != "" | fechaHasta != "") && (fechaDesde != null && fechaHasta != null)) {
-					pedidos = pedDAO.listar( fechaDesde, fechaHasta, request.getParameter("estado"));
-					request.setAttribute("listadoPedidos", pedidos);
-				}
-				else if(fechaDesde == null && fechaHasta == null) {
-					pedidos = pedDAO.listar(request.getParameter("estado"));
+				
+				else if((fechaDesde != "" | fechaHasta != "") && (fechaDesde != null && fechaHasta != null)) 
+				{
+					//TODO validate dates
+					pedidos = _servicioPedido.Listar( fechaDesde, fechaHasta, request.getParameter("estado"));
 					request.setAttribute("listadoPedidos", pedidos);
 				}
 				
@@ -237,7 +236,12 @@ public class ControladorPedido extends HttpServlet {
 					prodDAO.actualizarStock(l.getCodigo_producto(),l.getCantidad());
 				}
 				pedDAO.cancelar_pedido(nro_pedido);
-				cli = cliDAO.buscar_cliente(usuario_cliente);
+				try {
+					cli = _servicioCliente.ObtenerPorNombreDeUsuario(usuario_cliente);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				correo.enviar_mail_cancelacion(cli.getMail());
 				acceso = "confirmacionCancelacion.jsp";
 			}
