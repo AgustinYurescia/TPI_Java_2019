@@ -40,6 +40,7 @@ public class ControladorPedido extends HttpServlet {
         this._servicioProducto = new ServicioProducto();
         this._servicioCategoria = new ServicioCategoria();
         this._servicioCliente = new CustomerService();
+        this._servicioPedido = new ServicioPedido();
     }
 	@SuppressWarnings("unchecked")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -100,7 +101,6 @@ public class ControladorPedido extends HttpServlet {
 			HttpSession sesion = request.getSession(true);
 			ArrayList<LineaPedido> linea = (ArrayList<LineaPedido>)sesion.getAttribute("carrito");
 			int codigo = Integer.parseInt(request.getParameter("codigo_prod"));
-			System.out.println(codigo);
 			for (LineaPedido l: linea) {
 				if(l.getCodigo_producto() == codigo) {
 					linea.remove(l);
@@ -199,27 +199,17 @@ public class ControladorPedido extends HttpServlet {
 		    acceso = "listarPedidos.jsp";
 		    
 		}else if(action.equalsIgnoreCase("mostrar_pedido")) {
-			String nro_pedido;
-			ArrayList<LineaPedido> lineas = new ArrayList<LineaPedido>();
-			PedidoDAO pdao = new PedidoDAO();
-			Pedido ped;
-			nro_pedido = request.getParameter("nro_pedido");
-			ped = pdao.buscar_pedido(Integer.parseInt(nro_pedido));
-			lineas = pdao.buscar_productos_pedido(Integer.parseInt(nro_pedido));
+			String nro_pedido = request.getParameter("nro_pedido");
+			Pedido ped = _servicioPedido.BuscarPedido(Integer.parseInt(nro_pedido));
+						
 			request.setAttribute("pedido", ped);
-			request.setAttribute("productos_pedido", lineas);
 			acceso = "mostrarPedido.jsp";
 		
 		}else if(action.equalsIgnoreCase("mostrar_pedido_cliente")) {
-			String nro_pedido;
-			ArrayList<LineaPedido> lineas = new ArrayList<LineaPedido>();
-			PedidoDAO pdao = new PedidoDAO();
-			Pedido ped;
-			nro_pedido = request.getParameter("nro_pedido");
-			ped = pdao.buscar_pedido(Integer.parseInt(nro_pedido));
-			lineas = pdao.buscar_productos_pedido(Integer.parseInt(nro_pedido));
-			request.setAttribute("pedido", ped);
-			request.setAttribute("productos_pedido", lineas);
+			
+			Pedido pedido = _servicioPedido.BuscarPedidoConProductos(Integer.parseInt(request.getParameter("nro_pedido")));
+			request.setAttribute("pedido", pedido);
+			
 			acceso = "mostrarPedidoCliente.jsp";
 		}else if(action.equalsIgnoreCase("cancelar_Pedido")) {
 			ProductoDAO prodDAO = new ProductoDAO();

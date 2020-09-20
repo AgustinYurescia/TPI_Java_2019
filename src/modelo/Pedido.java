@@ -1,5 +1,7 @@
 package modelo;
 
+import java.util.ArrayList;
+
 public class Pedido {
 	private int nro_pedido;
 	private java.sql.Date fecha_pedido;
@@ -8,9 +10,16 @@ public class Pedido {
 	private java.sql.Date fecha_cancelacion;
 	private java.sql.Date fecha_entrega_real;
 	private String dni_cliente;
+	private ArrayList<LineaPedido> productos;
 	
 	public int getNro_pedido() {
 		return nro_pedido;
+	}
+	public ArrayList<LineaPedido> getProductos() {
+		return productos;
+	}
+	public void setProductos(ArrayList<LineaPedido> productos) {
+		this.productos = productos;
 	}
 	public void setNro_pedido(int nro_pedido) {
 		this.nro_pedido = nro_pedido;

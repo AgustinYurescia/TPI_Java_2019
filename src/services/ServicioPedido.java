@@ -26,4 +26,14 @@ public class ServicioPedido {
 	public ArrayList<Pedido> Listar(String fechaDesde,String fechaHasta, String estado) throws Exception{
 		return _pedidoDAO.listar( fechaDesde, fechaHasta, estado);
 	}
+	public Pedido BuscarPedido(int numeroPedido) {
+		return _pedidoDAO.buscar_pedido(numeroPedido);
+	}
+	public Pedido BuscarPedidoConProductos(int numeroPedido) {		
+		Pedido pedido = _pedidoDAO.buscar_pedido(numeroPedido);
+		pedido.setProductos(_pedidoDAO.buscar_productos_pedido(numeroPedido));
+		
+		return pedido;
+	}
+	
 }
