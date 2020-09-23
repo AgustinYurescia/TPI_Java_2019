@@ -53,6 +53,7 @@
            		</a>
             	<div class="dropdown-menu" aria-labelledby="pedidosDropdown">
               		<a class="dropdown-item" href="ControladorDeLinks?accion=listarPedidosAdmin">Listado de Pedidos Pendientes</a>
+              		<a class="dropdown-item" href="confirmarEntrega.jsp">Confirmar Entrega</a>
             	</div>
           	</li>
           	<li class="nav-item dropdown">
@@ -71,6 +72,17 @@
             	<div class="dropdown-menu" aria-labelledby="clientesDropdown">
             		<a class="dropdown-item" href="ControladorDeLinks?accion=pagoCuotas">Buscar Para Pago</a>
               		<a class="dropdown-item" href="ControladorCuota?accion=generarCuotas">Generar Cuotas</a>
+            	</div>
+          	</li>
+          	<li class="nav-item dropdown">
+            	<a class="nav-link dropdown-toggle" href="#" id="clientesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              		Valores y plazos
+            	</a>
+            	<div class="dropdown-menu" aria-labelledby="clientesDropdown">
+            		<a class="dropdown-item" href="cambioValorCuotas.jsp">Nuevo valor de cuotas</a>
+            		<a class="dropdown-item" href="cambioPlazoEntrega.jsp">Nuevo plazo de entrega</a>
+            		<a class="dropdown-item" href="cambioPorcentajeGanancia.jsp">Nuevo porcentaje de ganancia</a>
+            		<a class="dropdown-item" href="cambioDescuentoSocio.jsp">Nuevo porcentaje descuento para socios</a>
             	</div>
           	</li>
         </ul>

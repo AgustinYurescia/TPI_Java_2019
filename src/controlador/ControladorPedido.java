@@ -124,7 +124,6 @@ public class ControladorPedido extends HttpServlet {
 			}
 		
 		}else if(action.equalsIgnoreCase("FinalizarPedido")) {
-			boolean hayStock = true;
 			Cliente cli = new Cliente();
 			Pedido ped = new Pedido();
 			Correo correo = new Correo();
@@ -199,9 +198,9 @@ public class ControladorPedido extends HttpServlet {
 		    acceso = "listarPedidos.jsp";
 		    
 		}else if(action.equalsIgnoreCase("mostrar_pedido")) {
+			
 			String nro_pedido = request.getParameter("nro_pedido");
 			Pedido ped = _servicioPedido.BuscarPedido(Integer.parseInt(nro_pedido));
-						
 			request.setAttribute("pedido", ped);
 			acceso = "mostrarPedido.jsp";
 		
@@ -259,7 +258,15 @@ public class ControladorPedido extends HttpServlet {
 			if(sesion.getAttribute("usuario_admin")!= null) {
 				int numeroPedido = Integer.parseInt(request.getParameter("numero_pedido"));
 				PedidoDAO pedDAO = new PedidoDAO();
-				pedDAO.set_fecha_entrega_real(numeroPedido);
+				try
+				{
+					pedDAO.RegistrarEntrega(numeroPedido);
+					request.setAttribute("mensajeOk", "Entrega registrada con éxito");
+				}
+				catch (Exception e)
+				{
+					request.setAttribute("mensajeError", "Error interno del servidor");
+				}
 			}
 			acceso = "ControladorPedido?accion=listadoPedidos";
 		}
