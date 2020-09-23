@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import exceptions.ExistentCategoryException;
 import exceptions.NonExistentCategoryException;
+import modelo.Categoria;
 import services.ServicioCategoria;
 import services.ServicioProducto;
 
@@ -38,6 +39,11 @@ public class ControladorCategoria extends HttpServlet {
 		{
 			request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
 			acceso="bajaCategoria.jsp";
+		}
+		else if (action.equalsIgnoreCase("modificacion"))
+		{
+			request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
+			acceso="editarCategoria.jsp";
 		}
 		
 		RequestDispatcher vista = request.getRequestDispatcher(acceso);
@@ -83,6 +89,38 @@ public class ControladorCategoria extends HttpServlet {
 			}
 			request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
 			acceso="bajaCategoria.jsp";
+		}
+		else if (action.equalsIgnoreCase("modificacion"))
+		{
+			try
+			{
+				_servicioCategoria.Modificacion(Integer.parseInt(request.getParameter("codigoCategoria")), request.getParameter("descCategoria"));
+				request.setAttribute("mensajeOk", "Modificación realizada con éxito");
+			}
+			catch (Exception e)
+			{
+				request.setAttribute("mensajeError", "Error interno del servidor");
+			}
+			request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
+			acceso="editarCategoria.jsp";
+		}
+		
+		else if (action.equalsIgnoreCase("buscarCategoriaEditar"))
+		{
+			try
+			{
+				request.setAttribute("categoria", (Categoria)_servicioCategoria.BuscarCategoria(Integer.parseInt(request.getParameter("codigoCategoria"))));
+			}
+			catch (NonExistentCategoryException e)
+			{
+				request.setAttribute("mensajeError", e.getMessage());
+			}
+			catch (Exception e)
+			{
+				request.setAttribute("mensajeError", "Error interno del servidor");
+			}
+			request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
+			acceso="editarCategoria.jsp";
 		}
 		
 		RequestDispatcher vista = request.getRequestDispatcher(acceso);

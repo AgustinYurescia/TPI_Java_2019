@@ -16,10 +16,11 @@
 		<% 
 		HttpSession sesion = request.getSession(true);
 	   	if (sesion.getAttribute("usuario_admin") != null) { %>
-		<br/>
+		<h1>Listado de productos</h1>
 	   	<form action="ControladorProducto" method="POST">
   			<div class="form-row">
     			<div class="form-group col-md-11">
+    				<label for="codigo_filtro">Seleccione una categoría para filtrar los productos:</label>
       				<select id="codigo_filtro" name="codigo_filtro" class="form-control"  >
         				<option value = "0">Todos</option>
         				<% 
@@ -30,13 +31,12 @@
         				<%}%>
      				</select>														
     			</div>
-    			<div class="form-group col-md-1">
+    			<div class="form-group col-md-1" style="padding-top: 31px">
     				<button type="submit" class="btn btn-primary" name="accion" value="listar">Listar</button>	
     			</div>
     		</div>
 		</form>
 	   	<div>
-			<h1>Productos</h1>
 			<% 	
   			if(request.getAttribute("mensajeError") != null){
   			%>

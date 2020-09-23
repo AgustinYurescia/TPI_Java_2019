@@ -15,11 +15,11 @@
 	HttpSession sesion = request.getSession(true);
 	if (sesion.getAttribute("usuario_admin") != null) { %>
 	<div class="container">
-		<h1>Actualizar Producto</h1>
-		<h5>Seleccionar producto</h5>
+		<h1>Editar Producto</h1>
 		<form action="ControladorProducto" method="post">
   			<div class="form-row">
-    			<div class="form-group col-md-4">
+    			<div class="form-group col-md-10">
+    				<label for="codigo_producto">Seleccione el producto a editar:</label>
       				<select id="codigo_producto" name="codigo_producto" class="form-control">
         				<option selected>-</option>
         				<% 
@@ -34,8 +34,8 @@
         				<%}%>
      				</select>
     			</div>
-    			<div class="form-group col-md-4">
-    				<button type="submit" class="btn btn-primary" name="accion" value="BuscarProductoEditar">Buscar</button>
+    			<div class="form-group col-md-2" style="padding-top: 31px">
+    				<button type="submit" class="btn btn-primary" name="accion" value="BuscarProductoEditar" style="width: 175px">Buscar</button>
     			</div>
     		</div>
     	</form>

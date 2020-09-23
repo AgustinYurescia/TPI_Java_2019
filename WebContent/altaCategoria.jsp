@@ -32,7 +32,6 @@
 		<%if(request.getAttribute("mensajeError") != null){%>
 		<div class="alert alert-danger" role="alert"><%= request.getAttribute("mensajeError") %></div>
 		<%}%>
-		<br/>
 		<%
 		if (request.getAttribute("categorias") != null)
 		{
