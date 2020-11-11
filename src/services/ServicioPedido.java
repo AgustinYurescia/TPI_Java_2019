@@ -32,8 +32,10 @@ public class ServicioPedido {
 	public Pedido BuscarPedidoConProductos(int numeroPedido) throws Exception {		
 		Pedido pedido = _pedidoDAO.buscar_pedido(numeroPedido);
 		pedido.setProductos(_pedidoDAO.buscar_productos_pedido(numeroPedido));
-		
 		return pedido;
+	}
+	public void CancelarPedido(int numeroPedido) {
+		_pedidoDAO.cancelar_pedido(numeroPedido);
 	}
 	
 }

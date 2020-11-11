@@ -19,7 +19,13 @@
 	<div class="container">
 	<% HttpSession sesion = request.getSession(true);
 	   if (sesion.getAttribute("usuario_admin") != null) { 
-	   Pedido ped = (Pedido)request.getAttribute("pedido"); %>
+	   Pedido ped = (Pedido)request.getAttribute("pedido"); 
+	   String error = (String)request.getAttribute("mesajeError");
+	   if (!error.isEmpty() || error != null){%>
+	   	<div class="alert alert-danger" role="alert" align = "center">
+  			<p><%=error %><p>
+		</div>
+	   <%} %>
 	<div class="m-3">
 	<h2>Datos del pedido</h2>
 	   <form>

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import exceptions.NonExistentOrderException;
 import exceptions.NotEnoughStockException;
 
 import java.util.ArrayList;
@@ -46,6 +47,7 @@ public class ControladorPedido extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getParameter("accion");
 		String acceso = "";
+		
 		if(action.equalsIgnoreCase("agregarAlCarrito")) {
 			ServicioCategoria _servicioCategoria = new ServicioCategoria();
 			int codigo_producto = Integer.parseInt(request.getParameter("codigo_producto"));
@@ -200,43 +202,56 @@ public class ControladorPedido extends HttpServlet {
 		}else if(action.equalsIgnoreCase("mostrar_pedido")) {
 			
 			String nro_pedido = request.getParameter("nro_pedido");
-			Pedido ped = _servicioPedido.BuscarPedido(Integer.parseInt(nro_pedido));
-			request.setAttribute("pedido", ped);
+			try {
+				Pedido ped = _servicioPedido.BuscarPedido(Integer.parseInt(nro_pedido));
+				request.setAttribute("pedido", ped);
+			}catch(NonExistentOrderException ex){
+				request.setAttribute("mensajeError", ex.getMessage());
+			}catch(Exception ex){
+				request.setAttribute("mensajeError", "Lo sentimos, ha ocurrido un error");
+			}
 			acceso = "mostrarPedido.jsp";
 		
 		}else if(action.equalsIgnoreCase("mostrar_pedido_cliente")) {
 			
-			Pedido pedido = _servicioPedido.BuscarPedidoConProductos(Integer.parseInt(request.getParameter("nro_pedido")));
-			request.setAttribute("pedido", pedido);
-			
-			acceso = "mostrarPedidoCliente.jsp";
-		}else if(action.equalsIgnoreCase("cancelar_Pedido")) {
-			ProductoDAO prodDAO = new ProductoDAO();
-			ClienteDAO cliDAO = new ClienteDAO();
-			Cliente cli = new Cliente();
-			Correo correo = new Correo();
-			PedidoDAO pedDAO = new PedidoDAO();
-			HttpSession sesion = request.getSession(true);
-			String usuario_cliente = (String)sesion.getAttribute("usuario_cliente");
-			int nro_pedido = Integer.parseInt(request.getParameter("nro_pedido"));
-			ArrayList<LineaPedido> lineas = pedDAO.buscar_productos_pedido(nro_pedido);
-			if(usuario_cliente != null) {
-				for(LineaPedido l : lineas) {
-					prodDAO.actualizarStock(l.getCodigo_producto(),l.getCantidad());
-				}
-				pedDAO.cancelar_pedido(nro_pedido);
-				try {
-					cli = _servicioCliente.ObtenerPorNombreDeUsuario(usuario_cliente);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				correo.enviar_mail_cancelacion(cli.getMail());
-				acceso = "confirmacionCancelacion.jsp";
+			try {
+				Pedido pedido = _servicioPedido.BuscarPedidoConProductos(Integer.parseInt(request.getParameter("nro_pedido")));
+				request.setAttribute("pedido", pedido);
+			}catch(NonExistentOrderException ex){
+				request.setAttribute("error", ex.getMessage());
+			}catch(Exception ex){
+				request.setAttribute("mensajeError", "Lo sentimos, ha ocurrido un error");
 			}
-			else {
-				acceso = "loginClientes.jsp";
-			}			
+			acceso = "mostrarPedidoCliente.jsp";
+			
+		}else if(action.equalsIgnoreCase("cancelar_Pedido")) {
+			try {
+				Cliente cli = new Cliente();
+				Correo correo = new Correo(); 
+				HttpSession sesion = request.getSession(true);
+				String usuario_cliente = (String)sesion.getAttribute("usuario_cliente");
+				int nro_pedido = Integer.parseInt(request.getParameter("nro_pedido"));
+				
+				if(usuario_cliente != null) {
+					Pedido pedido = _servicioPedido.BuscarPedidoConProductos(nro_pedido);
+					ArrayList<LineaPedido> lineas = pedido.getProductos(); 
+					for(LineaPedido l : lineas) {
+						_servicioProducto.ActualizarStock(l.getCodigo_producto(),l.getCantidad());
+					}
+					_servicioPedido.CancelarPedido(nro_pedido);
+					cli = _servicioCliente.ObtenerPorNombreDeUsuario(usuario_cliente);
+					correo.enviar_mail_cancelacion(cli.getMail());
+					
+					acceso = "confirmacionCancelacion.jsp";
+				}
+				else {
+					acceso = "loginClientes.jsp";
+				}
+			}catch(NonExistentOrderException ex) {
+				
+			}catch(Exception ex) {
+			
+			}
 		}else if (action.equalsIgnoreCase("listadoPedidosCliente")) {
 			ClienteDAO cliDAO = new ClienteDAO();
 			Cliente cli = new Cliente();
