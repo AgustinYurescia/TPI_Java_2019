@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import exceptions.NonExistentOrderException;
 import exceptions.NotEnoughStockException;
 
 import java.util.ArrayList;
@@ -200,14 +201,26 @@ public class ControladorPedido extends HttpServlet {
 		}else if(action.equalsIgnoreCase("mostrar_pedido")) {
 			
 			String nro_pedido = request.getParameter("nro_pedido");
-			Pedido ped = _servicioPedido.BuscarPedido(Integer.parseInt(nro_pedido));
-			request.setAttribute("pedido", ped);
+			try {
+				Pedido ped = _servicioPedido.BuscarPedido(Integer.parseInt(nro_pedido));			
+				request.setAttribute("pedido", ped);
+			}catch(NonExistentOrderException ex){
+				request.setAttribute("mensajeError", ex.getMessage());
+			}catch(Exception ex){
+				request.setAttribute("mensajeError", "Lo sentimos. Ha ocurrido un error y no es posible mostrar el pedido, por favor, vuelva a inten tarlo mas tarde");
+			}
 			acceso = "mostrarPedido.jsp";
-		
 		}else if(action.equalsIgnoreCase("mostrar_pedido_cliente")) {
 			
-			Pedido pedido = _servicioPedido.BuscarPedidoConProductos(Integer.parseInt(request.getParameter("nro_pedido")));
-			request.setAttribute("pedido", pedido);
+			Pedido pedido;
+			try {
+				pedido = _servicioPedido.BuscarPedidoConProductos(Integer.parseInt(request.getParameter("nro_pedido")));
+				request.setAttribute("pedido", pedido);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 			
 			acceso = "mostrarPedidoCliente.jsp";
 		}else if(action.equalsIgnoreCase("cancelar_Pedido")) {
