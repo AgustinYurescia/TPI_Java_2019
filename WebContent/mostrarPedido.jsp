@@ -20,97 +20,103 @@
 	<% HttpSession sesion = request.getSession(true);
 	   if (sesion.getAttribute("usuario_admin") != null) { 
 	   Pedido ped = (Pedido)request.getAttribute("pedido"); 
-	   String error = (String)request.getAttribute("mesajeError");
-	   if (!error.isEmpty() || error != null){%>
-	   	<div class="alert alert-danger" role="alert" align = "center">
-  			<p><%=error %><p>
-		</div>
-	   <%} %>
-	<div class="m-3">
-	<h2>Datos del pedido</h2>
-	   <form>
-	   		<div class="form-row">
-	   			<div class="form-group col-md-4">	
-		   			<label for="nro_pedido">Nro de pedido:</label>
-					<input 	type="text" id="nro_pedido" class="form-control" value=<%=ped.getNro_pedido()%> disabled/>
-				</div>
-				<div class="form-group col-md-4">	
-		   			<label for="dni">Dni cliente:</label>
-					<input 	type="text" id="dni" class="form-control" value=<%=ped.getDni_cliente()%> disabled/>
-				</div>
-				<div class="form-group col-md-4">	
-		   			<label for="fecha_ped">Fecha:</label>
-					<input 	type="date" id="fecha_ped" class="form-control" value=<%=ped.getFecha_pedido()%> disabled/>
-				</div>
+	   if (ped == null){
+	   		String mensaje = (String)sesion.getAttribute("mesajeError");
+	   	%>
+			<div class="alert alert-danger" role="alert" align = "center"><%=mensaje%></div>
+	   <%
+	   }else{
+	   %>
+	   
+			<div class="m-3">
+			<h2>Datos del pedido</h2>
+			   <form>
+			   		<div class="form-row">
+			   			<div class="form-group col-md-4">	
+				   			<label for="nro_pedido">Nro de pedido:</label>
+							<input 	type="text" id="nro_pedido" class="form-control" value=<%=ped.getNro_pedido()%> disabled/>
+						</div>
+						<div class="form-group col-md-4">	
+				   			<label for="dni">Dni cliente:</label>
+							<input 	type="text" id="dni" class="form-control" value=<%=ped.getDni_cliente()%> disabled/>
+						</div>
+						<div class="form-group col-md-4">	
+				   			<label for="fecha_ped">Fecha:</label>
+							<input 	type="date" id="fecha_ped" class="form-control" value=<%=ped.getFecha_pedido()%> disabled/>
+						</div>
+					</div>
+					<div class="form-row">
+			   			<div class="form-group col-md-4">	
+				   			<label for="fecha_ent_est">Fecha estimada de entrega:</label>
+							<input 	type="date" id="fecha_ent_est" class="form-control" value=<%=ped.getFecha_entrega_est()%> disabled/>
+						</div>
+						<%if(ped.getFecha_entrega_real() != null){%>
+						<div class="form-group col-md-4">	
+				   			<label for="fecha_ent">Fecha de entrega:</label>
+							<input 	type="date" id="fecha_ent" class="form-control" value=<%=ped.getFecha_entrega_real()%> disabled/>
+						</div>
+						<%}else{%>
+						<div class="form-group col-md-4">	
+				   			<label for="fecha_ent">Fecha de entrega:</label>
+							<input 	type="text" id="fecha_ent" class="form-control" value="-" disabled/>
+						</div>
+						<%}%>
+						<%if(ped.getFecha_cancelacion() != null){%>
+						<div class="form-group col-md-4">	
+				   			<label for="fecha_canc">Fecha de cancelación:</label>
+							<input 	type="date" id="fecha_canc" class="form-control" value=<%=ped.getFecha_cancelacion()%> disabled/>
+						</div>
+						<%}else{%>
+						<div class="form-group col-md-4">	
+				   			<label for="fecha_canc">Fecha de cancelación:</label>
+							<input 	type="text" id="fecha_canc" class="form-control" value="-" disabled/>
+						</div>
+						<%}%>
+					</div>
+					<div class="form-row">
+			   			<div class="form-group col-md-4">	
+				   			<label for="monto">Monto total:</label>
+							<input 	type="text" id="monto" class="form-control" value="$<%=ped.getMonto()%>" disabled/>
+						</div>
+					</div>
+			   </form>
+			   <label>Resumen de productos:</label>	 
+			   <table class="table">
+			   		<thead>
+			   			<tr>
+			   				<th>Codigo Producto</th>
+			   				<th>Nombre</th>
+							<th>Cantidad</th>
+			   			</tr>
+			   		</thead>
+			   		<%
+			   			ArrayList<LineaPedido> pedido_productos = (ArrayList<LineaPedido>)request.getAttribute("productos_pedido");
+			   			Iterator<LineaPedido> iter  = pedido_productos.iterator();
+			   			  LineaPedido lin = null;
+			   			  while (iter.hasNext()){
+			   				  lin = iter.next();
+			   		%>	   				  		   				 	   			  
+			   		<tbody>
+			   			<tr>
+							<td><%=lin.getCodigo_producto()%></td>
+							<td><%=lin.getProducto(lin.getCodigo_producto()).getNombre()%></td>
+							<td><%=lin.getCantidad()%></td>
+						</tr>
+					<%}%>
+			   		</tbody>
+			   	</table>
 			</div>
-			<div class="form-row">
-	   			<div class="form-group col-md-4">	
-		   			<label for="fecha_ent_est">Fecha estimada de entrega:</label>
-					<input 	type="date" id="fecha_ent_est" class="form-control" value=<%=ped.getFecha_entrega_est()%> disabled/>
-				</div>
-				<%if(ped.getFecha_entrega_real() != null){%>
-				<div class="form-group col-md-4">	
-		   			<label for="fecha_ent">Fecha de entrega:</label>
-					<input 	type="date" id="fecha_ent" class="form-control" value=<%=ped.getFecha_entrega_real()%> disabled/>
-				</div>
-				<%}else{%>
-				<div class="form-group col-md-4">	
-		   			<label for="fecha_ent">Fecha de entrega:</label>
-					<input 	type="text" id="fecha_ent" class="form-control" value="-" disabled/>
-				</div>
-				<%}%>
-				<%if(ped.getFecha_cancelacion() != null){%>
-				<div class="form-group col-md-4">	
-		   			<label for="fecha_canc">Fecha de cancelación:</label>
-					<input 	type="date" id="fecha_canc" class="form-control" value=<%=ped.getFecha_cancelacion()%> disabled/>
-				</div>
-				<%}else{%>
-				<div class="form-group col-md-4">	
-		   			<label for="fecha_canc">Fecha de cancelación:</label>
-					<input 	type="text" id="fecha_canc" class="form-control" value="-" disabled/>
-				</div>
-				<%}%>
-			</div>
-			<div class="form-row">
-	   			<div class="form-group col-md-4">	
-		   			<label for="monto">Monto total:</label>
-					<input 	type="text" id="monto" class="form-control" value="$<%=ped.getMonto()%>" disabled/>
-				</div>
-			</div>
-	   </form>
-	   <label>Resumen de productos:</label>	 
-	   <table class="table">
-	   		<thead>
-	   			<tr>
-	   				<th>Codigo Producto</th>
-	   				<th>Nombre</th>
-					<th>Cantidad</th>
-	   			</tr>
-	   		</thead>
-	   		<%
-	   			ArrayList<LineaPedido> pedido_productos = (ArrayList<LineaPedido>)request.getAttribute("productos_pedido");
-	   			Iterator<LineaPedido> iter  = pedido_productos.iterator();
-	   			  LineaPedido lin = null;
-	   			  while (iter.hasNext()){
-	   				  lin = iter.next();
-	   		%>	   				  		   				 	   			  
-	   		<tbody>
-	   			<tr>
-					<td><%=lin.getCodigo_producto()%></td>
-					<td><%=lin.getProducto(lin.getCodigo_producto()).getNombre()%></td>
-					<td><%=lin.getCantidad()%></td>
-				</tr>
-			<%}%>
-	   		</tbody>
-	   	</table>
-	</div>
-	<div class="m-3">
-	<% if(ped.getFecha_entrega_real() == null){ %>
-		<form action="ControladorPedido">
-	   		<input type="hidden" class="form-control" id="numero_pedido" name="numero_pedido" value=<%=ped.getNro_pedido()%>>
-	   		<button type="submit" class="btn btn-primary" name="accion" value="entregaPedido">Confirmar Entrega</button>
-		</form>
-	<%}}%>
+			<div class="m-3">
+			<% if(ped.getFecha_entrega_real() == null){ %>
+				<form action="ControladorPedido">
+			   		<input type="hidden" class="form-control" id="numero_pedido" name="numero_pedido" value=<%=ped.getNro_pedido()%>>
+			   		<button type="submit" class="btn btn-primary" name="accion" value="entregaPedido">Confirmar Entrega</button>
+				</form>
+			<%}}%>
+		<%
+	   }
+	   %>
+	   
 	</div>
 	</div>
 	<jsp:include page="footer.jsp"/>

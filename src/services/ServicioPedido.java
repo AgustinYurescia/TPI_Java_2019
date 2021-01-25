@@ -2,6 +2,7 @@ package services;
 
 import java.util.ArrayList;
 
+import modelo.Cliente;
 import modelo.LineaPedido;
 import modelo.Pedido;
 import modeloDAO.PedidoDAO;
@@ -36,6 +37,12 @@ public class ServicioPedido {
 	}
 	public void CancelarPedido(int numeroPedido) {
 		_pedidoDAO.cancelar_pedido(numeroPedido);
+	}
+	public ArrayList<Pedido> ListarPedidosCliente(Cliente cli, String estado) throws Exception{
+		return _pedidoDAO.listar_pedidos_cliente(cli.getDni(), estado);
+	}
+	public void RegistrarEntrega(int numeroPedido) throws Exception {
+		_pedidoDAO.RegistrarEntrega(numeroPedido);
 	}
 	
 }

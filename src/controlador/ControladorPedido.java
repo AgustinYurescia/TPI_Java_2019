@@ -253,29 +253,24 @@ public class ControladorPedido extends HttpServlet {
 			
 			}
 		}else if (action.equalsIgnoreCase("listadoPedidosCliente")) {
-			ClienteDAO cliDAO = new ClienteDAO();
-			Cliente cli = new Cliente();
-			PedidoDAO pedDAO = new PedidoDAO();
-			HttpSession sesion = request.getSession(true);
-			String usuario_cliente = (String)sesion.getAttribute("usuario_cliente");
+  			HttpSession sesion = request.getSession(true);
+  			String usuario_cliente = (String)sesion.getAttribute("usuario_cliente");
 			String estado = request.getParameter("estado");
-		    ArrayList<Pedido> pedidos = new  ArrayList<Pedido>();
 			try{
-			    cli = cliDAO.buscar_cliente(usuario_cliente);
-				pedidos = pedDAO.listar_pedidos_cliente(cli.getDni(), estado);
+				Cliente cli = _servicioCliente.ObtenerPorNombreDeUsuario(usuario_cliente);
+				ArrayList<Pedido> pedidos = _servicioPedido.ListarPedidosCliente(cli, estado);
 				request.setAttribute("listadoPedidosCliente", pedidos);						
 			}catch (Exception e) {
-				e.printStackTrace();
+				request.setAttribute("mensajeError", "Error interno del servidor");
 			}  
 		    acceso = "listarPedidosCliente.jsp";
 		}else if (action.equalsIgnoreCase("entregaPedido")){
 			HttpSession sesion = request.getSession(true);
 			if(sesion.getAttribute("usuario_admin")!= null) {
 				int numeroPedido = Integer.parseInt(request.getParameter("numero_pedido"));
-				PedidoDAO pedDAO = new PedidoDAO();
 				try
 				{
-					pedDAO.RegistrarEntrega(numeroPedido);
+					_servicioPedido.RegistrarEntrega(numeroPedido);
 					request.setAttribute("mensajeOk", "Entrega registrada con éxito");
 				}
 				catch (Exception e)
