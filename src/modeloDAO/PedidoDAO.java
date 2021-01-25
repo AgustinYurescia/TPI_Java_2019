@@ -187,7 +187,7 @@ public class PedidoDAO {
 		return lista;
 	}
 	
-	public ArrayList<Pedido> listar(String estado)  {
+	public ArrayList<Pedido> listar(String estado) throws Exception  {
 		Statement st = null;
 		ResultSet rs = null;
 		ArrayList<Pedido>lista = new ArrayList<>();
@@ -216,7 +216,8 @@ public class PedidoDAO {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			//TODO log thjs exception
+			throw e;
 		} finally {
 			try {
 				if(rs!=null) {rs.close();}
@@ -321,7 +322,7 @@ public class PedidoDAO {
 		}
 	}
 	
-	public ArrayList<Pedido> listar_pedidos_cliente(String dni_cliente, String estado)  {
+	public ArrayList<Pedido> listar_pedidos_cliente(String dni_cliente, String estado) throws Exception  {
 		Statement st = null;
 		ResultSet rs = null;
 		ArrayList<Pedido>lista = new ArrayList<>();
@@ -352,7 +353,7 @@ public class PedidoDAO {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw e;
 		} finally {
 			try {
 				if(rs!=null) {rs.close();}

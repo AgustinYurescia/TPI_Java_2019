@@ -75,6 +75,17 @@ public class ServicioProducto {
 			throw e;
 		}
 	}
+	public void ActualizarStock(int codigo_producto,int cantidad){
+		try 
+		{
+			_productoDAO.actualizarStock(codigo_producto, cantidad);
+		}
+		catch(Exception ex)
+		{
+			//TODO: handle specific exception
+			throw ex;
+		}
+	}
 		
 	public ArrayList<Producto> ObtenerProductos(int codigoCategoria) throws Exception {
 		
@@ -113,5 +124,6 @@ public class ServicioProducto {
 			throw e;
 		}
 	}
+	
 
 }

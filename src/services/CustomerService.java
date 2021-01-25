@@ -11,7 +11,7 @@ import modelo.Cliente;
 public class CustomerService {
 	
 	private ClienteDAO _clienteDAO;
-	//comentario de pruebas
+	
 	public CustomerService() 
 	{
 		_clienteDAO = new ClienteDAO();
@@ -66,6 +66,10 @@ public class CustomerService {
 		{
 			throw e;
 		}
+	}
+	public Cliente ObtenerPorNombreDeUsuario(String username) throws Exception
+	{
+			return _clienteDAO.buscar_cliente(username);
 	}
 	public void RegistrarSocio(String dni) throws Exception 
 	{
