@@ -22,7 +22,7 @@
    					<input type="text" id="categoria" name="categoria" class="form-control" placeholder="Ej: Aperitivo" required>
  				</div>
  				<div class="form-group col-md-1" style="padding-top: 31px">
-   					<button type="submit" class="btn btn-primary" name="accion" value="alta">Aceptar</button>
+   					<button type="submit" class="btn btn-primary" name="accion" value="alta" onclick="return validacion_alta_categoria();">Aceptar</button>
  				</div>
 			</div>
 		</form>
