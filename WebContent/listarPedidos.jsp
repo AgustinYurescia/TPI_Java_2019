@@ -1,4 +1,3 @@
-<%@page import="java.util.Iterator"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="modeloDAO.ProductoDAO"%>
 <%@page import="modelo.Pedido"%>
@@ -62,10 +61,7 @@
 	   				if (request.getAttribute("listadoPedidos") != null)
 	   				{
 	   				ArrayList<Pedido> pedidos = (ArrayList<Pedido>)request.getAttribute("listadoPedidos");
-	   				Iterator<Pedido> iter  = pedidos.iterator();
-	   			  	Pedido ped = null;
-	   			  	while (iter.hasNext()){
-	   				  	ped = iter.next();
+	   				for (Pedido ped: pedidos){
 	   			%>	   				  		   				 	   			  
 	   		<tbody>
 	   			<tr>

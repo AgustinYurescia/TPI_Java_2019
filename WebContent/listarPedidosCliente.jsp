@@ -57,10 +57,7 @@
 				   				</tr>
 				   			</thead>
 				   			<%
-				   				Iterator<Pedido> iter  = pedidos.iterator();
-				   			  	Pedido ped = null;
-				   			  	while (iter.hasNext()){
-				   				  	ped = iter.next();
+				   				for (Pedido ped: pedidos){
 				   			%>	   				  		   				 	   			  
 				   			<tbody><tr>
 									<td style="padding-top: 20px"><%=ped.getNro_pedido()%></td>

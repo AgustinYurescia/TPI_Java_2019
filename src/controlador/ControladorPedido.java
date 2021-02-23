@@ -203,7 +203,7 @@ public class ControladorPedido extends HttpServlet {
 			
 			String nro_pedido = request.getParameter("nro_pedido");
 			try {
-				Pedido ped = _servicioPedido.BuscarPedido(Integer.parseInt(nro_pedido));
+				Pedido ped = _servicioPedido.BuscarPedidoConProductos(Integer.parseInt(nro_pedido));
 				request.setAttribute("pedido", ped);
 			}catch(NonExistentOrderException ex){
 				request.setAttribute("mensajeError", ex.getMessage());

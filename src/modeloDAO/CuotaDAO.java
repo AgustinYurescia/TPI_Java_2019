@@ -107,11 +107,7 @@ public class CuotaDAO
 				cuotas.add(cuota);
 				while (rs.next())
 				{
-					cuota.setDniCliente(rs.getString(1));
-					cuota.setMes(rs.getInt(2));
-					cuota.setAnio(rs.getInt(3));
-					cuota.setValor(rs.getDouble(4));
-					cuota.setFechaPago(rs.getDate(5));
+					cuota = new Cuota(rs.getString(1), rs.getInt(2), rs.getInt(3), rs.getDouble(4), rs.getDate(5));
 					cuotas.add(cuota);
 				}
 				return cuotas;
