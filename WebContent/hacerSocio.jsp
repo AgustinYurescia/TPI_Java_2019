@@ -21,7 +21,7 @@
       				<input type="text" class="form-control" id="dni" name="dni" placeholder="Ingrese el DNI del cliente" required>
     			</div>
     			<div class="form group col-md-2">
-      				<button type="submit" class="btn btn-primary" name="accion" value="hacer_socio" style="width: 175px">Hacer Socio</button>
+      				<button type="submit" class="btn btn-primary" name="accion" value="hacer_socio" style="width: 175px" onclick="return validacion_alta_socio();">Hacer Socio</button>
     			</div>
   			</div>
 	   	</form>

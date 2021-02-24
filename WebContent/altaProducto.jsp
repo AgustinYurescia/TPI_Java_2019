@@ -61,7 +61,7 @@
   			%>
   				<div class="alert alert-primary" role="alert"><%=request.getAttribute("mensajeOk")%></div>
 			<%}%>
-  			<button type="submit" class="btn btn-primary" name="accion" value="Agregar">Agregar</button>
+  			<button type="submit" class="btn btn-primary" name="accion" value="Agregar" onclick="return validacion_alta_producto();">Agregar</button>
 		</form>
 	</div>
 	<jsp:include page="footer.jsp"/>
