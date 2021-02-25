@@ -50,7 +50,7 @@
   			<%if(request.getAttribute("mensajeError") != null){%>
   			<div class="alert alert-danger" role="alert"><%= request.getAttribute("mensajeError") %></div>
   			<%}%>
-			<button type="submit" class="btn btn-primary" name="accion" value="ActualizarStock">Actualizar</button>
+			<button type="submit" class="btn btn-primary" name="accion" value="ActualizarStock" onclick="return validacion_actualizar_stock();">Actualizar</button>
 		</form>
 	</div>
 	<jsp:include page="footer.jsp"/>

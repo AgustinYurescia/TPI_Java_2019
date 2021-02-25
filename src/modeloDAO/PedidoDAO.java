@@ -250,6 +250,7 @@ public class PedidoDAO {
 				ped.setFecha_cancelacion(rs.getDate("fecha_cancelacion"));
 				ped.setFecha_entrega_real(rs.getDate("fecha_entrega_real"));
 				ped.setDni_cliente(rs.getString("dni_cliente"));
+				return ped;
 			}
 			else
 			{
@@ -272,7 +273,6 @@ public class PedidoDAO {
 			}
 		}
 		
-		return ped;
 	}
 	
 	public ArrayList<LineaPedido> buscar_productos_pedido(int nro_pedido) {
