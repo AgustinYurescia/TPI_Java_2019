@@ -17,6 +17,10 @@ function validacion_actualizar_stock(){
 		alert("La cantidad ingresada debe ser mayor a cero");
 		return false;
 	}
+	else if(cantidad == ""){
+		alert("Cantidad vac\355o");
+		return false;
+	}
 	else if(precio && /^\s+$/.test(precio)){
 		alert("El precio ingresado est\u00e1 formado por espacios");
 		return false;
@@ -29,6 +33,10 @@ function validacion_actualizar_stock(){
 		alert("El precio ingresado debe ser mayor a cero");
 		return false;
 	}
+	else if(precio == ""){
+		alert("Precio vac\355o");
+		return false;
+	}
 	else{
 		return true;
 	}
@@ -37,6 +45,27 @@ function validacion_actualizar_stock(){
 function validacion_alta_categoria(){
 	if(document.getElementById('categoria')){
 		var categoria = document.getElementById('categoria').value;
+	}
+	if(categoria && categoria == ""){
+		alert("Nombre de categor\u00EDa vac\u00EDo");
+		return false;
+	}
+	else if (categoria && /^\s+$/.test(categoria)){
+		alert("La categor\u00EDa ingresada est\u00e1 formada por espacios");
+		return false;
+	}
+	else if(categoria && categoria.length > 45){
+		alert("El nombre de la categor\u00EDa debe tener una longitud menor a 45");
+		return false;
+	}
+	else{
+		return true;
+	}
+}
+
+function validacion_editar_categoria(){
+	if(document.getElementById('descCategoria')){
+		var categoria = document.getElementById('descCategoria').value;
 	}
 	if(categoria && categoria == ""){
 		alert("Nombre de categor\u00EDa vac\u00EDo");
@@ -89,6 +118,10 @@ function validacion_alta_producto(){
 		alert("La cantidad ingresada debe ser mayor a cero");
 		return false;
 	}
+	else if(stock == ""){
+		alert("Cantidad vac\355o");
+		return false;
+	}
 	else if(precio && /^\s+$/.test(precio)){
 		alert("El precio ingresado est\u00e1 formado por espacios");
 		return false;
@@ -99,6 +132,10 @@ function validacion_alta_producto(){
 	}
 	else if(precio < 0){
 		alert("El precio ingresado debe ser mayor a cero");
+		return false;
+	}
+	else if(precio == ""){
+		alert("Precio vac\355o");
 		return false;
 	}
 	else{
@@ -252,6 +289,189 @@ function validacion_alta_socio(){
     else{
         return true;
     }
+}
+
+function validacion_baja_cliente(){
+    if(document.getElementById('usuario')){
+        var usuario = document.getElementById('usuario').value
+    }
+    if(document.getElementById('contrasena')){
+        var contrasena = document.getElementById('contrasena').value
+    }
+    if  (usuario &&/^\s+$/.test(usuario)){
+        alert("El usuario ingresado solo est\341 formado por espacios en blanco");
+        return false;
+    }
+    else if  (usuario && usuario.length < 4){
+        alert("El usuario debe tener una longitud mayor o igual a 4");
+        return false;
+    }
+    else if (usuario == ""){
+        alert("Usuario Vac\355o");
+        return false;
+    }
+    else if(contrasena && contrasena2 && contrasena !== contrasena2){
+    	alert("Las contrase\361as ingresadas no coinciden");
+    	return false;
+    }
+    else if  (contrasena && /^\s+$/.test(contrasena)){
+        alert("La contrase\361a ingresada solo est\341 formada por espacios en blanco");
+        return false;
+    }
+    else if  (contrasena && (contrasena.length < 5 || contrasena.length > 16)){
+        alert("La contrase\361a debe tener una longitud entre 6 y 16 caracteres");
+        return false;
+    }
+    else if (contrasena == ""){
+        alert("Contrase\361a Vac\355a");
+        return false;
+    }
+    else{
+        return true;
+    }
+}
+
+function validacion_cambiar_contrasena(){
+    if(document.getElementById('cont_act')){
+        var contrasena_actual = document.getElementById('cont_act').value
+    }
+    if(document.getElementById('cont_nueva')){
+        var contrasena_nueva = document.getElementById('cont_nueva').value
+    }
+    if(document.getElementById('cont_nueva_rep')){
+        var contrasena_nueva_rep = document.getElementById('cont_nueva_rep').value
+    }
+    else if(contrasena_nueva && contrasena_nueva_rep && contrasena_nueva !== contrasena_nueva_rep){
+    	alert("Las contrase\361as ingresadas no coinciden");
+    	return false;
+    }
+    else if  (contrasena_actual && /^\s+$/.test(contrasena_actual)){
+        alert("La contrase\361a actual ingresada solo est\341 formada por espacios en blanco");
+        return false;
+    }
+    else if  (contrasena_actual && (contrasena_actual.length < 5 || contrasena_actual.length > 16)){
+        alert("La contrase\361a actual debe tener una longitud entre 6 y 16 caracteres");
+        return false;
+    }
+    else if (contrasena_actual == ""){
+        alert("Contrase\361a actual vac\355a");
+        return false;
+    }
+    else if  (contrasena_nueva && /^\s+$/.test(contrasena_nueva)){
+        alert("La contrase\361a nueva ingresada solo est\341 formada por espacios en blanco");
+        return false;
+    }
+    else if  (contrasena_nueva && (contrasena_nueva.length < 5 || contrasena_nueva.length > 16)){
+        alert("La contrase\361a nueva debe tener una longitud entre 6 y 16 caracteres");
+        return false;
+    }
+    else if (contrasena_nueva == ""){
+        alert("Contrase\361a actual vac\355a");
+        return false;
+    }
+    else{
+        return true;
+    }
+}
+
+function validacion_cambio_descuento_socio(){
+	if(document.getElementById('porcentajeDescuento')){
+		var descuento = document.getElementById('porcentajeDescuento').value
+	}
+	if(descuento && /^\s+$/.test(descuento)){
+		alert("El porcentaje de descuento ingresado est\u00e1 formado por espacios");
+		return false;
+	}
+	else if(isNaN(descuento)){
+		alert("El porcentaje de descuento ingresado debe ser un n\u00FAmero");
+		return false;
+	}
+	else if(descuento < 0){
+		alert("El porcentaje de descuento ingresado debe ser mayor a cero");
+		return false;
+	}
+	else if(descuento == ""){
+		alert("Porcentaje de descuento vac\355o");
+		return false;
+	}
+	else{
+		return true;
+	}
+}
+
+function validacion_cambio_plazo_entrega(){
+	if(document.getElementById('cantidadDias')){
+		var dias = document.getElementById('cantidadDias').value
+	}
+	if(dias && /^\s+$/.test(descuento)){
+		alert("La cantidad de d\355as ingresada est\u00e1 formada por espacios");
+		return false;
+	}
+	else if(isNaN(dias)){
+		alert("La cantidad de d\355as ingresada debe ser un n\u00FAmero");
+		return false;
+	}
+	else if(dias < 0){
+		alert("La cantidad de d\355as ingresada debe ser mayor a cero");
+		return false;
+	}
+	else if(dias == ""){
+		alert("Cantidad de d\355as vac\355o");
+		return false;
+	}
+	else{
+		return true;
+	}
+}
+
+function validacion_cambio_porcentaje_ganancia(){
+	if(document.getElementById('porcentajeGanancia')){
+		var ganancia = document.getElementById('porcentajeGanancia').value
+	}
+	if(ganancia && /^\s+$/.test(ganancia)){
+		alert("El porcentaje de ganancia ingresado est\u00e1 formado por espacios");
+		return false;
+	}
+	else if(isNaN(ganancia)){
+		alert("El porcentaje de ganancia ingresado debe ser un n\u00FAmero");
+		return false;
+	}
+	else if(ganancia < 0){
+		alert("El porcentaje de ganancia ingresado debe ser mayor a cero");
+		return false;
+	}
+	else if(ganancia == ""){
+		alert("Porcentaje de ganancia vac\355o");
+		return false;
+	}
+	else{
+		return true;
+	}
+}
+
+function validacion_cambio_valor_cuotas(){
+	if(document.getElementById('valorCuota')){
+		var valor = document.getElementById('valorCuota').value
+	}
+	if(valor && /^\s+$/.test(valor)){
+		alert("El valor de cuota ingresado est\u00e1 formado por espacios");
+		return false;
+	}
+	else if(isNaN(valor)){
+		alert("El valor de cuota ingresado debe ser un n\u00FAmero");
+		return false;
+	}
+	else if(valor < 0){
+		alert("El valor de cuota ingresado debe ser mayor a cero");
+		return false;
+	}
+	else if(valor == ""){
+		alert("Valor cuota vac\355o");
+		return false;
+	}
+	else{
+		return true;
+	}
 }
 
 /*Esto es ejemplo

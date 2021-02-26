@@ -55,7 +55,7 @@
       				<input type="text" id="descCategoria" name="descCategoria" class="form-control" value="<%=categoria.getDescripcion()%>">
     			</div>
     			<div class="form-group col-md-2" style="padding-top: 31px">
-      				<button type="submit" class="btn btn-primary" name="accion" value="modificacion" style="width: 100px">Guardar</button>
+      				<button type="submit" class="btn btn-primary" name="accion" value="modificacion" style="width: 100px" onclick="return validacion_editar_categoria();">Guardar</button>
     			</div>
   			</div>
 		</form>

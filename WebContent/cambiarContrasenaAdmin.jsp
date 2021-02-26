@@ -55,7 +55,7 @@
   		<%if(request.getAttribute("ok_mensaje") != null){%>
   		<div class="alert alert-primary" role="alert"><%= request.getAttribute("ok_mensaje") %></div>
   		<%}%>
-  		<button class="btn btn-lg btn-primary btn-block" type="submit" name="accion" value="cambio_contrasena">Cambiar</button>
+  		<button class="btn btn-lg btn-primary btn-block" type="submit" name="accion" value="cambio_contrasena" onclick="return validacion_cambiar_contrasena();">Cambiar</button>
 	</form>
 	</div>
 	<jsp:include page="footer.jsp"/>
