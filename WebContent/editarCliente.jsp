@@ -49,7 +49,7 @@
 	  			</div>
 	  			<div class="form-row">
 	  				<div class="m-1">
-	    				<button type="submit" class="btn btn-primary" name="accion" value="modificacion_cliente">Registrar</button>
+	    				<button type="submit" class="btn btn-primary" name="accion" value="modificacion_cliente" onclick="return validacion_cliente();">Registrar</button>
 	    			</div>
 	  			</div>
 			</form>

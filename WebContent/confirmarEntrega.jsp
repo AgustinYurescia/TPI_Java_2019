@@ -25,7 +25,7 @@
 						<input type="number" class="form-control" id="nro_pedido" name="nro_pedido">
 					</div>
 					<div class="form-group col-md-1" style="padding-top: 31px;">
-						<button type="submit" class="btn btn-primary" name="accion" value="mostrar_pedido">Buscar</button>
+						<button type="submit" class="btn btn-primary" name="accion" value="mostrar_pedido" onclick="return validacion_confirmar_entrega();">Buscar</button>
 					</div>
 				</div>
 			</form>

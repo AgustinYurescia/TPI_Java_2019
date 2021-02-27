@@ -26,7 +26,7 @@
       				<input type="number" class="form-control" name="cantidadDias" id="cantidadDias" required/>														
     			</div>
     			<div class="form-group col-md-2" style="padding-top: 31px">
-    				<button type="submit" class="btn btn-primary" name="accion" value="nuevoPlazoEntrega" onclick="return validacion_cambio_plazo_entrega();)">Registrar</button>	
+    				<button type="submit" class="btn btn-primary" name="accion" value="nuevoPlazoEntrega" onclick="return validacion_cambio_plazo_entrega();">Registrar</button>	
     			</div>
     		</div>
 		</form>

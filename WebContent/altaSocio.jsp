@@ -63,7 +63,7 @@
   				<a class="py-2 d-none d-md-inline-block" href="hacerSocio.jsp"><font face="Calibri" color="blue">El cliente ya se encuentra registrado</font></a>
   			</div>
   			<div>
-    			<button type="submit" class="btn btn-primary" name="accion" value="alta" onclick="return validacion_alta_socio();">Registrar</button>
+    			<button type="submit" class="btn btn-primary" name="accion" value="alta" onclick="return validacion_cliente();">Registrar</button>
   			</div>  			
 		</form>
 		<%}else{

@@ -52,10 +52,10 @@
     			<input type="hidden" class="form-control" id="codigoCategoria" name="codigoCategoria" value="<%=categoria.getCodigo()%>">
     			<div class="form-group col-md-10">
       				<label for="descCategoria">Descripción:</label>
-      				<input type="text" id="descCategoria" name="descCategoria" class="form-control" value="<%=categoria.getDescripcion()%>">
+      				<input type="text" id="categoria" name="categoria" class="form-control" value="<%=categoria.getDescripcion()%>">
     			</div>
     			<div class="form-group col-md-2" style="padding-top: 31px">
-      				<button type="submit" class="btn btn-primary" name="accion" value="modificacion" style="width: 100px" onclick="return validacion_editar_categoria();">Guardar</button>
+      				<button type="submit" class="btn btn-primary" name="accion" value="modificacion" style="width: 100px" onclick="return validacion_categoria();">Guardar</button>
     			</div>
   			</div>
 		</form>

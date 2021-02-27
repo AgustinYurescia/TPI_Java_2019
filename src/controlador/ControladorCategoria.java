@@ -94,7 +94,7 @@ public class ControladorCategoria extends HttpServlet {
 		{
 			try
 			{
-				_servicioCategoria.Modificacion(Integer.parseInt(request.getParameter("codigoCategoria")), request.getParameter("descCategoria"));
+				_servicioCategoria.Modificacion(Integer.parseInt(request.getParameter("codigoCategoria")), request.getParameter("categoria"));
 				request.setAttribute("mensajeOk", "Modificación realizada con éxito");
 			}
 			catch (Exception e)
