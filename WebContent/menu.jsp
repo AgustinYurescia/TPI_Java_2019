@@ -15,7 +15,7 @@
 <body>
 	<% HttpSession sesion = request.getSession(true); %>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light" style="background: #58272d !important;">
-  	<a class="navbar-brand" href="ControladorDeLinks?accion=indexCliente"><img src="Images/logo.png" alt="Logo" width="100" height="30"></img></a>
+  	<a class="navbar-brand" href="ControladorDeLinks?accion=indexCliente"><img src="Images/logo_menu.png" alt="Logo" width="60" height="30"></img></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
    		<span class="navbar-toggler-icon"></span>
     </button>

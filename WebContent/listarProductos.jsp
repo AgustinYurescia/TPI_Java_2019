@@ -10,7 +10,7 @@
 	<jsp:include page="menu.jsp"/>
 </head>
 <body>
-	<div class="container">
+	<div class="container" style=" padding-bottom:15%">
 		<h1>Listado de productos</h1>
 	   	<form action="ControladorProducto" method="POST">
   			<div class="form-row">

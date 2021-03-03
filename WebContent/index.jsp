@@ -25,9 +25,9 @@
   		%>
   		<div class="alert alert-danger" role="alert" style="text-align: center;"><%=request.getAttribute("mensajeError")%></div>
 		<%}%>
-		<div class="jumbotron" align="center" style="background: #f9eac7 !important;">
+		<div class="jumbotron" align="center" style="background: #f9eac7 !important; padding-bottom:15%">
 	    	<div class="container">
-	      		<h1 class="display-3"><a class="py-2 d-none d-md-inline-block" href="ControladorProducto?accion=index"><img class="mb-4" src="Images/logo.png" alt="" width="400" height="150"></a></h1>
+	      		<h1 class="display-3"><a class="py-2 d-none d-md-inline-block" href="ControladorProducto?accion=index"><img class="mb-4" src="Images/logo.png" alt="" width="330" height="180"></a></h1>
 	      		<%
 	      		HttpSession sesion = request.getSession(true);
 	      		if (sesion.getAttribute("usuario_admin") != null) {

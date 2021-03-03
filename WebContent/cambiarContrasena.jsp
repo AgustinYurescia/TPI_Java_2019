@@ -32,7 +32,7 @@
   	<br>
   	<div class="d-flex justify-content-center align-items-center container">
     <form class="form-signin" action="ControladorCliente" method="post">
-  		<img class="mb-4" src="Images/logo.png" alt="" width="200" height="72">
+  		<img class="mb-4" src="Images/logo.png" alt="" width="200" height="100">
   		<h1 class="h3 mb-3 font-weight-normal">Cambio de Contraseña</h1>
   		<div class="form-group">
   			<label for="cont_act" class="sr-only">Contraseña actual</label>
