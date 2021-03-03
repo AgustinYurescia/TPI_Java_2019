@@ -8,8 +8,6 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Jekyll v3.8.5">
-    <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/sign-in/">
-	<link href="/docs/4.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <style>
       .bd-placeholder-img {
         font-size: 1.125rem;
@@ -25,7 +23,6 @@
         }
       }
     </style>
-    <link href="signin.css" rel="stylesheet">
 </head>
 <body class="text-center">
 	<%
@@ -38,7 +35,7 @@
   		<h1 class="h3 mb-3 font-weight-normal">Dar de Baja</h1>
   		<div class="form-group">
   			<label for="usuario_cliente" class="sr-only">Usuario</label>
-  			<input type="text" id="usuario_cliente" name="usuario_cliente" class="form-control" placeholder="Usuario" required>
+  			<input type="text" id="usuario" name="usuario" class="form-control" placeholder="Usuario" required>
   		</div>
   		<div class="form-group">
   			<label for="contrasena" class="sr-only">Contraseña</label>
@@ -50,7 +47,7 @@
   		<%if(mensajeError != null){%>
   		<div class="alert alert-danger" role="alert"><%= mensajeError %></div>
   		<%}%>
-  		<button class="btn btn-lg btn-primary btn-block" type="submit" name="accion" value="baja_cliente">Aceptar</button>
+  		<button class="btn btn-lg btn-primary btn-block" type="submit" name="accion" value="baja_cliente" onclick="return validacion_cliente();">Aceptar</button>
   		<p class="mt-5 mb-3 text-muted">&copy; 2019</p>
 	</form>
 	</div>

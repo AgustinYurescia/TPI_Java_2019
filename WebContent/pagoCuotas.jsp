@@ -25,7 +25,7 @@
       				<input type="text" id="dniCliente" name="dniCliente" class="form-control" required/>
 	       		</div>
 	       		<div class="form-group col-md-2" style="padding-top: 31px">
-	       			<button type="submit" class="btn btn-primary" name="accion" value="buscarCuotas" style="width: 175px;">Buscar Cuotas</button>
+	       			<button type="submit" class="btn btn-primary" name="accion" value="buscarCuotas" style="width: 175px;" onclick="return validacion_pago_cuotas();">Buscar Cuotas</button>
 	       		</div>
 	       	</div>
 		</form>

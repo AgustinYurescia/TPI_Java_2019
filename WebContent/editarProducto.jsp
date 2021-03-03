@@ -73,7 +73,7 @@
       				<input type="file" id="imagen" name="imagen" value="">
     			</div>
   			</div>
-  			<button type="submit" class="btn btn-primary" name="accion" value="EditarProducto">Guardar</button>
+  			<button type="submit" class="btn btn-primary" name="accion" value="EditarProducto" onclick="return validacion_producto();">Guardar</button>
 		</form>
 		<%}}else{
 			response.sendRedirect("loginAdmin.jsp");

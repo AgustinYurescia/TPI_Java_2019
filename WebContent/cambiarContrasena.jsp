@@ -10,8 +10,6 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Jekyll v3.8.5">
-    <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/sign-in/">
-	<link href="/docs/4.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <style>
       .bd-placeholder-img {
         font-size: 1.125rem;
@@ -27,7 +25,6 @@
         }
       }
     </style>
-    <link href="signin.css" rel="stylesheet">
   </head>
   <% HttpSession sesion = request.getSession(true);
 	   	   if (sesion.getAttribute("usuario_cliente") != null) { %>
@@ -55,7 +52,7 @@
   		<%if(request.getAttribute("ok_mensaje") != null){%>
   		<div class="alert alert-primary" role="alert"><%= request.getAttribute("ok_mensaje") %></div>
   		<%}%>
-  		<button class="btn btn-lg btn-primary btn-block" type="submit" name="accion" value="cambio_contrasena">Cambiar</button>
+  		<button class="btn btn-lg btn-primary btn-block" type="submit" name="accion" value="cambio_contrasena" onclick="return validacion_cambiar_contrasena();">Cambiar</button>
 	</form>
 	</div>
 	<jsp:include page="footer.jsp"/>

@@ -136,7 +136,7 @@ public class ControladorCliente extends HttpServlet {
 		{
 			try
 			{
-			_customerService.Baja(request.getParameter("usuario_cliente"), request.getParameter("contrasena"));
+			_customerService.Baja(request.getParameter("usuario"), request.getParameter("contrasena"));
 			request.setAttribute("mensajeOk", "Baja realizada con éxito");
 			sesion.invalidate();
 			}

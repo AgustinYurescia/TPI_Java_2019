@@ -26,7 +26,7 @@
       				<input type="number" class="form-control" name="porcentajeGanancia" id="porcentajeGanancia" placeholder="Ejemplo: 25" required/>														
     			</div>
     			<div class="form-group col-md-2" style="padding-top: 31px">
-    				<button type="submit" class="btn btn-primary" name="accion" value="nuevoPorcentajeGanancia">Registrar</button>	
+    				<button type="submit" class="btn btn-primary" name="accion" value="nuevoPorcentajeGanancia" onclick="return validacion_cambio_porcentaje_ganancia();">Registrar</button>	
     			</div>
     		</div>
 		</form>

@@ -26,7 +26,7 @@
       				<input type="number" class="form-control" name="porcentajeDescuento" id="porcentajeDescuento" placeholder="Ejemplo: 25" required/>														
     			</div>
     			<div class="form-group col-md-2" style="padding-top: 31px">
-    				<button type="submit" class="btn btn-primary" name="accion" value="nuevoPorcentajeDescuentoSocio">Registrar</button>	
+    				<button type="submit" class="btn btn-primary" name="accion" value="nuevoPorcentajeDescuentoSocio" onclick="return validacion_cambio_descuento_socio();">Registrar</button>	
     			</div>
     		</div>
 		</form>

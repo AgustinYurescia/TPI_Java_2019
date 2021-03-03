@@ -152,13 +152,13 @@ public class ControladorProducto extends HttpServlet {
 		
 		else if(action.equalsIgnoreCase("ActualizarStock")) 
 		{
-			if (Integer.parseInt(request.getParameter("cantidad")) > 0)
+			if (Integer.parseInt(request.getParameter("stock")) > 0)
 			{
 				if (Integer.parseInt(request.getParameter("precio")) > 0)
 				{
 					try
 					{
-						_servicioProducto.ReponerStock(Integer.parseInt(request.getParameter("codigo_producto")), Integer.parseInt(request.getParameter("cantidad")), Double.parseDouble(request.getParameter("precio")));
+						_servicioProducto.ReponerStock(Integer.parseInt(request.getParameter("codigo_producto")), Integer.parseInt(request.getParameter("stock")), Double.parseDouble(request.getParameter("precio")));
 						request.setAttribute("mensajeOk", "Stock actualizado con éxito");
 					}
 					catch (Exception e)
