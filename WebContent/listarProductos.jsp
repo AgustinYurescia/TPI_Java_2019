@@ -10,7 +10,7 @@
 	<jsp:include page="menu.jsp"/>
 </head>
 <body>
-	<div class="container">
+	<div class="container" style=" padding-bottom:15%">
 		<h1>Listado de productos</h1>
 	   	<form action="ControladorProducto" method="POST">
   			<div class="form-row">
@@ -32,41 +32,29 @@
     		</div>
 		</form>
 	   	<div>
-			<table class="table">
-				<thead>
-					<tr>					
-						<th>Codigo</th>
-						<th>Imagen</th>
-						<th>Nombre</th>
-						<th>Precio Venta</th>
-						<th>Stock</th>						
-					</tr>
-				</thead>
-				<tbody>
-					<%
-					if (request.getAttribute("listado") != null)
-					{
-						ArrayList<Producto> lista = (ArrayList<Producto>)request.getAttribute("listado");
-						for (Producto prod : lista){
-					%>
-					<tr>
-						<td style="padding-top: 40px"><%=prod.getCodigo()%></td>
-						<td>
-							<a class="" href="ControladorProducto?accion=mostrar_producto&codigo_producto=<%=prod.getCodigo()%>">
-								<img src="ControladorDeImagenes?codigo=<%=prod.getCodigo()%>" width="80" height="80"/>
-							</a>
-						</td>
-						<td style="padding-top: 40px">							
-							<a class="" href="ControladorProducto?accion=mostrar_producto&codigo_producto=<%=prod.getCodigo()%>">
-								<%=prod.getNombre()%>
-							</a>
-						</td>
-						<td style="padding-top: 40px"><%=prod.getPrecioVenta()%></td>
-						<td style="padding-top: 40px"><%=prod.getStock()%></td>
-					</tr>
-					<%}}%> 
-				</tbody>
-			</table>
+	   	<%if (request.getAttribute("listado") != null){%>
+	   		<div class="productos" style="text-align:center; width: 1060px !important;">
+	   			<%
+	   			ArrayList<Producto> lista = (ArrayList<Producto>)request.getAttribute("listado");
+	   			for (Producto p: lista){%>
+      			<div class="producto" style="float:left !important; margin-top:10px; height:320px !important">
+      				<div class="imagen-producto" style="margin-left:auto; margin-right:auto;">
+      					<img src="ControladorDeImagenes?codigo=<%=p.getCodigo()%>" width="160px" height="160px"/>
+      				</div>
+      				<div class="nombre-producto" style="font-size: 15px; margin:auto; height:45px !important">
+      					<p><%=p.getNombre()%></p>
+      				</div>
+      				<div class="precio-producto" style="margin:auto;">
+      					<p>$<%=p.getPrecioVenta()%></p>
+      				</div>
+      				<div class="ver-producto">
+      					<a class="" href="ControladorProducto?accion=mostrar_producto&codigo_producto=<%=p.getCodigo()%>">
+      						<button type="submit" class="btn btn-primary" style="margin-top:10px; border-radius:15px; width:160px;">Comprar</button>
+      					</a>
+      				</div>
+      			</div>
+      			<%}}%>	
+	   		</div>
 		</div>
 	</div>
 	<jsp:include page="footer.jsp"/>

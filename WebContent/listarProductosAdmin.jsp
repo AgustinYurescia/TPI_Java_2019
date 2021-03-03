@@ -73,7 +73,7 @@
 						<td style="padding-top: 40px"><%=prod.getStock()%></td>
 						<form action="ControladorProducto" method="POST">
 							<input type="hidden" name="codigo_producto_baja" value="<%=prod.getCodigo()%>">
-							<td style="padding-top: 30px"><button type="submit" class="btn btn-outline-danger" style="color: red;" name="accion" value="BajaProducto"><img src="SVG/Borrar.svg"/> Eliminar</button></td>
+							<td style="padding-top: 30px"><button type="submit" class="btn btn-outline-danger" style="color: white; background: #c23b22 !important" name="accion" value="BajaProducto"><img src="SVG/Borrar.svg"/> Eliminar</button></td>
 						</form>
 					</tr>					
 					<%}%>
@@ -85,5 +85,6 @@
 	  	  }
 	 	%>
 	 </div>
+	 <jsp:include page="footer.jsp"/>
 </body>
 </html>

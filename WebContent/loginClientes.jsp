@@ -33,7 +33,7 @@
   	<br>
   	<div class="d-flex justify-content-center align-items-center container">
     <form class="form-signin" action="ControladorLogin" method="post">
-  		<img class="mb-4" src="Images/logo.png" alt="" width="200" height="72">
+  		<img class="mb-4" src="Images/logo.png" alt="" width="200" height="100">
   		<h1 class="h3 mb-3 font-weight-normal">Iniciar Sesion</h1>
   		<div class="form-group">
   			<label for="usuario_cliente" class="sr-only">Usuario</label>
@@ -47,8 +47,8 @@
   		<div class="alert alert-danger" role="alert"><%= request.getAttribute("loginClienteError") %></div>
   		<%}%>
   		<button class="btn btn-lg btn-primary btn-block" type="submit" name="accion" value="login" onclick="return validacion_login();">Iniciar Sesión</button>
-  		<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=registroCliente"><font face="Calibri" color="Blue">¿Olvidaste tu contraseña?</font></a>
-  		<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=registroCliente"><font face="Calibri" color="Blue">¿Aún no tiene una cuenta? Registrese aquí</font></a>
+  		<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=registroCliente"><font face="Calibri" color="#58272d">¿Olvidaste tu contraseña?</font></a>
+  		<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=registroCliente"><font face="Calibri" color="#58272d">¿Aún no tiene una cuenta? Registrese aquí</font></a>
   		<p class="mt-5 mb-3 text-muted">&copy; 2019</p>
 	</form>
 	</div>
