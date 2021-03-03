@@ -73,7 +73,7 @@
 							<input type="hidden" name="dniCliente" value="<%=cuota.getDniCliente()%>"/>
 							<input type="hidden" name="mesCuota" value="<%=cuota.getMes()%>"/>
 							<input type="hidden" name="anioCuota" value="<%=cuota.getAnio()%>"/>
-							<button type="submit" class="btn btn-outline-info" style="color: blue;  width:200 ; height:200;" name="accion" value="registrarPago">
+							<button type="submit" class="btn btn-outline-info" style="color: white;  width:200 ; height:200;" name="accion" value="registrarPago">
 									<img src="SVG/Ojo.svg"/> 
 									Registrar Pago
 							</button>
