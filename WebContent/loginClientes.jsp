@@ -47,9 +47,11 @@
   		<div class="alert alert-danger" role="alert"><%= request.getAttribute("loginClienteError") %></div>
   		<%}%>
   		<button class="btn btn-lg btn-primary btn-block" type="submit" name="accion" value="login" onclick="return validacion_login();">Iniciar Sesión</button>
-  		<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=registroCliente"><font face="Calibri" color="#58272d">¿Olvidaste tu contraseña?</font></a>
-  		<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=registroCliente"><font face="Calibri" color="#58272d">¿Aún no tiene una cuenta? Registrese aquí</font></a>
-  		<p class="mt-5 mb-3 text-muted">&copy; 2019</p>
+  		<p>
+  			<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=registroCliente"><font face="Calibri" color="#58272d">¿Olvidaste tu contraseña?</font></a><br/>
+  			<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=registroCliente"><font face="Calibri" color="#58272d">¿Aún no tiene una cuenta? Registrese aquí</font></a><br/>
+  			&copy; 2019
+  		</p>
 	</form>
 	</div>
 	<jsp:include page="footer.jsp"/>

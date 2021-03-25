@@ -4,6 +4,9 @@ body{
 	margin: 0;
 	position: relative;
 	padding-bottom: 100px;
+	color: #58272d;
+	font-family: calibri !important;
+	font-size: 17px;
 }
 button{
 	background: #58272d !important;
@@ -50,5 +53,20 @@ div.precio-producto{
 	margin-top:10px;
 }
 
+div.alert{
+	border-radius:15px !important;
+}
 
+input{
+	background: #f9eac7 !important;
+	border: 1px solid #58272d !important;
+}
 
+input[type="file"]{
+	border:transparent !important;
+}
+
+select{
+	background: #f9eac7 !important;
+	border: 1px solid #58272d !important;
+}
