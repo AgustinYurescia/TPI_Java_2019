@@ -19,8 +19,10 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.0</version>
         <configuration>
-          <source>1.8</source>
+          <fork>True</fork>
           <target>1.8</target>
+          <source>1.8</source>
+          <executable>C:\Program Files\Java\jdk-12.0.2\bin\javac.exe</executable>
         </configuration>
       </plugin>
       <plugin>
@@ -30,6 +32,39 @@
           <warSourceDirectory>WebContent</warSourceDirectory>
         </configuration>
       </plugin>
+      <plugin>
+      	<groupId>org.apache.maven.plugins</groupId>
+      	<artifactId>maven-dependency-plugin</artifactId>
+      	<executions>
+      		<execution>
+      			<phase>package</phase>
+      			<goals><goal>copy</goal></goals>
+      			<configuration>
+      				<artifactItems>
+	      				<artifactItem>
+	      					<groupId>com.github.jsimone</groupId>
+	      					<artifactId>webapp-runner</artifactId>
+	      					<version>8.5.31.0</version>
+	      					<destFileName>webapp-runner.jar</destFileName>
+	      				</artifactItem>
+      				</artifactItems>
+      			</configuration>
+      		</execution>
+      	</executions>
+      </plugin>
     </plugins>
   </build>
+  <dependencies>
+  	<dependency>
+	    <groupId>com.sun.mail</groupId>
+	    <artifactId>javax.mail</artifactId>
+	    <version>1.4.7</version>
+	</dependency>
+	<dependency>
+	    <groupId>javax.servlet</groupId>
+	    <artifactId>javax.servlet-api</artifactId>
+	    <version>3.0.1</version>
+	    <scope>provided</scope>
+	</dependency>
+  </dependencies>
 </project>
