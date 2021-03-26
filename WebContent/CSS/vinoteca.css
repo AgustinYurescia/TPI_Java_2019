@@ -19,7 +19,7 @@ table{
 }
 
 div.productos{
-	width:840px;
+	width:640px;
 	height:300px;
 }
 
@@ -27,7 +27,7 @@ div.producto{
 	width:200px;
 	height:350px;
 	border-radius:15px;
-	float:right;
+	float:left;
 	margin-left:10px;
 	border: 1px solid black;
 }
