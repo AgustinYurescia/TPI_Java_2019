@@ -18,21 +18,37 @@
 	   		<img src="ControladorDeImagenes?codigo=<%=prod.getCodigo()%>" class="mr-3" width="400" height="400">
 	   		<div class="media-body">
 	     		<h5 class="mt-0"><%=prod.getNombre()%></h5>
-	     		<p>
-	     			<font face="Calibri" color="Black">Stock disponible = <%=prod.getStock()%></font><br/>
-	     			<font face="Calibri" color="Black">Precio = <%=prod.getPrecioVenta()%></font>
-	     		</p>
-	     		<form class="form-inline" action="ControladorPedido">
-  					<div class="form-group mb-2">
-    					<label for="cantidad" class="sr-only">Cantidad</label>
-    					<input type="number" class="form-control" id="cantidad" name="cantidad" placeholder="Cantidad" value="1">
-    					<input type="hidden" id="codigo_producto" name="codigo_producto" value="<%=prod.getCodigo()%>">
+	     		<form action="ControladorPedido">
+	     			<div class="form-row">
+			     		<div class="form-group col-md-12">
+			     			<div class="form-inline">
+			    				Precio:
+			    				<input type="number" class="form-control" id="precio" name="precio" value="<%=prod.getPrecioVenta()%>" style="border:transparent !important" disabled>
+		    				</div>
+		  				</div>
+		  			</div>
+		  			<div class="form-row">
+		  				<div class="form-group col-md-12">
+		  					<div class="form-inline">
+			    				Stock:
+			    				<input type="number" class="form-control" id="stock_disponible" name="stock_disponible" value="<%=prod.getStock()%>" style="border:transparent !important" disabled>
+		    				</div>
+		  				</div>
+		  			</div>
+		  			<div class="form-row">
+  					<div class="form-group col-md-12">
+  						<div class="form-inline">
+	    					Ingrese la cantidad: 
+	    					<input type="number" class="form-control" id="cantidad" name="cantidad" value="1" style="margin-left:2px !important; width:75px !important;">
+	    					<input type="hidden" id="codigo_producto" name="codigo_producto" value="<%=prod.getCodigo()%>">
+    					</div>
+  					</div>
   					</div>
   					<% if(mensaje != null){ %>
   					<div class="alert alert-danger" role="alert" align = "center"><%=mensaje%></div>
   					<%}%>
-  					<div style="padding-left:20px">
-  						<button type="submit" class="btn btn-primary mb-2" name="accion" value="agregarAlCarrito">Agregar al carrito</button>
+  					<div>
+  						<button type="submit" class="btn btn-primary mb-2" name="accion" value="agregarAlCarrito" onclick="return validacion_agregar_al_carrito();">Agregar al carrito</button>
   					</div>
 				</form>
 	 		</div>

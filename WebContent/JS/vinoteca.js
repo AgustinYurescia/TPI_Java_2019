@@ -477,3 +477,31 @@ function validacion_pago_cuotas(){
         return true;
     }
 }
+
+function validacion_agregar_al_carrito(){
+    if(document.getElementById('stock_disponible')){
+        var stock = document.getElementById('stock_disponible').value;
+    }
+    if(document.getElementById('cantidad')){
+        var cantidad = document.getElementById('cantidad').value;
+    }
+    if(stock && cantidad && cantidad > stock){
+    		alert("No hay suficiente stock");
+    		return false;
+    	}
+    else{
+        return true;
+    }
+}
+
+function confirmacion_eliminar(codigo){
+	var popup = document.getElementById("confirm-popup");
+	var boton_canc = document.getElementById("boton-cancelar");
+	var codigo_producto = document.getElementById("cod_prod_baja");
+	var codigo_producto_baja = document.getElementById("codigo_producto_baja");
+	popup.style.display = "block"
+	codigo_producto_baja.value = codigo;
+	boton_canc.onclick = function(){
+		popup.style.display="none";
+	}
+}
