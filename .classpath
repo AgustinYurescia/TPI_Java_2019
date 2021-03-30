@@ -20,5 +20,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/mail.jar"/>
 	<classpathentry kind="lib" path="lib/activation.jar"/>
+	<classpathentry kind="lib" path="lib/gson-2.8.1.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

@@ -10,7 +10,17 @@ public class Producto {
 	private Double precioVenta;
 	private int codigo_categoria;
 	private java.sql.Date fecha_baja;
+	private String imagenString;
 	
+
+	public String getImagenString() {
+		return imagenString;
+	}
+
+	public void setImagenString(String imagenString) {
+		this.imagenString = imagenString;
+	}
+
 	public Producto() 
 	{
 		super();
