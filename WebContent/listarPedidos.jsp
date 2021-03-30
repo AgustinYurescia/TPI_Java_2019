@@ -1,4 +1,3 @@
-<%@page import="java.util.Iterator"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="modeloDAO.ProductoDAO"%>
 <%@page import="modelo.Pedido"%>
@@ -62,10 +61,7 @@
 	   				if (request.getAttribute("listadoPedidos") != null)
 	   				{
 	   				ArrayList<Pedido> pedidos = (ArrayList<Pedido>)request.getAttribute("listadoPedidos");
-	   				Iterator<Pedido> iter  = pedidos.iterator();
-	   			  	Pedido ped = null;
-	   			  	while (iter.hasNext()){
-	   				  	ped = iter.next();
+	   				for (Pedido ped: pedidos){
 	   			%>	   				  		   				 	   			  
 	   		<tbody>
 	   			<tr>
@@ -103,7 +99,7 @@
 					%>
 					<td>
 						<a class="py-0 d-none d-md-inline-block" href="ControladorPedido?accion=mostrar_pedido&nro_pedido=<%=ped.getNro_pedido()%>">
-							<button type="submit" class="btn btn-outline-info" style="color: blue;  width:200 ; height:200;" name="" value="">
+							<button type="submit" class="btn btn-outline-info" style="color: white;  width:200 ; height:200;" name="" value="">
 									<img src="SVG/Ojo.svg"/> 
 									Ver Pedido
 							</button>

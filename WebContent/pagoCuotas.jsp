@@ -25,7 +25,7 @@
       				<input type="text" id="dniCliente" name="dniCliente" class="form-control" required/>
 	       		</div>
 	       		<div class="form-group col-md-2" style="padding-top: 31px">
-	       			<button type="submit" class="btn btn-primary" name="accion" value="buscarCuotas" style="width: 175px;">Buscar Cuotas</button>
+	       			<button type="submit" class="btn btn-primary" name="accion" value="buscarCuotas" style="width: 175px;" onclick="return validacion_pago_cuotas();">Buscar Cuotas</button>
 	       		</div>
 	       	</div>
 		</form>
@@ -73,7 +73,7 @@
 							<input type="hidden" name="dniCliente" value="<%=cuota.getDniCliente()%>"/>
 							<input type="hidden" name="mesCuota" value="<%=cuota.getMes()%>"/>
 							<input type="hidden" name="anioCuota" value="<%=cuota.getAnio()%>"/>
-							<button type="submit" class="btn btn-outline-info" style="color: blue;  width:200 ; height:200;" name="accion" value="registrarPago">
+							<button type="submit" class="btn btn-outline-info" style="color: white;  width:200 ; height:200;" name="accion" value="registrarPago">
 									<img src="SVG/Ojo.svg"/> 
 									Registrar Pago
 							</button>

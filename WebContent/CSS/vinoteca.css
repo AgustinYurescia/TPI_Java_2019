@@ -1,6 +1,54 @@
+body{
+	background: #f9eac7;
+    min-height: 100vh;
+	margin: 0;
+	position: relative;
+	padding-bottom: 100px;
+}
+button{
+	background: #58272d !important;
+	border: #58272d !important;
+}
 table{
 	font-family:calibri;
 	text-align:center;
 	text-color:black;
 }
+
+div.productos{
+	width:840px;
+	height:300px;
+}
+
+div.producto{
+	width:200px;
+	height:350px;
+	border-radius:15px;
+	float:right;
+	margin-left:10px;
+	border: 1px solid black;
+}
+
+div.imagen-producto{
+	width:160px;
+	height:160px;
+	border-radius:15px;
+	margin-top:20px;
+}
+
+div.nombre-producto{
+	width:160px;
+	height:45px;
+	border-radius:15px;
+	margin-top:10px;
+}
+
+div.precio-producto{
+	width:160px;
+	height:25px;
+	border-radius:15px;
+	margin-top:10px;
+}
+
+
 

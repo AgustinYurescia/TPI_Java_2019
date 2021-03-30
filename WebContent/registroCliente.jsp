@@ -65,7 +65,7 @@
   			<div class="alert alert-primary" role="alert"><%= request.getAttribute("registroClienteOk") %></div>
   			<%}%>
   			<div class="form-row">
-    			<button type="submit" class="btn btn-primary" name="accion" value="alta">Registrar</button>
+    			<button type="submit" class="btn btn-primary" name="accion" value="alta" onclick="return validacion_cliente();">Registrar</button>
   			</div>
 		</form>
 		</div>

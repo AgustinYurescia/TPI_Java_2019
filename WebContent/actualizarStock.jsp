@@ -37,7 +37,7 @@
  				</div>
  				<div class="form-group col-md-4">
    					<label for="nombre">Cantidad</label>
-   					<input type="text" class="form-control" id="cantidad" name="cantidad" placeholder="Ej: 200" required>
+   					<input type="text" class="form-control" id="stock" name="stock" placeholder="Ej: 200" required>
  				</div>
  				<div class="form-group col-md-4">
    					<label for="nombre">Precio Unitario</label>
@@ -50,7 +50,7 @@
   			<%if(request.getAttribute("mensajeError") != null){%>
   			<div class="alert alert-danger" role="alert"><%= request.getAttribute("mensajeError") %></div>
   			<%}%>
-			<button type="submit" class="btn btn-primary" name="accion" value="ActualizarStock">Actualizar</button>
+			<button type="submit" class="btn btn-primary" name="accion" value="ActualizarStock" onclick="return validacion_producto();">Actualizar</button>
 		</form>
 	</div>
 	<jsp:include page="footer.jsp"/>

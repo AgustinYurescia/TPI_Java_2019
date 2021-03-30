@@ -26,7 +26,7 @@
       				<input type="number" class="form-control" name="valorCuota" id="valorCuota" required/>														
     			</div>
     			<div class="form-group col-md-2" style="padding-top: 31px">
-    				<button type="submit" class="btn btn-primary" name="accion" value="nuevoValorCuotas">Registrar</button>	
+    				<button type="submit" class="btn btn-primary" name="accion" value="nuevoValorCuotas" onclick="return validacion_cambio_valor_cuotas();">Registrar</button>	
     			</div>
     		</div>
 		</form>

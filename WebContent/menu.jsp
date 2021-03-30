@@ -7,27 +7,28 @@
 	<title>Vinoteca Gatti</title>
   	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   	<link rel="stylesheet" href="CSS/vinoteca.css"/>
+  	<script type="text/javascript" src="JS/vinoteca.js"></script>
   	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
   	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
   	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 </head>
 <body>
 	<% HttpSession sesion = request.getSession(true); %>
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  	<a class="navbar-brand" href="ControladorDeLinks?accion=indexCliente"><img src="Images/logo.png" alt="Logo" width="100" height="30"></img></a>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light" style="background: #58272d !important;">
+  	<a class="navbar-brand" href="ControladorDeLinks?accion=indexCliente"><img src="Images/logo_menu.png" alt="Logo" width="60" height="30"></img></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
    		<span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
     	<ul class="navbar-nav mr-auto">
         	<li class="nav-item active">
-          		<a class="nav-link" href="ControladorDeLinks?accion=indexCliente">Home<span class="sr-only">(current)</span></a>
+          		<a class="nav-link" href="ControladorDeLinks?accion=indexCliente" style="color:white !important">Home<span class="sr-only">(current)</span></a>
         	</li>
          <% 
 	   	 if (sesion.getAttribute("usuario_admin") != null) { 
 	   	 %>
 	   	 	<li class="nav-item dropdown">
-          		<a class="nav-link dropdown-toggle" href="#" id="productosDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          		<a class="nav-link dropdown-toggle" href="#" id="productosDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color:white !important">
               		Productos
             	</a>
             	<div class="dropdown-menu" aria-labelledby="productosDropdown">
@@ -38,7 +39,7 @@
            		 </div>
           	</li>
           	<li class="nav-item dropdown">
-          		<a class="nav-link dropdown-toggle" href="#" id="productosDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          		<a class="nav-link dropdown-toggle" href="#" id="productosDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color:white !important">
               		Categorías de Producto
             	</a>
             	<div class="dropdown-menu" aria-labelledby="productosDropdown">
@@ -48,7 +49,7 @@
            		 </div>
           	</li>
           	<li class="nav-item dropdown">
-            	<a class="nav-link dropdown-toggle" href="#" id="pedidosDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            	<a class="nav-link dropdown-toggle" href="#" id="pedidosDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color:white !important">
               		Pedidos
            		</a>
             	<div class="dropdown-menu" aria-labelledby="pedidosDropdown">
@@ -57,7 +58,7 @@
             	</div>
           	</li>
           	<li class="nav-item dropdown">
-            	<a class="nav-link dropdown-toggle" href="#" id="clientesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            	<a class="nav-link dropdown-toggle" href="#" id="clientesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color:white !important">
               		Clientes
             	</a>
             	<div class="dropdown-menu" aria-labelledby="clientesDropdown">
@@ -66,7 +67,7 @@
             	</div>
           	</li>
           	<li class="nav-item dropdown">
-            	<a class="nav-link dropdown-toggle" href="#" id="clientesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            	<a class="nav-link dropdown-toggle" href="#" id="clientesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color:white !important">
               		Cuotas Socio
             	</a>
             	<div class="dropdown-menu" aria-labelledby="clientesDropdown">
@@ -75,7 +76,7 @@
             	</div>
           	</li>
           	<li class="nav-item dropdown">
-            	<a class="nav-link dropdown-toggle" href="#" id="clientesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            	<a class="nav-link dropdown-toggle" href="#" id="clientesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color:white !important">
               		Valores y plazos
             	</a>
             	<div class="dropdown-menu" aria-labelledby="clientesDropdown">
@@ -90,7 +91,7 @@
         <ul class="navbar-nav mr-right">  
         
         	<li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="cuentaAdminDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="nav-link dropdown-toggle" href="#" id="cuentaAdminDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color:white !important">
               <jsp:include page="SVG/login.svg"/>
               Opciones de Cuenta
             </a>
@@ -104,7 +105,7 @@
 	   	}else if (sesion.getAttribute("usuario_cliente") != null) { 
         %>
           	<li class="nav-item dropdown">
-            	<a class="nav-link dropdown-toggle" href="#" id="postulacionDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            	<a class="nav-link dropdown-toggle" href="#" id="postulacionDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color:white !important">
               	Productos
             	</a>
             	<div class="dropdown-menu" aria-labelledby="productosCliDropdown">
@@ -113,7 +114,7 @@
           	</li>
           	
           	<li class="nav-item dropdown">
-            	<a class="nav-link dropdown-toggle" href="#" id="postulacionDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            	<a class="nav-link dropdown-toggle" href="#" id="postulacionDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color:white !important">
               	Pedidos
             	</a>
             	<div class="dropdown-menu" aria-labelledby="productosCliDropdown">
@@ -126,7 +127,7 @@
         <ul class="navbar-nav mr-right">
         
         	<li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="cuentaDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="nav-link dropdown-toggle" href="#" id="cuentaDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color:white !important">
               <jsp:include page="SVG/login.svg"/>
               Cuenta
             </a>
@@ -139,7 +140,7 @@
           </li>
         
           <li>
-            <a href="ControladorDeLinks?accion=carrito" class="nav-link">
+            <a href="ControladorDeLinks?accion=carrito" class="nav-link" style="color:white !important">
               	<jsp:include page="SVG/carrito.svg"/>
             	Carrito
             </a>
@@ -149,13 +150,13 @@
        	}else{
       	%>
        		<li class="nav-item">
-  				<a class="nav-link" href="ControladorDeLinks?accion=listarProductosCliente">Productos</a>
+  				<a class="nav-link" href="ControladorDeLinks?accion=listarProductosCliente" style="color:white !important">Productos</a>
 			</li>
 		</ul>
 		<ul class="navbar-nav mr-right">
 		
 			<li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="loginDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="nav-link dropdown-toggle" href="#" id="loginDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color:white !important">
               <jsp:include page="SVG/login.svg"/>
               Iniciar Sesión
             </a>
@@ -166,14 +167,14 @@
           </li>
 
           <li>
-            <a href="ControladorDeLinks?accion=registroCliente" class="nav-link">
+            <a href="ControladorDeLinks?accion=registroCliente" class="nav-link" style="color:white !important">
               <jsp:include page="SVG/login.svg"/>
               Registrarse
             </a>
           </li>
         
           <li>
-            <a href="ControladorDeLinks?accion=carrito" class="nav-link">
+            <a href="ControladorDeLinks?accion=carrito" class="nav-link" style="color:white !important">
               	<jsp:include page="SVG/carrito.svg"/>
             	Carrito
             </a>

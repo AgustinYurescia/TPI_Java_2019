@@ -40,8 +40,8 @@ public class ControladorLogin extends HttpServlet {
 		if(action.equalsIgnoreCase("login")) {
 			try
 			{
-				_servicioCliente.IniciarSesion(request.getParameter("usuario_cliente"), request.getParameter("contrasena"));
-				sesion.setAttribute("usuario_cliente", request.getParameter("usuario_cliente"));
+				_servicioCliente.IniciarSesion(request.getParameter("usuario"), request.getParameter("contrasena"));
+				sesion.setAttribute("usuario_cliente", request.getParameter("usuario"));
 				acceso = "index.jsp";
 			}
 			catch (NonExistentUserException e)

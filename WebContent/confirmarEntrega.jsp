@@ -25,16 +25,16 @@
 						<input type="number" class="form-control" id="nro_pedido" name="nro_pedido">
 					</div>
 					<div class="form-group col-md-1" style="padding-top: 31px;">
-						<button type="submit" class="btn btn-primary" name="accion" value="buscarPedidoConfirmar">Buscar</button>
+						<button type="submit" class="btn btn-primary" name="accion" value="mostrar_pedido" onclick="return validacion_confirmar_entrega();">Buscar</button>
 					</div>
 				</div>
 			</form>
 		</div>
 		<%
-		if(request.getAttribute("pedido") != null && request.getAttribute("productos_pedido") != null)
+		if(request.getAttribute("pedido") != null)
 		{
 			Pedido ped = (Pedido)request.getAttribute("pedido");
-			ArrayList<LineaPedido> productos = (ArrayList<LineaPedido>)request.getAttribute("productos_pedido");
+			ArrayList<LineaPedido> productos = ped.getProductos();
 		%>
 		<div class="m-2">
 			<form>

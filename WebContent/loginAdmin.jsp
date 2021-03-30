@@ -33,11 +33,11 @@
   	<br>
   	<div class="d-flex justify-content-center align-items-center container">
     <form class="center-form" action="ControladorLoginAdmin" method="post">
-  		<img class="mb-4" src="Images/logo.png" alt="" width="200" height="72">
+  		<img class="mb-4" src="Images/logo.png" alt="" width="200" height="100">
   		<h1 class="h3 mb-3 font-weight-normal">Iniciar Sesion Admin</h1>
   		<div class="form-group">
   			<label for="usuario_admin" class="sr-only">Usuario</label>
-  			<input type="text" id="usuario_admin" name="usuario_admin" class="form-control" placeholder="Usuario" required>
+  			<input type="text" id="usuario" name="usuario" class="form-control" placeholder="Usuario" required>
   		</div>
   		<div class="form-group">
   			<label for="contrasena" class="sr-only">Contraseña</label>
@@ -46,7 +46,7 @@
   		<%if(request.getAttribute("loginAdminError") != null){%>
   		<div class="alert alert-danger" role="alert"><%= request.getAttribute("loginAdminError") %></div>
   		<%}%>
-  		<button class="btn btn-lg btn-primary btn-block" type="submit" name="accion" value="login">Iniciar Sesión</button>
+  		<button class="btn btn-lg btn-primary btn-block" type="submit" name="accion" value="login" onclick="return validacion_login();">Iniciar Sesión</button>
   		<p class="mt-5 mb-3 text-muted">&copy; 2017-2019</p>
 	</form>
 	</div>

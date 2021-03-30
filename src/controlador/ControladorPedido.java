@@ -9,28 +9,45 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import exceptions.NonExistentOrderException;
+import exceptions.NotEnoughStockException;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import modelo.Cliente;
 import modelo.LineaPedido;
 import modelo.Producto;
 import modeloDAO.ProductoDAO;
+import services.CustomerService;
 import services.ServicioCategoria;
+import services.ServicioPedido;
+import services.ServicioProducto;
 import modelo.Pedido;
 import modeloDAO.ClienteDAO;
 import modeloDAO.PedidoDAO;
+import services.ServicioProducto;;
 
 @WebServlet("/ControladorPedido")
 public class ControladorPedido extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	private ServicioProducto _servicioProducto; 
+	private ServicioCategoria _servicioCategoria;
+	private CustomerService _servicioCliente;
+	private ServicioPedido _servicioPedido;   
+	
     public ControladorPedido() {
         super();
+        this._servicioProducto = new ServicioProducto();
+        this._servicioCategoria = new ServicioCategoria();
+        this._servicioCliente = new CustomerService();
+        this._servicioPedido = new ServicioPedido();
     }
 	@SuppressWarnings("unchecked")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getParameter("accion");
 		String acceso = "";
+		
 		if(action.equalsIgnoreCase("agregarAlCarrito")) {
 			ServicioCategoria _servicioCategoria = new ServicioCategoria();
 			int codigo_producto = Integer.parseInt(request.getParameter("codigo_producto"));
@@ -48,10 +65,9 @@ public class ControladorPedido extends HttpServlet {
 			if (linea.size() > 0) {
 				for (LineaPedido l : linea) {
 					if (codigo_producto == l.getCodigo_producto()) {
-						ProductoDAO prodDAO = new ProductoDAO();
 						try
 						{
-							Producto prod = prodDAO.buscarProducto(l.getCodigo_producto());
+							Producto prod = _servicioProducto.GetProducto(l.getCodigo_producto());
 							l.setCantidad(l.getCantidad() + cantidad);
 							l.setSubtotal(prod.getPrecioVenta() * l.getCantidad());
 							ya_existe = true;
@@ -61,33 +77,32 @@ public class ControladorPedido extends HttpServlet {
 						}
 						catch (Exception e)
 						{
-							
+							 
 						}
 						
 					}
 				} 
 			}
 			if (ya_existe == false) {
-				ProductoDAO prodDAO = new ProductoDAO();
 				try
 				{
-					Producto prod = prodDAO.buscarProducto(codigo_producto);	
+					Producto prod = _servicioProducto.GetProducto(codigo_producto);	
 					subtotal = cantidad * prod.getPrecioVenta();     																		//CAMBIOS
 					linea.add(new LineaPedido(codigo_producto,cantidad,subtotal));
 				}
 				catch (Exception e)
 				{
-					
+					//manage this error showing the user the problem
 				}
 				request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
 				acceso = "listarProductos.jsp";				
 			}
 			sesion.setAttribute("carrito", linea);
+			
 		}else if(action.equalsIgnoreCase("eliminarDelCarrito")) {
 			HttpSession sesion = request.getSession(true);
 			ArrayList<LineaPedido> linea = (ArrayList<LineaPedido>)sesion.getAttribute("carrito");
 			int codigo = Integer.parseInt(request.getParameter("codigo_prod"));
-			System.out.println(codigo);
 			for (LineaPedido l: linea) {
 				if(l.getCodigo_producto() == codigo) {
 					linea.remove(l);
@@ -96,6 +111,7 @@ public class ControladorPedido extends HttpServlet {
 			}
 			sesion.setAttribute("carrito", linea);
 			acceso = "carrito.jsp";
+			
 		}else if(action.equalsIgnoreCase("ConfirmarCarrito")) {
 			HttpSession sesion = request.getSession(true);
 			ArrayList<LineaPedido> linea = (ArrayList<LineaPedido>)sesion.getAttribute("carrito"); 
@@ -108,50 +124,51 @@ public class ControladorPedido extends HttpServlet {
 			sesion.setAttribute("total", total);
 			acceso =  "confirmarPedido.jsp";
 			}
+		
 		}else if(action.equalsIgnoreCase("FinalizarPedido")) {
-			boolean hayStock = true;
-			ClienteDAO cliDAO = new ClienteDAO();
-			ProductoDAO prodDAO = new ProductoDAO();
 			Cliente cli = new Cliente();
 			Pedido ped = new Pedido();
 			Correo correo = new Correo();
 			Producto prod = new Producto();
-			PedidoDAO pedDAO = new PedidoDAO();
+			
 			HttpSession sesion = request.getSession(true);
 			String usuario_cliente = (String)sesion.getAttribute("usuario_cliente");
 			if(usuario_cliente != null) {
-				cli = cliDAO.buscar_cliente(usuario_cliente);
-				double total = (double)sesion.getAttribute("total");
-				ped.setDni_cliente(cli.getDni());
-				ped.setMonto(total);
-				ArrayList<LineaPedido> linea = (ArrayList<LineaPedido>)sesion.getAttribute("carrito"); 
-				for (LineaPedido l: linea) {
-					try
-					{
-						prod = prodDAO.buscarProducto(l.getCodigo_producto());
+				try
+				{
+					cli = _servicioCliente.ObtenerPorNombreDeUsuario(usuario_cliente);
+					double total = (double)sesion.getAttribute("total");
+					ped.setDni_cliente(cli.getDni());
+					ped.setMonto(total);
+					ArrayList<LineaPedido> linea = (ArrayList<LineaPedido>)sesion.getAttribute("carrito"); 
+					for (LineaPedido l: linea) {
+
+						prod = _servicioProducto.GetProducto(l.getCodigo_producto());
 						if(prod.getStock() - l.getCantidad() < 0) {
-							hayStock = false;
-							break;
+							throw new NotEnoughStockException();
 						}
-						else { }
 					}
-					catch (Exception e)
-					{
-						
-					}
-				}
-				if(hayStock) {
-					int nro_pedido = pedDAO.alta(ped, linea);
+					int nro_pedido = _servicioPedido.Alta(ped, linea);
 					sesion.setAttribute("nro_pedido", nro_pedido);
-					correo.enviar_mail_confirmacion(cli.getMail(), nro_pedido);
 					acceso = "finalizacionDePedido.jsp";
-				}else {
+					correo.enviar_mail_confirmacion(cli.getMail(), nro_pedido);
+				}
+				catch(NotEnoughStockException ex) {
 					request.setAttribute("errorStock", "No poseemos stock de uno o mas de los productos seleccionados. Puede ser que haya "
-							+ "habido cuando usted agregó los productos al carrito y que alguien haya finalizado la compra más rápido que "
-							+ "usted. O tambíen que haya cargado un stock mayor al mostrado como disponible en la pagina de selección del"
+							+ "sucedido una compra desde que cuando usted agregó los productos al carrito. "
+							+ "\n O tambíen que haya cargado un stock mayor al mostrado como disponible en la pagina de selección del"
 							+ "producto.");
 					sesion.setAttribute("carrito", null);
 					acceso = "carrito.jsp";
+				}
+				catch(RuntimeException e)
+				{
+					//Do nothing, the email catch throws this exception
+					//TODO log exception
+				}
+				catch (Exception e)
+				{
+					//TODO log exception
 				}				
 			}
 			else {
@@ -160,118 +177,100 @@ public class ControladorPedido extends HttpServlet {
 		}else if (action.equalsIgnoreCase("listadoPedidos")) {
 			String fechaDesde = request.getParameter("fechaDesde");
 			String fechaHasta = request.getParameter("fechaHasta");
-			System.out.println(fechaDesde);
-			System.out.println(fechaHasta);
-		    PedidoDAO pedDAO = new PedidoDAO();
+			//TODO validate dates
+
 		    ArrayList<Pedido> pedidos = new  ArrayList<Pedido>();
 			try {
-				if (fechaDesde == "" && fechaHasta == "") {
-					pedidos = pedDAO.listar(request.getParameter("estado"));
+				if ((fechaDesde == "" && fechaHasta == "") || (fechaDesde == null && fechaHasta == null)) 
+				{
+					pedidos = _servicioPedido.Listar(request.getParameter("estado"));
 					request.setAttribute("listadoPedidos", pedidos);
 				}
-				else if((fechaDesde != "" | fechaHasta != "") && (fechaDesde != null && fechaHasta != null)) {
-					pedidos = pedDAO.listar( fechaDesde, fechaHasta, request.getParameter("estado"));
-					request.setAttribute("listadoPedidos", pedidos);
-				}
-				else if(fechaDesde == null && fechaHasta == null) {
-					pedidos = pedDAO.listar(request.getParameter("estado"));
+				
+				else if((fechaDesde != "" | fechaHasta != "") && (fechaDesde != null && fechaHasta != null)) 
+				{
+					//TODO validate dates
+					pedidos = _servicioPedido.Listar( fechaDesde, fechaHasta, request.getParameter("estado"));
 					request.setAttribute("listadoPedidos", pedidos);
 				}
 				
 			} catch (Exception e) {
 				e.printStackTrace();
 			}  
-		    acceso = "listarPedidos.jsp";			
-		}else if(action.equalsIgnoreCase("mostrar_pedido") || action.equalsIgnoreCase("buscarPedidoConfirmar")) {
-			String nro_pedido;
-			ArrayList<LineaPedido> lineas = new ArrayList<LineaPedido>();
-			PedidoDAO pdao = new PedidoDAO();
-			Pedido ped;
-			nro_pedido = request.getParameter("nro_pedido");
-			try
-			{
+		    acceso = "listarPedidos.jsp";
+		    
+		}else if(action.equalsIgnoreCase("mostrar_pedido")) {
 			
-				ped = pdao.buscar_pedido(Integer.parseInt(nro_pedido));
+			String nro_pedido = request.getParameter("nro_pedido");
+			try {
+				Pedido ped = _servicioPedido.BuscarPedidoConProductos(Integer.parseInt(nro_pedido));
 				request.setAttribute("pedido", ped);
-				lineas = pdao.buscar_productos_pedido(Integer.parseInt(nro_pedido));
-				request.setAttribute("productos_pedido", lineas);
+			}catch(NonExistentOrderException ex){
+				request.setAttribute("mensajeError", ex.getMessage());
+			}catch(Exception ex){
+				request.setAttribute("mensajeError", "Lo sentimos, ha ocurrido un error");
 			}
-			catch(Exception e)
-			{
-				e.printStackTrace();
-			}
-			if(action.equalsIgnoreCase("mostrar_pedido")) 
-			{
-				acceso = "mostrarPedido.jsp";
-			}
-			else
-			{
-				acceso = "confirmarEntrega.jsp";
-			}
+			acceso = "mostrarPedido.jsp";
+		
 		}else if(action.equalsIgnoreCase("mostrar_pedido_cliente")) {
-			String nro_pedido;
-			ArrayList<LineaPedido> lineas = new ArrayList<LineaPedido>();
-			PedidoDAO pdao = new PedidoDAO();
-			Pedido ped;
-			nro_pedido = request.getParameter("nro_pedido");
-			try
-			{
-			ped = pdao.buscar_pedido(Integer.parseInt(nro_pedido));
-			lineas = pdao.buscar_productos_pedido(Integer.parseInt(nro_pedido));
-			request.setAttribute("pedido", ped);
-			request.setAttribute("productos_pedido", lineas);
-			}
-			catch(Exception e)
-			{
-				e.printStackTrace();
+			
+			try {
+				Pedido pedido = _servicioPedido.BuscarPedidoConProductos(Integer.parseInt(request.getParameter("nro_pedido")));
+				request.setAttribute("pedido", pedido);
+			}catch(NonExistentOrderException ex){
+				request.setAttribute("error", ex.getMessage());
+			}catch(Exception ex){
+				request.setAttribute("mensajeError", "Lo sentimos, ha ocurrido un error");
 			}
 			acceso = "mostrarPedidoCliente.jsp";
+			
 		}else if(action.equalsIgnoreCase("cancelar_Pedido")) {
-			ProductoDAO prodDAO = new ProductoDAO();
-			ClienteDAO cliDAO = new ClienteDAO();
-			Cliente cli = new Cliente();
-			Correo correo = new Correo();
-			PedidoDAO pedDAO = new PedidoDAO();
-			HttpSession sesion = request.getSession(true);
-			String usuario_cliente = (String)sesion.getAttribute("usuario_cliente");
-			int nro_pedido = Integer.parseInt(request.getParameter("nro_pedido"));
-			ArrayList<LineaPedido> lineas = pedDAO.buscar_productos_pedido(nro_pedido);
-			if(usuario_cliente != null) {
-				for(LineaPedido l : lineas) {
-					prodDAO.actualizarStock(l.getCodigo_producto(),l.getCantidad());
+			try {
+				Cliente cli = new Cliente();
+				Correo correo = new Correo(); 
+				HttpSession sesion = request.getSession(true);
+				String usuario_cliente = (String)sesion.getAttribute("usuario_cliente");
+				int nro_pedido = Integer.parseInt(request.getParameter("nro_pedido"));
+				
+				if(usuario_cliente != null) {
+					Pedido pedido = _servicioPedido.BuscarPedidoConProductos(nro_pedido);
+					ArrayList<LineaPedido> lineas = pedido.getProductos(); 
+					for(LineaPedido l : lineas) {
+						_servicioProducto.ActualizarStock(l.getCodigo_producto(),l.getCantidad());
+					}
+					_servicioPedido.CancelarPedido(nro_pedido);
+					cli = _servicioCliente.ObtenerPorNombreDeUsuario(usuario_cliente);
+					correo.enviar_mail_cancelacion(cli.getMail());
+					
+					acceso = "confirmacionCancelacion.jsp";
 				}
-				pedDAO.cancelar_pedido(nro_pedido);
-				cli = cliDAO.buscar_cliente(usuario_cliente);
-				correo.enviar_mail_cancelacion(cli.getMail());
-				acceso = "confirmacionCancelacion.jsp";
+				else {
+					acceso = "loginClientes.jsp";
+				}
+			}catch(NonExistentOrderException ex) {
+				
+			}catch(Exception ex) {
+			
 			}
-			else {
-				acceso = "loginClientes.jsp";
-			}			
 		}else if (action.equalsIgnoreCase("listadoPedidosCliente")) {
-			ClienteDAO cliDAO = new ClienteDAO();
-			Cliente cli = new Cliente();
-			PedidoDAO pedDAO = new PedidoDAO();
-			HttpSession sesion = request.getSession(true);
-			String usuario_cliente = (String)sesion.getAttribute("usuario_cliente");
+  			HttpSession sesion = request.getSession(true);
+  			String usuario_cliente = (String)sesion.getAttribute("usuario_cliente");
 			String estado = request.getParameter("estado");
-		    ArrayList<Pedido> pedidos = new  ArrayList<Pedido>();
 			try{
-			    cli = cliDAO.buscar_cliente(usuario_cliente);
-				pedidos = pedDAO.listar_pedidos_cliente(cli.getDni(), estado);
+				Cliente cli = _servicioCliente.ObtenerPorNombreDeUsuario(usuario_cliente);
+				ArrayList<Pedido> pedidos = _servicioPedido.ListarPedidosCliente(cli, estado);
 				request.setAttribute("listadoPedidosCliente", pedidos);						
 			}catch (Exception e) {
-				e.printStackTrace();
+				request.setAttribute("mensajeError", "Error interno del servidor");
 			}  
 		    acceso = "listarPedidosCliente.jsp";
 		}else if (action.equalsIgnoreCase("entregaPedido")){
 			HttpSession sesion = request.getSession(true);
 			if(sesion.getAttribute("usuario_admin")!= null) {
 				int numeroPedido = Integer.parseInt(request.getParameter("numero_pedido"));
-				PedidoDAO pedDAO = new PedidoDAO();
 				try
 				{
-					pedDAO.RegistrarEntrega(numeroPedido);
+					_servicioPedido.RegistrarEntrega(numeroPedido);
 					request.setAttribute("mensajeOk", "Entrega registrada con éxito");
 				}
 				catch (Exception e)
