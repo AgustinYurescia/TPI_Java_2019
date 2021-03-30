@@ -2,7 +2,6 @@ package controlador;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,10 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
-
-import com.google.gson.Gson;
-
-import Validators.ValidatorProducto;
 import modelo.Producto;
 import modeloDAO.ProductoDAO;
 import services.ServicioCategoria;
@@ -30,67 +25,46 @@ public class ControladorProducto extends HttpServlet {
 	ProductoDAO prodDAO = new ProductoDAO();
 	ServicioProducto _servicioProducto;
 	ServicioCategoria _servicioCategoria;
-	Gson _gson;
 
 	public ControladorProducto() {
         super();
         _servicioProducto = new ServicioProducto();
         _servicioCategoria =  new ServicioCategoria();
-        _gson = new Gson();
         // TODO Auto-generated constructor stub
     }
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String acceso = "";
 		String action = request.getParameter("accion");
-		
-		if(action.equalsIgnoreCase("mostrar_producto")) 
+	if(action.equalsIgnoreCase("mostrar_producto")) 
+	{
+		Producto prod;
+		try
 		{
-			Producto prod;
-			try
-			{
-				prod = _servicioProducto.GetProducto(Integer.parseInt(request.getParameter("codigo_producto")));
-				request.setAttribute("producto", prod);
-			}
-			catch (Exception e)
-			{
-				request.setAttribute("mensajeError", "Error interno del servidor");
-			}
-			acceso = "producto.jsp";
+			prod = _servicioProducto.GetProducto(Integer.parseInt(request.getParameter("codigo_producto")));
+			request.setAttribute("producto", prod);
 		}
-		else if(action.equalsIgnoreCase("listarCliente")) 
+		catch (Exception e)
 		{
-			request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
-			acceso="listarProductos.jsp";
+			request.setAttribute("mensajeError", "Error interno del servidor");
 		}
-		else if(action.equalsIgnoreCase("listarAdmin")) 
-		{
-			request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
-			acceso="listarProductosAdmin.jsp";
-		}
-		else if(action.equalsIgnoreCase("alta")) 
-		{
-			request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
-			acceso="altaProducto.jsp";
-		}
-		else if(action.equalsIgnoreCase("ListarPorPaginas")) {
-			if(ValidatorProducto.ValidarListarPorPaginas(request.getParameter("numero_por_pagina"),request.getParameter("numero_pagina"),request.getParameter("codigo_categoria"))) {
-				response.sendError(HttpServletResponse.SC_BAD_REQUEST,"alguno de los parametros enviados es incorrecto");
-			}
-			int numeroPorPagina = Integer.parseInt(request.getParameter("numero_por_pagina"));
-			int numeroPagina = Integer.parseInt(request.getParameter("numero_pagina"));
-			int codigoCategoria = Integer.parseInt(request.getParameter("codigo_categoria"));
-			try {
-				ArrayList<Producto> productos = _servicioProducto.ObtenerPorPagina(numeroPorPagina, numeroPagina, codigoCategoria);
-				response.setContentType("application/json");
-				String res = _gson.toJson(productos);  
-				PrintWriter out = response.getWriter();
-				out.print(res);
-				out.flush();
-			}catch(Exception ex){
-				response.sendError(HttpServletResponse.SC_BAD_REQUEST,ex.getMessage());
-			}
-		}
+		acceso = "producto.jsp";
+	}
+	else if(action.equalsIgnoreCase("listarCliente")) 
+	{
+		request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
+		acceso="listarProductos.jsp";
+	}
+	else if(action.equalsIgnoreCase("listarAdmin")) 
+	{
+		request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
+		acceso="listarProductosAdmin.jsp";
+	}
+	else if(action.equalsIgnoreCase("alta")) 
+	{
+		request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
+		acceso="altaProducto.jsp";
+	}
 		
 		RequestDispatcher vista = request.getRequestDispatcher(acceso);
 		vista.forward(request, response);
@@ -234,7 +208,6 @@ public class ControladorProducto extends HttpServlet {
 				acceso = "bajaCategoria.jsp";
 			}
 		}
-		
 		RequestDispatcher vista = request.getRequestDispatcher(acceso);
 		vista.forward(request, response);
 	}
