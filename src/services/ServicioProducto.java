@@ -124,6 +124,15 @@ public class ServicioProducto {
 			throw e;
 		}
 	}
-	
+	public ArrayList<Producto> ObtenerPorPagina(int numeroPorPagina, int numeroPagina, int codigoCategoria){
+		ArrayList<Producto> productos = new ArrayList<Producto>();
+		try {
+			productos = _productoDAO.obtenerPorPagina(numeroPorPagina, numeroPagina, codigoCategoria);
+		}catch(Exception e){
+			//TODO: agregar manejo de excepciones definiendo la respuesta y ejecutar logger
+			 System.out.println("excepcion ocurrida en metodo ObtenerPorPagina de el servicio producto");
+		}
+		return productos;
+	}
 
 }
