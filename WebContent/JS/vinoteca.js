@@ -505,3 +505,15 @@ function confirmacion_eliminar(codigo){
 		popup.style.display="none";
 	}
 }
+
+function confirmacion_eliminar_categoria(codigo){
+	var popup = document.getElementById("confirm-popup");
+	var boton_canc = document.getElementById("boton-cancelar");
+	var codigo_categoria = document.getElementById("cod_cat_baja");
+	var codigo_categoria_baja = document.getElementById("codigo_categoria_baja");
+	popup.style.display = "block"
+	codigo_categoria_baja.value = codigo;
+	boton_canc.onclick = function(){
+		popup.style.display="none";
+	}
+}
