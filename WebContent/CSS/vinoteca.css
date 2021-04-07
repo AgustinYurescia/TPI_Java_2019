@@ -4,6 +4,9 @@ body{
 	margin: 0;
 	position: relative;
 	padding-bottom: 100px;
+	color: #58272d;
+	font-family: calibri !important;
+	font-size: 17px;
 }
 button{
 	background: #58272d !important;
@@ -16,7 +19,7 @@ table{
 }
 
 div.productos{
-	width:840px;
+	width:640px;
 	height:300px;
 }
 
@@ -24,7 +27,7 @@ div.producto{
 	width:200px;
 	height:350px;
 	border-radius:15px;
-	float:right;
+	float:left;
 	margin-left:10px;
 	border: 1px solid black;
 }
@@ -50,5 +53,45 @@ div.precio-producto{
 	margin-top:10px;
 }
 
+div.alert{
+	border-radius:15px !important;
+}
 
+input{
+	background: #f9eac7 !important;
+	border: 1px solid #58272d !important;
+}
 
+input[type="file"]{
+	border:transparent !important;
+}
+
+select{
+	background: #f9eac7 !important;
+	border: 1px solid #58272d !important;
+}
+
+.popup {
+  display: none;
+  position: fixed; 
+  z-index: 1;
+  padding-top: 100px; 
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
+  border: 1px solid black;
+}
+
+.popup-content {
+  background-color: #f9eac7;
+  margin: auto;
+  padding: 20px;
+  border: transparent;
+  width: 265px;
+  border-radius:25px;
+  margin-top:400px;
+}

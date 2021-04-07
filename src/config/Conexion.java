@@ -6,7 +6,10 @@ public class Conexion {
 	private static Conexion instancia;
 	private Connection con=null;
 	private int conectados=0;
+	/*private String url="jdbc:mysql://node65968-env-6735023.jelastic.saveincloud.net:3306/vinoteca_gatti?useTimezone=true&serverTimezone=UTC";*/
 	private String url="jdbc:mysql://localhost:3306/vinoteca_gatti?useTimezone=true&serverTimezone=UTC";
+	/*private String usuario="root";
+	private String pass="29eiGEFI70";*/
 	private String usuario="Java";
 	private String pass="Java2019";
 	

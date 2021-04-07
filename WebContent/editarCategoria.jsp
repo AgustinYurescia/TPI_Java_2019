@@ -7,6 +7,7 @@
 <html>
 <head>
 	<jsp:include page="menu.jsp"/>
+	<script type="text/javascript" src="JS/vinoteca.js"></script>
 </head>
 <body>
 	<% 
@@ -19,7 +20,7 @@
     			<div class="form-group col-md-10">
       				<label for="codigoCategoria">Seleccione una categoría:</label>
       				<select id="codigoCategoria" name="codigoCategoria" class="form-control">
-        				<option selected>-</option>
+        				<option value="-1" selected>-</option>
         				<% 
         				for (Categoria c: (ArrayList<Categoria>) request.getAttribute("categorias"))
 						{
@@ -29,7 +30,7 @@
      				</select>
     			</div>
     			<div class="form-group col-md-2" style="padding-top: 31px">
-    				<button type="submit" class="btn btn-primary" name="accion" value="buscarCategoriaEditar" style="width: 100px">Buscar</button>
+    				<button type="submit" class="btn btn-primary" name="accion" value="buscarCategoriaEditar" style="width: 100px" onclick="return validacion_categoria();">Buscar</button>
     			</div>
     		</div>
     	</form>

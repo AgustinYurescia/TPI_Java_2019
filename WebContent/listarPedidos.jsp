@@ -13,7 +13,7 @@
 	<head>
 		<jsp:include page="menu.jsp"/>
 	</head>
-	<body>
+	<body style="weigth:800px !important">
 		<div class="container">
 		<% HttpSession sesion = request.getSession(true);
 	   	   if (sesion.getAttribute("usuario_admin") != null) { %>

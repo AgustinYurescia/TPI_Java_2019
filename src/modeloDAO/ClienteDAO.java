@@ -378,7 +378,7 @@ public class ClienteDAO {
 	{
 		int nroBajas = 0;
 		PreparedStatement ps = null;
-		String sentenciaSQL = "UPDATE cliente SET fecha_baja_socio=current_date WHERE dni in (SELECT dni_cliente FROM cuota WHERE fecha_pago is null GROUP BY dni_cliente HAVING COUNT(dni_cliente) > 3)";
+		String sentenciaSQL = "UPDATE cliente SET fecha_baja_socio=current_date WHERE dni in (SELECT dni_cliente FROM cuota WHERE fecha_pago is null GROUP BY dni_cliente HAVING COUNT(dni_cliente) > 3) AND fecha_baja_socio is null";
 		try
 		{
 			ps = Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL, Statement.RETURN_GENERATED_KEYS);
