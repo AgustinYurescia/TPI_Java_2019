@@ -41,7 +41,7 @@
 	      		%>
 	      			<p style="text-align: center; font-weight:bold">Somos una empresa familiar dedicada a la comercialización de bebidas alcoholicas de primera calidad y a los mejores precios</p>
 	      			<div class="productos">
-	      				<%for (int i=0; i < 4; i++){%>
+	      				<%for (int i=0; i < 3; i++){%>
 		      			<div class="producto">
 		      				<div class="imagen-producto">
 		      					<img src="ControladorDeImagenes?codigo=<%=productos.get(i).getCodigo()%>" width="160px" height="160px"/>

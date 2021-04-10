@@ -60,7 +60,7 @@
     			</div> 
   			</div>
   			<div>
-  				<a class="py-2 d-none d-md-inline-block" href="hacerSocio.jsp"><font face="Calibri" color="#58272d">El cliente ya se encuentra registrado</font></a>
+  				<a class="py-2 d-none d-md-inline-block" href="hacerSocio.jsp"><font face="Calibri" color="#58272d">¿El cliente ya se encuentra registrado? - Click aquí</font></a>
   			</div>
   			<div>
     			<button type="submit" class="btn btn-primary" name="accion" value="alta" onclick="return validacion_cliente();">Registrar</button>

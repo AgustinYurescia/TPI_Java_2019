@@ -37,6 +37,18 @@
     		</div>
 		</form>
 	   	<div>
+	   		<div id="confirm-popup" class="popup">
+		 		<div class="popup-content">
+		 			<p>¿Confirma la baja del producto?</p>
+		 			<form action="ControladorProducto" method="POST">
+						<input type="hidden" id="codigo_producto_baja" name="codigo_producto_baja">
+						<div class="form-in-line">
+							<button type="submit" class="btn btn-outline-danger" style="color: white; background: #c23b22 !important; height:37px !important" name="accion" value="BajaProducto">Confirmar</button>
+							<a class="btn btn-outline-danger" style="color: white; background: #3e5f8a !important; float:right; border: 1px solid #3e5f8a !important" id="boton-cancelar">Cancelar</a>
+						</div>
+					</form>
+		 		</div>
+	 		</div>
 			<% 	
   			if(request.getAttribute("mensajeError") != null){
   			%>
@@ -71,10 +83,8 @@
 						<td style="padding-top: 40px"><%=prod.getNombre()%></td>
 						<td style="padding-top: 40px"><%=prod.getPrecioVenta()%></td>
 						<td style="padding-top: 40px"><%=prod.getStock()%></td>
-						<form action="ControladorProducto" method="POST">
-							<input type="hidden" name="codigo_producto_baja" value="<%=prod.getCodigo()%>">
-							<td style="padding-top: 30px"><button type="submit" class="btn btn-outline-danger" style="color: white; background: #c23b22 !important" name="accion" value="BajaProducto"><img src="SVG/Borrar.svg"/> Eliminar</button></td>
-						</form>
+						<input type="hidden" id="cod_prod_baja" name="codigo_producto_baja" value="<%=prod.getCodigo()%>">
+						<td style="padding-top: 30px"><button type="submit" class="btn btn-outline-danger" style="color: white; background: #c23b22 !important" id="boton-eliminar" onclick="return confirmacion_eliminar(<%=prod.getCodigo()%>);"><img src="SVG/Borrar.svg"/> Eliminar</button></td>
 					</tr>					
 					<%}%>
 				</tbody>
@@ -85,6 +95,5 @@
 	  	  }
 	 	%>
 	 </div>
-	 <jsp:include page="footer.jsp"/>
 </body>
 </html>

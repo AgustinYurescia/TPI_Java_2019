@@ -32,6 +32,18 @@
     		</div>
 		</form>
 	   	<div>
+	   		<div id="confirm-popup" class="popup">
+		 		<div class="popup-content">
+		 			<p>¿Confirma la baja de la categoría?</p>
+		 			<form action="ControladorCategoria" method="POST">
+		 				<input type="hidden" id="codigo_categoria_baja" name="codigoCategoria">
+						<div class="form-in-line">
+							<button type="submit" class="btn btn-outline-danger" style="color: white; background: #c23b22 !important; height:37px !important" name="accion" value="baja">Confirmar</button>
+							<a class="btn btn-outline-danger" style="color: white; background: #3e5f8a !important; float:right; border: 1px solid #3e5f8a !important" id="boton-cancelar">Cancelar</a>
+						</div>
+					</form>
+		 		</div>
+	 		</div>
 	   		<% 	
   			if(request.getAttribute("mensajeError") != null){
   			%>
@@ -68,10 +80,8 @@
 					<%}%> 
 				</tbody>
 			</table>
-			<form action="ControladorCategoria" method="POST">
-				<input type="hidden" name="codigoCategoria" value="<%=(String)request.getAttribute("categoria")%>"></input>
-				<button type="submit" class="btn btn-primary" name="accion" value="baja">Confirmar</button>
-			</form>	
+			<input type="hidden" id="cod_cat_baja" value="<%=(String)request.getAttribute("categoria")%>"></input>
+			<button type="submit" class="btn btn-primary" id="boton-eliminar" onclick="return confirmacion_eliminar_categoria(<%=(String)request.getAttribute("categoria")%>);">Confirmar</button>
 			<%}%>
 		</div>
 	</div>

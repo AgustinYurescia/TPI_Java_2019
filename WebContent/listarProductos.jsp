@@ -13,27 +13,29 @@
 <body>
 	
 	<div class="container" style=" padding-bottom:15%">
-		<h1>Listado de productos</h1>
-	   	<form action="ControladorProducto" method="POST">
-  			<div class="form-row">
-    			<div class="form-group col-md-11">
-    				<label for="codigo_filtro">Seleccione una categorï¿½a para filtrar los productos:</label>
-      				<select id="codigo_filtro" name="codigo_filtro" class="form-control"  >
-        				<option value = "0" selected>Todos</option>
-        				<% 
-						for (Categoria c: (ArrayList<Categoria>) request.getAttribute("categorias"))
-						{
-						%>
-        				<option value="<%=c.getCodigo()%>"><%=c.getDescripcion()%></option>
-        				<%}%>
-     				</select>														
-    			</div>
-    			<div class="form-group col-md-1" style="padding-top: 31px">
-    				<button type="submit" class="btn btn-primary" name="accion" value="listar">Listar</button>	
-    			</div>
-    		</div>
-		</form>
-	   	<div>
+		<div class="productos" style="text-align:center; width: 640px !important; margin:auto !important">
+			<h1>Listado de productos</h1>
+		   	<form action="ControladorProducto" method="POST">
+	  			<div class="form-row">
+	    			<div class="form-group col-md-11">
+	    				<label for="codigo_filtro">Seleccione una categoría para filtrar los productos:</label>
+	      				<select id="codigo_filtro" name="codigo_filtro" class="form-control"  >
+	        				<option value = "0" selected>Todos</option>
+	        				<% 
+							for (Categoria c: (ArrayList<Categoria>) request.getAttribute("categorias"))
+							{
+							%>
+	        				<option value="<%=c.getCodigo()%>"><%=c.getDescripcion()%></option>
+	        				<%}%>
+	     				</select>														
+	    			</div>
+	    			<div class="form-group col-md-1" style="padding-top: 31px">
+	    				<button type="submit" class="btn btn-primary" name="accion" value="listar">Listar</button>	
+	    			</div>
+	    		</div>
+			</form>
+		   	<div>
+	   	</div>
 	   	<%if (request.getAttribute("listado") != null){%>
 	   		<div class="productos" style="text-align:center; width: 1060px !important;">
 	   			<%

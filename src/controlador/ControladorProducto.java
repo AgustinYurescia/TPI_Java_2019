@@ -147,6 +147,7 @@ public class ControladorProducto extends HttpServlet {
 			{
 				request.setAttribute("mensajeError", "Error interno del servidor");
 			}
+			request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
 			acceso = "listarProductosAdmin.jsp";
 		}
 		
