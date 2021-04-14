@@ -1,6 +1,6 @@
 package exceptions;
 
-public class NonExistentFeeException extends Exception{
+public class NonExistentFeeException extends AppException{
 	
 	private static final long serialVersionUID = 1L;
 

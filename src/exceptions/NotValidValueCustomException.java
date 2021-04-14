@@ -1,6 +1,6 @@
 package exceptions;
 
-public class NotValidValueCustomException extends Exception {
+public class NotValidValueCustomException extends AppException {
 
 	/**
 	 * 
