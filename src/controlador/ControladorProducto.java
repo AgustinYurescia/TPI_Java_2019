@@ -15,7 +15,9 @@ import javax.servlet.http.Part;
 import modelo.Producto;
 import modeloDAO.ProductoDAO;
 import services.ServicioCategoria;
-import services.ServicioProducto;;
+import services.ServicioProducto;
+import Validators.ValidatorProducto;
+import exceptions.AppException;
 
 @MultipartConfig
 @WebServlet("/ControladorProducto")
@@ -25,11 +27,13 @@ public class ControladorProducto extends HttpServlet {
 	ProductoDAO prodDAO = new ProductoDAO();
 	ServicioProducto _servicioProducto;
 	ServicioCategoria _servicioCategoria;
+	ValidatorProducto _validatorProducto;
 
 	public ControladorProducto() {
         super();
         _servicioProducto = new ServicioProducto();
         _servicioCategoria =  new ServicioCategoria();
+        _validatorProducto = new ValidatorProducto();
         // TODO Auto-generated constructor stub
     }
 	
@@ -78,42 +82,42 @@ public class ControladorProducto extends HttpServlet {
 		{
 			request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
 			Part imagen = request.getPart("imagen");
-			InputStream imagenInputStream = imagen.getInputStream();
-			Double precio = Double.parseDouble(request.getParameter("precio"));
-			prod = new Producto(request.getParameter("nombre"), imagenInputStream, Integer.parseInt(request.getParameter("stock")), Integer.parseInt(request.getParameter("codigo_categoria")));
-			if(Producto.es_valido(prod.getNombre(), prod.getCodigo_categoria(), imagenInputStream, prod.getStock(), precio)) 
-			{
-				try 
-				{					
-					_servicioProducto.AltaProducto(prod, precio);
-					request.setAttribute("mensajeOk","Alta realizada con éxito");
-					acceso = "altaProducto.jsp";
-				}
-				catch (Exception e)
-				{
-					request.setAttribute("mensajeError","Error interno del servidor al realizar el alta");
-				}
+			InputStream imagenInputStream = null;
+			try {
+				_validatorProducto.validacion_producto(request.getParameter("nombre"), request.getParameter("codigo_categoria"), request.getParameter("stock"), request.getParameter("precio"), imagen, null);
+				imagenInputStream = imagen.getInputStream();
+				Double precio = Double.parseDouble(request.getParameter("precio"));
+				prod = new Producto(request.getParameter("nombre"), imagenInputStream, Integer.parseInt(request.getParameter("stock")), Integer.parseInt(request.getParameter("codigo_categoria")));
+				_servicioProducto.AltaProducto(prod, precio);
+				request.setAttribute("mensajeOk","Alta realizada con éxito");
 			}
-			else 
-			{
-				request.setAttribute("mensajeError","Error, revise los datos del alta e intente nuevamente");
-				acceso = "altaProducto.jsp";
+			catch(AppException e){
+				request.setAttribute("mensajeError", e.getMessage());
+				request.setAttribute("nombre", request.getParameter("nombre"));
+				request.setAttribute("cantidad", request.getParameter("stock"));
+				request.setAttribute("precio", request.getParameter("precio"));
+				request.setAttribute("imagen", imagen);
 			}
+			catch (Exception e)
+			{
+				request.setAttribute("mensajeError","Error interno del servidor al realizar el alta");
+			}
+			acceso = "altaProducto.jsp";
 		}
-		
 		else if(action.equalsIgnoreCase("EditarProducto")) 
 		{
 			Part imagen = request.getPart("imagen");
-			InputStream ImagenInputStream = null;
-			if (imagen.getSize() != 0) 
-			{
-				ImagenInputStream = imagen.getInputStream();
-			}
-			prod = new Producto(Integer.parseInt(request.getParameter("codigo_producto")), request.getParameter("nombre"), ImagenInputStream, Double.parseDouble(request.getParameter("precio")));
+			InputStream ImagenInputStream;
 			try
 			{
+				_validatorProducto.validacion_producto(request.getParameter("nombre"), null, null, request.getParameter("precio"), null, null);
+				ImagenInputStream = (imagen.getSize() != 0)?imagen.getInputStream():null;
+				prod = new Producto(Integer.parseInt(request.getParameter("codigo_producto")), request.getParameter("nombre"), ImagenInputStream, Double.parseDouble(request.getParameter("precio")));
 				_servicioProducto.EditarProducto(prod);
 				request.setAttribute("mensajeOk", "Modificación realizada con éxito");
+			}
+			catch (AppException e) {
+				request.setAttribute("mensajeError", e.getMessage());
 			}
 			catch (Exception e)
 			{
@@ -153,29 +157,23 @@ public class ControladorProducto extends HttpServlet {
 		
 		else if(action.equalsIgnoreCase("ActualizarStock")) 
 		{
-			if (Integer.parseInt(request.getParameter("stock")) > 0)
+			try
 			{
-				if (Integer.parseInt(request.getParameter("precio")) > 0)
-				{
-					try
-					{
-						_servicioProducto.ReponerStock(Integer.parseInt(request.getParameter("codigo_producto")), Integer.parseInt(request.getParameter("stock")), Double.parseDouble(request.getParameter("precio")));
-						request.setAttribute("mensajeOk", "Stock actualizado con éxito");
-					}
-					catch (Exception e)
-					{
-						request.setAttribute("mensajeError", "Error al actualizar el stock, error interno del servidor");
-					}
-				}
-				else
-				{
-					request.setAttribute("mensajeError", "Error, el precio unitario debe ser mayor que cero");
-				}
+				_validatorProducto.validacion_producto(null, null, request.getParameter("stock"), request.getParameter("precio"), null, request.getParameter("codigo_producto"));
+				_servicioProducto.ReponerStock(Integer.parseInt(request.getParameter("codigo_producto")), Integer.parseInt(request.getParameter("stock")), Double.parseDouble(request.getParameter("precio")));
+				request.setAttribute("mensajeOk", "Stock actualizado con éxito");
 			}
-			else
+			catch(AppException e) 
 			{
-				request.setAttribute("mensajeError", "Error, la cantidad debe ser mayor que cero");
+				request.setAttribute("cantidad", request.getParameter("stock"));
+				request.setAttribute("precio", request.getParameter("precio"));
+				request.setAttribute("mensajeError", e.getMessage());
 			}
+			catch (Exception e)
+			{
+				request.setAttribute("mensajeError", "Error al actualizar el stock, error interno del servidor");
+			}
+			
 			acceso="actualizarStock.jsp";
 		}
 		else if(action.equalsIgnoreCase("listar") || action.equalsIgnoreCase("listarParaBajaCat")) 

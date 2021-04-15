@@ -196,7 +196,9 @@ public class ControladorPedido extends HttpServlet {
 				
 			} catch (Exception e) {
 				e.printStackTrace();
-			}  
+			}
+			request.setAttribute("fechaDesde", fechaDesde);
+			request.setAttribute("fechaHasta", fechaHasta);
 		    acceso = "listarPedidos.jsp";
 		    
 		}else if(action.equalsIgnoreCase("mostrar_pedido")) {

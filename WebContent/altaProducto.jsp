@@ -20,7 +20,7 @@
   			<div class="form-row">
     			<div class="form-group col-md-6">
       				<label for="nombre">Nombre del producto</label>
-      				<input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre del producto" required>
+      				<input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre del producto" value="<%=(request.getAttribute("nombre") != null)?request.getAttribute("nombre"):""%>" required>
     			</div>
     			<div class="form-group col-md-6">
       				<label for="codigo_categoria">Categoria</label>
@@ -38,17 +38,17 @@
   			<div class="form-row">
     			<div class="form-group col-md-6">
       				<label for="stock">Cantidad adquirida</label>
-      				<input type="text" class="form-control" id="stock" name="stock" placeholder="Ejemplo: 100" value="0">
+      				<input type="text" class="form-control" id="stock" name="stock" placeholder="Ejemplo: 100" value="<%=(request.getAttribute("cantidad") != null)?request.getAttribute("cantidad"):""%>">
     			</div>
     			<div class="form-group col-md-6">
       				<label for="precio">Precio unitario</label>
-      				<input type="text" id="precio" name="precio" class="form-control" placeholder="Ejemplo: 175.50" value="0">
+      				<input type="text" id="precio" name="precio" class="form-control" placeholder="Ejemplo: 175.50" value="<%=(request.getAttribute("precio") != null)?request.getAttribute("precio"):""%>">
     			</div>
   			</div>
   			<div class="form-row">
     			<div class="form-group col-md-6">
       				<label for="imagen">Imagen del producto</label> </br>
-      				<input type="file" id="imagen" name="imagen" class="" required>
+      				<input type="file" id="imagen" name="imagen" class="" value="<%=(request.getAttribute("imagen") != null)?request.getAttribute("imagen"):""%>" required>
     			</div>
   			</div>
   			<% 	

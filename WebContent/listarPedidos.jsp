@@ -22,11 +22,11 @@
 	   		<div class = "form-row">
 	   			<div class="form-group col-md-4">	
 		   			<label for="start">Fecha desde:</label>
-					<input 	type="date" class="form-control" id="fechaDesde" name="fechaDesde">
+					<input 	type="date" class="form-control" id="fechaDesde" name="fechaDesde" value="<%=request.getAttribute("fechaDesde")%>">
 				</div>
 				<div class="form-group col-md-4">
 	       			<label for="start">Fecha hasta:</label>
-	       			<input 	type="date" class="form-control" id="fechaHasta" name="fechaHasta">
+	       			<input 	type="date" class="form-control" id="fechaHasta" name="fechaHasta" value="<%=request.getAttribute("fechaDesde")%>">
 	       		</div>
 	       		<div class="form-group col-md-4">
 	       			<label for="estado">Estado:</label>

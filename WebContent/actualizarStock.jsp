@@ -37,11 +37,11 @@
  				</div>
  				<div class="form-group col-md-4">
    					<label for="nombre">Cantidad</label>
-   					<input type="text" class="form-control" id="stock" name="stock" placeholder="Ej: 200" required>
+   					<input type="text" class="form-control" id="stock" name="stock" placeholder="Ej: 200" value="<%=(request.getAttribute("cantidad") != null)?request.getAttribute("cantidad"):""%>" required>
  				</div>
  				<div class="form-group col-md-4">
    					<label for="nombre">Precio Unitario</label>
-   					<input type="text" class="form-control" id="precio" name="precio" placeholder="" required>
+   					<input type="text" class="form-control" id="precio" name="precio" placeholder="" value="<%=(request.getAttribute("precio") != null)?request.getAttribute("precio"):""%>" required>
  				</div>
 			</div>
 			<%if(request.getAttribute("mensajeOk") != null){%>
