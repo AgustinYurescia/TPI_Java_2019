@@ -1,6 +1,6 @@
 package exceptions;
 
-public class NoRowsAffectedException extends Exception{
+public class NoRowsAffectedException extends AppException{
 	private static final long serialVersionUID = 1L;
 
 	public NoRowsAffectedException() {

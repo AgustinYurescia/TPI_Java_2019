@@ -1,6 +1,6 @@
 package exceptions;
 
-public class ExistentUserException extends Exception {
+public class ExistentUserException extends AppException {
 
 	private static final long serialVersionUID = 1L;
 

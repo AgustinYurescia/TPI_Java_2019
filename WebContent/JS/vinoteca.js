@@ -37,7 +37,7 @@ function validacion_producto(){
 		alert("El nombre ingresado est\u00e1 formado por espacios en blanco");
 		return false;
 	}
-	else if(stock && stock.length > 45){
+	else if(nombre && nombre.length > 45){
 		alert("El nombre del producto debe tener una longitud menor a 45");
 		return false;
 	}

@@ -1,6 +1,6 @@
 package exceptions;
 
-public class NonExistentCategoryException extends Exception{
+public class NonExistentCategoryException extends AppException{
 	
 	private static final long serialVersionUID = 1L;
 

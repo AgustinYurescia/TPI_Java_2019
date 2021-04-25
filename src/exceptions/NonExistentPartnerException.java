@@ -1,6 +1,6 @@
 package exceptions;
 
-public class NonExistentPartnerException extends Exception{
+public class NonExistentPartnerException extends AppException{
 	
 	private static final long serialVersionUID = 1L;
 

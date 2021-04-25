@@ -1,6 +1,6 @@
 package exceptions;
 
-public class ExistentCategoryException extends Exception{
+public class ExistentCategoryException extends AppException{
 	
 	private static final long serialVersionUID = 1L;
 

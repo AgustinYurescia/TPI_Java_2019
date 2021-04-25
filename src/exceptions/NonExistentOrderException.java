@@ -1,6 +1,6 @@
 package exceptions;
 
-public class NonExistentOrderException extends Exception{
+public class NonExistentOrderException extends AppException{
 	
 	private static final long serialVersionUID = 1L;
 
