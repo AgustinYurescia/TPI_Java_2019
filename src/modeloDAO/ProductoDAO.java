@@ -499,4 +499,48 @@ public class ProductoDAO {
 		}
 		return result;
 	}
+	public int obtenerNumeroDeRegistros(int codigoCategoria) {
+		int result = 0;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		try {
+			String consulta;
+			if (codigoCategoria == 0) {
+				consulta = 	"SELECT COUNT(*) AS cantidad " + 
+							"FROM  producto ";
+			}
+			else {
+				consulta = 	"SELECT  COUNT(*) AS cantidad " + 
+							"FROM  producto " + 
+							"WHERE codigo_categoria = ? ";
+			}
+			ps =  Conexion.getInstancia().getConexion().prepareStatement(consulta);
+			if (codigoCategoria != 0) {
+				ps.setInt(1, codigoCategoria);
+			}
+			rs = ps.executeQuery();
+			if (rs != null) {
+				rs.next();
+			    result = rs.getInt("cantidad");
+			}
+		}catch(SQLException e){
+			//TODO: log Exception
+			e.printStackTrace();
+		}finally {
+			try 
+			{
+				if(rs!=null) {rs.close();}
+				if(ps!=null) {ps.close();}
+				Conexion.getInstancia().desconectar();
+			} 
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+			
+		}
+		
+		return result;
+		
+	}
 }

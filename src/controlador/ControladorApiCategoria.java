@@ -39,7 +39,6 @@ public class ControladorApiCategoria extends HttpServlet {
 		
 		try {
 			ArrayList<Categoria> categorias = _servicioCategoria.obtenerTodas();
-			
 			String res = _gson.toJson(categorias);
 			SendSuccessResponse(res ,response);
 			return;

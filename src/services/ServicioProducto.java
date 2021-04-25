@@ -4,6 +4,7 @@ import modeloDAO.ProductoDAO;
 
 import java.util.ArrayList;
 
+import modelo.PaginaProductos;
 import modelo.Producto;
 
 public class ServicioProducto {
@@ -124,15 +125,19 @@ public class ServicioProducto {
 			throw e;
 		}
 	}
-	public ArrayList<Producto> ObtenerPorPagina(int numeroPorPagina, int numeroPagina, int codigoCategoria){
-		ArrayList<Producto> productos = new ArrayList<Producto>();
+	public PaginaProductos ObtenerPorPagina(int numeroPorPagina, int numeroPagina, int codigoCategoria){
+		PaginaProductos pagina = new PaginaProductos(); 
 		try {
-			productos = _productoDAO.obtenerPorPagina(numeroPorPagina, numeroPagina, codigoCategoria);
+			ArrayList<Producto> productos = _productoDAO.obtenerPorPagina(numeroPorPagina, numeroPagina, codigoCategoria);
+			int numeroRegistros = _productoDAO.obtenerNumeroDeRegistros(codigoCategoria);
+			pagina.setProductos(productos);
+			pagina.setCantidadRegistros(numeroRegistros);
+			
 		}catch(Exception e){
 			//TODO: agregar manejo de excepciones definiendo la respuesta y ejecutar logger
 			 System.out.println("excepcion ocurrida en metodo ObtenerPorPagina de el servicio producto");
 		}
-		return productos;
+		return pagina;
 	}
 
 }
