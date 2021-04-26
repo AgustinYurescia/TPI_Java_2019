@@ -1,4 +1,4 @@
-<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+
 <footer style=" position:fixed; bottom:0px; width:100%; height:15%;background: #58272d !important; color: white !important;">
 	<div class="container text-center">
 		<div class="row text-center text-md-left mt-3 pb-3">

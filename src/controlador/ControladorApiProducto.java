@@ -16,6 +16,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import Validators.ValidatorProducto;
+import modelo.PaginaProductos;
 import modelo.Producto;
 import modeloDAO.ProductoDAO;
 import services.ServicioCategoria;
@@ -50,7 +51,7 @@ public class ControladorApiProducto extends HttpServlet {
 				int numeroPagina = Integer.parseInt(request.getParameter("numero_pagina"));
 				int codigoCategoria = Integer.parseInt(request.getParameter("codigo_categoria"));
 				try {
-					ArrayList<Producto> productos = _servicioProducto.ObtenerPorPagina(numeroPorPagina, numeroPagina, codigoCategoria);
+					PaginaProductos productos = _servicioProducto.ObtenerPorPagina(numeroPorPagina, numeroPagina, codigoCategoria);
 					String res = _gson.toJson(productos);
 					SendSuccessResponse(res ,response);
 					return;
@@ -87,14 +88,12 @@ public class ControladorApiProducto extends HttpServlet {
 		response.setContentType("application/json;charset=UTF-8");
 		response.setStatus(code);
 		ServletOutputStream out = response.getOutputStream();
-//		PrintWriter out = response.getWriter();
 		out.print(mensaje);
 		out.flush();
 	}
 	
 	private static void SendSuccessResponse(String mensaje,HttpServletResponse response) throws ServletException, IOException{
 		response.setContentType("application/json;charset=UTF-8");
-//		PrintWriter out = response.getWriter();
 		ServletOutputStream out = response.getOutputStream();
 		out.print(mensaje);
 		out.flush();
