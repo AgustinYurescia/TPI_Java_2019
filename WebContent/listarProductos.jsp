@@ -35,21 +35,17 @@
 		class PaginatorComponent extends React.Component{
 			constructor(props){
 				super(props);
-				debugger;
 				this.page = this.props.page;
 				this.prevPage = this.props.page - 1;
 				this.nextPage = this.props.page + 1;
 				this.state = {
 					AmountOfPages: Math.ceil(this.props.currentAmountFetched / this.props.pageSize),
 				};
-				console.log("PaginatorComponent consyt the passsed vcalue for fetched registers is: " + this.props.currentAmountFetched);
 			}
 			// filter = memoize(
 			// 	(list, filterText) => list.filter(item => item.text.includes(filterText))
 			// );
 			componentDidUpdate(prevProps) {
-				console.log("PaginatorComponent update the passsed vcalue for fetched registers is: " + this.props.currentAmountFetched);
-				debugger;
 				if (this.props.page !== prevProps.page || this.props.currentAmountFetched != prevProps.currentAmountFetched || this.props.pageSize != prevProps.pageSize) {
 					this.page = this.props.page;
 					this.prevPage = parseInt(this.props.page) - 1;
@@ -58,8 +54,6 @@
 				}
 			}
 			onPageClick = (pageNumber) =>{
-				debugger;
-				console.log(pageNumber);
 				this.props.handler(pageNumber);
 			}
 			render(){
@@ -193,7 +187,6 @@
 				}
 			}
 			render(){
-				console.log(this.props.products);
 				return(
 					<div className="productos row" style={{width: "640px !important", margin:"auto"}}>
 						{this.state.products.map((value, index) => {
@@ -219,7 +212,6 @@
 			fetchPage = async () =>{
 				let endpoint = "ControladorApiProducto?accion=ListarPorPaginas&numero_por_pagina="+this.state.currentAmountPerPage+"&numero_pagina="+this.state.currentPage+"&codigo_categoria="+this.state.currentCategory;
 				const resp = await axios.get(endpoint);
-				debugger;
 				this.setState({currentAmountFetched: resp.data.CantidadRegistros, products: resp.data.Productos});
 
 			}
