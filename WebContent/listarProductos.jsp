@@ -8,11 +8,15 @@
 <html>
 <head>
 	<jsp:include page="menu.jsp"/>
-	
+	<style>
+		.page-link:hover{
+			background-color: #86545a !important;
+		}
+	</style>
 </head>
 <body>
 	
-	<div class="container" style=" padding-bottom:15%">
+	<div class="container" style="padding-bottom:15%">
 		<div class="productos" style="text-align:center; width: 640px !important; margin:auto !important">
 			<h1>Listado de productos</h1>
 			<div id="productListContainer"></div>
@@ -25,14 +29,16 @@
 	<script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
   	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 	<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-	<script src="https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js" crossorigin></script>
 
 	<!-- <script type="text/babel" src="Pagination.js"></script> -->
 	<script type="text/babel">
 		class PaginatorComponent extends React.Component{
 			constructor(props){
 				super(props);
+				debugger;
 				this.page = this.props.page;
+				this.prevPage = this.props.page - 1;
+				this.nextPage = this.props.page + 1;
 				this.state = {
 					AmountOfPages: Math.ceil(this.props.currentAmountFetched / this.props.pageSize),
 				};
@@ -43,9 +49,11 @@
 			// );
 			componentDidUpdate(prevProps) {
 				console.log("PaginatorComponent update the passsed vcalue for fetched registers is: " + this.props.currentAmountFetched);
-				
+				debugger;
 				if (this.props.page !== prevProps.page || this.props.currentAmountFetched != prevProps.currentAmountFetched || this.props.pageSize != prevProps.pageSize) {
 					this.page = this.props.page;
+					this.prevPage = parseInt(this.props.page) - 1;
+					this.nextPage = parseInt(this.props.page) + 1;
 					this.setState({AmountOfPages : Math.ceil(this.props.currentAmountFetched / this.props.pageSize),})
 				}
 			}
@@ -58,15 +66,15 @@
 				return(
 					<nav style={{float: "right"}}>
 						<ul className="pagination">
-							<li onClick={(e) => {this.onPageClick(e.target.dataset.pagereference)}} className="page-item"className="page-link" data-pagereference="1">Primera</li>
+							<li onClick={(e) => {this.onPageClick(e.target.dataset.pagereference)}} className="page-link"  data-pagereference="1" style={{backgroundColor: "#58272d", border: "2px solid #f9eac7", color: "white", borderRadius: ".5em 0em 0em .5em"}}>Primera</li>
 							{ this.page > 1 &&
-								<li onClick={(e) => {this.onPageClick(e.target.dataset.pagereference)}} className="page-item" className="page-link" data-pagereference={this.page - 1}>{this.page - 1}</li>
+								<li onClick={(e) => {this.onPageClick(e.target.dataset.pagereference)}} className="page-link"  data-pagereference={this.prevPage} style={{backgroundColor: "#58272d",border: "2px solid #f9eac7", color: "white"}}>{this.prevPage}</li>
 							}
-							<li className="page-item"className="page-link" ddata-pagereference={this.page}>{this.page}</li>
+							<li className="page-item"className="page-link" data-pagereference={this.page} style={{backgroundColor: "green"}} style={{backgroundColor: "white",border: "2px solid #86545a", color: "#58272d"}}>{this.page}</li>
 							{this.page < this.state.AmountOfPages && 
-								<li onClick={(e) => {this.onPageClick(e.target.dataset.pagereference)}} className="page-item" className="page-link" data-pagereference={this.page + 1}>{this.page + 1}</li>
+								<li onClick={(e) => {this.onPageClick(e.target.dataset.pagereference)}} className="page-link" data-pagereference={this.nextPage} style={{backgroundColor: "#58272d",border: "2px solid #f9eac7", color: "white"}}>{this.nextPage}</li>
 							}
-							<li onClick={(e) => {this.onPageClick(e.target.dataset.pagereference)}} className="page-item"className="page-link" data-pagereference={this.state.AmountOfPages}>Ultima({this.state.AmountOfPages})</li>
+							<li onClick={(e) => {this.onPageClick(e.target.dataset.pagereference)}} className="page-link" data-pagereference={this.state.AmountOfPages} style={{backgroundColor: "#58272d",border: "2px solid #f9eac7", color: "white", borderRadius: "0em .5em .5em 0em"}}>Ultima({this.state.AmountOfPages})</li>
 						</ul>
 					</nav>
 				)
@@ -159,7 +167,7 @@
 							<p>{this.props.product.nombre}</p>
 						</div>
 						<div className="precio-producto" style={{margin:"auto"}}>
-							<p>{this.props.product.precioVenta}</p>
+							<p>&#36;{this.props.product.precioVenta}</p>
 						</div>
 						<div className="ver-producto">
 							<a  href={routeToProduct}>

@@ -88,14 +88,12 @@ public class ControladorApiProducto extends HttpServlet {
 		response.setContentType("application/json;charset=UTF-8");
 		response.setStatus(code);
 		ServletOutputStream out = response.getOutputStream();
-//		PrintWriter out = response.getWriter();
 		out.print(mensaje);
 		out.flush();
 	}
 	
 	private static void SendSuccessResponse(String mensaje,HttpServletResponse response) throws ServletException, IOException{
 		response.setContentType("application/json;charset=UTF-8");
-//		PrintWriter out = response.getWriter();
 		ServletOutputStream out = response.getOutputStream();
 		out.print(mensaje);
 		out.flush();
