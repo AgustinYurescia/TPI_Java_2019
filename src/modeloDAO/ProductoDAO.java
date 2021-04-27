@@ -449,24 +449,27 @@ public class ProductoDAO {
 		if (codigoCategoria == 0) {
 			consulta = 	"SELECT  * " + 
 						"FROM  producto " + 
+						"WHERE fecha_baja IS NULL " +
 						"LIMIT ? OFFSET ? ";
 		}
 		else {
 			consulta = 	"SELECT  * " + 
 						"FROM  producto " + 
-						"WHERE codigo_categoria = ? "+
+						"WHERE codigo_categoria = ? AND fecha_baja IS NULL "+
 						"LIMIT ? OFFSET ? ";
 		}
 		ArrayList<Producto> result = new ArrayList<Producto>();
+		int offset = (numeroPorPagina * numeroPagina) - (numeroPorPagina);
 		try {
 			ps=Conexion.getInstancia().getConexion().prepareStatement(consulta);
+			
 			if (codigoCategoria == 0) {
 				ps.setInt(1, numeroPorPagina);
-			    ps.setInt(2, numeroPagina);
+			    ps.setInt(2, offset);
 			}else {
 			    ps.setInt(1, codigoCategoria);
 			    ps.setInt(2, numeroPorPagina);
-			    ps.setInt(3, numeroPagina);
+			    ps.setInt(3, offset);
 			}
 
 		    rs = ps.executeQuery();
@@ -507,12 +510,13 @@ public class ProductoDAO {
 			String consulta;
 			if (codigoCategoria == 0) {
 				consulta = 	"SELECT COUNT(*) AS cantidad " + 
-							"FROM  producto ";
+							"FROM  producto "+
+							"WHERE fecha_baja IS NULL";
 			}
 			else {
 				consulta = 	"SELECT  COUNT(*) AS cantidad " + 
 							"FROM  producto " + 
-							"WHERE codigo_categoria = ? ";
+							"WHERE codigo_categoria = ? AND fecha_baja IS NULL";
 			}
 			ps =  Conexion.getInstancia().getConexion().prepareStatement(consulta);
 			if (codigoCategoria != 0) {
