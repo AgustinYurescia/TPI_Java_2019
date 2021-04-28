@@ -11,15 +11,19 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import services.ServicioPlazosPrecios;
+import exceptions.AppException;
+import Validators.TasasPlazosValidator;
 
 @WebServlet("/ControladorPlazosPrecios")
 public class ControladorPlazosPrecios extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private ServicioPlazosPrecios _servicioPlazosPrecios;
+	private TasasPlazosValidator _tasasPlazosValidator;
 
     public ControladorPlazosPrecios() {
         super();
         _servicioPlazosPrecios = new ServicioPlazosPrecios();
+        _tasasPlazosValidator = new TasasPlazosValidator();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -36,8 +40,13 @@ public class ControladorPlazosPrecios extends HttpServlet {
 			{
 				try
 				{
+					_tasasPlazosValidator.validacion_plazo_entrega(request.getParameter("cantidadDias"));
 					_servicioPlazosPrecios.AltaPlazo(Integer.parseInt(request.getParameter("cantidadDias")));
 					request.setAttribute("mensajeOk", "Nuevo plazo cargado correctamente");
+				}
+				catch(AppException e)
+				{
+					request.setAttribute("mensajeError", e.getMessage());
 				}
 				catch(Exception e)
 				{
@@ -50,8 +59,13 @@ public class ControladorPlazosPrecios extends HttpServlet {
 			{
 				try
 				{
+					_tasasPlazosValidator.validacion_porcentaje_ganancia(request.getParameter("porcentajeGanancia"));
 					_servicioPlazosPrecios.AltaPorcentajeGanancia(Double.parseDouble(request.getParameter("porcentajeGanancia")));
 					request.setAttribute("mensajeOk", "Nuevo porcentaje de ganancia cargado correctamente");
+				}
+				catch(AppException e)
+				{
+					request.setAttribute("mensajeError", e.getMessage());
 				}
 				catch(Exception e)
 				{
@@ -65,8 +79,13 @@ public class ControladorPlazosPrecios extends HttpServlet {
 			{
 				try
 				{
+					_tasasPlazosValidator.validacion_descuento_socio(request.getParameter("porcentajeDescuento"));
 					_servicioPlazosPrecios.AltaPorcentajeDescuentoSocio(Double.parseDouble(request.getParameter("porcentajeDescuento")));
 					request.setAttribute("mensajeOk", "Nuevo descuento cargado correctamente");
+				}
+				catch(AppException e)
+				{
+					request.setAttribute("mensajeError", e.getMessage());
 				}
 				catch(Exception e)
 				{
@@ -80,8 +99,13 @@ public class ControladorPlazosPrecios extends HttpServlet {
 			{
 				try
 				{
+					_tasasPlazosValidator.validacion_valor_cuotas(request.getParameter("valorCuota"));
 					_servicioPlazosPrecios.AltaValorCuota(Double.parseDouble(request.getParameter("valorCuota")));
 					request.setAttribute("mensajeOk", "Nuevo valor de cuotas cargado correctamente");
+				}
+				catch(AppException e)
+				{
+					request.setAttribute("mensajeError", e.getMessage());
 				}
 				catch(Exception e)
 				{

@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import Validators.ValidatorPedido;
+import exceptions.AppException;
 import exceptions.NonExistentOrderException;
 import exceptions.NotEnoughStockException;
 
@@ -34,7 +36,8 @@ public class ControladorPedido extends HttpServlet {
 	private ServicioProducto _servicioProducto; 
 	private ServicioCategoria _servicioCategoria;
 	private CustomerService _servicioCliente;
-	private ServicioPedido _servicioPedido;   
+	private ServicioPedido _servicioPedido; 
+	private ValidatorPedido _validatorPedido;
 	
     public ControladorPedido() {
         super();
@@ -42,6 +45,7 @@ public class ControladorPedido extends HttpServlet {
         this._servicioCategoria = new ServicioCategoria();
         this._servicioCliente = new CustomerService();
         this._servicioPedido = new ServicioPedido();
+        this._validatorPedido = new ValidatorPedido();
     }
 	@SuppressWarnings("unchecked")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -49,55 +53,68 @@ public class ControladorPedido extends HttpServlet {
 		String acceso = "";
 		
 		if(action.equalsIgnoreCase("agregarAlCarrito")) {
-			ServicioCategoria _servicioCategoria = new ServicioCategoria();
-			int codigo_producto = Integer.parseInt(request.getParameter("codigo_producto"));
-			int cantidad = Integer.parseInt(request.getParameter("cantidad"));
-			double subtotal = 0.0 ;                                              //CAMBIO
-			ArrayList<LineaPedido> linea;
-			HttpSession sesion = request.getSession(true);
-			if (sesion.getAttribute("carrito") == null) {
-				linea = new ArrayList<LineaPedido>();
-			}else {
-				linea = (ArrayList<LineaPedido>)sesion.getAttribute("carrito");	
-			}
-			
-			boolean ya_existe = false;
-			if (linea.size() > 0) {
-				for (LineaPedido l : linea) {
-					if (codigo_producto == l.getCodigo_producto()) {
-						try
-						{
+			try 
+			{
+				request.getParameter("stock");
+				_validatorPedido.validacion_agregar_al_carrito(request.getParameter("stock"), request.getParameter("cantidad"));
+				ServicioCategoria _servicioCategoria = new ServicioCategoria();
+				int codigo_producto = Integer.parseInt(request.getParameter("codigo_producto"));
+				int cantidad = Integer.parseInt(request.getParameter("cantidad"));
+				double subtotal = 0.0 ;                                              //CAMBIO
+				ArrayList<LineaPedido> linea;
+				HttpSession sesion = request.getSession(true);
+				if (sesion.getAttribute("carrito") == null) {
+					linea = new ArrayList<LineaPedido>();
+				}else {
+					linea = (ArrayList<LineaPedido>)sesion.getAttribute("carrito");	
+				}
+				boolean ya_existe = false;
+				if (linea.size() > 0) {
+					for (LineaPedido l : linea) {
+						if (codigo_producto == l.getCodigo_producto()) {
 							Producto prod = _servicioProducto.GetProducto(l.getCodigo_producto());
 							l.setCantidad(l.getCantidad() + cantidad);
 							l.setSubtotal(prod.getPrecioVenta() * l.getCantidad());
 							ya_existe = true;
 							request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
+							request.setAttribute("mensajeOk", "Agregado al carrito con éxito");
 							acceso = "listarProductos.jsp";
 							break;
 						}
-						catch (Exception e)
-						{
-							 
-						}
-						
-					}
-				} 
-			}
-			if (ya_existe == false) {
-				try
-				{
+					} 
+				}
+				if (ya_existe == false) {
 					Producto prod = _servicioProducto.GetProducto(codigo_producto);	
 					subtotal = cantidad * prod.getPrecioVenta();     																		//CAMBIOS
 					linea.add(new LineaPedido(codigo_producto,cantidad,subtotal));
+					request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
+					request.setAttribute("mensajeOk", "Agregado al carrito con éxito");
+					acceso = "listarProductos.jsp";				
 				}
-				catch (Exception e)
-				{
-					//manage this error showing the user the problem
-				}
-				request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
-				acceso = "listarProductos.jsp";				
+				sesion.setAttribute("carrito", linea);
 			}
-			sesion.setAttribute("carrito", linea);
+			catch(AppException e)
+			{
+				try 
+				{
+					Producto prod = _servicioProducto.GetProducto(Integer.parseInt(request.getParameter("codigo_producto")));
+					request.setAttribute("producto", prod);
+				}
+				catch(Exception ee)
+				{
+					request.setAttribute("mensajeError", "Error interno del servidor");
+				}
+				finally
+				{
+					request.setAttribute("mensajeError", e.getMessage());
+					acceso = "producto.jsp";
+				}
+			}
+			catch(Exception e)
+			{
+				request.setAttribute("mensajeError", "Error interno del servidor");
+				acceso = "producto.jsp";
+			}
 			
 		}else if(action.equalsIgnoreCase("eliminarDelCarrito")) {
 			HttpSession sesion = request.getSession(true);
@@ -199,6 +216,8 @@ public class ControladorPedido extends HttpServlet {
 			}
 			request.setAttribute("fechaDesde", fechaDesde);
 			request.setAttribute("fechaHasta", fechaHasta);
+			request.setAttribute("estado", request.getParameter("estado"));
+			System.out.println(request.getParameter("estado"));
 		    acceso = "listarPedidos.jsp";
 		    
 		}else if(action.equalsIgnoreCase("mostrar_pedido")) {
@@ -269,11 +288,16 @@ public class ControladorPedido extends HttpServlet {
 		}else if (action.equalsIgnoreCase("entregaPedido")){
 			HttpSession sesion = request.getSession(true);
 			if(sesion.getAttribute("usuario_admin")!= null) {
-				int numeroPedido = Integer.parseInt(request.getParameter("numero_pedido"));
 				try
 				{
+					_validatorPedido.validacion_entrega(request.getParameter("numero_pedido"));
+					int numeroPedido = Integer.parseInt(request.getParameter("numero_pedido"));
 					_servicioPedido.RegistrarEntrega(numeroPedido);
 					request.setAttribute("mensajeOk", "Entrega registrada con éxito");
+				}
+				catch(AppException e)
+				{
+					request.setAttribute("mensajeError", e.getMessage());
 				}
 				catch (Exception e)
 				{

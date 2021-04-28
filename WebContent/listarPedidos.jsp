@@ -26,12 +26,12 @@
 				</div>
 				<div class="form-group col-md-4">
 	       			<label for="start">Fecha hasta:</label>
-	       			<input 	type="date" class="form-control" id="fechaHasta" name="fechaHasta" value="<%=request.getAttribute("fechaDesde")%>">
+	       			<input 	type="date" class="form-control" id="fechaHasta" name="fechaHasta" value="<%=request.getAttribute("fechaHasta")%>">
 	       		</div>
 	       		<div class="form-group col-md-4">
 	       			<label for="estado">Estado:</label>
       				<select id="estado" name="estado" class="form-control">
-      					<option selected>-</option>
+      					<option>-</option>
         				<option>Pendiente</option>
         				<option>Entregado</option>
         				<option>Cancelado</option>
