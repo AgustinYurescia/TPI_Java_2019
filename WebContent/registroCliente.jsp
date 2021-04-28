@@ -1,3 +1,4 @@
+<%@page import="modelo.Cliente"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.List"%>
 <%@page import="modeloDAO.CategoriaDAO"%>
@@ -12,41 +13,42 @@
 		<jsp:include page="menu.jsp"/>
 	</head>
 	<body>
+		<%Cliente cliente = (Cliente)request.getAttribute("data_cliente"); %>
 		<div class="container">
 		<h1>Formulario de Registro</h1>
 		<form action="ControladorCliente" method="post">
   			<div class="form-row">
     			<div class="form-group col-md-4">
       				<label for="dni">DNI</label>
-      				<input type="text" class="form-control" id="dni" name="dni" placeholder="DNI" required>
+      				<input type="text" class="form-control" id="dni" name="dni" placeholder="DNI" required value="<%=(cliente != null)? (String)cliente.getDni(): "" %>"  >
     			</div>
     			<div class="form-group col-md-4">
       				<label for="dni">Nombre</label>
-      				<input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" required>
+      				<input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" required value="<%=(cliente != null)? cliente.getNombre(): "" %>">
     			</div>
     			<div class="form-group col-md-4">
       				<label for="Apellido">Apellido</label>
-      				<input type="text" class="form-control" id="apellido" name="apellido" placeholder="Apellido" required>
+      				<input type="text" class="form-control" id="apellido" name="apellido" placeholder="Apellido" required value="<%=(cliente != null)? cliente.getApellido(): "" %>">
     			</div>
   			</div>
   			<div class="form-row">
     			<div class="form-group col-md-4">
       				<label for="telefono">Télefono celular</label>
-      				<input type="text" class="form-control" id="telefono" name="telefono" placeholder="Sin el 0 y sin el 15" required>
+      				<input type="text" class="form-control" id="telefono" name="telefono" placeholder="Sin el 0 y sin el 15" required value="<%=(cliente != null)? cliente.getTelefono(): "" %>">
     			</div>
     			<div class="form-group col-md-4">
       				<label for="direccion">Dirección</label>
-      				<input type="text" id="direccion" name="direccion" class="form-control" placeholder="Calle-nro-piso-depto" required>
+      				<input type="text" id="direccion" name="direccion" class="form-control" placeholder="Calle-nro-piso-depto" required value="<%=(cliente != null)? cliente.getDireccion(): "" %>">
     			</div>
     			<div class="form-group col-md-4">
       				<label for="mail">E-Mail</label>
-      				<input type="text" id="mail" name="mail" class="form-control" placeholder="xxxxxxx@xxxxx.xxx" required> 
+      				<input type="text" id="mail" name="mail" class="form-control" placeholder="xxxxxxx@xxxxx.xxx" required value="<%=(cliente != null)? cliente.getMail(): "" %>"> 
     			</div>
   			</div>
   			<div class="form-row">
     			<div class="form-group col-md-4">
       				<label for="usuario">Nombre de usuario</label>
-      				<input type="text" class="form-control" id="usuario" name="usuario" placeholder="Nombre de usuario" required>
+      				<input type="text" class="form-control" id="usuario" name="usuario" placeholder="Nombre de usuario" required value="<%=(cliente != null)? cliente.getCliente_usuario(): "" %>">
     			</div>
     			<div class="form-group col-md-4">
       				<label for="contrasena">Contraseña</label>
