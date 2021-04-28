@@ -485,7 +485,7 @@ function validacion_agregar_al_carrito(){
     if(document.getElementById('cantidad')){
         var cantidad = document.getElementById('cantidad').value;
     }
-    if(stock && cantidad && cantidad > stock){
+    if(stock && cantidad && parseInt(cantidad,10) > parseInt(stock, 10)){
     		alert("No hay suficiente stock");
     		return false;
     	}

@@ -13,10 +13,15 @@ import javax.servlet.http.HttpSession;
 import exceptions.NonExistentUserException;
 import services.CustomerService;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.message.LoggerNameAwareMessage;
+
 
 @WebServlet("/ControladorLogin")
 public class ControladorLogin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static Logger _logger = LogManager.getLogger(ControladorLogin.class);
 	CustomerService _servicioCliente;
     public ControladorLogin() {
         super();
@@ -40,6 +45,7 @@ public class ControladorLogin extends HttpServlet {
 		if(action.equalsIgnoreCase("login")) {
 			try
 			{
+				_logger.info("Iniciando sesión");
 				_servicioCliente.IniciarSesion(request.getParameter("usuario"), request.getParameter("contrasena"));
 				sesion.setAttribute("usuario_cliente", request.getParameter("usuario"));
 				acceso = "index.jsp";

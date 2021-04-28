@@ -32,6 +32,7 @@
 		  					<div class="form-inline">
 			    				Stock:
 			    				<input type="number" class="form-control" id="stock_disponible" name="stock_disponible" value="<%=prod.getStock()%>" style="border:transparent !important" disabled>
+			    				<input type="hidden" class="form-control" id="stock" name="stock" value="<%=prod.getStock()%>" style="border:transparent !important">
 		    				</div>
 		  				</div>
 		  			</div>

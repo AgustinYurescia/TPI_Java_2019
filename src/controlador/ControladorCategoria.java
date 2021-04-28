@@ -9,22 +9,27 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import Validators.ValidatorProducto;
 import exceptions.ExistentCategoryException;
 import exceptions.NonExistentCategoryException;
 import modelo.Categoria;
 import services.ServicioCategoria;
 import services.ServicioProducto;
+import Validators.ValidatorCategoria;
+import exceptions.AppException;
 
 @WebServlet("/ControladorCategoria")
 public class ControladorCategoria extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private ServicioCategoria _servicioCategoria;
     private ServicioProducto _servicioProducto;
+    private ValidatorCategoria _validatorCategoria;
 	
     public ControladorCategoria() {
         super();
         _servicioCategoria = new ServicioCategoria(); 
         _servicioProducto = new ServicioProducto(); 
+        _validatorCategoria = new ValidatorCategoria();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -57,11 +62,16 @@ public class ControladorCategoria extends HttpServlet {
 		{
 			try
 			{
+				_validatorCategoria.validacion_categoria(request.getParameter("categoria"));
 				_servicioCategoria.Alta(request.getParameter("categoria"));
 				request.setAttribute("mensajeOk", "Alta realizada con éxito");
 			}
 			catch(ExistentCategoryException e)
 			{
+				request.setAttribute("mensajeError", e.getMessage());
+			}
+		
+			catch (AppException e){
 				request.setAttribute("mensajeError", e.getMessage());
 			}
 			catch (Exception e)
@@ -94,8 +104,12 @@ public class ControladorCategoria extends HttpServlet {
 		{
 			try
 			{
+				_validatorCategoria.validacion_categoria(request.getParameter("categoria"));
 				_servicioCategoria.Modificacion(Integer.parseInt(request.getParameter("codigoCategoria")), request.getParameter("categoria"));
 				request.setAttribute("mensajeOk", "Modificación realizada con éxito");
+			}
+			catch (AppException e){
+				request.setAttribute("mensajeError", e.getMessage());
 			}
 			catch (Exception e)
 			{
