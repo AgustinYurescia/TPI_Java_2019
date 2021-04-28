@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import Validators.ValidatorCliente;
+import exceptions.AppException;
 import exceptions.ExistentUserException;
 import exceptions.NonExistentUserException;
 import services.CustomerService;
@@ -74,34 +77,42 @@ public class ControladorCliente extends HttpServlet {
 					request.getParameter("nombre"), request.getParameter("apellido"),request.getParameter("mail"),
 					request.getParameter("telefono"),request.getParameter("direccion")
 					);
-			if (_customerService.ValidateEqualPasswords(request.getParameter("contrasena"), request.getParameter("contrasena2")))
-			{
-				try
+			try {
+				ValidatorCliente.ValidarAlta(request.getParameter("dni"),request.getParameter("usuario"),request.getParameter("contrasena"), 
+						request.getParameter("nombre"), request.getParameter("apellido"),request.getParameter("mail"),
+						request.getParameter("telefono"),request.getParameter("direccion"));
+				if (_customerService.ValidateEqualPasswords(request.getParameter("contrasena"), request.getParameter("contrasena2")))
 				{
-					if (request.getParameter("es_socio").equals("1"))
+					try
 					{
-						_customerService.RegisterCustomer(cliente,1);
-						request.setAttribute("registroClienteOk", "El socio ha sido registrado en el sistema");
+						if (request.getParameter("es_socio").equals("1"))
+						{
+							_customerService.RegisterCustomer(cliente,1);
+							request.setAttribute("registroClienteOk", "El socio ha sido registrado en el sistema");
+						}
+						else
+						{
+							_customerService.RegisterCustomer(cliente,0);
+							request.setAttribute("registroClienteOk", "El usuario ha sido registrado en el sistema");
+						}
 					}
-					else
+					catch (ExistentUserException e)
 					{
-						_customerService.RegisterCustomer(cliente,0);
-						request.setAttribute("registroClienteOk", "El usuario ha sido registrado en el sistema");
+						request.setAttribute("registroClienteError", e.getMessage());
+					} 
+					catch (Exception e) 
+					{					
+						request.setAttribute("registroClienteError", "Error interno del servidor");
 					}
 				}
-				catch (ExistentUserException e)
+				else 
 				{
-					request.setAttribute("registroClienteError", e.getMessage());
-				} 
-				catch (Exception e) 
-				{					
-					request.setAttribute("registroClienteError", "Error interno del servidor");
+					request.setAttribute("registroClienteError", "Las contraseñas no coinciden");
 				}
+			} catch (AppException ex) {
+				request.setAttribute("registroClienteError", ex.getMessage());
+				request.setAttribute("data_cliente", cliente);
 			}
-			else 
-			{
-				request.setAttribute("registroClienteError", "Las contraseñas no coinciden");
-			}			
 			acceso = "registroCliente.jsp";
 		}
 		
