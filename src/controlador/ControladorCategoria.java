@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import Validators.ValidatorProducto;
 import exceptions.ExistentCategoryException;
@@ -58,83 +59,87 @@ public class ControladorCategoria extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String acceso = "";
 		String action = request.getParameter("accion");
-		if (action.equalsIgnoreCase("alta"))
+		HttpSession sesion = request.getSession(true);
+		if (sesion.getAttribute("usuario_admin") != null)
 		{
-			try
+			if (action.equalsIgnoreCase("alta"))
 			{
-				_validatorCategoria.validacion_categoria(request.getParameter("categoria"));
-				_servicioCategoria.Alta(request.getParameter("categoria"));
-				request.setAttribute("mensajeOk", "Alta realizada con éxito");
+				try
+				{
+					_validatorCategoria.validacion_categoria(request.getParameter("categoria"));
+					_servicioCategoria.Alta(request.getParameter("categoria"));
+					request.setAttribute("mensajeOk", "Alta realizada con éxito");
+				}
+				catch(ExistentCategoryException e)
+				{
+					request.setAttribute("mensajeError", e.getMessage());
+				}
+			
+				catch (AppException e){
+					request.setAttribute("mensajeError", e.getMessage());
+				}
+				catch (Exception e)
+				{
+					request.setAttribute("mensajeError", "Error interno del servidor");
+				}
+				request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
+				acceso="altaCategoria.jsp";
 			}
-			catch(ExistentCategoryException e)
+			else if (action.equalsIgnoreCase("baja"))
 			{
-				request.setAttribute("mensajeError", e.getMessage());
+				try
+				{
+					_servicioProducto.BajaPorCategoria(Integer.parseInt(request.getParameter("codigoCategoria")));
+					_servicioCategoria.Baja(Integer.parseInt(request.getParameter("codigoCategoria")));
+					request.setAttribute("mensajeOk", "Baja realizada con éxito");
+				}
+				catch (NonExistentCategoryException e)
+				{
+					request.setAttribute("mensajeError", e.getMessage());
+				}
+				catch (Exception e)
+				{
+					request.setAttribute("mensajeError", "Error interno del servidor");
+				}
+				request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
+				acceso="bajaCategoria.jsp";
 			}
-		
-			catch (AppException e){
-				request.setAttribute("mensajeError", e.getMessage());
-			}
-			catch (Exception e)
+			else if (action.equalsIgnoreCase("modificacion"))
 			{
-				request.setAttribute("mensajeError", "Error interno del servidor");
+				try
+				{
+					_validatorCategoria.validacion_categoria(request.getParameter("categoria"));
+					_servicioCategoria.Modificacion(Integer.parseInt(request.getParameter("codigoCategoria")), request.getParameter("categoria"));
+					request.setAttribute("mensajeOk", "Modificación realizada con éxito");
+				}
+				catch (AppException e){
+					request.setAttribute("mensajeError", e.getMessage());
+				}
+				catch (Exception e)
+				{
+					request.setAttribute("mensajeError", "Error interno del servidor");
+				}
+				request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
+				acceso="editarCategoria.jsp";
 			}
-			request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
-			acceso="altaCategoria.jsp";
-		}
-		else if (action.equalsIgnoreCase("baja"))
-		{
-			try
+			
+			else if (action.equalsIgnoreCase("buscarCategoriaEditar"))
 			{
-				_servicioProducto.BajaPorCategoria(Integer.parseInt(request.getParameter("codigoCategoria")));
-				_servicioCategoria.Baja(Integer.parseInt(request.getParameter("codigoCategoria")));
-				request.setAttribute("mensajeOk", "Baja realizada con éxito");
+				try
+				{
+					request.setAttribute("categoria", (Categoria)_servicioCategoria.BuscarCategoria(Integer.parseInt(request.getParameter("codigoCategoria"))));
+				}
+				catch (NonExistentCategoryException e)
+				{
+					request.setAttribute("mensajeError", e.getMessage());
+				}
+				catch (Exception e)
+				{
+					request.setAttribute("mensajeError", "Error interno del servidor");
+				}
+				request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
+				acceso="editarCategoria.jsp";
 			}
-			catch (NonExistentCategoryException e)
-			{
-				request.setAttribute("mensajeError", e.getMessage());
-			}
-			catch (Exception e)
-			{
-				request.setAttribute("mensajeError", "Error interno del servidor");
-			}
-			request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
-			acceso="bajaCategoria.jsp";
-		}
-		else if (action.equalsIgnoreCase("modificacion"))
-		{
-			try
-			{
-				_validatorCategoria.validacion_categoria(request.getParameter("categoria"));
-				_servicioCategoria.Modificacion(Integer.parseInt(request.getParameter("codigoCategoria")), request.getParameter("categoria"));
-				request.setAttribute("mensajeOk", "Modificación realizada con éxito");
-			}
-			catch (AppException e){
-				request.setAttribute("mensajeError", e.getMessage());
-			}
-			catch (Exception e)
-			{
-				request.setAttribute("mensajeError", "Error interno del servidor");
-			}
-			request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
-			acceso="editarCategoria.jsp";
-		}
-		
-		else if (action.equalsIgnoreCase("buscarCategoriaEditar"))
-		{
-			try
-			{
-				request.setAttribute("categoria", (Categoria)_servicioCategoria.BuscarCategoria(Integer.parseInt(request.getParameter("codigoCategoria"))));
-			}
-			catch (NonExistentCategoryException e)
-			{
-				request.setAttribute("mensajeError", e.getMessage());
-			}
-			catch (Exception e)
-			{
-				request.setAttribute("mensajeError", "Error interno del servidor");
-			}
-			request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
-			acceso="editarCategoria.jsp";
 		}
 		
 		RequestDispatcher vista = request.getRequestDispatcher(acceso);

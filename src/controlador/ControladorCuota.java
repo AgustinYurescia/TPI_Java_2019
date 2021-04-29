@@ -76,36 +76,51 @@ public class ControladorCuota extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String acceso = "";
 		String action = request.getParameter("accion");
+		HttpSession sesion = request.getSession(true);
 		if(action.equalsIgnoreCase("buscarCuotas"))
 		{
-			try
+			if (sesion.getAttribute("usuario_admin") != null)
 			{
-				request.setAttribute("cuotasAnio", (ArrayList<Cuota>)_servicioCuota.ObtenerCuotasAnioActual(request.getParameter("dniCliente")));
+				try
+				{
+					request.setAttribute("cuotasAnio", (ArrayList<Cuota>)_servicioCuota.ObtenerCuotasAnioActual(request.getParameter("dniCliente")));
+				}
+				catch(NonExistentFeeException e)
+				{
+					request.setAttribute("mensajeError", e.getMessage());
+				}
+				catch(Exception e)
+				{
+					request.setAttribute("mensajeError", "Error interno del servidor");
+				}
+				
+				acceso="pagoCuotas.jsp";
 			}
-			catch(NonExistentFeeException e)
+			else
 			{
-				request.setAttribute("mensajeError", e.getMessage());
+				acceso = "loginAdmin.jsp";
 			}
-			catch(Exception e)
-			{
-				request.setAttribute("mensajeError", "Error interno del servidor");
-			}
-			
-			acceso="pagoCuotas.jsp";
 		}
 		else if(action.equalsIgnoreCase("registrarPago"))
 		{
-			try
+			if (sesion.getAttribute("usuario_admin") != null)
 			{
-				_servicioCuota.RegistrarPago(request.getParameter("dniCliente"), Integer.parseInt(request.getParameter("mesCuota")), Integer.parseInt(request.getParameter("anioCuota")));
-				request.setAttribute("mensajeOk", "Pago registrado con éxito, puede volver a buscar las cuotas del cliente para comprobarlo");
+				try
+				{
+					_servicioCuota.RegistrarPago(request.getParameter("dniCliente"), Integer.parseInt(request.getParameter("mesCuota")), Integer.parseInt(request.getParameter("anioCuota")));
+					request.setAttribute("mensajeOk", "Pago registrado con éxito, puede volver a buscar las cuotas del cliente para comprobarlo");
+				}
+				catch(Exception e)
+				{
+					request.setAttribute("mensajeError", "No se pudo registrar el pago debido a un error interno del servidor");
+				}
+				
+				acceso="pagoCuotas.jsp";
 			}
-			catch(Exception e)
+			else
 			{
-				request.setAttribute("mensajeError", "No se pudo registrar el pago debido a un error interno del servidor");
+				acceso = "loginAdmin.jsp";
 			}
-			
-			acceso="pagoCuotas.jsp";
 		}
 		
 		RequestDispatcher vista = request.getRequestDispatcher(acceso);
