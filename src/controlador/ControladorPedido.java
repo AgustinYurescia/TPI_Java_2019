@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import Validators.ValidatorPedido;
 import exceptions.AppException;
 import exceptions.NonExistentOrderException;
+import exceptions.NonExistentUserException;
 import exceptions.NotEnoughStockException;
 
 import java.util.ArrayList;
@@ -85,7 +86,7 @@ public class ControladorPedido extends HttpServlet {
 				}
 				if (ya_existe == false) {
 					Producto prod = _servicioProducto.GetProducto(codigo_producto);	
-					subtotal = cantidad * prod.getPrecioVenta();     																		//CAMBIOS
+					subtotal = cantidad * prod.getPrecioVenta();
 					linea.add(new LineaPedido(codigo_producto,cantidad,subtotal));
 					request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
 					request.setAttribute("mensajeOk", "Agregado al carrito con éxito");
@@ -192,62 +193,86 @@ public class ControladorPedido extends HttpServlet {
 				acceso = "loginClientes.jsp";
 			}			
 		}else if (action.equalsIgnoreCase("listadoPedidos")) {
-			String fechaDesde = request.getParameter("fechaDesde");
-			String fechaHasta = request.getParameter("fechaHasta");
-			//TODO validate dates
-
-		    ArrayList<Pedido> pedidos = new  ArrayList<Pedido>();
-			try {
-				if ((fechaDesde == "" && fechaHasta == "") || (fechaDesde == null && fechaHasta == null)) 
-				{
-					pedidos = _servicioPedido.Listar(request.getParameter("estado"));
-					request.setAttribute("listadoPedidos", pedidos);
-				}
+			HttpSession sesion = request.getSession(true);
+  			String usuario_admin = (String)sesion.getAttribute("usuario_admin");
+  			if(usuario_admin != null) {
+				String fechaDesde = request.getParameter("fechaDesde");
+				String fechaHasta = request.getParameter("fechaHasta");
+				//TODO validate dates
 				
-				else if((fechaDesde != "" | fechaHasta != "") && (fechaDesde != null && fechaHasta != null)) 
-				{
-					//TODO validate dates
-					pedidos = _servicioPedido.Listar( fechaDesde, fechaHasta, request.getParameter("estado"));
-					request.setAttribute("listadoPedidos", pedidos);
+			    ArrayList<Pedido> pedidos = new  ArrayList<Pedido>();
+				try {
+					if ((fechaDesde == "" && fechaHasta == "") || (fechaDesde == null && fechaHasta == null)) 
+					{
+						pedidos = _servicioPedido.Listar(request.getParameter("estado"));
+						request.setAttribute("listadoPedidos", pedidos);
+					}
+					
+					else if((fechaDesde != "" | fechaHasta != "") && (fechaDesde != null && fechaHasta != null)) 
+					{
+						//TODO validate dates
+						pedidos = _servicioPedido.Listar( fechaDesde, fechaHasta, request.getParameter("estado"));
+						request.setAttribute("listadoPedidos", pedidos);
+					}
+					
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-				
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			request.setAttribute("fechaDesde", fechaDesde);
-			request.setAttribute("fechaHasta", fechaHasta);
-			request.setAttribute("estado", request.getParameter("estado"));
-			System.out.println(request.getParameter("estado"));
-		    acceso = "listarPedidos.jsp";
+				request.setAttribute("fechaDesde", fechaDesde);
+				request.setAttribute("fechaHasta", fechaHasta);
+				request.setAttribute("estado", request.getParameter("estado"));
+			    acceso = "listarPedidos.jsp";
+		    }else{
+		    	acceso = "loginAdmin.jsp";
+		    }
 		    
 		}else if(action.equalsIgnoreCase("mostrar_pedido")) {
-			
-			String nro_pedido = request.getParameter("nro_pedido");
-			try {
-				Pedido ped = _servicioPedido.BuscarPedidoConProductos(Integer.parseInt(nro_pedido));
-				request.setAttribute("pedido", ped);
-			}catch(NonExistentOrderException ex){
-				request.setAttribute("mensajeError", ex.getMessage());
-			}catch(Exception ex){
-				request.setAttribute("mensajeError", "Lo sentimos, ha ocurrido un error");
-			}
-			acceso = "mostrarPedido.jsp";
+			HttpSession sesion = request.getSession(true);
+  			String usuario_admin = (String)sesion.getAttribute("usuario_admin");
+  			if(usuario_admin != null) {
+				String nro_pedido = request.getParameter("nro_pedido");
+				try {
+					Pedido ped = _servicioPedido.BuscarPedidoConProductos(Integer.parseInt(nro_pedido));
+					request.setAttribute("pedido", ped);
+				}catch(NonExistentOrderException ex){
+					request.setAttribute("mensajeError", ex.getMessage());
+					acceso = "error.jsp";
+				}catch(Exception ex){
+					request.setAttribute("mensajeError", "Lo sentimos, ha ocurrido un error");
+					acceso = "error.jsp";
+				}
+				acceso = "mostrarPedido.jsp";
+  			}else{
+  				acceso = "loginAdmin.jsp";
+  			}
 		
 		}else if(action.equalsIgnoreCase("mostrar_pedido_cliente")) {
+			HttpSession sesion = request.getSession(true);
+  			String usuario_cliente = (String)sesion.getAttribute("usuario_cliente");
 			
-			try {
-				Pedido pedido = _servicioPedido.BuscarPedidoConProductos(Integer.parseInt(request.getParameter("nro_pedido")));
-				request.setAttribute("pedido", pedido);
-			}catch(NonExistentOrderException ex){
-				request.setAttribute("error", ex.getMessage());
-			}catch(Exception ex){
-				request.setAttribute("mensajeError", "Lo sentimos, ha ocurrido un error");
+  			if(usuario_cliente != null) {
+  				try {
+					Pedido pedido = _servicioPedido.BuscarPedidoConProductos(Integer.parseInt(request.getParameter("nro_pedido")));
+					Cliente cli = _servicioCliente.ObtenerPorNombreDeUsuario(usuario_cliente);
+					if(!pedido.getDni_cliente().equals(cli.getDni())) {
+						throw new NonExistentUserException("No existe pedido solicitado para le cliente");
+					}
+					request.setAttribute("pedido", pedido);
+					acceso = "mostrarPedidoCliente.jsp";
+				}catch(AppException ex){
+					request.setAttribute("error", ex.getMessage());
+					acceso = "error.jsp";
+				}catch(Exception ex){
+					request.setAttribute("mensajeError", "Lo sentimos, ha ocurrido un error");
+					acceso = "error.jsp";
+				}
+			}else {
+				acceso = "loginClientes.jsp";
 			}
-			acceso = "mostrarPedidoCliente.jsp";
+  			
 			
 		}else if(action.equalsIgnoreCase("cancelar_Pedido")) {
 			try {
-				Cliente cli = new Cliente();
 				Correo correo = new Correo(); 
 				HttpSession sesion = request.getSession(true);
 				String usuario_cliente = (String)sesion.getAttribute("usuario_cliente");
@@ -255,12 +280,15 @@ public class ControladorPedido extends HttpServlet {
 				
 				if(usuario_cliente != null) {
 					Pedido pedido = _servicioPedido.BuscarPedidoConProductos(nro_pedido);
+					Cliente cli = _servicioCliente.ObtenerPorNombreDeUsuario(usuario_cliente);
+					if(!pedido.getDni_cliente().equals(cli.getDni())) {
+						throw new NonExistentUserException("No existe pedido solicitado para le cliente");
+					}
 					ArrayList<LineaPedido> lineas = pedido.getProductos(); 
 					for(LineaPedido l : lineas) {
 						_servicioProducto.ActualizarStock(l.getCodigo_producto(),l.getCantidad());
 					}
 					_servicioPedido.CancelarPedido(nro_pedido);
-					cli = _servicioCliente.ObtenerPorNombreDeUsuario(usuario_cliente);
 					correo.enviar_mail_cancelacion(cli.getMail());
 					
 					acceso = "confirmacionCancelacion.jsp";
@@ -269,22 +297,28 @@ public class ControladorPedido extends HttpServlet {
 					acceso = "loginClientes.jsp";
 				}
 			}catch(NonExistentOrderException ex) {
-				
+				request.setAttribute("mensajeError", ex.getMessage());
+				acceso = "error.jsp";
 			}catch(Exception ex) {
-			
+				request.setAttribute("mensajeError", "Lo sentimos, ha ocurrido un error");
+				acceso = "error.jsp";
 			}
 		}else if (action.equalsIgnoreCase("listadoPedidosCliente")) {
   			HttpSession sesion = request.getSession(true);
   			String usuario_cliente = (String)sesion.getAttribute("usuario_cliente");
 			String estado = request.getParameter("estado");
-			try{
-				Cliente cli = _servicioCliente.ObtenerPorNombreDeUsuario(usuario_cliente);
-				ArrayList<Pedido> pedidos = _servicioPedido.ListarPedidosCliente(cli, estado);
-				request.setAttribute("listadoPedidosCliente", pedidos);						
-			}catch (Exception e) {
-				request.setAttribute("mensajeError", "Error interno del servidor");
-			}  
-		    acceso = "listarPedidosCliente.jsp";
+			if(usuario_cliente != null) {
+				try{
+					Cliente cli = _servicioCliente.ObtenerPorNombreDeUsuario(usuario_cliente);
+					ArrayList<Pedido> pedidos = _servicioPedido.ListarPedidosCliente(cli, estado);
+					request.setAttribute("listadoPedidosCliente", pedidos);						
+				}catch (Exception e) {
+					request.setAttribute("mensajeError", "Error interno del servidor");
+				}  
+			    acceso = "listarPedidosCliente.jsp";
+			}else{
+				acceso = "loginClientes.jsp";
+			}
 		}else if (action.equalsIgnoreCase("entregaPedido")){
 			HttpSession sesion = request.getSession(true);
 			if(sesion.getAttribute("usuario_admin")!= null) {
@@ -294,17 +328,21 @@ public class ControladorPedido extends HttpServlet {
 					int numeroPedido = Integer.parseInt(request.getParameter("numero_pedido"));
 					_servicioPedido.RegistrarEntrega(numeroPedido);
 					request.setAttribute("mensajeOk", "Entrega registrada con éxito");
+					acceso = "ControladorPedido?accion=listadoPedidos";
 				}
 				catch(AppException e)
 				{
 					request.setAttribute("mensajeError", e.getMessage());
+					acceso = "error.jsp";
 				}
 				catch (Exception e)
 				{
 					request.setAttribute("mensajeError", "Error interno del servidor");
+					acceso = "error.jsp";
 				}
+			}else {
+				acceso = "loginAdmin.jsp";
 			}
-			acceso = "ControladorPedido?accion=listadoPedidos";
 		}
 		
 		RequestDispatcher vista = request.getRequestDispatcher(acceso);
