@@ -10,6 +10,7 @@ public class Conexion {
 	private String url="jdbc:mysql://localhost:3306/vinoteca_gatti?useTimezone=true&serverTimezone=UTC";
 	/*private String usuario="root";
 	private String pass="29eiGEFI70";*/
+	//NUEVO HOST PARA FINAL
 //	private String usuario="root";
 //	private String pass="m0jKagO0kj";
 	private String usuario="Java";
