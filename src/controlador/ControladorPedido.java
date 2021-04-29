@@ -85,7 +85,7 @@ public class ControladorPedido extends HttpServlet {
 				}
 				if (ya_existe == false) {
 					Producto prod = _servicioProducto.GetProducto(codigo_producto);	
-					subtotal = cantidad * prod.getPrecioVenta();     																		//CAMBIOS
+					subtotal = cantidad * prod.getPrecioVenta();
 					linea.add(new LineaPedido(codigo_producto,cantidad,subtotal));
 					request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
 					request.setAttribute("mensajeOk", "Agregado al carrito con éxito");
@@ -217,7 +217,6 @@ public class ControladorPedido extends HttpServlet {
 			request.setAttribute("fechaDesde", fechaDesde);
 			request.setAttribute("fechaHasta", fechaHasta);
 			request.setAttribute("estado", request.getParameter("estado"));
-			System.out.println(request.getParameter("estado"));
 		    acceso = "listarPedidos.jsp";
 		    
 		}else if(action.equalsIgnoreCase("mostrar_pedido")) {
