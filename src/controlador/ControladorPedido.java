@@ -328,18 +328,16 @@ public class ControladorPedido extends HttpServlet {
 					int numeroPedido = Integer.parseInt(request.getParameter("numero_pedido"));
 					_servicioPedido.RegistrarEntrega(numeroPedido);
 					request.setAttribute("mensajeOk", "Entrega registrada con éxito");
-					acceso = "ControladorPedido?accion=listadoPedidos";
 				}
 				catch(AppException e)
 				{
 					request.setAttribute("mensajeError", e.getMessage());
-					acceso = "error.jsp";
 				}
 				catch (Exception e)
 				{
 					request.setAttribute("mensajeError", "Error interno del servidor");
-					acceso = "error.jsp";
 				}
+				acceso = "ControladorPedido?accion=listadoPedidos";
 			}else {
 				acceso = "loginAdmin.jsp";
 			}

@@ -171,7 +171,7 @@
 							<p>{this.props.product.nombre}</p>
 						</div>
 						<div className="precio-producto" style={{margin:"auto"}}>
-							<p>&#36;{this.props.product.precioVenta}</p>
+							<p>&#36;{this.props.product.precioVenta.toFixed(2)}</p>
 						</div>
 						<div className="ver-producto">
 							<a  href={routeToProduct}>

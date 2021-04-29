@@ -104,7 +104,7 @@
 			   	</table>
 			</div>
 			<div class="m-3">
-			<% if(ped.getFecha_entrega_real() == null){ %>
+			<% if(ped.getFecha_entrega_real() == null && ped.getFecha_cancelacion() == null){ %>
 				<form action="ControladorPedido">
 			   		<input type="hidden" class="form-control" id="numero_pedido" name="numero_pedido" value=<%=ped.getNro_pedido()%>>
 			   		<button type="submit" class="btn btn-primary" name="accion" value="entregaPedido">Confirmar Entrega</button>

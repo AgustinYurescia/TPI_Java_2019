@@ -50,7 +50,7 @@
 		      					<%=productos.get(i).getNombre()%>
 		      				</div>
 		      				<div class="precio-producto">
-		      					$<%=productos.get(i).getPrecioVenta()%>
+		      					$<%=String.format("%.2f", productos.get(i).getPrecioVenta())%>
 		      				</div>
 		      				<div class="ver-producto">
 		      					<a class="" href="ControladorProducto?accion=mostrar_producto&codigo_producto=<%=productos.get(i).getCodigo()%>">
