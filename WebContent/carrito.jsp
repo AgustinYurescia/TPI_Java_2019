@@ -60,7 +60,7 @@
 						<td style="padding-top: 40px"><%=lin.getCantidad()%></td>
 						<td style="padding-top: 30px">					
 							<a href="ControladorPedido?accion=eliminarDelCarrito&codigo_prod=<%=lin.getCodigo_producto()%>">
-								<button type="submit" class="btn btn-outline-danger" style="color: red;" name="" value="">
+								<button type="submit" class="btn btn-outline-danger" style="color: white;" name="" value="">
 									<img src="SVG/Borrar.svg"/> 
 									Eliminar
 								</button>

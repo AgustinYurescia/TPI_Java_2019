@@ -95,7 +95,7 @@
 									<td>
 										<a class="py-0 d-none d-md-inline-block" href="ControladorPedido?accion=mostrar_pedido_cliente&nro_pedido=<%=ped.getNro_pedido()%>">
 											<button type="submit" class="btn btn-outline-info" style="color: white;  width:200 ; height:200;" name="" value="">
-												<img src="SVG/Ojo.svg"/> 
+												<img src="SVG/Eye.svg"/> 
 												Ver Pedido
 											</button>
 										</a>
