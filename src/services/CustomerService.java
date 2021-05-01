@@ -4,6 +4,7 @@ import modeloDAO.ClienteDAO;
 
 import java.util.ArrayList;
 
+import exceptions.AppException;
 import exceptions.NonExistentPartnerException;
 import exceptions.NonExistentUserException;
 import modelo.Cliente;
@@ -11,6 +12,7 @@ import modelo.Cliente;
 public class CustomerService {
 	
 	private ClienteDAO _clienteDAO;
+	private Cliente cliente;
 	
 	public CustomerService() 
 	{
@@ -150,6 +152,23 @@ public class CustomerService {
 	public boolean EsSocio(String nombreUsuario) 
 	{
 		return _clienteDAO.EsSocio(nombreUsuario);
+	}
+	
+	public ArrayList<Cliente> ObtenerSocios() throws Exception
+	{
+		try
+		{
+			ArrayList<Cliente> socios = _clienteDAO.ObtenerSocios();
+			return socios;
+		}
+		catch(AppException e)
+		{
+			throw e;
+		}
+		catch (Exception e)
+		{
+			throw e;
+		}
 	}
 	
 }

@@ -44,9 +44,9 @@
 				<tbody>
 					<tr>
 						<td><%=pro.getNombre()%></td>
-						<td><%=pro.getPrecioVenta()%></td>
+						<td><%=String.format("%.2f", pro.getPrecioVenta())%></td>
 						<td><%=lin.getCantidad()%></td>
-						<td><%=lin.getSubtotal()%></td>
+						<td><%=String.format("%.2f", lin.getSubtotal())%></td>
 					</tr>
 					<%}%>
 				</tbody>
@@ -54,7 +54,7 @@
 			<% 	double total = (double)sesion.getAttribute("total"); 
 				int nro_pedido = (int)sesion.getAttribute("nro_pedido");
 			%>
-			<p align="right"><b><font face="calibri" color="black" size="6">Total: $<%=total%>&nbsp; &nbsp;</font></b></p>
+			<p align="right"><b><font face="calibri" color="black" size="6">Total: $<%=String.format("%.2f", total)%>&nbsp; &nbsp;</font></b></p>
 			<p align="center"><b><font face="calibri" color="black" size="6">MUCHAS GRACIAS POR SU COMPRA</font></b></p>
 			<p align="center"><b><font face="calibri" color="black" size="3">Recuerde que debe pasar a retirar y abonar el pedido en tres dás hábiles por el local informando el siguiente número de pedido: <%=nro_pedido%>.</font></b></p>
 			<p align="center"><a class="py-0 d-none d-md-inline-block" href="ControladorDeLinks?accion=indexCliente"><button type="submit" class="btn btn-primary">Volver al inicio</button></a></p>

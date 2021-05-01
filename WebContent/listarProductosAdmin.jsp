@@ -81,7 +81,7 @@
 						<td style="padding-top: 40px"><%=prod.getCodigo()%></td>
 						<td><img src="ControladorDeImagenes?codigo=<%=prod.getCodigo()%>" width="80" height="80"/></td>
 						<td style="padding-top: 40px"><%=prod.getNombre()%></td>
-						<td style="padding-top: 40px"><%=prod.getPrecioVenta()%></td>
+						<td style="padding-top: 40px"><%=String.format("%.2f", prod.getPrecioVenta())%></td>
 						<td style="padding-top: 40px"><%=prod.getStock()%></td>
 						<input type="hidden" id="cod_prod_baja" name="codigo_producto_baja" value="<%=prod.getCodigo()%>">
 						<td style="padding-top: 30px"><button type="submit" class="btn btn-outline-danger" style="color: white; background: #c23b22 !important" id="boton-eliminar" onclick="return confirmacion_eliminar(<%=prod.getCodigo()%>);"><img src="SVG/Borrar.svg"/> Eliminar</button></td>

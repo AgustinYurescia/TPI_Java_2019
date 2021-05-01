@@ -94,6 +94,7 @@ public class ControladorCuota extends HttpServlet {
 					request.setAttribute("mensajeError", "Error interno del servidor");
 				}
 				
+				request.setAttribute("dni", request.getParameter("dniCliente"));
 				acceso="pagoCuotas.jsp";
 			}
 			else
@@ -115,6 +116,7 @@ public class ControladorCuota extends HttpServlet {
 					request.setAttribute("mensajeError", "No se pudo registrar el pago debido a un error interno del servidor");
 				}
 				
+				request.setAttribute("dni", request.getParameter("dniCliente"));
 				acceso="pagoCuotas.jsp";
 			}
 			else

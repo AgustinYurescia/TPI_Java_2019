@@ -56,7 +56,7 @@
 					<tr>
 						<td><img src="ControladorDeImagenes?codigo=<%=pro.getCodigo()%>" width="80" height="80"/></td>
 						<td style="padding-top: 40px"><%=pro.getNombre()%></td>
-						<td style="padding-top: 40px"><%=pro.getPrecioVenta()%></td>
+						<td style="padding-top: 40px"><%=String.format("%.2f", pro.getPrecioVenta())%></td>
 						<td style="padding-top: 40px"><%=lin.getCantidad()%></td>
 						<td style="padding-top: 30px">					
 							<a href="ControladorPedido?accion=eliminarDelCarrito&codigo_prod=<%=lin.getCodigo_producto()%>">
