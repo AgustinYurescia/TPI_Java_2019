@@ -44,6 +44,16 @@
 	       		</div>
 	       	</div>				
 		</form>
+		<% 	
+ 			if(request.getAttribute("mensajeError") != null){
+ 		%>
+ 			<div class="alert alert-danger" role="alert"><%=request.getAttribute("mensajeError")%></div>
+		<%}%>
+		<% 	
+ 			if(request.getAttribute("mensajeOk") != null){
+ 		%>
+ 			<div class="alert alert-primary" role="alert"><%=request.getAttribute("mensajeOk")%></div>
+		<%}%>
 	   	<table class="table">
 	   		<thead>
 	   			<tr>

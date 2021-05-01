@@ -62,7 +62,7 @@
 				   			<tbody><tr>
 									<td style="padding-top: 20px"><%=ped.getNro_pedido()%></td>
 									<td style="padding-top: 20px"><%=ped.getFecha_pedido()%></td>
-									<td style="padding-top: 20px"><%=ped.getMonto()%></td>
+									<td style="padding-top: 20px"><%=String.format("%.2f", ped.getMonto())%></td>
 									<td style="padding-top: 20px"><%=ped.getFecha_entrega_est()%></td>
 									<%
 									if (ped.getFecha_entrega_real() !=  null)

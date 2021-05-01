@@ -40,15 +40,15 @@
 					<tr>
 						<td><img src="ControladorDeImagenes?codigo=<%=pro.getCodigo()%>" width="80" height="80"/></td>
 						<td><%=pro.getNombre()%></td>
-						<td><%=pro.getPrecioVenta()%></td>
+						<td><%=String.format("%.2f", pro.getPrecioVenta())%></td>
 						<td><%=lin.getCantidad()%></td>
-						<td><%=lin.getSubtotal()%></td>
+						<td><%=String.format("%.2f", lin.getSubtotal())%></td>
 					</tr>
 					<%}%>
 				</tbody>
 			</table>
 			<% double total = (double)sesion.getAttribute("total"); %>
-			<p align="right"><b><font face="calibri" color="black" size="6">Total: $<%=total%>&nbsp; &nbsp;</font></b></p>
+			<p align="right"><b><font face="calibri" color="black" size="6">Total: $<%=String.format("%.2f", total)%>&nbsp; &nbsp;</font></b></p>
 			<p align="right"><a class="py-0 d-none d-md-inline-block" href="ControladorPedido?accion=FinalizarPedido"><button type="submit" class="btn btn-primary">Finalizar compra</button></a>&nbsp;&nbsp;&nbsp;&nbsp;</p>
 		</div>
 		</div>

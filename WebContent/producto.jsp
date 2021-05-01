@@ -23,7 +23,7 @@
 			     		<div class="form-group col-md-12">
 			     			<div class="form-inline">
 			    				Precio:
-			    				<input type="number" class="form-control" id="precio" name="precio" value="<%=prod.getPrecioVenta()%>" style="border:transparent !important" disabled>
+			    				<input type="input" class="form-control" id="precio" name="precio" value="<%=String.format("%.2f", prod.getPrecioVenta())%>" style="border:transparent !important" disabled>
 		    				</div>
 		  				</div>
 		  			</div>

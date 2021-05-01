@@ -83,7 +83,7 @@
 				<div class="form-row">
 	   				<div class="form-group col-md-4">	
 		   				<label for="monto">Monto total:</label>
-						<input 	type="text" id="monto" class="form-control" value="$<%=ped.getMonto()%>" disabled/>
+						<input 	type="text" id="monto" class="form-control" value="$<%=String.format("%.2f", ped.getMonto())%>" disabled/>
 					</div>
 				</div>
 	  		</form>

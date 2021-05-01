@@ -390,8 +390,52 @@ public class ClienteDAO {
 			throw e;
 		}
 	}
+	
+	public ArrayList<Cliente> ObtenerSocios() throws Exception
+	{
+		ArrayList<Cliente> socios = new ArrayList<Cliente>();
+		Cliente cliente = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sentenciaSQL = "SELECT * FROM cliente WHERE fecha_baja_socio is null";
+		try
+		{
+			ps = Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			rs = ps.executeQuery();
+			if (rs.next())
+			{
+				cliente = new Cliente(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8));
+				socios.add(cliente);
+				while(rs.next()) 
+				{
+					cliente = new Cliente(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8));
+					socios.add(cliente);
+				}
+				return socios;
+			}
+			else
+			{
+				throw new NonExistentPartnerException("No existen socios");
+			}
+		}
+		catch (Exception e)
+		{
+			throw e;
+		}
+		finally 
+		{
+			try 
+			{
+				if(ps!=null) {ps.close();}
+				Conexion.getInstancia().desconectar();
+			}
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+		}
+
+	}
 }
 	
-
-
 
