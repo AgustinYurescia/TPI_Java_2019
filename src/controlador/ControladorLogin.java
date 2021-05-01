@@ -48,6 +48,9 @@ public class ControladorLogin extends HttpServlet {
 				_logger.info("Iniciando sesión");
 				_servicioCliente.IniciarSesion(request.getParameter("usuario"), request.getParameter("contrasena"));
 				sesion.setAttribute("usuario_cliente", request.getParameter("usuario"));
+				if(_servicioCliente.EsSocio(request.getParameter("usuario"))) {
+					sesion.setAttribute("es_socio","1");
+				}
 				acceso = "index.jsp";
 			}
 			catch (NonExistentUserException e)
