@@ -63,6 +63,7 @@
             	</a>
             	<div class="dropdown-menu" aria-labelledby="clientesDropdown">
               		<a class="dropdown-item" href="altaSocio.jsp">Nuevo Socio</a>
+              		<a class="dropdown-item" href="ControladorCliente?accion=listado_socios">Listado de Socios</a>
               		<a class="dropdown-item" href="ControladorCliente?accion=bajaSociosDeudores">Baja Socios Deudores</a>
             	</div>
           	</li>

@@ -15,6 +15,7 @@
 	<% 
 	HttpSession sesion = request.getSession(true);
 	if (sesion.getAttribute("usuario_admin") != null) { 
+		String dni = (String)request.getAttribute("dni");
 	%>
 	<div class="m-2">
 		<h1>Buscar Cuotas</h1>
@@ -22,7 +23,7 @@
 	   		<div class = "form-row">
 	       		<div class="form-group col-md-10">
 	       			<label for="dniCliente">Ingrese el dni del cliente:</label>
-      				<input type="text" id="dniCliente" name="dniCliente" class="form-control" required/>
+      				<input type="text" id="dniCliente" name="dniCliente" class="form-control" value="<%=(dni != null)? dni: "" %>" required/>
 	       		</div>
 	       		<div class="form-group col-md-2" style="padding-top: 31px">
 	       			<button type="submit" class="btn btn-primary" name="accion" value="buscarCuotas" style="width: 175px;" onclick="return validacion_pago_cuotas();">Buscar Cuotas</button>
@@ -74,7 +75,6 @@
 							<input type="hidden" name="mesCuota" value="<%=cuota.getMes()%>"/>
 							<input type="hidden" name="anioCuota" value="<%=cuota.getAnio()%>"/>
 							<button type="submit" class="btn btn-outline-info" style="color: white;  width:200 ; height:200;" name="accion" value="registrarPago">
-									<img src="SVG/Ojo.svg"/> 
 									Registrar Pago
 							</button>
 						</td>

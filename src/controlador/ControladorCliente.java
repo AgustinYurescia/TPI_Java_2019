@@ -1,6 +1,7 @@
 package controlador;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -60,6 +61,33 @@ public class ControladorCliente extends HttpServlet {
 				else
 				{
 					acceso = "loginAdmin.jsp";
+				}
+			}
+			
+			else if (action.equalsIgnoreCase("listado_socios")) 
+			{
+				if(sesion.getAttribute("usuario_admin") == null)
+				{
+					acceso = "loginAdmin.jsp";
+				}
+				else
+				{
+					try
+					{
+						ArrayList<Cliente> socios = _customerService.ObtenerSocios();
+						request.setAttribute("socios", socios);
+						acceso = "listadoSocios.jsp";
+					}
+					catch(AppException e)
+					{
+						request.setAttribute("mensajeError", e.getMessage());
+						acceso = "listadoSocios.jsp";
+					}
+					catch(Exception e)
+					{
+						request.setAttribute("mensajeError", "Error inter del servidor");
+						acceso = "listadoSocios.jsp";
+					}
 				}
 			}
 		}
