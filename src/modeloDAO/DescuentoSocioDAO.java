@@ -97,4 +97,37 @@ public class DescuentoSocioDAO {
 			}
 		}
 	}
+	public float ObtenerPorcentajeActual() throws Exception
+	{	
+		sentenciaSQL = "SELECT porcentaje_desc, MAX(fecha_desde) FROM descuento_socio";
+		float porcentaje = 0;
+		try
+		{
+			ps = Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			rs = ps.executeQuery();
+			if (rs.next())
+			{
+				porcentaje = rs.getFloat(1);
+			}
+			return porcentaje;
+		}
+		catch(Exception e)
+		{
+			//TODO LOG EXCEPTION;
+			throw e;
+		}
+		finally 
+		{
+			try 
+			{
+				if(rs!=null) {rs.close();}
+				if(ps!=null) {ps.close();}
+                Conexion.getInstancia().desconectar();
+			} 
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+		}
+	}
 }

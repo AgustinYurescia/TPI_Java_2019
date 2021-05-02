@@ -95,4 +95,7 @@ public class ServicioPlazosPrecios {
 			throw e;
 		}
 	}
+	public float obtenerPrcentajeDescuentoSocio() throws Exception {
+		return _descuentoSocioDAO.ObtenerPorcentajeActual();
+	}
 }

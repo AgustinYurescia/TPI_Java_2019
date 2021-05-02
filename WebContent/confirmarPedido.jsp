@@ -47,6 +47,11 @@
 					<%}%>
 				</tbody>
 			</table>
+			<%if(sesion.getAttribute("es_socio") != null){
+				if(request.getAttribute("total_sin_descuento") != null){%>
+					<p align="right"><b><font face="calibri" color="#58272d" size="6">Total sin aplicar descuento para socio: $<%=String.format("%.2f", request.getAttribute("total_sin_descuento"))%>&nbsp; &nbsp;</font></b></p>
+			<%  }
+			}%>
 			<% double total = (double)sesion.getAttribute("total"); %>
 			<p align="right"><b><font face="calibri" color="black" size="6">Total: $<%=String.format("%.2f", total)%>&nbsp; &nbsp;</font></b></p>
 			<p align="right"><a class="py-0 d-none d-md-inline-block" href="ControladorPedido?accion=FinalizarPedido"><button type="submit" class="btn btn-primary">Finalizar compra</button></a>&nbsp;&nbsp;&nbsp;&nbsp;</p>

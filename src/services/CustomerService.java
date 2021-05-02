@@ -149,6 +149,10 @@ public class CustomerService {
 			throw e;
 		}
 	}
+	public boolean EsSocio(String nombreUsuario) 
+	{
+		return _clienteDAO.EsSocio(nombreUsuario);
+	}
 	
 	public ArrayList<Cliente> ObtenerSocios() throws Exception
 	{
