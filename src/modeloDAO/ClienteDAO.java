@@ -404,16 +404,16 @@ public class ClienteDAO {
 	}
 	public boolean EsSocio(String nombreUsuario) {
 		PreparedStatement ps = null;
-		String sentenciaSQL = "SELECT fecha_baja_socio FROM cliente WHERE cliente_usuario = ?";
+		String sentenciaSQL = "SELECT fecha_baja_socio FROM cliente WHERE cliente_usuario = ? AND fecha_baja IS NULL";
 		try
 		{
-			ps.setString(1, nombreUsuario);
 			ps = Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			ps.setString(1, nombreUsuario);
 			ResultSet rs = ps.executeQuery();
 			if(!rs.next()) {
 				throw new NonExistentUserException("no se encontro el usuario "+nombreUsuario + " para verificar si es socio"); 
 			}
-			if (rs.getDate(1) != null)
+			if (rs.getDate(1) == null)
 			{
 				return true;
 			}

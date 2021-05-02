@@ -25,6 +25,7 @@ import modeloDAO.ProductoDAO;
 import services.CustomerService;
 import services.ServicioCategoria;
 import services.ServicioPedido;
+import services.ServicioPlazosPrecios;
 import services.ServicioProducto;
 import modelo.Pedido;
 import modeloDAO.ClienteDAO;
@@ -39,6 +40,7 @@ public class ControladorPedido extends HttpServlet {
 	private CustomerService _servicioCliente;
 	private ServicioPedido _servicioPedido; 
 	private ValidatorPedido _validatorPedido;
+	private ServicioPlazosPrecios _servicioPlazosPrecios;
 	
     public ControladorPedido() {
         super();
@@ -47,6 +49,7 @@ public class ControladorPedido extends HttpServlet {
         this._servicioCliente = new CustomerService();
         this._servicioPedido = new ServicioPedido();
         this._validatorPedido = new ValidatorPedido();
+        this._servicioPlazosPrecios = new ServicioPlazosPrecios();
     }
 	@SuppressWarnings("unchecked")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -61,7 +64,7 @@ public class ControladorPedido extends HttpServlet {
 				ServicioCategoria _servicioCategoria = new ServicioCategoria();
 				int codigo_producto = Integer.parseInt(request.getParameter("codigo_producto"));
 				int cantidad = Integer.parseInt(request.getParameter("cantidad"));
-				double subtotal = 0.0 ;                                              //CAMBIO
+				double subtotal = 0.0 ;
 				ArrayList<LineaPedido> linea;
 				HttpSession sesion = request.getSession(true);
 				if (sesion.getAttribute("carrito") == null) {
@@ -136,11 +139,22 @@ public class ControladorPedido extends HttpServlet {
 			Iterator<LineaPedido>iter = linea.iterator();
 			LineaPedido lin;
 			double total = 0.0;
-			while(iter.hasNext()){
-				lin=iter.next();
-				total = total + lin.getSubtotal();
-			sesion.setAttribute("total", total);
-			acceso =  "confirmarPedido.jsp";
+			try {
+				while(iter.hasNext()){
+					lin=iter.next();
+					total = total + lin.getSubtotal();
+				}
+				if(sesion.getAttribute("es_socio") != null){
+					float porcentajeDescuento = _servicioPlazosPrecios.obtenerPrcentajeDescuentoSocio();
+					sesion.setAttribute("total", total - total * porcentajeDescuento);
+					request.setAttribute("total_sin_descuento", total);
+				}else {
+					sesion.setAttribute("total", total);
+				}
+				acceso =  "confirmarPedido.jsp";
+			} catch (Exception e) {
+				acceso =  "error.jsp";
+				request.setAttribute("mensajeError", "Lo sentimos, ha ocurrido un error");
 			}
 		
 		}else if(action.equalsIgnoreCase("FinalizarPedido")) {
