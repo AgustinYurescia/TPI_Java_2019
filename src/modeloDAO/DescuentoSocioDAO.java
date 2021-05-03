@@ -99,7 +99,7 @@ public class DescuentoSocioDAO {
 	}
 	public float ObtenerPorcentajeActual() throws Exception
 	{	
-		sentenciaSQL = "SELECT porcentaje_desc, MAX(fecha_desde) FROM descuento_socio";
+		sentenciaSQL = "SELECT porcentaje_desc FROM descuento_socio as ds WHERE ds.fecha_desde = (SELECT MAX(fecha_desde) FROM descuento_socio)";
 		float porcentaje = 0;
 		try
 		{
@@ -107,7 +107,7 @@ public class DescuentoSocioDAO {
 			rs = ps.executeQuery();
 			if (rs.next())
 			{
-				porcentaje = rs.getFloat(1);
+				porcentaje = rs.getFloat(1) / 100;
 			}
 			return porcentaje;
 		}
