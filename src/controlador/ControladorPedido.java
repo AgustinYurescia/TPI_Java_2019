@@ -30,7 +30,11 @@ import services.ServicioProducto;
 import modelo.Pedido;
 import modeloDAO.ClienteDAO;
 import modeloDAO.PedidoDAO;
-import services.ServicioProducto;;
+import services.ServicioProducto;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.message.LoggerNameAwareMessage;
+
 
 @WebServlet("/ControladorPedido")
 public class ControladorPedido extends HttpServlet {
@@ -41,6 +45,7 @@ public class ControladorPedido extends HttpServlet {
 	private ServicioPedido _servicioPedido; 
 	private ValidatorPedido _validatorPedido;
 	private ServicioPlazosPrecios _servicioPlazosPrecios;
+	private static Logger _logger = LogManager.getLogger(ControladorLogin.class);
 	
     public ControladorPedido() {
         super();
@@ -155,6 +160,7 @@ public class ControladorPedido extends HttpServlet {
 			} catch (Exception e) {
 				acceso =  "error.jsp";
 				request.setAttribute("mensajeError", "Lo sentimos, ha ocurrido un error");
+				_logger.error(e.getMessage());
 			}
 		
 		}else if(action.equalsIgnoreCase("FinalizarPedido")) {
