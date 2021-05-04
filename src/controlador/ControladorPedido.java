@@ -199,17 +199,14 @@ public class ControladorPedido extends HttpServlet {
 					sesion.setAttribute("carrito", null);
 					acceso = "carrito.jsp";
 				}
-				catch(RuntimeException e)
-				{
-					//Do nothing, the email catch throws this exception
-					//TODO log exception
-				}
 				catch (Exception e)
 				{
-					//TODO log exception
+					request.setAttribute("mensajeError", "¡Error interno del servidor!");
+					acceso = "error.jsp";
 				}				
 			}
-			else {
+			else 
+			{
 				acceso = "loginClientes.jsp";
 			}			
 		}else if (action.equalsIgnoreCase("listadoPedidos")) {

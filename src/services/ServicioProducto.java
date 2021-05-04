@@ -1,8 +1,12 @@
 package services;
 
+import modeloDAO.PedidoDAO;
 import modeloDAO.ProductoDAO;
 
 import java.util.ArrayList;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import modelo.PaginaProductos;
 import modelo.Producto;
@@ -10,6 +14,7 @@ import modelo.Producto;
 public class ServicioProducto {
 	
 	private ProductoDAO _productoDAO;
+	private static Logger _logger = LogManager.getLogger(PedidoDAO.class);
 	
 	public ServicioProducto()
 	{
@@ -134,8 +139,7 @@ public class ServicioProducto {
 			pagina.setCantidadRegistros(numeroRegistros);
 			
 		}catch(Exception e){
-			//TODO: agregar manejo de excepciones definiendo la respuesta y ejecutar logger
-			 System.out.println("excepcion ocurrida en metodo ObtenerPorPagina de el servicio producto");
+			_logger.error(e.getMessage());
 		}
 		return pagina;
 	}

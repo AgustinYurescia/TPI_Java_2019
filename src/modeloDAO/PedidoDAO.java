@@ -18,9 +18,9 @@ public class PedidoDAO {
 	
 	private static Logger _logger = LogManager.getLogger(PedidoDAO.class);
 
-	public int alta(Pedido ped, ArrayList<LineaPedido> lin) { 
+	public int alta(Pedido ped, ArrayList<LineaPedido> lin) throws Exception{ 
 		PreparedStatement st = null;
-		ResultSet keyResultSet=null;
+		ResultSet keyResultSet = null;
 		String sentenciaSQL="INSERT INTO pedido(fecha_pedido,monto,dni_cliente)values(current_date,?,?)";
 		try {
 			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL,PreparedStatement.RETURN_GENERATED_KEYS);
@@ -33,14 +33,22 @@ public class PedidoDAO {
 				setear_fecha_entrega_estimada(ped.getNro_pedido());
 				generar_pedido_productos(ped.getNro_pedido(), lin);
 			}
-		} catch (Exception e) {
+		} 
+		catch (Exception e) 
+		{
 			_logger.error(e.getMessage());
-		}finally {
-			try {
+			throw e;
+		}
+		finally 
+		{
+			try 
+			{
 				if(keyResultSet!=null) {keyResultSet.close();}
                 if(st!=null) {st.close();}
                 Conexion.getInstancia().desconectar();
-			} catch (Exception e) {
+			} 
+			catch (Exception e) 
+			{
 				_logger.error(e.getMessage());
 			}
 		}

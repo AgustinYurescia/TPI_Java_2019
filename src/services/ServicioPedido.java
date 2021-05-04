@@ -17,9 +17,16 @@ public class ServicioPedido {
 		this._pedidoDAO = new PedidoDAO();
 		this._productoDao = new ProductoDAO();
 	}
-	public int Alta(Pedido ped, ArrayList<LineaPedido> linea)
+	public int Alta(Pedido ped, ArrayList<LineaPedido> linea) throws Exception
 	{
-		return _pedidoDAO.alta(ped, linea);
+		try 
+		{
+			return _pedidoDAO.alta(ped, linea);
+		}
+		catch (Exception e)
+		{
+			throw e;
+		}
 	}
 	public ArrayList<Pedido> Listar(String estado) throws Exception{
 		return _pedidoDAO.listar(estado);
