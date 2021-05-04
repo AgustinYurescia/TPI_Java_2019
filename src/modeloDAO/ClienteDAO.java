@@ -5,6 +5,9 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import config.Conexion;
 import exceptions.ExistentUserException;
 import exceptions.NoRowsAffectedException;
@@ -14,6 +17,8 @@ import modelo.Cliente;
 
 public class ClienteDAO {
 	
+	private static Logger _logger = LogManager.getLogger(ClienteDAO.class);
+			
 	public void alta(Cliente cli, int esSocio) throws Exception {
 		
 		PreparedStatement st = null;
@@ -48,6 +53,7 @@ public class ClienteDAO {
 				keyResultSet=st.getGeneratedKeys();
 			}catch (Exception e) 
 			{
+				_logger.error(e.getMessage());
 				throw e;
 			}
 			finally 
@@ -58,6 +64,7 @@ public class ClienteDAO {
 	                if(st!=null) {st.close();}
 	                Conexion.getInstancia().desconectar();
 				} catch (Exception e) {
+					_logger.error(e.getMessage());
 					throw e;
 				}
 			}
@@ -79,13 +86,13 @@ public class ClienteDAO {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			_logger.error(e.getMessage());
 		} finally {
 			try {
 				if(st!=null) {st.close();}
 				Conexion.getInstancia().desconectar();
 			} catch (Exception e) {
-				e.printStackTrace();
+				_logger.error(e.getMessage());
 			}
 		}
 		return false;
@@ -112,7 +119,7 @@ public class ClienteDAO {
 					if(st!=null) {st.close();}
 					Conexion.getInstancia().desconectar();
 				} catch (Exception e) {
-					e.printStackTrace();
+					_logger.error(e.getMessage());
 				}
 			}
 		}
@@ -134,13 +141,13 @@ public class ClienteDAO {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			_logger.error(e.getMessage());
 		} finally {
 			try {
 				if(st!=null) {st.close();}
 				Conexion.getInstancia().desconectar();
 			} catch (Exception e) {
-				e.printStackTrace();
+				_logger.error(e.getMessage());
 			}
 		}
 		return false;
@@ -169,7 +176,10 @@ public class ClienteDAO {
 				throw new NonExistentUserException();
 			}
 
-		} catch (Exception e) {
+		}catch(NonExistentUserException e){
+			throw e;	
+		}catch (Exception e) {
+			_logger.error(e.getMessage());
 			throw e;
 			
 		} finally {
@@ -177,7 +187,7 @@ public class ClienteDAO {
 				if(st!=null) {st.close();}
 				Conexion.getInstancia().desconectar();
 			} catch (Exception e) {
-				e.printStackTrace();
+				_logger.error(e.getMessage());
 			}
 		}
 	}
@@ -201,14 +211,16 @@ public class ClienteDAO {
 			else {
 				throw new NonExistentUserException("No existe el usuario ingresado");
 			}
+		}catch(NonExistentUserException e){
+			throw e;	
 		} catch (Exception e) {
-			e.printStackTrace();
+			_logger.error(e.getMessage());
 		}finally {
 			try {
 				if(ps!=null) {ps.close();}
 				Conexion.getInstancia().desconectar();
 			} catch (Exception e) {
-				e.printStackTrace();
+				_logger.error(e.getMessage());
 			}
 		}
 		return cli;     
@@ -230,13 +242,14 @@ public class ClienteDAO {
 				throw new NoRowsAffectedException("No se ha editado ningun usuario");
 			}
 		}catch(Exception e) {
+			_logger.error(e.getMessage());
 			throw e;
 		}finally {
 			try {
 				if(ps!=null) {ps.close();}
 				Conexion.getInstancia().desconectar();
 			} catch (Exception e) {
-				e.printStackTrace();
+				_logger.error(e.getMessage());
 			}
 		}
 	}
@@ -261,6 +274,7 @@ public class ClienteDAO {
 		} 
 		catch (Exception e) 
 		{
+			_logger.error(e.getMessage());
 			throw e;
 		} 
 		finally 
@@ -272,7 +286,7 @@ public class ClienteDAO {
 			}
 			catch (Exception e) 
 			{
-				e.printStackTrace();
+				_logger.error(e.getMessage());
 			}
 		}
 	}
@@ -288,6 +302,7 @@ public class ClienteDAO {
 		} 
 		catch (Exception e) 
 		{
+			_logger.error(e.getMessage());
 			throw e;
 		}
 		finally 
@@ -299,7 +314,7 @@ public class ClienteDAO {
 			} 
 			catch (Exception e) 
 			{
-				e.printStackTrace();
+				_logger.error(e.getMessage());
 			}
 		}
 	}
@@ -320,13 +335,14 @@ public class ClienteDAO {
 				st.setString(3, contrasena_actual);
 				st.executeUpdate();				
 			}catch(Exception e){
+				_logger.error(e.getMessage());
 				throw e;
 			}finally {
 				try {
 					if(st!=null) {st.close();}
 					Conexion.getInstancia().desconectar();
 				} catch (Exception e) {
-					e.printStackTrace();
+					_logger.error(e.getMessage());
 				}
 			}
 		}
@@ -355,9 +371,11 @@ public class ClienteDAO {
 			{
 				throw new NonExistentPartnerException("No existen socios activos sin cuotas generadas");
 			}
-		}
-		catch(Exception e)
+		} catch(NonExistentPartnerException e) {
+			throw e;
+		}catch(Exception e)
 		{
+			_logger.error(e.getMessage());
 			throw e;
 		}
 		finally 
@@ -369,7 +387,7 @@ public class ClienteDAO {
 			} 
 			catch (Exception e) 
 			{
-				e.printStackTrace();
+				_logger.error(e.getMessage());
 			}
 		}
 	}
@@ -387,6 +405,7 @@ public class ClienteDAO {
 		}
 		catch(Exception e)
 		{
+			_logger.error(e.getMessage());
 			throw e;
 		}
 		finally 
@@ -398,7 +417,7 @@ public class ClienteDAO {
 			} 
 			catch (Exception e) 
 			{
-				e.printStackTrace();
+				_logger.error(e.getMessage());
 			}
 		}
 	}
@@ -421,6 +440,7 @@ public class ClienteDAO {
 		}
 		catch(Exception e)
 		{
+			_logger.error(e.getMessage());
 			return false;
 		}
 		finally 
@@ -432,7 +452,7 @@ public class ClienteDAO {
 			} 
 			catch (Exception e) 
 			{
-				e.printStackTrace();
+				_logger.error(e.getMessage());
 			}
 		}
 	}
@@ -466,6 +486,7 @@ public class ClienteDAO {
 		}
 		catch (Exception e)
 		{
+			_logger.error(e.getMessage());
 			throw e;
 		}
 		finally 
@@ -477,7 +498,7 @@ public class ClienteDAO {
 			}
 			catch (Exception e) 
 			{
-				e.printStackTrace();
+				_logger.error(e.getMessage());
 			}
 		}
 

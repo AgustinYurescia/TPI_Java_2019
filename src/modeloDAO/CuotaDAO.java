@@ -9,15 +9,19 @@ import java.sql.Statement;
 import config.Conexion;
 import exceptions.NonExistentFeeException;
 import exceptions.NonExistentFeeValueException;
-import exceptions.NonExistentPartnerException;
 import modelo.Cuota;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class CuotaDAO 
 {
+	private static Logger _logger = LogManager.getLogger(CuotaDAO.class);
+	
 	public void GenerarCuotas(ArrayList<String> dniClientes) throws Exception
 	{
 		PreparedStatement ps = null;
@@ -39,6 +43,7 @@ public class CuotaDAO
 			} 
 			catch (SQLException e) 
 			{
+				_logger.error(e.getMessage());
 				throw e;
 			} 
 			catch (NonExistentFeeValueException e) 
@@ -47,7 +52,17 @@ public class CuotaDAO
 			}
 			catch (Exception e) 
 			{
+				_logger.error(e.getMessage());
 				throw e;
+			}finally {
+				try 
+				{
+	                Conexion.getInstancia().desconectar();
+				} 
+				catch (Exception e) 
+				{
+					_logger.error(e.getMessage());
+				}
 			}
 		}
 	}
@@ -71,9 +86,11 @@ public class CuotaDAO
 			{
 				throw new NonExistentFeeValueException("No existen valores de cuotas cargados");
 			}
-		} 
-		catch (Exception e) 
+		}catch(NonExistentFeeValueException e) {
+			throw e;
+		} catch (Exception e) 
 		{
+			_logger.error(e.getMessage());
 			throw e;
 		}
 		finally 
@@ -84,7 +101,7 @@ public class CuotaDAO
 			} 
 			catch (Exception e) 
 			{
-				e.printStackTrace();
+				_logger.error(e.getMessage());
 			}
 		}
 	}
@@ -116,10 +133,22 @@ public class CuotaDAO
 			{
 				throw new NonExistentFeeException("No existen cuotas para el cliente ingresado");
 			}
-		}
-		catch(Exception e)
-		{
+		}catch(NonExistentFeeException e) {
 			throw e;
+		}catch(Exception e)
+		{
+			_logger.error(e.getMessage());
+			throw e;
+		}
+		finally {
+			try 
+			{
+                Conexion.getInstancia().desconectar();
+			} 
+			catch (Exception e) 
+			{
+				_logger.error(e.getMessage());
+			}
 		}
 		
 	}
@@ -138,7 +167,17 @@ public class CuotaDAO
 		}
 		catch(Exception e)
 		{
+			_logger.error(e.getMessage());
 			throw e;
+		}finally {
+			try 
+			{
+                Conexion.getInstancia().desconectar();
+			} 
+			catch (Exception e) 
+			{
+				_logger.error(e.getMessage());
+			}
 		}
 		
 	}
