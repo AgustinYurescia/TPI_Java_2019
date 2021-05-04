@@ -2,10 +2,6 @@ package modeloDAO;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import config.Conexion;
 
 public class DescuentoSocioDAO {
@@ -14,8 +10,6 @@ public class DescuentoSocioDAO {
 	private ResultSet rs;
 	String sentenciaSQL = null;
 	
-	private static Logger _logger = LogManager.getLogger(DescuentoSocioDAO.class);
-
 	public void Alta(double porcentaje) throws Exception {
 		sentenciaSQL="INSERT INTO descuento_socio(fecha_desde,porcentaje_desc)VALUES(current_date,?)";
 		try 
@@ -26,7 +20,6 @@ public class DescuentoSocioDAO {
 		} 
 		catch (Exception e) 
 		{
-			_logger.error(e.getMessage());
 			throw e;
 		}
 		finally 
@@ -38,7 +31,7 @@ public class DescuentoSocioDAO {
 			} 
 			catch (Exception e) 
 			{
-				_logger.error(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 	}
@@ -54,7 +47,6 @@ public class DescuentoSocioDAO {
 		}
 		catch(Exception e)
 		{
-			_logger.error(e.getMessage());
 			throw e;
 		}
 		finally 
@@ -66,7 +58,7 @@ public class DescuentoSocioDAO {
 			} 
 			catch (Exception e) 
 			{
-				_logger.error(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 	}
@@ -89,7 +81,6 @@ public class DescuentoSocioDAO {
 		}
 		catch(Exception e)
 		{
-			_logger.error(e.getMessage());
 			throw e;
 		}
 		finally 
@@ -102,7 +93,7 @@ public class DescuentoSocioDAO {
 			} 
 			catch (Exception e) 
 			{
-				_logger.error(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 	}
@@ -122,7 +113,7 @@ public class DescuentoSocioDAO {
 		}
 		catch(Exception e)
 		{
-			_logger.error(e.getMessage());
+			//TODO LOG EXCEPTION;
 			throw e;
 		}
 		finally 
@@ -135,7 +126,7 @@ public class DescuentoSocioDAO {
 			} 
 			catch (Exception e) 
 			{
-				_logger.error(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 	}

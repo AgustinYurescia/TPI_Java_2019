@@ -3,18 +3,12 @@ package modeloDAO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import config.Conexion;
 
 public class ValorCuotasDAO {
 	private PreparedStatement ps;
 	private ResultSet rs;
 	private String sentenciaSQL = null;
-	
-	private static Logger _logger = LogManager.getLogger(ValorCuotasDAO.class);
-	
 	
 	public void Alta(double valorCuota) throws Exception {
 		sentenciaSQL="INSERT INTO valor_cuotas(fecha_desde,valor_cuota)VALUES(current_date,?)";
@@ -26,7 +20,6 @@ public class ValorCuotasDAO {
 		} 
 		catch (Exception e) 
 		{
-			_logger.error(e.getMessage());
 			throw e;
 		}
 		finally 
@@ -38,7 +31,7 @@ public class ValorCuotasDAO {
 			} 
 			catch (Exception e) 
 			{
-				_logger.error(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 	}
@@ -54,7 +47,6 @@ public class ValorCuotasDAO {
 		}
 		catch(Exception e)
 		{
-			_logger.error(e.getMessage());
 			throw e;
 		}
 		finally 
@@ -66,7 +58,7 @@ public class ValorCuotasDAO {
 			} 
 			catch (Exception e) 
 			{
-				_logger.error(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 	}
@@ -89,7 +81,6 @@ public class ValorCuotasDAO {
 		}
 		catch(Exception e)
 		{
-			_logger.error(e.getMessage());
 			throw e;
 		}
 		finally 
@@ -102,7 +93,7 @@ public class ValorCuotasDAO {
 			} 
 			catch (Exception e) 
 			{
-				_logger.error(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 	}

@@ -3,10 +3,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.InputStream;
@@ -16,8 +12,6 @@ import config.Conexion;
 import modelo.Producto;
 
 public class ProductoDAO {
-	
-	private static Logger _logger = LogManager.getLogger(ProductoDAO.class);
 		
 	public List<Producto> obtenerTodos() throws Exception {
 		Statement st = null;
@@ -44,7 +38,6 @@ public class ProductoDAO {
 		} 
 		catch (Exception e) 
 		{
-			_logger.error(e.getMessage());
 			throw e;
 		} 
 		finally 
@@ -57,7 +50,7 @@ public class ProductoDAO {
 			} 
 			catch (Exception e) 
 			{
-				_logger.error(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 		return lista;
@@ -94,19 +87,7 @@ public class ProductoDAO {
 		}
 		catch(Exception e)
 		{
-			_logger.error(e.getMessage());
-		}finally 
-		{
-			try 
-			{
-				if(rs!=null) {rs.close();}
-                if(ps!=null) {ps.close();}
-                Conexion.getInstancia().desconectar();
-			} 
-			catch (Exception e) 
-			{
-				_logger.error(e.getMessage());
-			}
+			e.printStackTrace();
 		}
 		
 	}
@@ -134,14 +115,12 @@ public class ProductoDAO {
 				}
 				catch (Exception e)
 				{
-					_logger.error(e.getMessage());
 					throw e;
 				}
 			}
 		} 
 		catch (Exception e) 
 		{
-			_logger.error(e.getMessage());
 			throw e;
 		}
 		finally 
@@ -154,7 +133,7 @@ public class ProductoDAO {
 			} 
 			catch (Exception e) 
 			{
-				_logger.error(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 		
@@ -185,7 +164,6 @@ public class ProductoDAO {
 		} 
 		catch (Exception e) 
 		{
-			_logger.error(e.getMessage());
 			throw e;
 		} 
 		finally 
@@ -198,7 +176,7 @@ public class ProductoDAO {
 			} 
 			catch (Exception e) 
 			{
-				_logger.error(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 		return lista;
@@ -217,7 +195,6 @@ public class ProductoDAO {
 		} 
 		catch (Exception e) 
 		{
-			_logger.error(e.getMessage());
 			throw e;
 		}
 		finally 
@@ -228,7 +205,7 @@ public class ProductoDAO {
 			} 
 			catch (Exception e) 
 			{
-				_logger.error(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 	}
@@ -245,7 +222,6 @@ public class ProductoDAO {
 		} 
 		catch (Exception e) 
 		{
-			_logger.error(e.getMessage());
 			throw e;
 		}
 		finally 
@@ -256,7 +232,7 @@ public class ProductoDAO {
 			} 
 			catch (Exception e) 
 			{
-				_logger.error(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 	}
@@ -276,7 +252,6 @@ public class ProductoDAO {
 		} 
 		catch (Exception e) 
 		{
-			_logger.error(e.getMessage());
 			throw e;
 		}
 		finally 
@@ -286,7 +261,7 @@ public class ProductoDAO {
                 Conexion.getInstancia().desconectar();
 			} catch (Exception e) 
 			{
-				_logger.error(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 	}
@@ -304,7 +279,7 @@ public class ProductoDAO {
 		} 
 		catch (Exception e) 
 		{
-			_logger.error(e.getMessage());
+			e.printStackTrace();
 		}
 		finally 
 		{
@@ -314,12 +289,11 @@ public class ProductoDAO {
 			} 
 			catch (Exception e) 
 			{
-				_logger.error(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 	}
 	
-	//TODO handle exceptions and give feeedback to user on error
 	public void descontarStock(int codigo_producto, int cantidad) 
 	{
 		PreparedStatement ps = null;
@@ -333,7 +307,7 @@ public class ProductoDAO {
 		} 
 		catch (Exception e) 
 		{
-			_logger.error(e.getMessage());
+			e.printStackTrace();
 		}
 		finally 
 		{
@@ -343,7 +317,7 @@ public class ProductoDAO {
 			}
 			catch (Exception e) 
 			{
-				_logger.error(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 	}
@@ -375,7 +349,6 @@ public class ProductoDAO {
 		} 
 		catch (Exception e) 
 		{
-			_logger.error(e.getMessage());
 			throw e;
 		}
 		finally 
@@ -386,7 +359,7 @@ public class ProductoDAO {
 			} 
 			catch (Exception e) 
 			{
-				_logger.error(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 	}
@@ -416,7 +389,6 @@ public class ProductoDAO {
 		} 
 		catch (Exception e) 
 		{
-			_logger.error(e.getMessage());
 			throw e;
 		}
 		finally 
@@ -427,7 +399,7 @@ public class ProductoDAO {
 			} 
 			catch (Exception e) 
 			{
-				_logger.error(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 	}
@@ -454,7 +426,6 @@ public class ProductoDAO {
 		} 
 		catch (Exception e) 
 		{
-			_logger.error(e.getMessage());
 			throw e;
 		}
 		finally 
@@ -465,7 +436,7 @@ public class ProductoDAO {
 			} 
 			catch (Exception e) 
 			{
-				_logger.error(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 		
@@ -514,8 +485,8 @@ public class ProductoDAO {
 					result.add(p);
 			    }
 		    }
-		}catch(SQLException e) {
-			_logger.error(e.getMessage());
+		}catch(Exception SQLException) {
+			//TODO: log exception
 		}
 		finally {
 			try 
@@ -526,7 +497,7 @@ public class ProductoDAO {
 			} 
 			catch (Exception e) 
 			{
-				_logger.error(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 		return result;
@@ -557,7 +528,8 @@ public class ProductoDAO {
 			    result = rs.getInt("cantidad");
 			}
 		}catch(SQLException e){
-			_logger.error(e.getMessage());
+			//TODO: log Exception
+			e.printStackTrace();
 		}finally {
 			try 
 			{
@@ -567,7 +539,7 @@ public class ProductoDAO {
 			} 
 			catch (Exception e) 
 			{
-				_logger.error(e.getMessage());
+				e.printStackTrace();
 			}
 			
 		}

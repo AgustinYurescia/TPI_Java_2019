@@ -2,17 +2,11 @@ package modeloDAO;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import config.Conexion;
 import exceptions.NonExistentUserException;
 import modelo.Admin;
 
-
 public class AdminDAO {
-	private static Logger _logger = LogManager.getLogger(AdminDAO.class);
 	public void alta(Admin adm) {
 		PreparedStatement st = null;
 		ResultSet keyResultSet=null;
@@ -26,14 +20,14 @@ public class AdminDAO {
 			if(keyResultSet!=null && keyResultSet.next()) {
 			}
 		} catch (Exception e) {
-			_logger.error(e.getMessage());
+			e.printStackTrace();
 		}finally {
 			try {
 				if(keyResultSet!=null) {keyResultSet.close();}
                 if(st!=null) {st.close();}
                 Conexion.getInstancia().desconectar();
 			} catch (Exception e) {
-				_logger.error(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 	}
@@ -52,13 +46,13 @@ public class AdminDAO {
 			}
 
 		} catch (Exception e) {
-			_logger.error(e.getMessage());
+			e.printStackTrace();
 		} finally {
 			try {
 				if(st!=null) {st.close();}
 				Conexion.getInstancia().desconectar();
 			} catch (Exception e) {
-				_logger.error(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 		return false;
@@ -83,7 +77,6 @@ public class AdminDAO {
 			}
 			catch (Exception e)
 			{
-				_logger.error(e.getMessage());
 				throw e;
 			}
 			finally
@@ -93,7 +86,7 @@ public class AdminDAO {
 					if(st!=null) {st.close();}
 					Conexion.getInstancia().desconectar();
 				} catch (Exception e) {
-					_logger.error(e.getMessage());
+					e.printStackTrace();
 				}
 			}
 		}

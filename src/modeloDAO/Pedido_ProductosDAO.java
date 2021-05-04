@@ -3,15 +3,10 @@ package modeloDAO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import config.Conexion;
 import modelo.Pedido_Productos;
 
 public class Pedido_ProductosDAO {
-	private static Logger _logger = LogManager.getLogger(Pedido_ProductosDAO.class);
-	//_logger.error(e.getMessage());
 	
 	public void alta(Pedido_Productos pp) {
 		PreparedStatement st = null;
@@ -28,14 +23,14 @@ public class Pedido_ProductosDAO {
 					
 			}
 		} catch (Exception e) {
-			_logger.error(e.getMessage());
+			e.printStackTrace();
 		}finally {
 			try {
 				if(keyResultSet!=null) {keyResultSet.close();}
                 if(st!=null) {st.close();}
                 Conexion.getInstancia().desconectar();
 			} catch (Exception e) {
-				_logger.error(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 		
