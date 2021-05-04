@@ -28,8 +28,7 @@
 			<div class="alert alert-info">Su carrito se encuentra vacío</div>
 			<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=listarProductosCliente"><button type="submit" class="btn btn-primary">Ir a comprar</button></a>
 		<% 
-			}else {
-				linea = (ArrayList<LineaPedido>)sesion.getAttribute("carrito");	
+			}else {	
 		%>
 	   	   <div>
 			<h1>Productos</h1>
