@@ -3,9 +3,14 @@ package modeloDAO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import config.Conexion;
 
 public class TardanzaPedidoDAO {
+	
+	private static Logger _logger = LogManager.getLogger(TardanzaPedidoDAO.class);
 	
 	private PreparedStatement ps = null;
 	private String sentenciaSQL = null;
@@ -22,6 +27,7 @@ public class TardanzaPedidoDAO {
 		}
 		catch(Exception e)
 		{
+			_logger.error(e.getMessage());
 			throw e;
 		}
 		finally 
@@ -33,7 +39,7 @@ public class TardanzaPedidoDAO {
 			} 
 			catch (Exception e) 
 			{
-				e.printStackTrace();
+				_logger.error(e.getMessage());
 			}
 		}
 	}
@@ -49,6 +55,7 @@ public class TardanzaPedidoDAO {
 		}
 		catch(Exception e)
 		{
+			_logger.error(e.getMessage());
 			throw e;
 		}
 		finally 
@@ -60,7 +67,7 @@ public class TardanzaPedidoDAO {
 			} 
 			catch (Exception e) 
 			{
-				e.printStackTrace();
+				_logger.error(e.getMessage());
 			}
 		}
 	}
@@ -83,6 +90,7 @@ public class TardanzaPedidoDAO {
 		}
 		catch(Exception e)
 		{
+			_logger.error(e.getMessage());
 			throw e;
 		}
 		finally 
@@ -95,7 +103,7 @@ public class TardanzaPedidoDAO {
 			} 
 			catch (Exception e) 
 			{
-				e.printStackTrace();
+				_logger.error(e.getMessage());
 			}
 		}
 	}
