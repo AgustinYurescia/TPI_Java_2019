@@ -6,12 +6,17 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import config.Conexion;
 import exceptions.NonExistentOrderException;
 import modelo.LineaPedido;
 import modelo.Pedido;
 
 public class PedidoDAO {
+	
+	private static Logger _logger = LogManager.getLogger(PedidoDAO.class);
 
 	public int alta(Pedido ped, ArrayList<LineaPedido> lin) { 
 		PreparedStatement st = null;
@@ -29,14 +34,14 @@ public class PedidoDAO {
 				generar_pedido_productos(ped.getNro_pedido(), lin);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			_logger.error(e.getMessage());
 		}finally {
 			try {
 				if(keyResultSet!=null) {keyResultSet.close();}
                 if(st!=null) {st.close();}
                 Conexion.getInstancia().desconectar();
 			} catch (Exception e) {
-				e.printStackTrace();
+				_logger.error(e.getMessage());
 			}
 		}
 		
@@ -62,19 +67,19 @@ public class PedidoDAO {
 				prodDAO.descontarStock(l.getCodigo_producto(), l.getCantidad());
 			}
 		}catch (Exception e) {
-			e.printStackTrace();
+			_logger.error(e.getMessage());
 		}finally {
 			try {
 				if(keyResultSet!=null) {keyResultSet.close();}
                 if(st!=null) {st.close();}
                 Conexion.getInstancia().desconectar();
 			} catch (Exception e) {
-				e.printStackTrace();
+				_logger.error(e.getMessage());
 			}
 		}
 	}
 	
-	//CONTROLAR QUE ESTÉ BIEN
+	//CONTROLAR QUE ESTÉ BIEN ====> este metodo no deberia usarse con las nuevas reglas de negocio y el descuento para el socio
 	public void calcular_monto_pedido(int nro_pedido) { 
 		PreparedStatement st = null;
 		ResultSet keyResultSet=null;
@@ -90,14 +95,14 @@ public class PedidoDAO {
 			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
 			st.executeUpdate();
 		} catch (Exception e) {
-			e.printStackTrace();
+			_logger.error(e.getMessage());
 		}finally {
 			try {
 				if(keyResultSet!=null) {keyResultSet.close();}
                 if(st!=null) {st.close();}
                 Conexion.getInstancia().desconectar();
 			} catch (Exception e) {
-				e.printStackTrace();
+				_logger.error(e.getMessage());
 			}
 		}
 		
@@ -126,14 +131,14 @@ public class PedidoDAO {
 				}
 		} 
 		catch (Exception e) {
-			e.printStackTrace();
+			_logger.error(e.getMessage());
 		}
 		finally {
 			try {
                 Conexion.getInstancia().desconectar();
 			} 
 			catch (Exception e) {
-				e.printStackTrace();
+				_logger.error(e.getMessage());
 			}
 		}
 	}
@@ -174,14 +179,14 @@ public class PedidoDAO {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			_logger.error(e.getMessage());
 		} finally {
 			try {
 				if(rs!=null) {rs.close();}
 				if(st!=null) {st.close();}
 				Conexion.getInstancia().desconectar();
 			} catch (Exception e) {
-				e.printStackTrace();
+				_logger.error(e.getMessage());
 			}
 		}
 		return lista;
@@ -216,7 +221,7 @@ public class PedidoDAO {
 				}
 			}
 		} catch (Exception e) {
-			//TODO log thjs exception
+			_logger.error(e.getMessage());
 			throw e;
 		} finally {
 			try {
@@ -224,7 +229,7 @@ public class PedidoDAO {
 				if(st!=null) {st.close();}
 				Conexion.getInstancia().desconectar();
 			} catch (Exception e) {
-				e.printStackTrace();
+				_logger.error(e.getMessage());
 			}
 		}
 		return lista;
@@ -257,8 +262,8 @@ public class PedidoDAO {
 				throw new NonExistentOrderException("El pedido solicitado no existe");
 			}
 		} 
-		catch (Exception e) 
-		{
+		catch (Exception e){
+			_logger.error(e.getMessage());
 			throw e;
 		}
 		finally 
@@ -269,7 +274,7 @@ public class PedidoDAO {
 			} 
 			catch (Exception e) 
 			{
-				e.printStackTrace();
+				_logger.error(e.getMessage());
 			}
 		}
 		
@@ -291,20 +296,21 @@ public class PedidoDAO {
 			}
 		} 
 		catch (Exception e) {
-			e.printStackTrace();
+			_logger.error(e.getMessage());
 		}
 		finally {
 			try {
                 Conexion.getInstancia().desconectar();
 			} 
 			catch (Exception e) {
-				e.printStackTrace();
+				_logger.error(e.getMessage());
 			}
 		}
 		
 		return pedido_productos;
 	}
 	
+	//TODO throw exception on record not updated
 	public void cancelar_pedido(int nro_pedido) {
 		PreparedStatement st = null;
 		String sentenciaSQL="UPDATE pedido SET fecha_cancelacion = current_date WHERE nro_pedido="+nro_pedido+"";
@@ -312,12 +318,12 @@ public class PedidoDAO {
 			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
 			st.executeUpdate();
 		} catch (Exception e) {
-			e.printStackTrace();
+			_logger.error(e.getMessage());
 		}finally {
 			try {
                 Conexion.getInstancia().desconectar();
 			} catch (Exception e) {
-				e.printStackTrace();
+				_logger.error(e.getMessage());
 			}
 		}
 	}
@@ -353,6 +359,7 @@ public class PedidoDAO {
 				}
 			}
 		} catch (Exception e) {
+			_logger.error(e.getMessage());
 			throw e;
 		} finally {
 			try {
@@ -360,7 +367,7 @@ public class PedidoDAO {
 				if(st!=null) {st.close();}
 				Conexion.getInstancia().desconectar();
 			} catch (Exception e) {
-				e.printStackTrace();
+				_logger.error(e.getMessage());
 			}
 		}
 		return lista;
@@ -376,6 +383,7 @@ public class PedidoDAO {
 			ps.executeUpdate();
 		} 
 		catch (Exception e) {
+			_logger.error(e.getMessage());
 			throw e;
 		}
 		finally {
@@ -383,7 +391,7 @@ public class PedidoDAO {
                 Conexion.getInstancia().desconectar();
 			} 
 			catch (Exception e) {
-				e.printStackTrace();
+				_logger.error(e.getMessage());
 			}
 		}
 	}

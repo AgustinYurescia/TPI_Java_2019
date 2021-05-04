@@ -6,10 +6,15 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import config.Conexion;
 import modelo.Categoria;
 
 public class CategoriaDAO {
+	
+	private static Logger _logger = LogManager.getLogger(CategoriaDAO.class);
 	
 	public List<Categoria> obtenerTodas() 
 	{
@@ -34,7 +39,7 @@ public class CategoriaDAO {
 		} 
 		catch (Exception e) 
 		{
-			e.printStackTrace();
+			_logger.error(e.getMessage());
 		} 
 		finally 
 		{
@@ -46,7 +51,7 @@ public class CategoriaDAO {
 			} 
 			catch (Exception e) 
 			{
-				e.printStackTrace();
+				_logger.error(e.getMessage());
 			}
 		}
 		return lista;
@@ -70,6 +75,7 @@ public class CategoriaDAO {
 		} 
 		catch (Exception e) 
 		{
+			_logger.error(e.getMessage());
 			throw e;
 		}
 		finally 
@@ -82,7 +88,7 @@ public class CategoriaDAO {
 			} 
 			catch (Exception e) 
 			{
-				e.printStackTrace();
+				_logger.error(e.getMessage());
 			}
 		}
 		
@@ -99,6 +105,7 @@ public class CategoriaDAO {
 		} 
 		catch (Exception e) 
 		{
+			_logger.error(e.getMessage());
 			throw e;
 		}
 		finally 
@@ -110,7 +117,7 @@ public class CategoriaDAO {
 			} 
 			catch (Exception e) 
 			{
-				e.printStackTrace();
+				_logger.error(e.getMessage());
 			}
 		}
 		
@@ -129,6 +136,7 @@ public class CategoriaDAO {
 		} 
 		catch (Exception e) 
 		{
+			_logger.error(e.getMessage());
 			throw e;
 		}
 		finally 
@@ -140,7 +148,7 @@ public class CategoriaDAO {
 			} 
 			catch (Exception e) 
 			{
-				e.printStackTrace();
+				_logger.error(e.getMessage());
 			}
 		}
 		
@@ -163,6 +171,7 @@ public class CategoriaDAO {
 		} 
 		catch (Exception e) 
 		{
+			_logger.error(e.getMessage());
 			throw e;
 		}
 		finally 
@@ -175,7 +184,7 @@ public class CategoriaDAO {
 			} 
 			catch (Exception e) 
 			{
-				e.printStackTrace();
+				_logger.error(e.getMessage());
 			}
 		}
 		return false;
@@ -198,6 +207,7 @@ public class CategoriaDAO {
 		} 
 		catch (Exception e) 
 		{
+			_logger.error(e.getMessage());
 			throw e;
 		}
 		finally 
@@ -210,7 +220,7 @@ public class CategoriaDAO {
 			} 
 			catch (Exception e) 
 			{
-				e.printStackTrace();
+				_logger.error(e.getMessage());
 			}
 		}
 		return false;
@@ -237,6 +247,7 @@ public class CategoriaDAO {
 		} 
 		catch (Exception e) 
 		{
+			_logger.error(e.getMessage());
 			throw e;
 		}
 		finally 
@@ -249,7 +260,7 @@ public class CategoriaDAO {
 			} 
 			catch (Exception e) 
 			{
-				e.printStackTrace();
+				_logger.error(e.getMessage());
 			}
 		}
 	}
