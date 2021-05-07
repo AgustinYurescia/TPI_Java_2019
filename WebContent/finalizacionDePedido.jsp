@@ -19,7 +19,12 @@
 	</head>
 	<body>
 		<div class="container">
-	   <% 	HttpSession sesion = request.getSession(true);
+		<% 
+		String mensajeError = (String)request.getAttribute("mensajeErrorMail");
+	   	if(mensajeError != null){%>
+	   		<div class="alert alert-warning" style="text-align: center;"><%=mensajeError%></div>
+	   	<%}%>
+	   	<% 	HttpSession sesion = request.getSession(true);
 	   		ArrayList linea = (ArrayList<LineaPedido>)sesion.getAttribute("carrito"); %>
 	   	   <div>
 			<h1>Resumen del pedido</h1>
@@ -41,15 +46,15 @@
 								lin=iter.next();
 								pro = proDAO.buscarProducto(lin.getCodigo_producto());
 						%>
-				<tbody>
-					<tr>
-						<td><%=pro.getNombre()%></td>
-						<td><%=String.format("%.2f", pro.getPrecioVenta())%></td>
-						<td><%=lin.getCantidad()%></td>
-						<td><%=String.format("%.2f", lin.getSubtotal())%></td>
-					</tr>
-					<%}%>
-				</tbody>
+							<tbody>
+								<tr>
+									<td><%=pro.getNombre()%></td>
+									<td><%=String.format("%.2f", pro.getPrecioVenta())%></td>
+									<td><%=lin.getCantidad()%></td>
+									<td><%=String.format("%.2f", lin.getSubtotal())%></td>
+								</tr>
+								<%}%>
+							</tbody>
 			</table>
 			<% 	double total = (double)sesion.getAttribute("total"); 
 				int nro_pedido = (int)sesion.getAttribute("nro_pedido");
@@ -60,6 +65,12 @@
 			<p align="center"><a class="py-0 d-none d-md-inline-block" href="ControladorDeLinks?accion=indexCliente"><button type="submit" class="btn btn-primary">Volver al inicio</button></a></p>
 		</div>
 		</div>
+		
+		<%
+		if(sesion.getAttribute("carrito") != null){
+			sesion.removeAttribute("carrito");
+		} 
+		%>
 		<jsp:include page="footer.jsp"/>
 	</body>
 </html>

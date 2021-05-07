@@ -203,9 +203,12 @@
 			render(){
 				return(
 					<div className="productos row" style={{width: "640px !important", margin:"auto"}}>
-						{this.state.products.map((value, index) => {
-							return <ProductCardComponent product = {value} key = {index}/>
-						})}
+					{
+						this.state.products != null && this.state.products != undefined ?
+							this.state.products.map((value, index) => {
+								return <ProductCardComponent product = {value} key = {index}/>
+							}) : "" 
+					}
 					</div>
 				)
 			}

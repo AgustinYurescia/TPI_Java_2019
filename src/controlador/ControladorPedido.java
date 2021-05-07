@@ -189,7 +189,11 @@ public class ControladorPedido extends HttpServlet {
 					int nro_pedido = _servicioPedido.Alta(ped, linea);
 					sesion.setAttribute("nro_pedido", nro_pedido);
 					acceso = "finalizacionDePedido.jsp";
-					correo.enviar_mail_confirmacion(cli.getMail(), nro_pedido);
+					try {
+						correo.enviar_mail_confirmacion(cli.getMail(), nro_pedido);
+					}catch(Exception Ex){
+						request.setAttribute("mensajeErrorMail", "La compra se realizo exitosamente pero no se ha podido enviar el mail de confirmacion");
+					}
 				}
 				catch(NotEnoughStockException ex) {
 					request.setAttribute("errorStock", "No poseemos stock de uno o mas de los productos seleccionados. Puede ser que haya "
