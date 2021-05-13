@@ -19,6 +19,13 @@
 		%>
 		<div class="m-2">
 			<h1>Listado de socios</h1>
+			<hr/>
+			<form action="ControladorPDF" method="POST">
+				<button type="submit" class="btn btn-primary" name="accion" value="exportarSociosPdf">
+					Exportar en PDF
+				</button>
+				<br><br>
+			</form>
 			<%
 				if (request.getAttribute("mensajeError") != null) {
 			%>
