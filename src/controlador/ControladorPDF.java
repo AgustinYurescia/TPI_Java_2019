@@ -15,11 +15,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import modelo.Cliente;
+import modelo.Cuota;
 import modelo.ExportadorPDF;
 import modelo.Pedido;
 import modeloDAO.ClienteDAO;
 import modeloDAO.PedidoDAO;
 import services.CustomerService;
+import services.ServicioCuota;
 import services.ServicioPedido;
 
 import org.apache.logging.log4j.LogManager;
@@ -32,11 +34,13 @@ public class ControladorPDF extends HttpServlet {
 	private static Logger _logger = LogManager.getLogger(ControladorPDF.class);
 	CustomerService _servicioCliente;
 	ServicioPedido _servicioPedido;;
+	ServicioCuota _servicioCuota;
 
     public ControladorPDF() {
     	super();
     	this._servicioCliente = new CustomerService();
     	this._servicioPedido = new ServicioPedido();
+    	this._servicioCuota = new ServicioCuota();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -59,7 +63,7 @@ public class ControladorPDF extends HttpServlet {
 					String content =  "Content-Disposition";
 					String filename = "attachment; filename=Socios_"+file_date+".pdf";
 					response.setHeader(content, filename);
-					ExportadorPDF exp = new ExportadorPDF(socios, null);
+					ExportadorPDF exp = new ExportadorPDF(socios, null, null);
 					exp.export(response, "listadoSocios");
 				} catch (Exception e) {
 					_logger.info(e.getMessage());
@@ -84,7 +88,7 @@ public class ControladorPDF extends HttpServlet {
 					String content =  "Content-Disposition";
 					String filename = "attachment; filename=PedidoN°"+pedido.getNro_pedido()+"_"+file_date+".pdf";
 					response.setHeader(content, filename);
-					ExportadorPDF exp = new ExportadorPDF(null, pedido);
+					ExportadorPDF exp = new ExportadorPDF(null, pedido, null);
 					exp.export(response, "pedido");
 				} catch (Exception e) {
 					_logger.info(e.getMessage());
@@ -94,6 +98,31 @@ public class ControladorPDF extends HttpServlet {
 			else 
 			{
 				acceso = "loginAdmin.jsp";	
+				RequestDispatcher vista = request.getRequestDispatcher(acceso);
+				vista.forward(request, response);
+			}
+		}
+		else if(action.equalsIgnoreCase("exportarCuotasPdf")) 
+		{
+			if (sesion.getAttribute("usuario_cliente") != null)
+			{
+				try {
+					Cliente cliente = _servicioCliente.ObtenerPorNombreDeUsuario((String)sesion.getAttribute("usuario_cliente"));
+					ArrayList<Cuota> cuotas = _servicioCuota.ObtenerCuotasAnioActual(cliente.getDni());
+					DateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd_HH:mm");
+					String file_date = dateformat.format(new Date());
+					String content =  "Content-Disposition";
+					String filename = "attachment; filename=MisCuotas_"+file_date+".pdf";
+					response.setHeader(content, filename);
+					ExportadorPDF exp = new ExportadorPDF(null, null, cuotas);
+					exp.export(response, "cuotas");
+				} catch (Exception e) {
+					_logger.info(e.getMessage());
+				}
+			}
+			else 
+			{
+				acceso = "loginClientes.jsp";	
 				RequestDispatcher vista = request.getRequestDispatcher(acceso);
 				vista.forward(request, response);
 			}

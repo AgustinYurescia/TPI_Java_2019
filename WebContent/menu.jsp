@@ -122,9 +122,17 @@
               		<a class="dropdown-item" href="ControladorDeLinks?accion=listadoPedidosCliente">Mis pedidos</a>
             	</div>
           	</li>
-          	
+          	<% 
+          	if(sesion.getAttribute("es_socio") == "1")
+          	{
+          	%>
+          	<li class="nav-item active">
+          		<a class="nav-link" href="ControladorCuota?accion=misCuotas" style="color:white !important">Mis cuotas<span class="sr-only"></span></a>
+        	</li>
+        	<%
+          	}
+        	%>
         </ul>
-        
         <ul class="navbar-nav mr-right">
         
         	<li class="nav-item dropdown">

@@ -15,22 +15,27 @@ import javax.servlet.http.HttpSession;
 import exceptions.NonExistentFeeException;
 import exceptions.NonExistentFeeValueException;
 import exceptions.NonExistentPartnerException;
+import modelo.Cliente;
 import modelo.Cuota;
+import services.CustomerService;
 import services.ServicioCuota;
 
 @WebServlet("/ControladorCuota")
 public class ControladorCuota extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private ServicioCuota _servicioCuota;
+	private CustomerService _servicioCliente;
 	
     public ControladorCuota() {
         super();
         _servicioCuota = new ServicioCuota();
+        _servicioCliente = new CustomerService();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String acceso = "";
 		String action = request.getParameter("accion");
+		Cliente cliente;
 		HttpSession sesion = request.getSession(true);
 		if(action.equalsIgnoreCase("generarCuotas"))
 		{
@@ -65,6 +70,30 @@ public class ControladorCuota extends HttpServlet {
 			else
 			{
 				acceso="loginAdmin.jsp";
+			}
+		}
+		else if(action.equalsIgnoreCase("misCuotas"))
+		{
+			if (sesion.getAttribute("usuario_cliente") != null)
+			{
+				try
+				{
+					cliente = _servicioCliente.ObtenerPorNombreDeUsuario((String)sesion.getAttribute("usuario_cliente"));
+					request.setAttribute("misCuotas", (ArrayList<Cuota>)_servicioCuota.ObtenerCuotasAnioActual(cliente.getDni()));
+				}
+				catch(NonExistentFeeException e)
+				{
+					request.setAttribute("mensajeError", e.getMessage());
+				}
+				catch(Exception e)
+				{
+					request.setAttribute("mensajeError", "Error interno del servidor");
+				}
+				acceso="misCuotas.jsp";
+			}
+			else
+			{
+				acceso = "loginClientes.jsp";
 			}
 		}
 		

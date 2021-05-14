@@ -31,16 +31,18 @@ public class ExportadorPDF
 	private Color color_fondo;
 	private Color color_letra;
 	private CustomerService _servicioCliente;
+	private ArrayList<Cuota> cuotas;
 	
 	public ExportadorPDF() 
 	{
 		
 	}
 	
-	public ExportadorPDF(ArrayList<Cliente> socios, Pedido pedido)
+	public ExportadorPDF(ArrayList<Cliente> socios, Pedido pedido, ArrayList<Cuota> cuotas)
 	{
 		this.socios = socios;
 		this.pedido = pedido;
+		this.cuotas = cuotas;
 		this._servicioCliente = new CustomerService();
 		color_fondo = new Color(249,234,199);
 		color_letra =  new Color(88,39,45);
@@ -75,7 +77,9 @@ public class ExportadorPDF
 		date_font.setColor(color_letra);
 		info_font.setColor(color_letra);
 		font.setColor(color_letra);
-		Image img = Image.getInstance("D:\\Documentos\\Eclipse\\Workspace_02\\TPI_Java_2019\\WebContent\\Images\\logo.png");
+		System.setProperty("http.agent", "Chrome");
+        String url = "https://i.imgur.com/A6ZahSa.png";
+		Image img = Image.getInstance(url);
 		Phrase info = new Phrase("\nVinoteca El Viejo Tonel\nRoque S. Peña, Pujato, Sta Fe\n3464 44-1296 ", info_font);
 		PdfPCell cell = new PdfPCell();
 		cell.setBorder(0);
@@ -115,8 +119,19 @@ public class ExportadorPDF
 			date_info_cell.setColspan(5);
 			span_cell_title.setColspan(5);
 			span_info_cell.setColspan(3);
+			date_info_cell.setPaddingLeft(25);
 			Phrase title = new Phrase("LISTADO DE SOCIOS \n ", title_font);
-			Phrase date_info = new Phrase("   Fecha de informe: "+string_date, date_font);
+			Phrase date_info = new Phrase("Fecha de informe: "+string_date, date_font);
+			date_info_cell.setPhrase(date_info);
+			span_cell_title.setPhrase(title);
+		}
+		else if (type.equalsIgnoreCase("cuotas"))
+		{
+			date_info_cell.setColspan(3);
+			span_cell_title.setColspan(3);
+			span_info_cell.setColspan(3);
+			Phrase title = new Phrase("CUOTAS AÑO "+cuotas.get(0).getAnio()+"\n ", title_font);
+			Phrase date_info = new Phrase("Fecha de informe: " + string_date + "\n ", date_font);
 			date_info_cell.setPhrase(date_info);
 			span_cell_title.setPhrase(title);
 		}
@@ -206,6 +221,55 @@ public class ExportadorPDF
 			total_cell.setPaddingRight(25);
 			pdfTable.addCell(total_cell);
 		}
+		else if(type.equalsIgnoreCase("cuotas"))
+		{
+			cell.setColspan(3);
+			cell.setPaddingLeft(5);
+			cell.setPaddingRight(5);
+			cell.setPaddingBottom(5);
+			cell.setBorderColor(color_letra);
+			for (Cuota c: cuotas)
+			{
+				cell.setPhrase(new Phrase("Cuota: " + String.valueOf(c.getMes()) + "/" + String.valueOf(c.getAnio()), font));
+				cell.setHorizontalAlignment(Phrase.ALIGN_LEFT);
+				cell.setBorderWidthTop(1);
+				cell.setBorderWidthBottom(0);
+				cell.setBorderWidthLeft(1);
+				cell.setBorderWidthRight(1);
+				pdfTable.addCell(cell);
+				cell.setPhrase(new Phrase("Fecha de vencimiento: 10/" + String.valueOf(c.getMes()) + "/" + String.valueOf(c.getAnio()), font));
+				cell.setHorizontalAlignment(Phrase.ALIGN_LEFT);
+				cell.setBorderWidthTop(0);
+				cell.setBorderWidthBottom(0);
+				cell.setBorderWidthLeft(1);
+				cell.setBorderWidthRight(1);
+				pdfTable.addCell(cell);
+				if (c.getFechaPago() != null)
+				{
+					cell.setPhrase(new Phrase("Fecha de pago: " + String.valueOf(c.getFechaPago()), font));
+				}
+				else
+				{
+					cell.setPhrase(new Phrase("Fecha de pago: -", font));
+				}
+				cell.setHorizontalAlignment(Phrase.ALIGN_LEFT);
+				cell.setBorderWidthBottom(0);
+				cell.setBorderWidthTop(0);
+				cell.setBorderWidthLeft(1);
+				cell.setBorderWidthRight(1);
+				pdfTable.addCell(cell);
+				cell.setPhrase(new Phrase("Total: $" + String.valueOf(c.getValor()), font));
+				cell.setHorizontalAlignment(Phrase.ALIGN_RIGHT);
+				cell.setBorderWidthTop(0);
+				cell.setBorderWidthBottom(1);
+				cell.setBorderWidthLeft(1);
+				cell.setBorderWidthRight(1);
+				pdfTable.addCell(cell);
+				cell.setBorder(0);
+				cell.setPhrase(new Phrase(" ", font));
+				pdfTable.addCell(cell);
+			}
+		}
 	}
 	
 	public void export(HttpServletResponse response, String type) throws Exception
@@ -232,6 +296,16 @@ public class ExportadorPDF
 				pdfPTable.setSpacingBefore(10);
 				writeTableHeader(pdfPTable, "pedido");
 				writeTableData(pdfPTable, "pedido");
+				doc.add(pdfPTable);
+			}
+			else if (type.equalsIgnoreCase("cuotas"))
+			{
+				PdfPTable pdfPTable = new PdfPTable(3);
+				pdfPTable.setWidthPercentage(100f);
+				pdfPTable.setWidths(new float []{10.0f, 10.0f, 10.0f});
+				pdfPTable.setSpacingBefore(10);
+				writeTableHeader(pdfPTable, "cuotas");
+				writeTableData(pdfPTable, "cuotas");
 				doc.add(pdfPTable);
 			}
 			doc.close();
