@@ -67,6 +67,12 @@
 					<input 	type="text" id="monto" class="form-control" value="$<%=String.format("%.2f", ped.getMonto())%>" disabled/>
 				</div>
 			</div>
+			<div class="form-row">
+				<div class="form-group col-md-4">	
+				   	<label for="monto">Estado:</label>
+					<input 	type="text" id="estado" class="form-control" value="<%=ped.getEstado().toUpperCase()%>" disabled/>
+				</div>
+			</div>
 	   </form>
 	   <label>Resumen de productos:</label>	 
 	   <table class="table">

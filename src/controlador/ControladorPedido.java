@@ -363,7 +363,48 @@ public class ControladorPedido extends HttpServlet {
 				acceso = "loginAdmin.jsp";
 			}
 		}
-		
+		else if (action.equalsIgnoreCase("listarPedidosAEntregarManana"))
+		{
+			ArrayList<Pedido> pedidos = new ArrayList<Pedido>();
+			HttpSession sesion = request.getSession(true);
+			if(sesion.getAttribute("usuario_admin")!= null) {
+				try
+				{
+					pedidos = _servicioPedido.PedidosAEntregarManana();
+					sesion.setAttribute("pedidos", pedidos);
+				}
+				catch(AppException e)
+				{
+					request.setAttribute("mensajeError", e.getMessage());
+				}
+				catch (Exception e)
+				{
+					request.setAttribute("mensajeError", "Error interno del servidor");
+				}
+				acceso = "listadoPedidosAEntregarManana.jsp";
+			}else {
+				acceso = "loginAdmin.jsp";
+			}
+		}
+		else if (action.equalsIgnoreCase("prepararPedidos"))
+		{
+			HttpSession sesion = request.getSession(true);
+			ArrayList<Pedido> pedidos = (ArrayList<Pedido>)sesion.getAttribute("pedidos");
+			if(sesion.getAttribute("usuario_admin") != null) {
+				try
+				{
+					_servicioPedido.SetEstadoPreparado(pedidos);
+					request.setAttribute("mensajeOk", "Preparación registrada con éxito");
+				}
+				catch (Exception e)
+				{
+					request.setAttribute("mensajeError", "Error interno del servidor");
+				}
+				acceso = "listadoPedidosAEntregarManana.jsp";
+			}else {
+				acceso = "loginAdmin.jsp";
+			}
+		}
 		RequestDispatcher vista = request.getRequestDispatcher(acceso);
 		vista.forward(request, response);
 	}

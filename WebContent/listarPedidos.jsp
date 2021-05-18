@@ -33,6 +33,7 @@
       				<select id="estado" name="estado" class="form-control">
       					<option>-</option>
         				<option>Pendiente</option>
+        				<option>Preparado</option>
         				<option>Entregado</option>
         				<option>Cancelado</option>
      				</select>

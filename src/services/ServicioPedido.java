@@ -2,6 +2,7 @@ package services;
 
 import java.util.ArrayList;
 
+import exceptions.AppException;
 import modelo.Cliente;
 import modelo.LineaPedido;
 import modelo.Pedido;
@@ -51,5 +52,32 @@ public class ServicioPedido {
 	public void RegistrarEntrega(int numeroPedido) throws Exception {
 		_pedidoDAO.RegistrarEntrega(numeroPedido);
 	}
-	
+	public ArrayList<Pedido> PedidosAEntregarManana() throws Exception
+	{
+		ArrayList<Pedido> pedidos = new ArrayList<Pedido>();
+		try
+		{
+			pedidos = _pedidoDAO.PedidosAEntregarManana();
+			return pedidos;
+		}
+		catch(AppException e)
+		{
+			throw e;
+		}
+		catch(Exception e)
+		{
+			throw e;
+		}
+	}
+	public void SetEstadoPreparado(ArrayList<Pedido> pedidos) throws Exception
+	{
+		try
+		{
+			_pedidoDAO.setEstadoPreparado(pedidos);
+		}
+		catch(Exception e)
+		{
+			throw e;
+		}
+	}
 }

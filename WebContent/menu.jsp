@@ -53,6 +53,7 @@
               		Pedidos
            		</a>
             	<div class="dropdown-menu" aria-labelledby="pedidosDropdown">
+            		<a class="dropdown-item" href="ControladorDeLinks?accion=listarPedidosAEntregarManana">Listado de Pedidos A Entregar Mañana</a>
               		<a class="dropdown-item" href="ControladorDeLinks?accion=listarPedidosAdmin">Listado de Pedidos Pendientes</a>
               		<a class="dropdown-item" href="confirmarEntrega.jsp">Confirmar Entrega</a>
             	</div>
