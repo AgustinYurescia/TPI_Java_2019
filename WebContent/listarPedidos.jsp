@@ -108,7 +108,7 @@
 						<% 
 						}
 					%>
-					<td style="padding-top: 20px">$ <%=ped.getMonto()%></td>
+					<td style="padding-top: 20px">$ <%=String.format("%.2f",ped.getMonto())%></td>
 					<td>
 						<a class="py-0 d-none d-md-inline-block" href="ControladorPedido?accion=mostrar_pedido&nro_pedido=<%=ped.getNro_pedido()%>">
 							<button type="submit" class="btn btn-outline-info" style="color: white;  width:200 ; height:200;" name="" value="">
