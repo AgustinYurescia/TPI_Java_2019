@@ -30,6 +30,14 @@
 	   
 			<div class="m-3">
 			<h2>Datos del pedido</h2>
+				<hr/>
+				<form action="ControladorPDF" method="POST">
+					<input 	type="hidden" name="nro_pedido" class="form-control" value="<%=ped.getNro_pedido()%>"/>
+					<button type="submit" class="btn btn-primary" name="accion" value="exportarPedidoPdf">
+						Exportar en PDF
+					</button>
+					<br><br>
+				</form>
 			   <form>
 			   		<div class="form-row">
 			   			<div class="form-group col-md-4">	
@@ -76,7 +84,7 @@
 					<div class="form-row">
 			   			<div class="form-group col-md-4">	
 				   			<label for="monto">Monto total:</label>
-							<input 	type="text" id="monto" class="form-control" value="$<%=ped.getMonto()%>" disabled/>
+							<input 	type="text" id="monto" class="form-control" value="$<%=String.format("%.2f",ped.getMonto())%>" disabled/>
 						</div>
 					</div>
 			   </form>
