@@ -80,4 +80,15 @@ public class ServicioPedido {
 			throw e;
 		}
 	}
+	public void SetEstadoPreparado(String nro_pedido) throws Exception
+	{
+		try
+		{
+			_pedidoDAO.setEstadoPreparado(nro_pedido);
+		}
+		catch(Exception e)
+		{
+			throw e;
+		}
+	}
 }

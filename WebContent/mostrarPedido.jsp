@@ -120,7 +120,6 @@
 				<form action="ControladorPedido">
 			   		<input type="hidden" class="form-control" id="numero_pedido" name="numero_pedido" value=<%=ped.getNro_pedido()%>>
 			   		<button type="submit" class="btn btn-primary" name="accion" value="prepararPedido">Confirmar Preparación</button>
-			   		<!-- TODO FALTA HACER ESTE ACCION EN EL CONTROLADOR -->
 				</form>
 			</div>
 			<%

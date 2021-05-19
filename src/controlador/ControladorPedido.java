@@ -390,7 +390,8 @@ public class ControladorPedido extends HttpServlet {
 		{
 			HttpSession sesion = request.getSession(true);
 			ArrayList<Pedido> pedidos = (ArrayList<Pedido>)sesion.getAttribute("pedidos");
-			if(sesion.getAttribute("usuario_admin") != null) {
+			if(sesion.getAttribute("usuario_admin") != null) 
+			{
 				try
 				{
 					_servicioPedido.SetEstadoPreparado(pedidos);
@@ -401,7 +402,29 @@ public class ControladorPedido extends HttpServlet {
 					request.setAttribute("mensajeError", "Error interno del servidor");
 				}
 				acceso = "listadoPedidosAEntregarManana.jsp";
-			}else {
+			}else 
+			{
+				acceso = "loginAdmin.jsp";
+			}
+		}
+		else if (action.equalsIgnoreCase("prepararPedido"))
+		{
+			HttpSession sesion = request.getSession(true);
+			String nro_pedido = request.getParameter("numero_pedido");
+			if(sesion.getAttribute("usuario_admin") != null) 
+			{
+				try
+				{
+					_servicioPedido.SetEstadoPreparado(nro_pedido);
+					request.setAttribute("mensajeOk", "Preparación registrada con éxito");
+				}
+				catch (Exception e)
+				{
+					request.setAttribute("mensajeError", "Error interno del servidor");
+				}
+				acceso = "ControladorPedido?accion=listadoPedidos";
+			}else 
+			{
 				acceso = "loginAdmin.jsp";
 			}
 		}

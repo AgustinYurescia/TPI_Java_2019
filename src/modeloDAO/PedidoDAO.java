@@ -213,7 +213,7 @@ public class PedidoDAO {
 		if (estado.equalsIgnoreCase("pendiente")) {
 			sentenciaSQL = sentenciaSQL + " WHERE fecha_entrega_real is null AND fecha_cancelacion is null  AND estado='pendiente' order by fecha_pedido desc";
 		}else if (estado.equalsIgnoreCase("preparado")) {
-			sentenciaSQL = "SELECT * FROM pedido WHERE AND estado='preparado' order by fecha_pedido desc";
+			sentenciaSQL = "SELECT * FROM pedido WHERE estado='preparado' order by fecha_pedido desc";
 		}else if (estado.equalsIgnoreCase("entregado")) {
 			sentenciaSQL = sentenciaSQL + " WHERE fecha_cancelacion is null AND fecha_entrega_real is not null AND estado='finalizado' order by fecha_pedido desc";
 		}else if (estado.equalsIgnoreCase("cancelado")) {
@@ -457,10 +457,12 @@ public class PedidoDAO {
 		}
 		return pedidos;
 	}
-	public void setEstadoPreparado(ArrayList<Pedido> pedidos) throws Exception {
+	public void setEstadoPreparado(ArrayList<Pedido> pedidos) throws Exception 
+	{
 		PreparedStatement ps= null;
 		String sentenciaSQL="UPDATE pedido SET estado = 'preparado' WHERE nro_pedido = ?";
-		try {
+		try 
+		{
 			ps = Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
 			for (Pedido p : pedidos)
 			{
@@ -468,15 +470,46 @@ public class PedidoDAO {
 				ps.executeUpdate();
 			}
 		} 
-		catch (Exception e) {
+		catch (Exception e) 
+		{
 			_logger.error(e.getMessage());
 			throw e;
 		}
-		finally {
-			try {
+		finally 
+		{
+			try 
+			{
                 Conexion.getInstancia().desconectar();
 			} 
-			catch (Exception e) {
+			catch (Exception e) 
+			{
+				_logger.error(e.getMessage());
+			}
+		}
+	}
+	public void setEstadoPreparado(String nro_pedido) throws Exception 
+	{
+		PreparedStatement ps= null;
+		String sentenciaSQL="UPDATE pedido SET estado = 'preparado' WHERE nro_pedido = ?";
+		try 
+		{
+			ps = Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			ps.setInt(1, Integer.parseInt(nro_pedido));
+			ps.executeUpdate();
+		} 
+		catch (Exception e) 
+		{
+			_logger.error(e.getMessage());
+			throw e;
+		}
+		finally 
+		{
+			try 
+			{
+                Conexion.getInstancia().desconectar();
+			} 
+			catch (Exception e) 
+			{
 				_logger.error(e.getMessage());
 			}
 		}
