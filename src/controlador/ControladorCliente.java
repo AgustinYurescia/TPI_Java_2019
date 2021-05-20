@@ -103,8 +103,7 @@ public class ControladorCliente extends HttpServlet {
 		if(action.equalsIgnoreCase("alta")) {
 			cliente = new Cliente(request.getParameter("dni"),request.getParameter("usuario"),request.getParameter("contrasena"), 
 					request.getParameter("nombre"), request.getParameter("apellido"),request.getParameter("mail"),
-					request.getParameter("telefono"),request.getParameter("direccion")
-					);
+					request.getParameter("telefono"),request.getParameter("direccion"), null, null);
 			try {
 				ValidatorCliente.ValidarAlta(request.getParameter("dni"),request.getParameter("usuario"),request.getParameter("contrasena"), 
 						request.getParameter("nombre"), request.getParameter("apellido"),request.getParameter("mail"),
