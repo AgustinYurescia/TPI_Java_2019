@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 
 import config.Conexion;
 import exceptions.NonExistentFeeException;
@@ -106,11 +107,11 @@ public class CuotaDAO
 		}
 	}
 	
-	public ArrayList<Cuota> ObtenerCuotasAnioActual(String dniCliente) throws Exception
+	public ArrayList<Cuota> ObtenerCuotasImpagas(String dniCliente) throws Exception
 	{
 		ArrayList<Cuota> cuotas = new ArrayList<Cuota>();
 		Cuota cuota = null;
-		String sentenciaSQL="SELECT * FROM cuota WHERE anio=YEAR(current_date) AND dni_cliente=?";
+		String sentenciaSQL="SELECT * FROM cuota WHERE fecha_pago is null AND dni_cliente=?";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try 
@@ -120,18 +121,18 @@ public class CuotaDAO
 			rs = ps.executeQuery();
 			if (rs.next())
 			{
-				cuota = new Cuota(rs.getString(1), rs.getInt(2), rs.getInt(3), rs.getDouble(4), rs.getDate(5));
+				cuota = new Cuota(rs.getString(1), rs.getInt(2), rs.getInt(3), rs.getDouble(4), rs.getObject(5, LocalDate.class));
 				cuotas.add(cuota);
 				while (rs.next())
 				{
-					cuota = new Cuota(rs.getString(1), rs.getInt(2), rs.getInt(3), rs.getDouble(4), rs.getDate(5));
+					cuota = new Cuota(rs.getString(1), rs.getInt(2), rs.getInt(3), rs.getDouble(4), rs.getObject(5, LocalDate.class));
 					cuotas.add(cuota);
 				}
 				return cuotas;
 			}
 			else
 			{
-				throw new NonExistentFeeException("No existen cuotas para el cliente ingresado");
+				throw new NonExistentFeeException("No existen cuotas impagas para el cliente ingresado");
 			}
 		}catch(NonExistentFeeException e) {
 			throw e;
@@ -179,6 +180,90 @@ public class CuotaDAO
 				_logger.error(e.getMessage());
 			}
 		}
-		
 	}
+	
+	public ArrayList<Cuota> ListadoCuotas(int mes, int anio) throws Exception
+	{
+		ArrayList<Cuota> cuotas = new ArrayList<Cuota>();
+		Cuota cuota = null;
+		String sentenciaSQL = "SELECT * FROM cuota WHERE mes=? and anio=?";
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try 
+		{
+			ps = Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			ps.setInt(1, mes);
+			ps.setInt(2, anio);
+			rs = ps.executeQuery();
+			if (rs.next())
+			{
+				cuota = new Cuota(rs.getString(1), rs.getInt(2), rs.getInt(3), rs.getDouble(4), rs.getObject(5, LocalDate.class));
+				cuotas.add(cuota);
+				while (rs.next())
+				{
+					cuota = new Cuota(rs.getString(1), rs.getInt(2), rs.getInt(3), rs.getDouble(4), rs.getObject(5, LocalDate.class));
+					cuotas.add(cuota);
+				}
+				return cuotas;
+			}
+			else
+			{
+				throw new NonExistentFeeException("No existen cuotas generadas");
+			}
+		}
+		catch(NonExistentFeeException e) 
+		{
+			throw e;
+		}
+		catch(Exception e)
+		{
+			_logger.error(e.getMessage());
+			throw e;
+		}
+		finally 
+		{
+			try 
+			{
+                Conexion.getInstancia().desconectar();
+			} 
+			catch (Exception e) 
+			{
+				_logger.error(e.getMessage());
+			}
+		}
+	}
+	
+	public Integer getCantidadCuotasSinPago(String dni) throws Exception
+	{
+		Integer cantidadCuotasImpagas = 0;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sentenciaSQL="SELECT count(*) FROM vinoteca_gatti.cuota WHERE dni_cliente=? and fecha_pago is null";
+		try 
+		{
+			ps = Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			ps.setString(1, dni);
+			rs = ps.executeQuery();
+			if (rs.next())
+			{
+				cantidadCuotasImpagas = rs.getInt(1);
+			}
+		}
+		catch(Exception e)
+		{
+			_logger.error(e.getMessage());
+			throw e;
+		}finally {
+			try 
+			{
+                Conexion.getInstancia().desconectar();
+			} 
+			catch (Exception e) 
+			{
+				_logger.error(e.getMessage());
+			}
+		}
+		return cantidadCuotasImpagas;
+	}
+	
 }

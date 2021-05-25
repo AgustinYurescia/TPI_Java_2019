@@ -104,18 +104,27 @@
   			if (cliente.getFecha_baja_socio() == null)
   			{
   			%>
-			<div class="form-row" style="margin-left: 1px">¡Ya es socio!</div>
+			<div class="form-row" style="margin-left: 1px"><b>¡Ya es socio!</b></div>
 			<%
   			}
   			else
   			{
-  			%>
-			<div class="form-row" style="margin-left: 1px">
-				<button type="submit" class="btn btn-primary" name="accion"
-					value="hacer_socio">Registrar Socio</button>
-			</div>
-			<%
-			}
+  				if ((Integer)request.getAttribute("cantidadCuotasImpagas") <= 3)
+  				{
+		  			%>
+					<div class="form-row" style="margin-left: 1px">
+						<button type="submit" class="btn btn-primary" name="accion"
+							value="hacer_socio">Registrar Socio</button>
+					</div>
+					<%
+				}
+  				else
+  				{
+ 				%>
+ 					<div class="form-row" style="margin-left: 1px"><b>¡EL CLIENTE NO PUEDE SER SOCIO NUEVAMENTE, DEBE ABONAR PRIMERO LAS CUOTAS QUE DEBE! - PUEDE REGISTRAR EL PAGO <a href="pagoCuotas.jsp?dni=<%=cliente.getDni()%>">AQUÍ</a></b></div>
+ 				<%
+  				}
+  			}
   		}}
       	else
       	{

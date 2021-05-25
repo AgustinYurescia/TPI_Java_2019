@@ -40,12 +40,12 @@ public class ServicioCuota {
 		}
 	}
 	
-	public ArrayList<Cuota> ObtenerCuotasAnioActual(String dniCliente) throws Exception
+	public ArrayList<Cuota> ObtenerCuotasImpagas(String dniCliente) throws Exception
 	{
 		ArrayList<Cuota> cuotas = null;
 		try
 		{
-			cuotas = _cuotaDAO.ObtenerCuotasAnioActual(dniCliente);
+			cuotas = _cuotaDAO.ObtenerCuotasImpagas(dniCliente);
 			return cuotas;
 		}
 		catch(NonExistentFeeException e)
@@ -65,6 +65,37 @@ public class ServicioCuota {
 			_cuotaDAO.RegistrarPago(dniCliente, mes, anio);
 		}
 		catch(Exception e)
+		{
+			throw e;
+		}
+	}
+	
+	public ArrayList<Cuota> ListadoCuotas(String mes, String anio) throws Exception
+	{
+		ArrayList<Cuota> cuotas = null;
+		try
+		{
+			cuotas = _cuotaDAO.ListadoCuotas(Integer.parseInt(mes), Integer.parseInt(anio));
+			return cuotas;
+		}
+		catch(NonExistentFeeException e)
+		{
+			throw e;
+		}
+		catch(Exception e)
+		{
+			throw e;
+		}
+	}
+	
+	public Integer getCantidadCuotasSinPago(String dni) throws Exception
+	{
+		try
+		{ 
+			Integer cantidadCuotasImpagas = _cuotaDAO.getCantidadCuotasSinPago(dni);
+			return cantidadCuotasImpagas;
+		}
+		catch (Exception e)
 		{
 			throw e;
 		}

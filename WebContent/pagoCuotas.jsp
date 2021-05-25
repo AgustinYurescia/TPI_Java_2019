@@ -15,7 +15,7 @@
 	<% 
 	HttpSession sesion = request.getSession(true);
 	if (sesion.getAttribute("usuario_admin") != null) { 
-		String dni = (String)request.getAttribute("dni");
+		String dni = ((String)request.getAttribute("dni") != null)? (String)request.getAttribute("dni"): request.getParameter("dni") ;
 	%>
 	<div class="m-2">
 		<h1>Buscar Cuotas</h1>
@@ -53,9 +53,9 @@
 	   			</tr>
 	   		</thead>
 	   			<%
-	   				if (request.getAttribute("cuotasAnio") != null)
+	   				if (request.getAttribute("cuotasImpagas") != null)
 	   				{
-	   				for (Cuota cuota:(ArrayList<Cuota>)request.getAttribute("cuotasAnio"))
+	   				for (Cuota cuota:(ArrayList<Cuota>)request.getAttribute("cuotasImpagas"))
 	   				{
 	   				
 	   			%>	   				  		   				 	   			  

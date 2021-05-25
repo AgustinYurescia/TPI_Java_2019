@@ -74,6 +74,7 @@
               		Cuotas Socio
             	</a>
             	<div class="dropdown-menu" aria-labelledby="clientesDropdown">
+            		<a class="dropdown-item" href="listadoCuotas.jsp">Listado de cuotas generadas</a>
             		<a class="dropdown-item" href="ControladorDeLinks?accion=pagoCuotas">Buscar Para Pago</a>
               		<a class="dropdown-item" href="ControladorCuota?accion=generarCuotas">Generar Cuotas</a>
             	</div>
