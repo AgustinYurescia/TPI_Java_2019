@@ -35,6 +35,10 @@
 		<div class="panel">
 		  	<p>No, la única forma de poder realizar pedidos por este medio es estando registrado/a y haber iniciado sesión.</p>
 		</div>
+		<button class="accordion">6 - ¿Puedo comprar alcohol siendo menor de edad?</button>
+		<div class="panel">
+		  	<p>No, a la hora de retirar el pedido, en caso de que el mismo contenga bebidas alcohólicas, usted deberá presentar su DNI y en caso de ser menor de 18 años el pedido no podrá ser entregado.</p>
+		</div>
 	</div>
   	<jsp:include page="footer.jsp"/>
   	<script>

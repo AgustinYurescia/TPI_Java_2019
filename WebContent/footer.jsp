@@ -14,7 +14,8 @@
 				<p align="left">
 					<a href="ControladorDeLinks?accion=indexCliente" style="color:white !important">Home</a><br/>
 					<a href="ControladorDeLinks?accion=listarProductosCliente" style="color:white !important">Productos</a><br/>
-					<a href="sobreNosotros.jsp" style="color:white !important">Sobre Nosotros</a>
+					<a href="sobreNosotros.jsp" style="color:white !important">Sobre Nosotros</a><br/>
+					<a href="ayuda.jsp" style="color:white !important">Ayuda</a>
 				</p>
 			</div>
 			<div class="col-md-4 col-lg-4 col-xl-4 mx-auto mt-3">
