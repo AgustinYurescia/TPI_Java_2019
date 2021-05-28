@@ -164,6 +164,9 @@
        		<li class="nav-item">
   				<a class="nav-link" href="ControladorDeLinks?accion=listarProductosCliente" style="color:white !important">Productos</a>
 			</li>
+			<li class="nav-item">
+  				<a class="nav-link" href="sobreNosotros.jsp" style="color:white !important">Sobre Nosotros</a>
+			</li>
 		</ul>
 		<ul class="navbar-nav mr-right">
 		
