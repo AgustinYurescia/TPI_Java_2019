@@ -4,21 +4,26 @@ import modeloDAO.PedidoDAO;
 import modeloDAO.ProductoDAO;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import modelo.PaginaProductos;
 import modelo.Producto;
+import modelo.GeneradorGrafico;
+
 
 public class ServicioProducto {
 	
 	private ProductoDAO _productoDAO;
 	private static Logger _logger = LogManager.getLogger(PedidoDAO.class);
+	private GeneradorGrafico _graficador;
 	
 	public ServicioProducto()
 	{
 		_productoDAO = new ProductoDAO();
+		_graficador = new GeneradorGrafico();
 	}
 	
 	public void AltaProducto(Producto prod, Double precio) throws Exception {
@@ -155,6 +160,19 @@ public class ServicioProducto {
 			_logger.error(e.getMessage());
 		}
 		return pagina;
+	}
+	public void obtenerVentasPorProducto(Integer anio) throws Exception 
+	{
+		Map<String, Integer> ventas = null;
+		try
+		{
+			ventas = _productoDAO.obtenerVentasPorProducto(anio);
+			_graficador.graficoBarrasVentasPorProducto(ventas);
+		}
+		catch(Exception e)
+		{
+			 throw e;
+		}
 	}
 
 }

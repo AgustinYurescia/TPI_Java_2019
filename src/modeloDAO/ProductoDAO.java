@@ -1,6 +1,8 @@
 package modeloDAO;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -611,6 +613,45 @@ public class ProductoDAO {
 		}
 		
 		return result;
-		
 	}
+	public Map<String,Integer> obtenerVentasPorProducto(Integer anio) throws Exception {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String consulta = "SELECT p.nombre, sum(pp.cantidad) FROM producto as p\r\n" + 
+						  "INNER JOIN pedido_productos as pp\r\n" + 
+						  "ON p.codigo = pp.codigo_producto\r\n" + 
+						  "INNER JOIN pedido as pe\r\n" + 
+						  "ON pp.nro_pedido = pe.nro_pedido\r\n" + 
+						  "WHERE p.fecha_baja is null AND year(pe.fecha_entrega_est) = ? AND pe.fecha_cancelacion is null\r\n" + 
+						  "GROUP BY p.nombre\r\n" + 
+						  "ORDER BY sum(pp.cantidad) desc\r\n" + 
+						  "LIMIT 10;";
+		Map<String, Integer> result = new HashMap<String,Integer>();
+		try {
+			ps=Conexion.getInstancia().getConexion().prepareStatement(consulta);
+			ps.setInt(1, anio);
+		    rs = ps.executeQuery();
+		    if(rs != null){
+			    while(rs.next()) {
+			    	result.put(rs.getString(1), rs.getInt(2));
+			    }
+		    }
+		}catch(SQLException e) {
+			_logger.error(e.getMessage());
+		}
+		finally {
+			try 
+			{
+				if(rs!=null) {rs.close();}
+				if(ps!=null) {ps.close();}
+				Conexion.getInstancia().desconectar();
+			} 
+			catch (Exception e) 
+			{
+				_logger.error(e.getMessage());
+			}
+		}
+		return result;
+	}
+	
 }

@@ -1,22 +1,23 @@
 package services;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import exceptions.AppException;
 import modelo.Cliente;
+import modelo.GeneradorGrafico;
 import modelo.LineaPedido;
 import modelo.Pedido;
 import modeloDAO.PedidoDAO;
-import modeloDAO.ProductoDAO;
 
 public class ServicioPedido {
 	
 	private PedidoDAO _pedidoDAO;
-	private ProductoDAO _productoDao;
+	private GeneradorGrafico _graficador;
 	public ServicioPedido()
 	{
 		this._pedidoDAO = new PedidoDAO();
-		this._productoDao = new ProductoDAO();
+		this._graficador = new GeneradorGrafico();
 	}
 	public int Alta(Pedido ped, ArrayList<LineaPedido> linea) throws Exception
 	{
@@ -52,6 +53,35 @@ public class ServicioPedido {
 	public void RegistrarEntrega(int numeroPedido) throws Exception {
 		_pedidoDAO.RegistrarEntrega(numeroPedido);
 	}
+	public void obtenerTotalVentasPorMes(Integer anio) throws Exception 
+	{
+		Map<Integer, Float> ventas = null;
+		try
+		{
+			ventas = _pedidoDAO.obtenerTotalVentasPorMes(anio);
+			_graficador.graficoBarrasVentasPorMes(ventas);
+			_graficador.graficoLinealVentasPorMes(ventas);
+		}
+		catch(Exception e)
+		{
+			 throw e;
+		}
+	}
+	public void obtenerTotalVentasPorAnio() throws Exception 
+	{
+		Map<Integer, Float> ventas = null;
+		try
+		{
+			ventas = _pedidoDAO.obtenerTotalVentasPorAnio();
+			_graficador.graficoBarrasVentasPorAnio(ventas);
+			_graficador.graficoLinealVentasPorAnio(ventas);
+		}
+		catch(Exception e)
+		{
+			 throw e;
+		}
+	}
+	
 	public ArrayList<Pedido> PedidosAEntregarManana() throws Exception
 	{
 		ArrayList<Pedido> pedidos = new ArrayList<Pedido>();

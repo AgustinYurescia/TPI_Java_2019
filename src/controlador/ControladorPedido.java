@@ -1,6 +1,8 @@
 package controlador;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,30 +19,25 @@ import exceptions.NonExistentUserException;
 import exceptions.NotEnoughStockException;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import modelo.Cliente;
 import modelo.LineaPedido;
 import modelo.Producto;
-import modeloDAO.ProductoDAO;
 import services.CustomerService;
 import services.ServicioCategoria;
 import services.ServicioPedido;
 import services.ServicioPlazosPrecios;
 import services.ServicioProducto;
 import modelo.Pedido;
-import modeloDAO.ClienteDAO;
-import modeloDAO.PedidoDAO;
-import services.ServicioProducto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.message.LoggerNameAwareMessage;
 
 
 @WebServlet("/ControladorPedido")
 public class ControladorPedido extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private ServicioProducto _servicioProducto; 
-	private ServicioCategoria _servicioCategoria;
 	private CustomerService _servicioCliente;
 	private ServicioPedido _servicioPedido; 
 	private ValidatorPedido _validatorPedido;
@@ -50,7 +47,6 @@ public class ControladorPedido extends HttpServlet {
     public ControladorPedido() {
         super();
         this._servicioProducto = new ServicioProducto();
-        this._servicioCategoria = new ServicioCategoria();
         this._servicioCliente = new CustomerService();
         this._servicioPedido = new ServicioPedido();
         this._validatorPedido = new ValidatorPedido();
@@ -60,7 +56,7 @@ public class ControladorPedido extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getParameter("accion");
 		String acceso = "";
-		
+		HttpSession sesion = request.getSession(true);
 		if(action.equalsIgnoreCase("agregarAlCarrito")) {
 			try 
 			{
@@ -71,7 +67,6 @@ public class ControladorPedido extends HttpServlet {
 				int cantidad = Integer.parseInt(request.getParameter("cantidad"));
 				double subtotal = 0.0 ;
 				ArrayList<LineaPedido> linea;
-				HttpSession sesion = request.getSession(true);
 				if (sesion.getAttribute("carrito") == null) {
 					linea = new ArrayList<LineaPedido>();
 				}else {
@@ -126,7 +121,6 @@ public class ControladorPedido extends HttpServlet {
 			}
 			
 		}else if(action.equalsIgnoreCase("eliminarDelCarrito")) {
-			HttpSession sesion = request.getSession(true);
 			ArrayList<LineaPedido> linea = (ArrayList<LineaPedido>)sesion.getAttribute("carrito");
 			int codigo = Integer.parseInt(request.getParameter("codigo_prod"));
 			for (LineaPedido l: linea) {
@@ -139,7 +133,6 @@ public class ControladorPedido extends HttpServlet {
 			acceso = "carrito.jsp";
 			
 		}else if(action.equalsIgnoreCase("ConfirmarCarrito")) {
-			HttpSession sesion = request.getSession(true);
 			ArrayList<LineaPedido> linea = (ArrayList<LineaPedido>)sesion.getAttribute("carrito"); 
 			Iterator<LineaPedido>iter = linea.iterator();
 			LineaPedido lin;
@@ -168,8 +161,6 @@ public class ControladorPedido extends HttpServlet {
 			Pedido ped = new Pedido();
 			Correo correo = new Correo();
 			Producto prod = new Producto();
-			
-			HttpSession sesion = request.getSession(true);
 			String usuario_cliente = (String)sesion.getAttribute("usuario_cliente");
 			if(usuario_cliente != null) {
 				try
@@ -192,13 +183,13 @@ public class ControladorPedido extends HttpServlet {
 					try {
 						correo.enviar_mail_confirmacion(cli.getMail(), nro_pedido);
 					}catch(Exception Ex){
-						request.setAttribute("mensajeErrorMail", "La compra se realizo exitosamente pero no se ha podido enviar el mail de confirmacion");
+						request.setAttribute("mensajeErrorMail", "La compra se realizo exitosamente pero no se ha podido enviar el mail de confirmación");
 					}
 				}
 				catch(NotEnoughStockException ex) {
 					request.setAttribute("errorStock", "No poseemos stock de uno o mas de los productos seleccionados. Puede ser que haya "
 							+ "sucedido una compra desde que cuando usted agregó los productos al carrito. "
-							+ "\n O tambíen que haya cargado un stock mayor al mostrado como disponible en la pagina de selección del"
+							+ "\n O también que haya cargado un stock mayor al mostrado como disponible en la pagina de selección del"
 							+ "producto.");
 					sesion.setAttribute("carrito", null);
 					acceso = "carrito.jsp";
@@ -214,7 +205,6 @@ public class ControladorPedido extends HttpServlet {
 				acceso = "loginClientes.jsp";
 			}			
 		}else if (action.equalsIgnoreCase("listadoPedidos")) {
-			HttpSession sesion = request.getSession(true);
   			String usuario_admin = (String)sesion.getAttribute("usuario_admin");
   			if(usuario_admin != null) {
 				String fechaDesde = request.getParameter("fechaDesde");
@@ -248,7 +238,6 @@ public class ControladorPedido extends HttpServlet {
 		    }
 		    
 		}else if(action.equalsIgnoreCase("mostrar_pedido")) {
-			HttpSession sesion = request.getSession(true);
   			String usuario_admin = (String)sesion.getAttribute("usuario_admin");
   			if(usuario_admin != null) {
 				String nro_pedido = request.getParameter("nro_pedido");
@@ -268,7 +257,6 @@ public class ControladorPedido extends HttpServlet {
   			}
 		
 		}else if(action.equalsIgnoreCase("mostrar_pedido_cliente")) {
-			HttpSession sesion = request.getSession(true);
   			String usuario_cliente = (String)sesion.getAttribute("usuario_cliente");
 			
   			if(usuario_cliente != null) {
@@ -276,7 +264,7 @@ public class ControladorPedido extends HttpServlet {
 					Pedido pedido = _servicioPedido.BuscarPedidoConProductos(Integer.parseInt(request.getParameter("nro_pedido")));
 					Cliente cli = _servicioCliente.ObtenerPorNombreDeUsuario(usuario_cliente);
 					if(!pedido.getDni_cliente().equals(cli.getDni())) {
-						throw new NonExistentUserException("No existe pedido solicitado para le cliente");
+						throw new NonExistentUserException("No existe pedido solicitado para el cliente");
 					}
 					request.setAttribute("pedido", pedido);
 					acceso = "mostrarPedidoCliente.jsp";
@@ -295,7 +283,6 @@ public class ControladorPedido extends HttpServlet {
 		}else if(action.equalsIgnoreCase("cancelar_Pedido")) {
 			try {
 				Correo correo = new Correo(); 
-				HttpSession sesion = request.getSession(true);
 				String usuario_cliente = (String)sesion.getAttribute("usuario_cliente");
 				int nro_pedido = Integer.parseInt(request.getParameter("nro_pedido"));
 				
@@ -303,7 +290,7 @@ public class ControladorPedido extends HttpServlet {
 					Pedido pedido = _servicioPedido.BuscarPedidoConProductos(nro_pedido);
 					Cliente cli = _servicioCliente.ObtenerPorNombreDeUsuario(usuario_cliente);
 					if(!pedido.getDni_cliente().equals(cli.getDni())) {
-						throw new NonExistentUserException("No existe pedido solicitado para le cliente");
+						throw new NonExistentUserException("No existe pedido solicitado para el cliente");
 					}
 					ArrayList<LineaPedido> lineas = pedido.getProductos(); 
 					for(LineaPedido l : lineas) {
@@ -325,7 +312,6 @@ public class ControladorPedido extends HttpServlet {
 				acceso = "error.jsp";
 			}
 		}else if (action.equalsIgnoreCase("listadoPedidosCliente")) {
-  			HttpSession sesion = request.getSession(true);
   			String usuario_cliente = (String)sesion.getAttribute("usuario_cliente");
 			String estado = request.getParameter("estado");
 			if(usuario_cliente != null) {
@@ -341,7 +327,6 @@ public class ControladorPedido extends HttpServlet {
 				acceso = "loginClientes.jsp";
 			}
 		}else if (action.equalsIgnoreCase("entregaPedido")){
-			HttpSession sesion = request.getSession(true);
 			if(sesion.getAttribute("usuario_admin")!= null) {
 				try
 				{
@@ -363,10 +348,32 @@ public class ControladorPedido extends HttpServlet {
 				acceso = "loginAdmin.jsp";
 			}
 		}
+		else if(action.equalsIgnoreCase("graficoTotalVentas")) 
+		{
+			if (sesion.getAttribute("usuario_admin") != null)
+			{
+				Date date = new Date();
+		        ZoneId timeZone = ZoneId.systemDefault();
+		        LocalDate getLocalDate = date.toInstant().atZone(timeZone).toLocalDate();
+		        Integer anio = getLocalDate.getYear();
+				try 
+				{
+					_servicioPedido.obtenerTotalVentasPorMes(anio);
+				} 
+				catch (Exception e) 
+				{
+					request.setAttribute("mensajeError","Error interno del servidor");
+				}
+				acceso="graficoTotalVentasPorMes.jsp";
+			}
+			else
+			{
+				acceso = "loginAdmin.jsp";	
+			}
+		}
 		else if (action.equalsIgnoreCase("listarPedidosAEntregarManana"))
 		{
 			ArrayList<Pedido> pedidos = new ArrayList<Pedido>();
-			HttpSession sesion = request.getSession(true);
 			if(sesion.getAttribute("usuario_admin")!= null) {
 				try
 				{
@@ -388,7 +395,6 @@ public class ControladorPedido extends HttpServlet {
 		}
 		else if (action.equalsIgnoreCase("prepararPedidos"))
 		{
-			HttpSession sesion = request.getSession(true);
 			ArrayList<Pedido> pedidos = (ArrayList<Pedido>)sesion.getAttribute("pedidos");
 			if(sesion.getAttribute("usuario_admin") != null) 
 			{
@@ -407,9 +413,27 @@ public class ControladorPedido extends HttpServlet {
 				acceso = "loginAdmin.jsp";
 			}
 		}
+		else if(action.equalsIgnoreCase("graficoTotalVentasAnual")) 
+		{
+			if (sesion.getAttribute("usuario_admin") != null)
+			{
+				try 
+				{
+					_servicioPedido.obtenerTotalVentasPorAnio();
+				} 
+				catch (Exception e) 
+				{
+					request.setAttribute("mensajeError","Error interno del servidor");
+				}
+				acceso="graficoTotalVentasPorAnio.jsp";
+			}
+			else
+			{
+				acceso = "loginAdmin.jsp";
+			}
+		}
 		else if (action.equalsIgnoreCase("prepararPedido"))
 		{
-			HttpSession sesion = request.getSession(true);
 			String nro_pedido = request.getParameter("numero_pedido");
 			if(sesion.getAttribute("usuario_admin") != null) 
 			{
@@ -428,6 +452,7 @@ public class ControladorPedido extends HttpServlet {
 				acceso = "loginAdmin.jsp";
 			}
 		}
+		
 		RequestDispatcher vista = request.getRequestDispatcher(acceso);
 		vista.forward(request, response);
 	}
