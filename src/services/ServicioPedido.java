@@ -1,21 +1,23 @@
 package services;
 
+import java.awt.Image;
 import java.util.ArrayList;
+import java.util.Map;
 
 import modelo.Cliente;
+import modelo.GeneradorGrafico;
 import modelo.LineaPedido;
 import modelo.Pedido;
 import modeloDAO.PedidoDAO;
-import modeloDAO.ProductoDAO;
 
 public class ServicioPedido {
 	
 	private PedidoDAO _pedidoDAO;
-	private ProductoDAO _productoDao;
+	private GeneradorGrafico _graficador;
 	public ServicioPedido()
 	{
 		this._pedidoDAO = new PedidoDAO();
-		this._productoDao = new ProductoDAO();
+		this._graficador = new GeneradorGrafico();
 	}
 	public int Alta(Pedido ped, ArrayList<LineaPedido> linea) throws Exception
 	{
@@ -50,6 +52,38 @@ public class ServicioPedido {
 	}
 	public void RegistrarEntrega(int numeroPedido) throws Exception {
 		_pedidoDAO.RegistrarEntrega(numeroPedido);
+	}
+	public Image obtenerTotalVentasPorMes(Integer anio) throws Exception 
+	{
+		Map<Integer, Float> ventas = null;
+		Image grafico = null;
+		try
+		{
+			ventas = _pedidoDAO.obtenerTotalVentasPorMes(anio);
+			_graficador.graficoBarrasVentasPorMes(ventas);
+			_graficador.graficoLinealVentasPorMes(ventas);
+		}
+		catch(Exception e)
+		{
+			 throw e;
+		}
+		return grafico;
+	}
+	public Image obtenerTotalVentasPorAnio() throws Exception 
+	{
+		Map<Integer, Float> ventas = null;
+		Image grafico = null;
+		try
+		{
+			ventas = _pedidoDAO.obtenerTotalVentasPorAnio();
+			_graficador.graficoBarrasVentasPorAnio(ventas);
+			_graficador.graficoLinealVentasPorAnio(ventas);
+		}
+		catch(Exception e)
+		{
+			 throw e;
+		}
+		return grafico;
 	}
 	
 }

@@ -2,7 +2,11 @@ package controlador;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -40,7 +44,7 @@ public class ControladorProducto extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String acceso = "";
 		String action = request.getParameter("accion");
-		
+		HttpSession sesion = request.getSession(true);
 		if (action == null) 
 		{
 			acceso = "index.jsp";
@@ -73,6 +77,29 @@ public class ControladorProducto extends HttpServlet {
 		{
 			request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
 			acceso="altaProducto.jsp";
+		}
+		else if(action.equalsIgnoreCase("graficoVentas")) 
+		{
+			if (sesion.getAttribute("usuario_admin") != null)
+			{
+				Date date = new Date();
+		        ZoneId timeZone = ZoneId.systemDefault();
+		        LocalDate getLocalDate = date.toInstant().atZone(timeZone).toLocalDate();
+		        Integer anio = getLocalDate.getYear();
+				try 
+				{
+					request.setAttribute("grafico", _servicioProducto.obtenerVentasPorProducto(anio));
+				} 
+				catch (Exception e) 
+				{
+					request.setAttribute("mensajeError","Error interno del servidor");
+				}
+				acceso="graficoVentas.jsp";
+			}
+			else
+			{
+				acceso = "loginAdmin.jsp";
+			}
 		}
 			
 			RequestDispatcher vista = request.getRequestDispatcher(acceso);

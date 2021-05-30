@@ -1,6 +1,8 @@
 package controlador;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,6 +19,7 @@ import exceptions.NonExistentUserException;
 import exceptions.NotEnoughStockException;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import modelo.Cliente;
 import modelo.LineaPedido;
@@ -60,7 +63,7 @@ public class ControladorPedido extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getParameter("accion");
 		String acceso = "";
-		
+		HttpSession sesion = request.getSession(true);
 		if(action.equalsIgnoreCase("agregarAlCarrito")) {
 			try 
 			{
@@ -71,7 +74,6 @@ public class ControladorPedido extends HttpServlet {
 				int cantidad = Integer.parseInt(request.getParameter("cantidad"));
 				double subtotal = 0.0 ;
 				ArrayList<LineaPedido> linea;
-				HttpSession sesion = request.getSession(true);
 				if (sesion.getAttribute("carrito") == null) {
 					linea = new ArrayList<LineaPedido>();
 				}else {
@@ -126,7 +128,6 @@ public class ControladorPedido extends HttpServlet {
 			}
 			
 		}else if(action.equalsIgnoreCase("eliminarDelCarrito")) {
-			HttpSession sesion = request.getSession(true);
 			ArrayList<LineaPedido> linea = (ArrayList<LineaPedido>)sesion.getAttribute("carrito");
 			int codigo = Integer.parseInt(request.getParameter("codigo_prod"));
 			for (LineaPedido l: linea) {
@@ -139,7 +140,6 @@ public class ControladorPedido extends HttpServlet {
 			acceso = "carrito.jsp";
 			
 		}else if(action.equalsIgnoreCase("ConfirmarCarrito")) {
-			HttpSession sesion = request.getSession(true);
 			ArrayList<LineaPedido> linea = (ArrayList<LineaPedido>)sesion.getAttribute("carrito"); 
 			Iterator<LineaPedido>iter = linea.iterator();
 			LineaPedido lin;
@@ -168,8 +168,6 @@ public class ControladorPedido extends HttpServlet {
 			Pedido ped = new Pedido();
 			Correo correo = new Correo();
 			Producto prod = new Producto();
-			
-			HttpSession sesion = request.getSession(true);
 			String usuario_cliente = (String)sesion.getAttribute("usuario_cliente");
 			if(usuario_cliente != null) {
 				try
@@ -214,7 +212,6 @@ public class ControladorPedido extends HttpServlet {
 				acceso = "loginClientes.jsp";
 			}			
 		}else if (action.equalsIgnoreCase("listadoPedidos")) {
-			HttpSession sesion = request.getSession(true);
   			String usuario_admin = (String)sesion.getAttribute("usuario_admin");
   			if(usuario_admin != null) {
 				String fechaDesde = request.getParameter("fechaDesde");
@@ -248,7 +245,6 @@ public class ControladorPedido extends HttpServlet {
 		    }
 		    
 		}else if(action.equalsIgnoreCase("mostrar_pedido")) {
-			HttpSession sesion = request.getSession(true);
   			String usuario_admin = (String)sesion.getAttribute("usuario_admin");
   			if(usuario_admin != null) {
 				String nro_pedido = request.getParameter("nro_pedido");
@@ -268,7 +264,6 @@ public class ControladorPedido extends HttpServlet {
   			}
 		
 		}else if(action.equalsIgnoreCase("mostrar_pedido_cliente")) {
-			HttpSession sesion = request.getSession(true);
   			String usuario_cliente = (String)sesion.getAttribute("usuario_cliente");
 			
   			if(usuario_cliente != null) {
@@ -295,7 +290,6 @@ public class ControladorPedido extends HttpServlet {
 		}else if(action.equalsIgnoreCase("cancelar_Pedido")) {
 			try {
 				Correo correo = new Correo(); 
-				HttpSession sesion = request.getSession(true);
 				String usuario_cliente = (String)sesion.getAttribute("usuario_cliente");
 				int nro_pedido = Integer.parseInt(request.getParameter("nro_pedido"));
 				
@@ -325,7 +319,6 @@ public class ControladorPedido extends HttpServlet {
 				acceso = "error.jsp";
 			}
 		}else if (action.equalsIgnoreCase("listadoPedidosCliente")) {
-  			HttpSession sesion = request.getSession(true);
   			String usuario_cliente = (String)sesion.getAttribute("usuario_cliente");
 			String estado = request.getParameter("estado");
 			if(usuario_cliente != null) {
@@ -341,7 +334,6 @@ public class ControladorPedido extends HttpServlet {
 				acceso = "loginClientes.jsp";
 			}
 		}else if (action.equalsIgnoreCase("entregaPedido")){
-			HttpSession sesion = request.getSession(true);
 			if(sesion.getAttribute("usuario_admin")!= null) {
 				try
 				{
@@ -360,6 +352,52 @@ public class ControladorPedido extends HttpServlet {
 				}
 				acceso = "ControladorPedido?accion=listadoPedidos";
 			}else {
+				acceso = "loginAdmin.jsp";
+			}
+		}
+		else if(action.equalsIgnoreCase("graficoTotalVentas")) 
+		{
+			if (sesion.getAttribute("usuario_admin") != null)
+			{
+				Date date = new Date();
+		        ZoneId timeZone = ZoneId.systemDefault();
+		        LocalDate getLocalDate = date.toInstant().atZone(timeZone).toLocalDate();
+		        Integer anio = getLocalDate.getYear();
+				try 
+				{
+					request.setAttribute("grafico", _servicioPedido.obtenerTotalVentasPorMes(anio));
+				} 
+				catch (Exception e) 
+				{
+					request.setAttribute("mensajeError","Error interno del servidor");
+				}
+				acceso="graficoTotalVentasPorMes.jsp";
+			}
+			else
+			{
+				acceso = "loginAdmin.jsp";
+			}
+		}
+		else if(action.equalsIgnoreCase("graficoTotalVentasAnual")) 
+		{
+			if (sesion.getAttribute("usuario_admin") != null)
+			{
+				Date date = new Date();
+		        ZoneId timeZone = ZoneId.systemDefault();
+		        LocalDate getLocalDate = date.toInstant().atZone(timeZone).toLocalDate();
+		        Integer anio = getLocalDate.getYear();
+				try 
+				{
+					request.setAttribute("grafico", _servicioPedido.obtenerTotalVentasPorAnio());
+				} 
+				catch (Exception e) 
+				{
+					request.setAttribute("mensajeError","Error interno del servidor");
+				}
+				acceso="graficoTotalVentasPorAnio.jsp";
+			}
+			else
+			{
 				acceso = "loginAdmin.jsp";
 			}
 		}

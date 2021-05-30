@@ -2,9 +2,12 @@ package modeloDAO;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -402,5 +405,73 @@ public class PedidoDAO {
 				_logger.error(e.getMessage());
 			}
 		}
+	}
+	
+	public Map<Integer,Float> obtenerTotalVentasPorMes(Integer anio) throws Exception {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String consulta = "SELECT month(fecha_pedido), sum(monto) FROM pedido\r\n" + 
+						  "WHERE fecha_cancelacion is null AND year(fecha_pedido)=?\r\n" + 
+						  "GROUP BY month(fecha_pedido)\r\n" + 
+						  "ORDER BY month(fecha_pedido) asc";
+		Map<Integer, Float> result = new HashMap<Integer,Float>();
+		try {
+			ps=Conexion.getInstancia().getConexion().prepareStatement(consulta);
+			ps.setInt(1, anio);
+		    rs = ps.executeQuery();
+		    if(rs != null){
+			    while(rs.next()) {
+			    	result.put(rs.getInt(1), rs.getFloat(2));
+			    }
+		    }
+		}catch(SQLException e) {
+			_logger.error(e.getMessage());
+		}
+		finally {
+			try 
+			{
+				if(rs!=null) {rs.close();}
+				if(ps!=null) {ps.close();}
+				Conexion.getInstancia().desconectar();
+			} 
+			catch (Exception e) 
+			{
+				_logger.error(e.getMessage());
+			}
+		}
+		return result;
+	}
+	
+	public Map<Integer,Float> obtenerTotalVentasPorAnio() throws Exception {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String consulta = "SELECT year(fecha_pedido), sum(monto) FROM pedido\r\n" + 
+						  "WHERE fecha_cancelacion is null\r\n" + 
+						  "GROUP BY year(fecha_pedido)";
+		Map<Integer, Float> result = new HashMap<Integer,Float>();
+		try {
+			ps=Conexion.getInstancia().getConexion().prepareStatement(consulta);
+		    rs = ps.executeQuery();
+		    if(rs != null){
+			    while(rs.next()) {
+			    	result.put(rs.getInt(1), rs.getFloat(2));
+			    }
+		    }
+		}catch(SQLException e) {
+			_logger.error(e.getMessage());
+		}
+		finally {
+			try 
+			{
+				if(rs!=null) {rs.close();}
+				if(ps!=null) {ps.close();}
+				Conexion.getInstancia().desconectar();
+			} 
+			catch (Exception e) 
+			{
+				_logger.error(e.getMessage());
+			}
+		}
+		return result;
 	}
 }
