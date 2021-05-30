@@ -18,6 +18,7 @@
 		<% HttpSession sesion = request.getSession(true);
 	   	   if (sesion.getAttribute("usuario_admin") != null) { %>
 	   <div class="m-2">
+	   <hr/>
 	   	<form action="ControladorPedido">
 	   		<div class = "form-row">
 	   			<div class="form-group col-md-4">	
@@ -33,6 +34,7 @@
       				<select id="estado" name="estado" class="form-control">
       					<option>-</option>
         				<option>Pendiente</option>
+        				<option>Preparado</option>
         				<option>Entregado</option>
         				<option>Cancelado</option>
      				</select>
@@ -44,6 +46,7 @@
 	       		</div>
 	       	</div>				
 		</form>
+		<hr/>
 		<% 	
  			if(request.getAttribute("mensajeError") != null){
  		%>
@@ -54,6 +57,21 @@
  		%>
  			<div class="alert alert-primary" role="alert"><%=request.getAttribute("mensajeOk")%></div>
 		<%}%>
+		<%
+		String estado = (String)request.getAttribute("estado");
+		if (estado != null && !estado.equalsIgnoreCase("-"))
+		{
+		%>
+			<h1>Listado de pedidos <%=estado.toLowerCase()%>s</h1>
+		<%
+		}
+		else
+		{
+		%>
+			<h1>Listado de pedidos</h1>
+		<%
+		}
+		%>
 	   	<table class="table">
 	   		<thead>
 	   			<tr>

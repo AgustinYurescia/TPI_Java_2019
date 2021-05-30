@@ -1,6 +1,7 @@
 package modelo;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 public class Cuota 
 {
@@ -8,16 +9,16 @@ public class Cuota
 	private int mes;
 	private int anio;
 	private double valor;
-	private java.sql.Date fechaPago;
+	private LocalDate fechaPago;
 	
-	public Cuota(String dniCliente, int mes, int anio, double valor, Date fechaPago) 
+	public Cuota(String dniCliente, int mes, int anio, double valor, LocalDate localDate) 
 	{
 		super();
 		this.dniCliente = dniCliente;
 		this.mes = mes;
 		this.anio = anio;
 		this.valor = valor;
-		this.fechaPago = fechaPago;
+		this.fechaPago = localDate;
 	}
 
 	public String getDniCliente() 
@@ -60,12 +61,12 @@ public class Cuota
 		this.valor = valor;
 	}
 
-	public java.sql.Date getFechaPago() 
+	public LocalDate getFechaPago() 
 	{
 		return fechaPago;
 	}
 
-	public void setFechaPago(java.sql.Date fechaPago) 
+	public void setFechaPago(LocalDate fechaPago) 
 	{
 		this.fechaPago = fechaPago;
 	}

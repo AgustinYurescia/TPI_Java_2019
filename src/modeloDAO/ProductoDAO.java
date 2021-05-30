@@ -473,6 +473,44 @@ public class ProductoDAO {
 		
 		return prod;
 	}
+	public Producto buscarProductoSinImagen(int codigo_producto) throws Exception 
+	{
+		Producto prod = new Producto();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sentenciaSQL="SELECT codigo, nombre, stock, precio_venta, codigo_categoria, fecha_baja FROM producto WHERE codigo = ?";
+		try 
+		{
+			ps=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			ps.setInt(1, codigo_producto);
+			rs=ps.executeQuery();
+			if (rs.next()) 
+			{
+				prod.setCodigo(rs.getInt(1));
+				prod.setNombre(rs.getString(2));
+				prod.setStock(rs.getInt(3));
+				prod.setPrecioVenta(rs.getDouble(4));
+			}
+		} 
+		catch (Exception e) 
+		{
+			_logger.error(e.getMessage());
+			throw e;
+		}
+		finally 
+		{
+			try 
+			{
+                Conexion.getInstancia().desconectar();
+			} 
+			catch (Exception e) 
+			{
+				_logger.error(e.getMessage());
+			}
+		}
+		
+		return prod;
+	}
 	public ArrayList<Producto> obtenerPorPagina(int numeroPorPagina, int numeroPagina, int codigoCategoria) throws Exception {
 		PreparedStatement ps = null;
 		ResultSet rs = null;

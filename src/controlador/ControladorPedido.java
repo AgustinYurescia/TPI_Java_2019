@@ -88,7 +88,7 @@ public class ControladorPedido extends HttpServlet {
 							l.setSubtotal(prod.getPrecioVenta() * l.getCantidad());
 							ya_existe = true;
 							request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
-							request.setAttribute("mensajeOk", "Agregado al carrito con éxito");
+							request.setAttribute("mensajeOk", "Agregado al carrito con ï¿½xito");
 							acceso = "listarProductos.jsp";
 							break;
 						}
@@ -99,7 +99,7 @@ public class ControladorPedido extends HttpServlet {
 					subtotal = cantidad * prod.getPrecioVenta();
 					linea.add(new LineaPedido(codigo_producto,cantidad,subtotal));
 					request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
-					request.setAttribute("mensajeOk", "Agregado al carrito con éxito");
+					request.setAttribute("mensajeOk", "Agregado al carrito con ï¿½xito");
 					acceso = "listarProductos.jsp";				
 				}
 				sesion.setAttribute("carrito", linea);
@@ -195,15 +195,15 @@ public class ControladorPedido extends HttpServlet {
 				}
 				catch(NotEnoughStockException ex) {
 					request.setAttribute("errorStock", "No poseemos stock de uno o mas de los productos seleccionados. Puede ser que haya "
-							+ "sucedido una compra desde que cuando usted agregó los productos al carrito. "
-							+ "\n O tambíen que haya cargado un stock mayor al mostrado como disponible en la pagina de selección del"
+							+ "sucedido una compra desde que cuando usted agregï¿½ los productos al carrito. "
+							+ "\n O tambï¿½en que haya cargado un stock mayor al mostrado como disponible en la pagina de selecciï¿½n del"
 							+ "producto.");
 					sesion.setAttribute("carrito", null);
 					acceso = "carrito.jsp";
 				}
 				catch (Exception e)
 				{
-					request.setAttribute("mensajeError", "¡Error interno del servidor!");
+					request.setAttribute("mensajeError", "ï¿½Error interno del servidor!");
 					acceso = "error.jsp";
 				}				
 			}
@@ -340,7 +340,7 @@ public class ControladorPedido extends HttpServlet {
 					_validatorPedido.validacion_entrega(request.getParameter("numero_pedido"));
 					int numeroPedido = Integer.parseInt(request.getParameter("numero_pedido"));
 					_servicioPedido.RegistrarEntrega(numeroPedido);
-					request.setAttribute("mensajeOk", "Entrega registrada con éxito");
+					request.setAttribute("mensajeOk", "Entrega registrada con ï¿½xito");
 				}
 				catch(AppException e)
 				{
@@ -375,6 +375,48 @@ public class ControladorPedido extends HttpServlet {
 			}
 			else
 			{
+				acceso = "loginAdmin.jsp";	
+			}
+		}
+		else if (action.equalsIgnoreCase("listarPedidosAEntregarManana"))
+		{
+			ArrayList<Pedido> pedidos = new ArrayList<Pedido>();
+			if(sesion.getAttribute("usuario_admin")!= null) {
+				try
+				{
+					pedidos = _servicioPedido.PedidosAEntregarManana();
+					sesion.setAttribute("pedidos", pedidos);
+				}
+				catch(AppException e)
+				{
+					request.setAttribute("mensajeError", e.getMessage());
+				}
+				catch (Exception e)
+				{
+					request.setAttribute("mensajeError", "Error interno del servidor");
+				}
+				acceso = "listadoPedidosAEntregarManana.jsp";
+			}else {
+				acceso = "loginAdmin.jsp";
+			}
+		}
+		else if (action.equalsIgnoreCase("prepararPedidos"))
+		{
+			ArrayList<Pedido> pedidos = (ArrayList<Pedido>)sesion.getAttribute("pedidos");
+			if(sesion.getAttribute("usuario_admin") != null) 
+			{
+				try
+				{
+					_servicioPedido.SetEstadoPreparado(pedidos);
+					request.setAttribute("mensajeOk", "Preparaciï¿½n registrada con ï¿½xito");
+				}
+				catch (Exception e)
+				{
+					request.setAttribute("mensajeError", "Error interno del servidor");
+				}
+				acceso = "listadoPedidosAEntregarManana.jsp";
+			}else 
+			{
 				acceso = "loginAdmin.jsp";
 			}
 		}
@@ -397,6 +439,26 @@ public class ControladorPedido extends HttpServlet {
 				acceso="graficoTotalVentasPorAnio.jsp";
 			}
 			else
+			{
+				acceso = "loginAdmin.jsp";
+			}
+		}
+		else if (action.equalsIgnoreCase("prepararPedido"))
+		{
+			String nro_pedido = request.getParameter("numero_pedido");
+			if(sesion.getAttribute("usuario_admin") != null) 
+			{
+				try
+				{
+					_servicioPedido.SetEstadoPreparado(nro_pedido);
+					request.setAttribute("mensajeOk", "Preparaciï¿½n registrada con ï¿½xito");
+				}
+				catch (Exception e)
+				{
+					request.setAttribute("mensajeError", "Error interno del servidor");
+				}
+				acceso = "ControladorPedido?accion=listadoPedidos";
+			}else 
 			{
 				acceso = "loginAdmin.jsp";
 			}

@@ -108,7 +108,7 @@ public class ControladorPDF extends HttpServlet {
 			{
 				try {
 					Cliente cliente = _servicioCliente.ObtenerPorNombreDeUsuario((String)sesion.getAttribute("usuario_cliente"));
-					ArrayList<Cuota> cuotas = _servicioCuota.ObtenerCuotasAnioActual(cliente.getDni());
+					ArrayList<Cuota> cuotas = _servicioCuota.ObtenerCuotasImpagas(cliente.getDni());
 					DateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd_HH:mm");
 					String file_date = dateformat.format(new Date());
 					String content =  "Content-Disposition";

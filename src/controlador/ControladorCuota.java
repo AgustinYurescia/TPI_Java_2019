@@ -2,7 +2,9 @@ package controlador;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -79,7 +81,7 @@ public class ControladorCuota extends HttpServlet {
 				try
 				{
 					cliente = _servicioCliente.ObtenerPorNombreDeUsuario((String)sesion.getAttribute("usuario_cliente"));
-					request.setAttribute("misCuotas", (ArrayList<Cuota>)_servicioCuota.ObtenerCuotasAnioActual(cliente.getDni()));
+					request.setAttribute("misCuotas", (ArrayList<Cuota>)_servicioCuota.ObtenerCuotasImpagas(cliente.getDni()));
 				}
 				catch(NonExistentFeeException e)
 				{
@@ -112,7 +114,7 @@ public class ControladorCuota extends HttpServlet {
 			{
 				try
 				{
-					request.setAttribute("cuotasAnio", (ArrayList<Cuota>)_servicioCuota.ObtenerCuotasAnioActual(request.getParameter("dniCliente")));
+					request.setAttribute("cuotasImpagas", (ArrayList<Cuota>)_servicioCuota.ObtenerCuotasImpagas(request.getParameter("dniCliente")));
 				}
 				catch(NonExistentFeeException e)
 				{
@@ -131,22 +133,68 @@ public class ControladorCuota extends HttpServlet {
 				acceso = "loginAdmin.jsp";
 			}
 		}
-		else if(action.equalsIgnoreCase("registrarPago"))
+		else if(action.equalsIgnoreCase("registrarPago") || action.equalsIgnoreCase("registrarPagoDesdeListado"))
 		{
 			if (sesion.getAttribute("usuario_admin") != null)
 			{
 				try
 				{
-					_servicioCuota.RegistrarPago(request.getParameter("dniCliente"), Integer.parseInt(request.getParameter("mesCuota")), Integer.parseInt(request.getParameter("anioCuota")));
-					request.setAttribute("mensajeOk", "Pago registrado con éxito, puede volver a buscar las cuotas del cliente para comprobarlo");
+					String dniCliente = request.getParameter("dniCliente");
+					String mes = request.getParameter("mesCuota");
+					String anio = request.getParameter("anioCuota");					
+					_servicioCuota.RegistrarPago(dniCliente, Integer.parseInt(mes), Integer.parseInt(anio));
+					if (!action.equalsIgnoreCase("registrarPago"))
+					{
+						for (Cuota c : (ArrayList<Cuota>)sesion.getAttribute("cuotas"))
+						{
+							if(c.getDniCliente().equalsIgnoreCase(dniCliente) && c.getMes() == Integer.parseInt(mes) && c.getAnio() == Integer.parseInt(anio)) 
+							{
+								LocalDate today =  LocalDate.now();
+								c.setFechaPago(today);
+							}
+						}
+					}
+					request.setAttribute("mensajeOk", "Pago registrado con éxito");
 				}
 				catch(Exception e)
 				{
 					request.setAttribute("mensajeError", "No se pudo registrar el pago debido a un error interno del servidor");
 				}
+				if (action.equalsIgnoreCase("registrarPago"))
+				{
+					request.setAttribute("dni", request.getParameter("dniCliente"));
+					acceso="pagoCuotas.jsp";
+				}
+				else
+				{
+					acceso="listadoCuotas.jsp";
+				}
+			}
+			else
+			{
+				acceso = "loginAdmin.jsp";
+			}
+		}
+		else if(action.equalsIgnoreCase("listadoCuotas"))
+		{
+			if (sesion.getAttribute("usuario_admin") != null)
+			{
+				try
+				{
+					sesion.setAttribute("cuotas", (ArrayList<Cuota>)_servicioCuota.ListadoCuotas(request.getParameter("mes"), request.getParameter("anio")));
+				}
+				catch(NonExistentFeeException e)
+				{
+					request.setAttribute("mensajeError", e.getMessage());
+				}
+				catch(Exception e)
+				{
+					request.setAttribute("mensajeError", "Error interno del servidor");
+				}
 				
-				request.setAttribute("dni", request.getParameter("dniCliente"));
-				acceso="pagoCuotas.jsp";
+				request.setAttribute("mes", request.getParameter("mes"));
+				request.setAttribute("anio", request.getParameter("anio"));
+				acceso="listadoCuotas.jsp";
 			}
 			else
 			{

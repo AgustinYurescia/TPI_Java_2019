@@ -82,6 +82,13 @@ public class ControladorDeLinks extends HttpServlet {
 			response.sendRedirect("ControladorCategoria?accion=modificacion");
 		}else if (action.equalsIgnoreCase("pagoCuotas")) {
 			response.sendRedirect("pagoCuotas.jsp");
+		}else if (action.equalsIgnoreCase("listarPedidosAEntregarManana")) {
+			HttpSession sesion = request.getSession(true);
+			if (sesion.getAttribute("usuario_admin") == null) {
+				response.sendRedirect("loginAdmin.jsp");   
+			}else {
+				response.sendRedirect("ControladorPedido?accion=listarPedidosAEntregarManana");
+			}
 		}
 		
 		//RequestDispatcher vista = request.getRequestDispatcher(acceso);

@@ -4,6 +4,7 @@ import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Map;
 
+import exceptions.AppException;
 import modelo.Cliente;
 import modelo.GeneradorGrafico;
 import modelo.LineaPedido;
@@ -86,4 +87,43 @@ public class ServicioPedido {
 		return grafico;
 	}
 	
+	public ArrayList<Pedido> PedidosAEntregarManana() throws Exception
+	{
+		ArrayList<Pedido> pedidos = new ArrayList<Pedido>();
+		try
+		{
+			pedidos = _pedidoDAO.PedidosAEntregarManana();
+			return pedidos;
+		}
+		catch(AppException e)
+		{
+			throw e;
+		}
+		catch(Exception e)
+		{
+			throw e;
+		}
+	}
+	public void SetEstadoPreparado(ArrayList<Pedido> pedidos) throws Exception
+	{
+		try
+		{
+			_pedidoDAO.setEstadoPreparado(pedidos);
+		}
+		catch(Exception e)
+		{
+			throw e;
+		}
+	}
+	public void SetEstadoPreparado(String nro_pedido) throws Exception
+	{
+		try
+		{
+			_pedidoDAO.setEstadoPreparado(nro_pedido);
+		}
+		catch(Exception e)
+		{
+			throw e;
+		}
+	}
 }

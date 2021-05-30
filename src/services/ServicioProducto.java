@@ -76,6 +76,19 @@ public class ServicioProducto {
 			throw e;
 		}
 	}
+	
+	public Producto GetProductoSinImagen(int codigo_producto) throws Exception {
+		
+		try
+		{
+			Producto prod = _productoDAO.buscarProductoSinImagen(codigo_producto);
+			return prod;
+		}
+		catch (Exception e)
+		{
+			throw e;
+		}
+	}
 
 	public void ReponerStock(int codigo_producto, int cantidad, double precio) throws Exception {
 	
