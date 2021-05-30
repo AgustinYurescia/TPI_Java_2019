@@ -91,7 +91,7 @@ public class PedidoDAO {
 		}
 	}
 	
-	//CONTROLAR QUE ESTï¿½ BIEN ====> este metodo no deberia usarse con las nuevas reglas de negocio y el descuento para el socio
+	//CONTROLAR QUE ESTÉ BIEN ====> este metodo no deberia usarse con las nuevas reglas de negocio y el descuento para el socio
 	public void calcular_monto_pedido(int nro_pedido) { 
 		PreparedStatement st = null;
 		ResultSet keyResultSet=null;
@@ -120,7 +120,7 @@ public class PedidoDAO {
 		
 	}
 	
-	//CONTROLAR QUE ESTï¿½ BIEN
+	//CONTROLAR QUE ESTÉ BIEN
 	public void setear_fecha_entrega_estimada(int nro_pedido) { 
 		int cantidad_de_dias;
 		Statement st = null;
@@ -491,7 +491,7 @@ public class PedidoDAO {
 		}
 		if (pedidos.size() == 0)
 		{
-			throw new NonExistentOrderException("No existen pedidos con fecha de entrega el dï¿½a de maï¿½ana");
+			throw new NonExistentOrderException("No existen pedidos con fecha de entrega el día de mañana");
 		}
 		return pedidos;
 	}

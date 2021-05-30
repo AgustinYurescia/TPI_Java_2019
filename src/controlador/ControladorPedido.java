@@ -24,26 +24,20 @@ import java.util.Iterator;
 import modelo.Cliente;
 import modelo.LineaPedido;
 import modelo.Producto;
-import modeloDAO.ProductoDAO;
 import services.CustomerService;
 import services.ServicioCategoria;
 import services.ServicioPedido;
 import services.ServicioPlazosPrecios;
 import services.ServicioProducto;
 import modelo.Pedido;
-import modeloDAO.ClienteDAO;
-import modeloDAO.PedidoDAO;
-import services.ServicioProducto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.message.LoggerNameAwareMessage;
 
 
 @WebServlet("/ControladorPedido")
 public class ControladorPedido extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private ServicioProducto _servicioProducto; 
-	private ServicioCategoria _servicioCategoria;
 	private CustomerService _servicioCliente;
 	private ServicioPedido _servicioPedido; 
 	private ValidatorPedido _validatorPedido;
@@ -53,7 +47,6 @@ public class ControladorPedido extends HttpServlet {
     public ControladorPedido() {
         super();
         this._servicioProducto = new ServicioProducto();
-        this._servicioCategoria = new ServicioCategoria();
         this._servicioCliente = new CustomerService();
         this._servicioPedido = new ServicioPedido();
         this._validatorPedido = new ValidatorPedido();
@@ -88,7 +81,7 @@ public class ControladorPedido extends HttpServlet {
 							l.setSubtotal(prod.getPrecioVenta() * l.getCantidad());
 							ya_existe = true;
 							request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
-							request.setAttribute("mensajeOk", "Agregado al carrito con ï¿½xito");
+							request.setAttribute("mensajeOk", "Agregado al carrito con éxito");
 							acceso = "listarProductos.jsp";
 							break;
 						}
@@ -99,7 +92,7 @@ public class ControladorPedido extends HttpServlet {
 					subtotal = cantidad * prod.getPrecioVenta();
 					linea.add(new LineaPedido(codigo_producto,cantidad,subtotal));
 					request.setAttribute("categorias", _servicioCategoria.obtenerTodas());
-					request.setAttribute("mensajeOk", "Agregado al carrito con ï¿½xito");
+					request.setAttribute("mensajeOk", "Agregado al carrito con éxito");
 					acceso = "listarProductos.jsp";				
 				}
 				sesion.setAttribute("carrito", linea);
@@ -190,7 +183,7 @@ public class ControladorPedido extends HttpServlet {
 					try {
 						correo.enviar_mail_confirmacion(cli.getMail(), nro_pedido);
 					}catch(Exception Ex){
-						request.setAttribute("mensajeErrorMail", "La compra se realizo exitosamente pero no se ha podido enviar el mail de confirmacion");
+						request.setAttribute("mensajeErrorMail", "La compra se realizo exitosamente pero no se ha podido enviar el mail de confirmación");
 					}
 				}
 				catch(NotEnoughStockException ex) {
@@ -203,7 +196,7 @@ public class ControladorPedido extends HttpServlet {
 				}
 				catch (Exception e)
 				{
-					request.setAttribute("mensajeError", "ï¿½Error interno del servidor!");
+					request.setAttribute("mensajeError", "¡Error interno del servidor!");
 					acceso = "error.jsp";
 				}				
 			}
@@ -271,7 +264,7 @@ public class ControladorPedido extends HttpServlet {
 					Pedido pedido = _servicioPedido.BuscarPedidoConProductos(Integer.parseInt(request.getParameter("nro_pedido")));
 					Cliente cli = _servicioCliente.ObtenerPorNombreDeUsuario(usuario_cliente);
 					if(!pedido.getDni_cliente().equals(cli.getDni())) {
-						throw new NonExistentUserException("No existe pedido solicitado para le cliente");
+						throw new NonExistentUserException("No existe pedido solicitado para el cliente");
 					}
 					request.setAttribute("pedido", pedido);
 					acceso = "mostrarPedidoCliente.jsp";
@@ -297,7 +290,7 @@ public class ControladorPedido extends HttpServlet {
 					Pedido pedido = _servicioPedido.BuscarPedidoConProductos(nro_pedido);
 					Cliente cli = _servicioCliente.ObtenerPorNombreDeUsuario(usuario_cliente);
 					if(!pedido.getDni_cliente().equals(cli.getDni())) {
-						throw new NonExistentUserException("No existe pedido solicitado para le cliente");
+						throw new NonExistentUserException("No existe pedido solicitado para el cliente");
 					}
 					ArrayList<LineaPedido> lineas = pedido.getProductos(); 
 					for(LineaPedido l : lineas) {
@@ -408,7 +401,7 @@ public class ControladorPedido extends HttpServlet {
 				try
 				{
 					_servicioPedido.SetEstadoPreparado(pedidos);
-					request.setAttribute("mensajeOk", "Preparaciï¿½n registrada con ï¿½xito");
+					request.setAttribute("mensajeOk", "Preparación registrada con éxito");
 				}
 				catch (Exception e)
 				{
@@ -424,10 +417,6 @@ public class ControladorPedido extends HttpServlet {
 		{
 			if (sesion.getAttribute("usuario_admin") != null)
 			{
-				Date date = new Date();
-		        ZoneId timeZone = ZoneId.systemDefault();
-		        LocalDate getLocalDate = date.toInstant().atZone(timeZone).toLocalDate();
-		        Integer anio = getLocalDate.getYear();
 				try 
 				{
 					request.setAttribute("grafico", _servicioPedido.obtenerTotalVentasPorAnio());
@@ -451,7 +440,7 @@ public class ControladorPedido extends HttpServlet {
 				try
 				{
 					_servicioPedido.SetEstadoPreparado(nro_pedido);
-					request.setAttribute("mensajeOk", "Preparaciï¿½n registrada con ï¿½xito");
+					request.setAttribute("mensajeOk", "Preparación registrada con éxito");
 				}
 				catch (Exception e)
 				{
