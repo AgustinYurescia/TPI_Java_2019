@@ -11,6 +11,7 @@ public class Pedido {
 	private java.sql.Date fecha_entrega_real;
 	private String dni_cliente;
 	private ArrayList<LineaPedido> productos;
+	private String estado;
 	
 	public int getNro_pedido() {
 		return nro_pedido;
@@ -60,7 +61,10 @@ public class Pedido {
 	public void setDni_cliente(String dni_cliente) {
 		this.dni_cliente = dni_cliente;
 	}
-
-	
-
+	public String getEstado() {
+		return estado;
+	}
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
 }

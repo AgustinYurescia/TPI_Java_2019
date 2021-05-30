@@ -50,6 +50,8 @@
   			<%if(request.getAttribute("mensajeError") != null){%>
   			<div class="alert alert-danger" role="alert"><%= request.getAttribute("mensajeError") %></div>
   			<%}%>
+  			<ul id="product_info">
+ 			</ul>
 			<button type="submit" class="btn btn-primary" name="accion" value="ActualizarStock" onclick="return validacion_producto();">Actualizar</button>
 		</form>
 	</div>
@@ -62,4 +64,50 @@
 	  	}
 	 	%>
 </body>
+<script>
+	$('#codigo_producto').on
+	('change',
+		function() {
+			var codigo_prod = $(document.getElementById('codigo_producto')).find('option:selected').val();
+			$.ajax({
+				type : 'POST',
+				url : '/TPI_Java/ControladorProducto',
+				data : {
+					'ajax_action' : 'buscar_producto',
+					'codigo_producto': codigo_prod,
+				}
+			}).done(
+					function(producto) {
+						$('#product_info').html(
+						"<li>Nombre del producto: " + producto.nombre + "</li>" +
+						"<li id='stock_actual' value=" + producto.stock +">Stock actual: " + producto.stock + "</li>" +
+						"<li>Precio de venta: " + producto.precioVenta + "</li>" +
+						"<li id='stock_futuro' hidden></li>" +
+						"<li id='precio_futuro' hidden></li>"
+						)
+					}).fail(function() {
+						alert('Hubo un error al recuperar el stock actual del producto seleccionado')
+			})
+		})
+		
+	$('#stock').on
+	('change',
+		function() {
+		var stock = $(document.getElementById('stock')).val();
+		var stock_actual = $(document.getElementById('stock_actual')).val();
+		var stock_futuro = $(document.getElementById('stock_futuro'));
+		var total = parseInt(stock) + parseInt(stock_actual);
+		stock_futuro.html("Nuevo stock: " + total);
+		$(document.getElementById('stock_futuro').hidden = false);
+	})
+	
+	$('#precio').on
+	('change',
+		function() {
+		var precio = $(document.getElementById('precio')).val();
+		var precio_futuro = $(document.getElementById('precio_futuro'));
+		precio_futuro.html("Nuevo precio: $" + precio);
+		$(document.getElementById('precio_futuro').hidden = false);
+	})
+</script>
 </html>

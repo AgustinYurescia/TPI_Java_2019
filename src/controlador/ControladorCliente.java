@@ -16,15 +16,18 @@ import exceptions.AppException;
 import exceptions.ExistentUserException;
 import exceptions.NonExistentUserException;
 import services.CustomerService;
+import services.ServicioCuota;
 import modelo.Cliente;
 
 @WebServlet("/ControladorCliente")
 public class ControladorCliente extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private CustomerService _customerService;
+	private ServicioCuota _servicioCuota;
     public ControladorCliente() {
         super();
         _customerService = new CustomerService();
+        _servicioCuota = new ServicioCuota();
         // TODO Auto-generated constructor stub
     }
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -103,8 +106,7 @@ public class ControladorCliente extends HttpServlet {
 		if(action.equalsIgnoreCase("alta")) {
 			cliente = new Cliente(request.getParameter("dni"),request.getParameter("usuario"),request.getParameter("contrasena"), 
 					request.getParameter("nombre"), request.getParameter("apellido"),request.getParameter("mail"),
-					request.getParameter("telefono"),request.getParameter("direccion")
-					);
+					request.getParameter("telefono"),request.getParameter("direccion"), null, null);
 			try {
 				ValidatorCliente.ValidarAlta(request.getParameter("dni"),request.getParameter("usuario"),request.getParameter("contrasena"), 
 						request.getParameter("nombre"), request.getParameter("apellido"),request.getParameter("mail"),
@@ -201,7 +203,9 @@ public class ControladorCliente extends HttpServlet {
 				if (request.getParameter("dni") != null)
 				{
 					Cliente cli = _customerService.Buscar(request.getParameter("dni"));
+					Integer cantidadCuotasImpagas = _servicioCuota.getCantidadCuotasSinPago(cli.getDni());
 					request.setAttribute("cliente", cli);
+					request.setAttribute("cantidadCuotasImpagas", cantidadCuotasImpagas);
 				}
 				else
 				{

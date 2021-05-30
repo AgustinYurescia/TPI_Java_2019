@@ -21,11 +21,12 @@ public class PedidoDAO {
 	public int alta(Pedido ped, ArrayList<LineaPedido> lin) throws Exception{ 
 		PreparedStatement st = null;
 		ResultSet keyResultSet = null;
-		String sentenciaSQL="INSERT INTO pedido(fecha_pedido,monto,dni_cliente)values(current_date,?,?)";
+		String sentenciaSQL="INSERT INTO pedido(fecha_pedido,monto,dni_cliente,estado)values(current_date,?,?,?)";
 		try {
 			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL,PreparedStatement.RETURN_GENERATED_KEYS);
 			st.setDouble(1, ped.getMonto());
 			st.setString(2, ped.getDni_cliente());
+			st.setString(3, "pendiente");
 			st.executeUpdate();
 			keyResultSet=st.getGeneratedKeys();
 			if(keyResultSet!=null && keyResultSet.next()) {
@@ -164,11 +165,14 @@ public class PedidoDAO {
 			sentenciaSQL = "SELECT * FROM pedido WHERE fecha_pedido <= '"+fecha_fin+"'";
 		}
 		if (estado.equalsIgnoreCase("pendiente")) {
-			sentenciaSQL = sentenciaSQL + " AND fecha_entrega_real is null AND fecha_cancelacion is null order by fecha_pedido desc";
+			sentenciaSQL = sentenciaSQL + " AND fecha_entrega_real is null AND fecha_cancelacion is null AND estado='pendiente' order by fecha_pedido desc";
 		}else if (estado.equalsIgnoreCase("entregado")) {
-			sentenciaSQL = sentenciaSQL + " AND fecha_cancelacion is null AND fecha_entrega_real is not null order by fecha_pedido desc";
+			sentenciaSQL = sentenciaSQL + " AND fecha_cancelacion is null AND fecha_entrega_real is not null AND estado='finalizado' order by fecha_pedido desc";
 		}else if (estado.equalsIgnoreCase("cancelado")) {
-			sentenciaSQL = sentenciaSQL + " AND fecha_cancelacion is not null order by fecha_pedido desc";
+			sentenciaSQL = sentenciaSQL + " AND fecha_cancelacion is not null AND estado='cancelado' order by fecha_pedido desc";
+		}
+		else if (estado.equalsIgnoreCase("preparado")) {
+			sentenciaSQL = sentenciaSQL + "AND estado='preparado' order by fecha_pedido desc";
 		}
 		try {
 			st=Conexion.getInstancia().getConexion().createStatement();
@@ -183,6 +187,7 @@ public class PedidoDAO {
 					ped.setFecha_cancelacion(rs.getDate("fecha_cancelacion"));
 					ped.setFecha_entrega_real(rs.getDate("fecha_entrega_real"));
 					ped.setDni_cliente(rs.getString("dni_cliente"));
+					ped.setEstado(rs.getString("estado"));
 					lista.add(ped);
 				}
 			}
@@ -206,11 +211,13 @@ public class PedidoDAO {
 		ArrayList<Pedido>lista = new ArrayList<>();
 		String sentenciaSQL = "SELECT * FROM pedido";
 		if (estado.equalsIgnoreCase("pendiente")) {
-			sentenciaSQL = sentenciaSQL + " WHERE fecha_entrega_real is null AND fecha_cancelacion is null order by fecha_pedido desc";
+			sentenciaSQL = sentenciaSQL + " WHERE fecha_entrega_real is null AND fecha_cancelacion is null  AND estado='pendiente' order by fecha_pedido desc";
+		}else if (estado.equalsIgnoreCase("preparado")) {
+			sentenciaSQL = "SELECT * FROM pedido WHERE estado='preparado' order by fecha_pedido desc";
 		}else if (estado.equalsIgnoreCase("entregado")) {
-			sentenciaSQL = sentenciaSQL + " WHERE fecha_cancelacion is null AND fecha_entrega_real is not null order by fecha_pedido desc";
+			sentenciaSQL = sentenciaSQL + " WHERE fecha_cancelacion is null AND fecha_entrega_real is not null AND estado='finalizado' order by fecha_pedido desc";
 		}else if (estado.equalsIgnoreCase("cancelado")) {
-			sentenciaSQL = sentenciaSQL + " WHERE fecha_cancelacion is not null order by fecha_pedido desc";
+			sentenciaSQL = sentenciaSQL + " WHERE fecha_cancelacion is not null AND estado = 'cancelado' order by fecha_pedido desc";
 		}
 		try {
 			st=Conexion.getInstancia().getConexion().createStatement();
@@ -225,6 +232,7 @@ public class PedidoDAO {
 					ped.setFecha_cancelacion(rs.getDate("fecha_cancelacion"));
 					ped.setFecha_entrega_real(rs.getDate("fecha_entrega_real"));
 					ped.setDni_cliente(rs.getString("dni_cliente"));
+					ped.setEstado(rs.getString("estado"));
 					lista.add(ped);
 				}
 			}
@@ -263,6 +271,7 @@ public class PedidoDAO {
 				ped.setFecha_cancelacion(rs.getDate("fecha_cancelacion"));
 				ped.setFecha_entrega_real(rs.getDate("fecha_entrega_real"));
 				ped.setDni_cliente(rs.getString("dni_cliente"));
+				ped.setEstado(rs.getString("estado"));
 				return ped;
 			}
 			else
@@ -321,7 +330,7 @@ public class PedidoDAO {
 	//TODO throw exception on record not updated
 	public void cancelar_pedido(int nro_pedido) {
 		PreparedStatement st = null;
-		String sentenciaSQL="UPDATE pedido SET fecha_cancelacion = current_date WHERE nro_pedido="+nro_pedido+"";
+		String sentenciaSQL="UPDATE pedido SET fecha_cancelacion = current_date, estado = 'cancelado' WHERE nro_pedido="+nro_pedido+"";
 		try {
 			st=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
 			st.executeUpdate();
@@ -342,11 +351,13 @@ public class PedidoDAO {
 		ArrayList<Pedido>lista = new ArrayList<>();
 		String sentenciaSQL = "";
 		if (estado.equalsIgnoreCase("pendiente")) {
-			sentenciaSQL = "SELECT * FROM pedido WHERE dni_cliente="+dni_cliente+" AND fecha_cancelacion is null AND fecha_entrega_real is null order by fecha_pedido desc";
+			sentenciaSQL = "SELECT * FROM pedido WHERE dni_cliente="+dni_cliente+" AND estado='pendiente' order by fecha_pedido desc";
+		}else if (estado.equalsIgnoreCase("listo para retirar")) {
+			sentenciaSQL = "SELECT * FROM pedido WHERE dni_cliente="+dni_cliente+" AND estado='preparado' order by fecha_pedido desc";
 		}else if (estado.equalsIgnoreCase("entregado")) {
-			sentenciaSQL = "SELECT * FROM pedido WHERE dni_cliente="+dni_cliente+" AND fecha_cancelacion is null AND fecha_entrega_real is not null order by fecha_pedido desc";
+			sentenciaSQL = "SELECT * FROM pedido WHERE dni_cliente="+dni_cliente+" AND estado='finalizado' order by fecha_pedido desc";
 		}else if (estado.equalsIgnoreCase("cancelado")) {
-			sentenciaSQL = "SELECT * FROM pedido WHERE dni_cliente="+dni_cliente+" AND fecha_cancelacion is not null order by fecha_pedido desc";
+			sentenciaSQL = "SELECT * FROM pedido WHERE dni_cliente="+dni_cliente+" AND estado='cancelado' order by fecha_pedido desc";
 		}else if (estado.equalsIgnoreCase("-")) {
 			sentenciaSQL = "SELECT * FROM pedido WHERE dni_cliente="+dni_cliente+" order by fecha_pedido desc";
 		}
@@ -363,6 +374,7 @@ public class PedidoDAO {
 					ped.setFecha_cancelacion(rs.getDate("fecha_cancelacion"));
 					ped.setFecha_entrega_real(rs.getDate("fecha_entrega_real"));
 					ped.setDni_cliente(rs.getString("dni_cliente"));
+					ped.setEstado(rs.getString("estado"));
 					lista.add(ped);
 				}
 			}
@@ -384,7 +396,7 @@ public class PedidoDAO {
 	
 	public void RegistrarEntrega(int numeroPedido) throws Exception {
 		PreparedStatement ps= null;
-		String sentenciaSQL="UPDATE pedido SET fecha_entrega_real = current_date WHERE nro_pedido = ?";
+		String sentenciaSQL="UPDATE pedido SET fecha_entrega_real = current_date, estado = 'finalizado' WHERE nro_pedido = ?";
 		try {
 			ps=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
 			ps.setInt(1, numeroPedido);
@@ -399,6 +411,105 @@ public class PedidoDAO {
                 Conexion.getInstancia().desconectar();
 			} 
 			catch (Exception e) {
+				_logger.error(e.getMessage());
+			}
+		}
+	}
+	
+	public ArrayList<Pedido> PedidosAEntregarManana() throws Exception {
+		PreparedStatement ps= null;
+		ResultSet rs = null;
+		ArrayList<Pedido>pedidos = new ArrayList<>();
+		String sentenciaSQL="SELECT * FROM pedido WHERE fecha_entrega_est = date_add(current_date, interval 1 day) AND estado != 'cancelado';";
+		try {
+			ps = Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			rs = ps.executeQuery(sentenciaSQL);
+			if(rs!=null) {
+				while(rs.next()) {
+					Pedido ped = new Pedido();
+					ped.setNro_pedido(rs.getInt("nro_pedido"));
+					ped.setFecha_pedido(rs.getDate("fecha_pedido"));
+					ped.setFecha_entrega_est(rs.getDate("fecha_entrega_est"));
+					ped.setMonto(rs.getDouble("monto"));
+					ped.setFecha_cancelacion(rs.getDate("fecha_cancelacion"));
+					ped.setFecha_entrega_real(rs.getDate("fecha_entrega_real"));
+					ped.setDni_cliente(rs.getString("dni_cliente"));
+					ped.setEstado(rs.getString("estado"));
+					pedidos.add(ped);
+				}
+			}
+		} 
+		catch (Exception e) {
+			_logger.error(e.getMessage());
+			throw e;
+		}
+		finally {
+			try {
+                Conexion.getInstancia().desconectar();
+			} 
+			catch (Exception e) {
+				_logger.error(e.getMessage());
+			}
+		}
+		if (pedidos.size() == 0)
+		{
+			throw new NonExistentOrderException("No existen pedidos con fecha de entrega el día de mañana");
+		}
+		return pedidos;
+	}
+	public void setEstadoPreparado(ArrayList<Pedido> pedidos) throws Exception 
+	{
+		PreparedStatement ps= null;
+		String sentenciaSQL="UPDATE pedido SET estado = 'preparado' WHERE nro_pedido = ?";
+		try 
+		{
+			ps = Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			for (Pedido p : pedidos)
+			{
+				ps.setInt(1, p.getNro_pedido());
+				ps.executeUpdate();
+			}
+		} 
+		catch (Exception e) 
+		{
+			_logger.error(e.getMessage());
+			throw e;
+		}
+		finally 
+		{
+			try 
+			{
+                Conexion.getInstancia().desconectar();
+			} 
+			catch (Exception e) 
+			{
+				_logger.error(e.getMessage());
+			}
+		}
+	}
+	public void setEstadoPreparado(String nro_pedido) throws Exception 
+	{
+		PreparedStatement ps= null;
+		String sentenciaSQL="UPDATE pedido SET estado = 'preparado' WHERE nro_pedido = ?";
+		try 
+		{
+			ps = Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			ps.setInt(1, Integer.parseInt(nro_pedido));
+			ps.executeUpdate();
+		} 
+		catch (Exception e) 
+		{
+			_logger.error(e.getMessage());
+			throw e;
+		}
+		finally 
+		{
+			try 
+			{
+                Conexion.getInstancia().desconectar();
+			} 
+			catch (Exception e) 
+			{
 				_logger.error(e.getMessage());
 			}
 		}

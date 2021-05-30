@@ -30,6 +30,7 @@
 			      				<select id="estado" name="estado" class="form-control">
 			      					<option selected>-</option>
 			        				<option>Pendiente</option>
+			        				<option>Listo para retirar</option>
 			        				<option>Entregado</option>
 			        				<option>Cancelado</option>
 			     				</select>

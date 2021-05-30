@@ -82,6 +82,10 @@
 						<%}%>
 					</div>
 					<div class="form-row">
+						<div class="form-group col-md-4">	
+				   			<label for="monto">Estado:</label>
+							<input 	type="text" id="estado" class="form-control" value="<%=ped.getEstado().toUpperCase()%>" disabled/>
+						</div>
 			   			<div class="form-group col-md-4">	
 				   			<label for="monto">Monto total:</label>
 							<input 	type="text" id="monto" class="form-control" value="$<%=String.format("%.2f",ped.getMonto())%>" disabled/>
@@ -111,18 +115,27 @@
 			   		</tbody>
 			   	</table>
 			</div>
+			<% if(ped.getEstado().equalsIgnoreCase("pendiente")){ %>
 			<div class="m-3">
-			<% if(ped.getFecha_entrega_real() == null && ped.getFecha_cancelacion() == null){ %>
+				<form action="ControladorPedido">
+			   		<input type="hidden" class="form-control" id="numero_pedido" name="numero_pedido" value=<%=ped.getNro_pedido()%>>
+			   		<button type="submit" class="btn btn-primary" name="accion" value="prepararPedido">Confirmar Preparación</button>
+				</form>
+			</div>
+			<%
+			}
+			if(ped.getFecha_entrega_real() == null && ped.getFecha_cancelacion() == null){
+			%>
+			<div class="m-3">
 				<form action="ControladorPedido">
 			   		<input type="hidden" class="form-control" id="numero_pedido" name="numero_pedido" value=<%=ped.getNro_pedido()%>>
 			   		<button type="submit" class="btn btn-primary" name="accion" value="entregaPedido">Confirmar Entrega</button>
 				</form>
+			</div>
 			<%}}%>
 		<%
 	   }
 	   %>
-	   
-	</div>
 	</div>
 	<jsp:include page="footer.jsp"/>
 </body>

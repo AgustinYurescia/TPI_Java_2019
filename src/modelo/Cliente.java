@@ -14,7 +14,7 @@ public class Cliente {
 	private java.sql.Date fecha_baja;
 	
 	public Cliente(String dni, String cliente_usuario, String cliente_contrasena, String nombre, String apellido,
-			String mail, String telefono, String direccion){
+			String mail, String telefono, String direccion, java.sql.Date fecha_baja_socio, java.sql.Date fecha_baja){
 		this.dni = dni;
 		this.cliente_usuario = cliente_usuario;
 		this.cliente_contrasena = cliente_contrasena;
@@ -23,6 +23,8 @@ public class Cliente {
 		this.mail = mail;
 		this.telefono = telefono;
 		this.direccion = direccion;
+		this.fecha_baja_socio = fecha_baja_socio;
+		this.fecha_baja = fecha_baja;
 	}
 	
 	public Cliente() {
