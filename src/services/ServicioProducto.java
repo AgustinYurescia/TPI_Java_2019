@@ -4,7 +4,6 @@ import modeloDAO.PedidoDAO;
 import modeloDAO.ProductoDAO;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
@@ -14,7 +13,6 @@ import modelo.PaginaProductos;
 import modelo.Producto;
 import modelo.GeneradorGrafico;
 
-import java.awt.*;
 
 public class ServicioProducto {
 	
@@ -163,10 +161,9 @@ public class ServicioProducto {
 		}
 		return pagina;
 	}
-	public Image obtenerVentasPorProducto(Integer anio) throws Exception 
+	public void obtenerVentasPorProducto(Integer anio) throws Exception 
 	{
 		Map<String, Integer> ventas = null;
-		Image grafico = null;
 		try
 		{
 			ventas = _productoDAO.obtenerVentasPorProducto(anio);
@@ -176,7 +173,6 @@ public class ServicioProducto {
 		{
 			 throw e;
 		}
-		return grafico;
 	}
 
 }

@@ -1,6 +1,5 @@
 package services;
 
-import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -54,10 +53,9 @@ public class ServicioPedido {
 	public void RegistrarEntrega(int numeroPedido) throws Exception {
 		_pedidoDAO.RegistrarEntrega(numeroPedido);
 	}
-	public Image obtenerTotalVentasPorMes(Integer anio) throws Exception 
+	public void obtenerTotalVentasPorMes(Integer anio) throws Exception 
 	{
 		Map<Integer, Float> ventas = null;
-		Image grafico = null;
 		try
 		{
 			ventas = _pedidoDAO.obtenerTotalVentasPorMes(anio);
@@ -68,12 +66,10 @@ public class ServicioPedido {
 		{
 			 throw e;
 		}
-		return grafico;
 	}
-	public Image obtenerTotalVentasPorAnio() throws Exception 
+	public void obtenerTotalVentasPorAnio() throws Exception 
 	{
 		Map<Integer, Float> ventas = null;
-		Image grafico = null;
 		try
 		{
 			ventas = _pedidoDAO.obtenerTotalVentasPorAnio();
@@ -84,7 +80,6 @@ public class ServicioPedido {
 		{
 			 throw e;
 		}
-		return grafico;
 	}
 	
 	public ArrayList<Pedido> PedidosAEntregarManana() throws Exception

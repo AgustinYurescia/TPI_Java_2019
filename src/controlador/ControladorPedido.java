@@ -188,8 +188,8 @@ public class ControladorPedido extends HttpServlet {
 				}
 				catch(NotEnoughStockException ex) {
 					request.setAttribute("errorStock", "No poseemos stock de uno o mas de los productos seleccionados. Puede ser que haya "
-							+ "sucedido una compra desde que cuando usted agregï¿½ los productos al carrito. "
-							+ "\n O tambï¿½en que haya cargado un stock mayor al mostrado como disponible en la pagina de selecciï¿½n del"
+							+ "sucedido una compra desde que cuando usted agregó los productos al carrito. "
+							+ "\n O también que haya cargado un stock mayor al mostrado como disponible en la pagina de selección del"
 							+ "producto.");
 					sesion.setAttribute("carrito", null);
 					acceso = "carrito.jsp";
@@ -333,7 +333,7 @@ public class ControladorPedido extends HttpServlet {
 					_validatorPedido.validacion_entrega(request.getParameter("numero_pedido"));
 					int numeroPedido = Integer.parseInt(request.getParameter("numero_pedido"));
 					_servicioPedido.RegistrarEntrega(numeroPedido);
-					request.setAttribute("mensajeOk", "Entrega registrada con ï¿½xito");
+					request.setAttribute("mensajeOk", "Entrega registrada con éxito");
 				}
 				catch(AppException e)
 				{
@@ -358,7 +358,7 @@ public class ControladorPedido extends HttpServlet {
 		        Integer anio = getLocalDate.getYear();
 				try 
 				{
-					request.setAttribute("grafico", _servicioPedido.obtenerTotalVentasPorMes(anio));
+					_servicioPedido.obtenerTotalVentasPorMes(anio);
 				} 
 				catch (Exception e) 
 				{
@@ -419,7 +419,7 @@ public class ControladorPedido extends HttpServlet {
 			{
 				try 
 				{
-					request.setAttribute("grafico", _servicioPedido.obtenerTotalVentasPorAnio());
+					_servicioPedido.obtenerTotalVentasPorAnio();
 				} 
 				catch (Exception e) 
 				{
