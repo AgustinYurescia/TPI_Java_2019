@@ -81,7 +81,7 @@
 						$('#product_info').html(
 						"<li>Nombre del producto: " + producto.nombre + "</li>" +
 						"<li id='stock_actual' value=" + producto.stock +">Stock actual: " + producto.stock + "</li>" +
-						"<li>Precio de venta: " + producto.precioVenta + "</li>" +
+						"<li>Precio de venta: $" + producto.precioVenta + "</li>" +
 						"<li id='stock_futuro' hidden></li>" +
 						"<li id='precio_futuro' hidden></li>"
 						)
@@ -104,10 +104,22 @@
 	$('#precio').on
 	('change',
 		function() {
-		var precio = $(document.getElementById('precio')).val();
-		var precio_futuro = $(document.getElementById('precio_futuro'));
-		precio_futuro.html("Nuevo precio: $" + precio);
-		$(document.getElementById('precio_futuro').hidden = false);
+		$.ajax({
+			type : 'GET',
+			url : '/TPI_Java/ControladorPlazosPrecios',
+			data : {
+				'ajax_action' : 'obtenerPorcGanancia',
+			}
+		}).done(
+				function(porc) {
+					var precio = $(document.getElementById('precio')).val();
+					var float_precio = parseFloat(precio)
+					var precio_futuro = $(document.getElementById('precio_futuro'));
+					precio_futuro.html("Nuevo precio: $" + (float_precio*(1 + porc)).toFixed(2).toString());
+					$(document.getElementById('precio_futuro').hidden = false);
+				}).fail(function() {
+					alert('Hubo un error al recuperar el stock actual del producto seleccionado')
+		})
 	})
 </script>
 </html>

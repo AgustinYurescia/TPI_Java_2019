@@ -4,14 +4,18 @@ import java.io.IOException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.google.gson.Gson;
+
 import services.ServicioPlazosPrecios;
 import exceptions.AppException;
+import modelo.Producto;
 import Validators.TasasPlazosValidator;
 
 @WebServlet("/ControladorPlazosPrecios")
@@ -19,15 +23,32 @@ public class ControladorPlazosPrecios extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private ServicioPlazosPrecios _servicioPlazosPrecios;
 	private TasasPlazosValidator _tasasPlazosValidator;
+	private Gson _gson;
 
     public ControladorPlazosPrecios() {
         super();
         _servicioPlazosPrecios = new ServicioPlazosPrecios();
         _tasasPlazosValidator = new TasasPlazosValidator();
+        _gson = new Gson();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		String ajax_action = request.getParameter("ajax_action");
+		if (ajax_action != null && ajax_action.equalsIgnoreCase("obtenerPorcGanancia"))
+		{
+			try 
+			{
+				float porc = _servicioPlazosPrecios.obtenerPorcGanancia();
+				String res = _gson.toJson(porc);
+				SendSuccessResponse(res ,response);
+				return;
+				
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -122,6 +143,14 @@ public class ControladorPlazosPrecios extends HttpServlet {
 		
 		RequestDispatcher vista = request.getRequestDispatcher(acceso);
 		vista.forward(request, response);
+	}
+	
+	private static void SendSuccessResponse(String mensaje,HttpServletResponse response) throws ServletException, IOException
+	{
+		response.setContentType("application/json;charset=UTF-8");
+		ServletOutputStream out = response.getOutputStream();
+		out.print(mensaje);
+		out.flush();
 	}
 
 }

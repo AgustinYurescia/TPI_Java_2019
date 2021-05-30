@@ -98,4 +98,7 @@ public class ServicioPlazosPrecios {
 	public float obtenerPrcentajeDescuentoSocio() throws Exception {
 		return _descuentoSocioDAO.ObtenerPorcentajeActual();
 	}
+	public float obtenerPorcGanancia() throws Exception {
+		return _porcentajeGananciaDAO.ObtenerPorcentajeActual();
+	}
 }

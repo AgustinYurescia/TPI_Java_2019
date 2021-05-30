@@ -107,5 +107,39 @@ public class PorcentajeGananciaDAO {
 			}
 		}
 	}
-
+	
+	public float ObtenerPorcentajeActual() throws Exception
+	{	
+		sentenciaSQL = "SELECT porcentaje FROM porc_ganancia as pg WHERE pg.fecha_desde = (SELECT MAX(fecha_desde) FROM porc_ganancia)";
+		float porcentaje = 0;
+		try
+		{
+			ps = Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			rs = ps.executeQuery();
+			if (rs.next())
+			{
+				porcentaje = rs.getFloat(1) / 100;
+			}
+			return porcentaje;
+		}
+		catch(Exception e)
+		{
+			_logger.error(e.getMessage());
+			throw e;
+		}
+		finally 
+		{
+			try 
+			{
+				if(rs!=null) {rs.close();}
+				if(ps!=null) {ps.close();}
+                Conexion.getInstancia().desconectar();
+			} 
+			catch (Exception e) 
+			{
+				_logger.error(e.getMessage());
+			}
+		}
+	}
+	
 }
