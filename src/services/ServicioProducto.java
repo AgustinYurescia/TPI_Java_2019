@@ -161,13 +161,14 @@ public class ServicioProducto {
 		}
 		return pagina;
 	}
-	public void obtenerVentasPorProducto(Integer anio) throws Exception 
+	public String obtenerVentasPorProducto(Integer anio) throws Exception 
 	{
 		Map<String, Integer> ventas = null;
 		try
 		{
 			ventas = _productoDAO.obtenerVentasPorProducto(anio);
-			_graficador.graficoBarrasVentasPorProducto(ventas);
+			String imageAsBase64 = _graficador.graficoBarrasVentasPorProducto(ventas);
+			return imageAsBase64;
 		}
 		catch(Exception e)
 		{

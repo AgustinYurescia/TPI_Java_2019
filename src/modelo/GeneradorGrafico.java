@@ -9,20 +9,16 @@ import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Enumeration;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Base64;
 import java.util.Map;
-import java.util.Properties;
 import java.util.TreeMap;
 
 
@@ -30,7 +26,15 @@ public class GeneradorGrafico {
 	
 	public GeneradorGrafico() {}
 	
-	public void graficoBarrasVentasPorProducto(Map<String,Integer> data) throws Exception {
+	public String getBase64(BufferedImage image) throws IOException
+	{
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		ImageIO.write(image, "png", output);
+		String imageAsBase64 = Base64.getEncoder().encodeToString(output.toByteArray());
+		return imageAsBase64;
+	}
+	
+	public String graficoBarrasVentasPorProducto(Map<String,Integer> data) throws Exception {
 		Color trans = new Color(0xFF, 0xFF, 0xFF, 0);
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		TreeMap<String,Integer> sort_data = new  TreeMap<String,Integer>(data); 
@@ -43,19 +47,15 @@ public class GeneradorGrafico {
 		BarRenderer renderer = (BarRenderer) plot.getRenderer();
 		renderer.setDrawBarOutline(false);
 		renderer.setItemMargin(0);
-		File directory = new File(System.getProperty("catalina.home") + "\\TPI_Java_2019\\WebContent\\Images");
-	    if (! directory.exists()){
-	        directory.mkdir();
-	    }
 	    chart.setBackgroundPaint(trans);
 	    chart.getLegend().setBackgroundPaint(trans);
 	    plot.setBackgroundPaint(trans);
 	    plot.setRangeGridlinePaint(Color.black);
         BufferedImage image = chart.createBufferedImage(625, 400);
-        ImageIO.write(image, "png", new File(System.getProperty("catalina.home") + "\\TPI_Java_2019\\WebContent\\Images\\graficoVentas.png"));
+        return getBase64(image);
     }
 	
-	public void graficoBarrasVentasPorMes(Map<Integer,Float> data) throws Exception {
+	public String graficoBarrasVentasPorMes(Map<Integer,Float> data) throws Exception {
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		Color trans = new Color(0xFF, 0xFF, 0xFF, 0);
 		Integer max_key = 1;
@@ -78,19 +78,15 @@ public class GeneradorGrafico {
 		BarRenderer renderer = (BarRenderer) plot.getRenderer();
 		renderer.setDrawBarOutline(false);
 		renderer.setItemMargin(0);
-		File directory = new File(System.getProperty("catalina.home") + "\\TPI_Java_2019\\WebContent\\Images");
-	    if (! directory.exists()){
-	        directory.mkdir();
-	    }
 	    chart.setBackgroundPaint(trans);
 	    chart.getLegend().setBackgroundPaint(trans);
 	    plot.setBackgroundPaint(trans);
 	    plot.setRangeGridlinePaint(Color.black);
         BufferedImage image = chart.createBufferedImage(625, 400);
-        ImageIO.write(image, "png", new File(System.getProperty("catalina.home") + "\\TPI_Java_2019\\WebContent\\Images\\graficoTotalVentasPorMes.png"));
+        return getBase64(image);
     }
 	
-	public void graficoLinealVentasPorMes(Map<Integer,Float> data) throws Exception {
+	public String graficoLinealVentasPorMes(Map<Integer,Float> data) throws Exception {
 		XYSeries dataset = new XYSeries("Ventas");
 		Color trans = new Color(0xFF, 0xFF, 0xFF, 0);
 		for (Integer key : data.keySet())
@@ -108,19 +104,15 @@ public class GeneradorGrafico {
 		renderer.setSeriesPaint(0, Color.RED);
 		renderer.setSeriesStroke(0, new BasicStroke(4.0f));
 		plot.setRenderer(renderer);
-		File directory = new File(System.getProperty("catalina.home") + "\\TPI_Java_2019\\WebContent\\Images");
-	    if (! directory.exists()){
-	        directory.mkdir();
-	    }
 	    chart.setBackgroundPaint(trans);
 	    chart.getLegend().setBackgroundPaint(trans);
 	    plot.setBackgroundPaint(trans);
 	    plot.setRangeGridlinePaint(Color.black);
         BufferedImage image = chart.createBufferedImage(625, 400);
-        ImageIO.write(image, "png", new File(System.getProperty("catalina.home") + "\\TPI_Java_2019\\WebContent\\Images\\graficoLinealVentas.png"));
+        return getBase64(image);
     }
 	
-	public void graficoBarrasVentasPorAnio(Map<Integer,Float> data) throws Exception {
+	public String graficoBarrasVentasPorAnio(Map<Integer,Float> data) throws Exception {
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		Color trans = new Color(0xFF, 0xFF, 0xFF, 0);
 		for (Integer key : data.keySet())
@@ -132,19 +124,15 @@ public class GeneradorGrafico {
 		BarRenderer renderer = (BarRenderer) plot.getRenderer();
 		renderer.setDrawBarOutline(false);
 		renderer.setItemMargin(0);
-		File directory = new File(System.getProperty("catalina.home") + "\\TPI_Java_2019\\WebContent\\Images");
-	    if (! directory.exists()){
-	        directory.mkdir();
-	    }
 	    chart.setBackgroundPaint(trans);
 	    chart.getLegend().setBackgroundPaint(trans);
 	    plot.setBackgroundPaint(trans);
 	    plot.setRangeGridlinePaint(Color.black);
         BufferedImage image = chart.createBufferedImage(625, 400);
-        ImageIO.write(image, "png", new File(System.getProperty("catalina.home") + "\\TPI_Java_2019\\WebContent\\Images\\graficoTotalVentasAnual.png"));
+        return getBase64(image);
     }
 	
-	public void graficoLinealVentasPorAnio(Map<Integer,Float> data) throws Exception {
+	public String graficoLinealVentasPorAnio(Map<Integer,Float> data) throws Exception {
 		XYSeries dataset = new XYSeries("Ventas");
 		Color trans = new Color(0xFF, 0xFF, 0xFF, 0);
 		for (Integer key : data.keySet())
@@ -162,15 +150,11 @@ public class GeneradorGrafico {
 		renderer.setSeriesPaint(0, Color.RED);
 		renderer.setSeriesStroke(0, new BasicStroke(4.0f));
 		plot.setRenderer(renderer);
-		File directory = new File(System.getProperty("catalina.home") + "\\TPI_Java_2019\\WebContent\\Images");
-	    if (! directory.exists()){
-	        directory.mkdir();
-	    }
 	    chart.setBackgroundPaint(trans);
 	    chart.getLegend().setBackgroundPaint(trans);
 	    plot.setBackgroundPaint(trans);
 	    plot.setRangeGridlinePaint(Color.black);
         BufferedImage image = chart.createBufferedImage(625, 400);
-        ImageIO.write(image, "png", new File(System.getProperty("catalina.home") + "\\TPI_Java_2019\\WebContent\\Images\\graficoLinealVentasAnual.png"));
+        return getBase64(image);
     }
 }

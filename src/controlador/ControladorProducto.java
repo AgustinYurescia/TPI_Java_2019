@@ -94,7 +94,7 @@ public class ControladorProducto extends HttpServlet {
 		        Integer anio = getLocalDate.getYear();
 				try 
 				{
-					_servicioProducto.obtenerVentasPorProducto(anio);
+					request.setAttribute("imageAsBase64", _servicioProducto.obtenerVentasPorProducto(anio));
 				} 
 				catch (Exception e) 
 				{

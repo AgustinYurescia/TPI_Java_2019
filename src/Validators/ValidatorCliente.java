@@ -39,8 +39,8 @@ public class ValidatorCliente {
 				 errores.add("El dni no posee la longitud requerida.");
 			 }
 		 }else {
-			 char first =dni.charAt(0);
-			 int result = "fmFM".indexOf(dni.charAt(0));
+			 //char first =dni.charAt(0);
+			 //int result = "fmFM".indexOf(dni.charAt(0));
 			 if(0 < "fmFM".indexOf(dni.charAt(0)) || (dni.length() != 8 && dni.length() != 9)) {
 				 errores.add("dni no cumple con la longitud especificada para aquellos que empiezan con letras.");
 			 }

@@ -1,8 +1,6 @@
 package controlador;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -41,9 +39,7 @@ public class ControladorApiProducto extends HttpServlet {
 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String acceso = "";
 		String action = request.getParameter("accion");
-//		response.getWriter().append("Served at: ").append(request.getContextPath());
 		if(action.equalsIgnoreCase("ListarPorPaginas")) {
 			if(ValidatorProducto.ValidarListarPorPaginas(request.getParameter("numero_por_pagina"),request.getParameter("numero_pagina"),request.getParameter("codigo_categoria"))) {
 				

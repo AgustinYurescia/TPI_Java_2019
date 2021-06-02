@@ -23,7 +23,7 @@
 		   	<h2>Productos más vendidos en el año</h2>
 		   	<hr/>
 		    	<div class="container">
-		   			<img src=<%="Images/graficoVentas.png" %>>
+		   			<img src="data:image/png;base64,${imageAsBase64}">
 		   		</div>
 		 	</div>
 		 </div>
