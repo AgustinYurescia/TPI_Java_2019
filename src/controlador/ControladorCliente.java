@@ -93,6 +93,11 @@ public class ControladorCliente extends HttpServlet {
 					}
 				}
 			}
+			else if(action.equalsIgnoreCase("listado_socios_deudores")) {
+				
+					_customerService.GetSociosDeudores();
+				
+			}
 		}
 		RequestDispatcher vista = request.getRequestDispatcher(acceso);
 		vista.forward(request, response);

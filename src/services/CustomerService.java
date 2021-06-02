@@ -170,5 +170,10 @@ public class CustomerService {
 			throw e;
 		}
 	}
+	public ArrayList<Cliente> GetSociosDeudores() 
+	{
+		return _clienteDAO.GetSociosDeudores();
+			
+	}
 	
 }

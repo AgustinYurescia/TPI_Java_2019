@@ -503,6 +503,17 @@ public class ClienteDAO {
 		}
 
 	}
+	public ArrayList<Cliente> GetSociosDeudores(){
+		ArrayList<Cliente> sociosDeudores = new ArrayList<Cliente>();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sentenciaSQL = "";
+		
+		
+		
+		return sociosDeudores;
+		
+	}
 }
 	
 
