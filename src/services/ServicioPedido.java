@@ -53,28 +53,32 @@ public class ServicioPedido {
 	public void RegistrarEntrega(int numeroPedido) throws Exception {
 		_pedidoDAO.RegistrarEntrega(numeroPedido);
 	}
-	public void obtenerTotalVentasPorMes(Integer anio) throws Exception 
+	public ArrayList<String> obtenerTotalVentasPorMes(Integer anio) throws Exception 
 	{
 		Map<Integer, Float> ventas = null;
+		ArrayList<String> imagesAsBase64 = new ArrayList<String>();
 		try
 		{
 			ventas = _pedidoDAO.obtenerTotalVentasPorMes(anio);
-			_graficador.graficoBarrasVentasPorMes(ventas);
-			_graficador.graficoLinealVentasPorMes(ventas);
+			imagesAsBase64.add(_graficador.graficoBarrasVentasPorMes(ventas));
+			imagesAsBase64.add(_graficador.graficoLinealVentasPorMes(ventas));
+			return imagesAsBase64;  
 		}
 		catch(Exception e)
 		{
 			 throw e;
 		}
 	}
-	public void obtenerTotalVentasPorAnio() throws Exception 
+	public ArrayList<String> obtenerTotalVentasPorAnio() throws Exception 
 	{
 		Map<Integer, Float> ventas = null;
+		ArrayList<String> imagesAsBase64 = new ArrayList<String>();
 		try
 		{
 			ventas = _pedidoDAO.obtenerTotalVentasPorAnio();
-			_graficador.graficoBarrasVentasPorAnio(ventas);
-			_graficador.graficoLinealVentasPorAnio(ventas);
+			imagesAsBase64.add(_graficador.graficoBarrasVentasPorAnio(ventas));
+			imagesAsBase64.add(_graficador.graficoLinealVentasPorAnio(ventas));
+			return imagesAsBase64;
 		}
 		catch(Exception e)
 		{

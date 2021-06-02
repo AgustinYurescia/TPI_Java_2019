@@ -12,7 +12,6 @@ import modelo.Cliente;
 public class CustomerService {
 	
 	private ClienteDAO _clienteDAO;
-	private Cliente cliente;
 	
 	public CustomerService() 
 	{

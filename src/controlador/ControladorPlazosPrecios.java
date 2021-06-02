@@ -15,7 +15,6 @@ import com.google.gson.Gson;
 
 import services.ServicioPlazosPrecios;
 import exceptions.AppException;
-import modelo.Producto;
 import Validators.TasasPlazosValidator;
 
 @WebServlet("/ControladorPlazosPrecios")

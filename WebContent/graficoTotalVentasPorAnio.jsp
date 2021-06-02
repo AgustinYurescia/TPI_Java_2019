@@ -22,10 +22,10 @@
 		   	<div class="jumbotron" align="center" style="background: #f9eac7 !important; padding-bottom:15%">
 		   	<h2>Total de ventas anual</h2><hr/>
 		    	<div class="container">
-		    		<img src=<%="Images/graficoLinealVentasAnual.png" %>>
+		    		<img src="data:image/png;base64,${imageAsBase64_1}">
 		    		<br/>
 		    		<br/>
-		   			<img src=<%="Images/graficoTotalVentasAnual.png" %>>
+		    		<img src="data:image/png;base64,${imageAsBase64_0}">
 		   		</div>
 		 	</div>
 		 </div>

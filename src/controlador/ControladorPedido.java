@@ -358,7 +358,9 @@ public class ControladorPedido extends HttpServlet {
 		        Integer anio = getLocalDate.getYear();
 				try 
 				{
-					_servicioPedido.obtenerTotalVentasPorMes(anio);
+					ArrayList<String> imagesAsBase64 = _servicioPedido.obtenerTotalVentasPorMes(anio);
+					request.setAttribute("imageAsBase64_0", imagesAsBase64.get(0));
+					request.setAttribute("imageAsBase64_1", imagesAsBase64.get(1));
 				} 
 				catch (Exception e) 
 				{
@@ -419,7 +421,9 @@ public class ControladorPedido extends HttpServlet {
 			{
 				try 
 				{
-					_servicioPedido.obtenerTotalVentasPorAnio();
+					ArrayList<String> imagesAsBase64 = _servicioPedido.obtenerTotalVentasPorAnio();
+					request.setAttribute("imageAsBase64_0", imagesAsBase64.get(0));
+					request.setAttribute("imageAsBase64_1", imagesAsBase64.get(1));
 				} 
 				catch (Exception e) 
 				{

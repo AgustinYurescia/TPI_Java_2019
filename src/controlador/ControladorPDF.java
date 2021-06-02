@@ -18,15 +18,12 @@ import modelo.Cliente;
 import modelo.Cuota;
 import modelo.ExportadorPDF;
 import modelo.Pedido;
-import modeloDAO.ClienteDAO;
-import modeloDAO.PedidoDAO;
 import services.CustomerService;
 import services.ServicioCuota;
 import services.ServicioPedido;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.message.LoggerNameAwareMessage;
 
 @WebServlet("/ControladorPDF")
 public class ControladorPDF extends HttpServlet {

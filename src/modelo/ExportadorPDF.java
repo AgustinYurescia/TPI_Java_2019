@@ -5,10 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 
-import com.lowagie.text.BadElementException;
 import com.lowagie.text.Document;
 import com.lowagie.text.Font;
 import com.lowagie.text.FontFactory;
@@ -20,7 +18,6 @@ import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 
-import modeloDAO.ProductoDAO;
 import services.CustomerService;
 
 public class ExportadorPDF 
@@ -28,7 +25,6 @@ public class ExportadorPDF
 	
 	private ArrayList<Cliente> socios;
 	private Pedido pedido;
-	private Color color_fondo;
 	private Color color_letra;
 	private CustomerService _servicioCliente;
 	private ArrayList<Cuota> cuotas;
@@ -44,25 +40,8 @@ public class ExportadorPDF
 		this.pedido = pedido;
 		this.cuotas = cuotas;
 		this._servicioCliente = new CustomerService();
-		color_fondo = new Color(249,234,199);
 		color_letra =  new Color(88,39,45);
 	}
-	
-	/*
-	public void writeHeader(PdfPTable pdfTable) throws BadElementException, IOException
-	{
-		Image img = Image.getInstance("D:\\Documentos\\Eclipse\\Workspace_02\\TPI_Java_2019\\WebContent\\Images\\logo.png");
-		PdfPCell cell = new PdfPCell();
-		cell.setBorderColor(color_letra);
-		cell.setBackgroundColor(color_fondo);
-		cell.setPadding(5);
-		cell.setHorizontalAlignment(Paragraph.ALIGN_CENTER);
-		Font font = FontFactory.getFont(FontFactory.COURIER_BOLD);
-		font.setColor(color_letra);
-		cell.setImage(img);
-		pdfTable.addCell(cell);
-	}
-	*/
 	
 	public void writeTableHeader(PdfPTable pdfTable, String type) throws Exception
 	{
