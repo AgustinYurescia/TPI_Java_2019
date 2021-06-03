@@ -2,12 +2,14 @@ package services;
 
 import modeloDAO.ClienteDAO;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import exceptions.AppException;
 import exceptions.NonExistentPartnerException;
 import exceptions.NonExistentUserException;
 import modelo.Cliente;
+import modelo.SocioDeudor;
 
 public class CustomerService {
 	
@@ -169,10 +171,9 @@ public class CustomerService {
 			throw e;
 		}
 	}
-	public ArrayList<Cliente> GetSociosDeudores() 
+	public ArrayList<SocioDeudor> GetSociosDeudores() throws SQLException 
 	{
-		return _clienteDAO.GetSociosDeudores();
-			
+		return _clienteDAO.GetSociosDeudores();	
 	}
 	
 }
