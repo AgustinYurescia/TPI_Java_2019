@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -184,11 +185,11 @@ public class PedidoDAO {
 				while(rs.next()) {
 					Pedido ped = new Pedido();
 					ped.setNro_pedido(rs.getInt("nro_pedido"));
-					ped.setFecha_pedido(rs.getDate("fecha_pedido"));
-					ped.setFecha_entrega_est(rs.getDate("fecha_entrega_est"));
+					ped.setFecha_pedido(rs.getObject("fecha_pedido", LocalDate.class));
+					ped.setFecha_entrega_est(rs.getObject("fecha_entrega_est", LocalDate.class));
 					ped.setMonto(rs.getDouble("monto"));
-					ped.setFecha_cancelacion(rs.getDate("fecha_cancelacion"));
-					ped.setFecha_entrega_real(rs.getDate("fecha_entrega_real"));
+					ped.setFecha_cancelacion(rs.getObject("fecha_cancelacion", LocalDate.class));
+					ped.setFecha_entrega_real(rs.getObject("fecha_entrega_real", LocalDate.class));
 					ped.setDni_cliente(rs.getString("dni_cliente"));
 					ped.setEstado(rs.getString("estado"));
 					lista.add(ped);
@@ -229,11 +230,11 @@ public class PedidoDAO {
 				while(rs.next()) {
 					Pedido ped = new Pedido();
 					ped.setNro_pedido(rs.getInt("nro_pedido"));
-					ped.setFecha_pedido(rs.getDate("fecha_pedido"));
-					ped.setFecha_entrega_est(rs.getDate("fecha_entrega_est"));
+					ped.setFecha_pedido(rs.getObject("fecha_pedido", LocalDate.class));
+					ped.setFecha_entrega_est(rs.getObject("fecha_entrega_est", LocalDate.class));
 					ped.setMonto(rs.getDouble("monto"));
-					ped.setFecha_cancelacion(rs.getDate("fecha_cancelacion"));
-					ped.setFecha_entrega_real(rs.getDate("fecha_entrega_real"));
+					ped.setFecha_cancelacion(rs.getObject("fecha_cancelacion", LocalDate.class));
+					ped.setFecha_entrega_real(rs.getObject("fecha_entrega_real", LocalDate.class));
 					ped.setDni_cliente(rs.getString("dni_cliente"));
 					ped.setEstado(rs.getString("estado"));
 					lista.add(ped);
@@ -268,14 +269,14 @@ public class PedidoDAO {
 			if (rs.next()) 
 			{
 				ped.setNro_pedido(rs.getInt("nro_pedido"));
-				ped.setFecha_pedido(rs.getDate("fecha_pedido"));
-				ped.setFecha_entrega_est(rs.getDate("fecha_entrega_est"));
+				ped.setFecha_pedido(rs.getObject("fecha_pedido", LocalDate.class));
+				ped.setFecha_entrega_est(rs.getObject("fecha_entrega_est", LocalDate.class));
 				ped.setMonto(rs.getDouble("monto"));
-				ped.setFecha_cancelacion(rs.getDate("fecha_cancelacion"));
-				ped.setFecha_entrega_real(rs.getDate("fecha_entrega_real"));
+				ped.setFecha_cancelacion(rs.getObject("fecha_cancelacion", LocalDate.class));
+				ped.setFecha_entrega_real(rs.getObject("fecha_entrega_real", LocalDate.class));
 				ped.setDni_cliente(rs.getString("dni_cliente"));
 				ped.setEstado(rs.getString("estado"));
-				return ped;
+				return ped;	
 			}
 			else
 			{
@@ -371,11 +372,11 @@ public class PedidoDAO {
 				while(rs.next()) {
 					Pedido ped = new Pedido();
 					ped.setNro_pedido(rs.getInt("nro_pedido"));
-					ped.setFecha_pedido(rs.getDate("fecha_pedido"));
-					ped.setFecha_entrega_est(rs.getDate("fecha_entrega_est"));
+					ped.setFecha_pedido(rs.getObject("fecha_pedido", LocalDate.class));
+					ped.setFecha_entrega_est(rs.getObject("fecha_entrega_est", LocalDate.class));
 					ped.setMonto(rs.getDouble("monto"));
-					ped.setFecha_cancelacion(rs.getDate("fecha_cancelacion"));
-					ped.setFecha_entrega_real(rs.getDate("fecha_entrega_real"));
+					ped.setFecha_cancelacion(rs.getObject("fecha_cancelacion", LocalDate.class));
+					ped.setFecha_entrega_real(rs.getObject("fecha_entrega_real", LocalDate.class));
 					ped.setDni_cliente(rs.getString("dni_cliente"));
 					ped.setEstado(rs.getString("estado"));
 					lista.add(ped);
@@ -464,11 +465,11 @@ public class PedidoDAO {
 				while(rs.next()) {
 					Pedido ped = new Pedido();
 					ped.setNro_pedido(rs.getInt("nro_pedido"));
-					ped.setFecha_pedido(rs.getDate("fecha_pedido"));
-					ped.setFecha_entrega_est(rs.getDate("fecha_entrega_est"));
+					ped.setFecha_pedido(rs.getObject("fecha_pedido", LocalDate.class));
+					ped.setFecha_entrega_est(rs.getObject("fecha_entrega_est", LocalDate.class));
 					ped.setMonto(rs.getDouble("monto"));
-					ped.setFecha_cancelacion(rs.getDate("fecha_cancelacion"));
-					ped.setFecha_entrega_real(rs.getDate("fecha_entrega_real"));
+					ped.setFecha_cancelacion(rs.getObject("fecha_cancelacion", LocalDate.class));
+					ped.setFecha_entrega_real(rs.getObject("fecha_entrega_real", LocalDate.class));
 					ped.setDni_cliente(rs.getString("dni_cliente"));
 					ped.setEstado(rs.getString("estado"));
 					pedidos.add(ped);
@@ -498,7 +499,7 @@ public class PedidoDAO {
 	public void setEstadoPreparado(ArrayList<Pedido> pedidos) throws Exception 
 	{
 		PreparedStatement ps= null;
-		String sentenciaSQL="UPDATE pedido SET estado = 'preparado' WHERE nro_pedido = ?";
+		String sentenciaSQL="UPDATE pedido SET estado = 'preparado' WHERE nro_pedido = ? and estado = 'pendiente'";
 		try 
 		{
 			ps = Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 
+import javax.mail.MessagingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -398,12 +399,27 @@ public class ControladorPedido extends HttpServlet {
 		else if (action.equalsIgnoreCase("prepararPedidos"))
 		{
 			ArrayList<Pedido> pedidos = (ArrayList<Pedido>)sesion.getAttribute("pedidos");
+			Correo correo = new Correo();
+			Cliente cli = null;
 			if(sesion.getAttribute("usuario_admin") != null) 
 			{
 				try
 				{
 					_servicioPedido.SetEstadoPreparado(pedidos);
+					for (Pedido p: pedidos)
+					{
+						if (p.getEstado().equalsIgnoreCase("pendiente"))
+						{
+							cli = _servicioCliente.Buscar(p.getDni_cliente());
+							correo.enviar_mail_confirmacion_preparacion(cli.getMail(), p.getNro_pedido());
+							p.setEstado("preparado");
+						}
+					}
 					request.setAttribute("mensajeOk", "Preparación registrada con éxito");
+				}
+				catch(MessagingException e)
+				{
+					request.setAttribute("mensajeError", "Error interno al enviar el email al cliente, pero el estado del pedido fue cambiado satisfactoriamente");
 				}
 				catch (Exception e)
 				{
@@ -438,13 +454,25 @@ public class ControladorPedido extends HttpServlet {
 		}
 		else if (action.equalsIgnoreCase("prepararPedido"))
 		{
+			Correo correo = new Correo();
 			String nro_pedido = request.getParameter("numero_pedido");
+			Cliente cli = null;
 			if(sesion.getAttribute("usuario_admin") != null) 
 			{
 				try
 				{
-					_servicioPedido.SetEstadoPreparado(nro_pedido);
-					request.setAttribute("mensajeOk", "Preparación registrada con éxito");
+					Pedido ped = _servicioPedido.BuscarPedido(Integer.parseInt(nro_pedido));
+					if (ped.getEstado().equalsIgnoreCase("pendiente"))
+					{
+						_servicioPedido.SetEstadoPreparado(nro_pedido);
+						cli = _servicioCliente.Buscar(ped.getDni_cliente());
+						correo.enviar_mail_confirmacion_preparacion(cli.getMail(), Integer.parseInt(nro_pedido));
+						request.setAttribute("mensajeOk", "Preparación registrada con éxito");
+					}
+				}
+				catch(MessagingException e)
+				{
+					request.setAttribute("mensajeError", "Error interno al enviar el email al cliente, pero el estado del pedido fue cambiado satisfactoriamente");
 				}
 				catch (Exception e)
 				{

@@ -91,7 +91,7 @@
 		})
 		
 	$('#stock').on
-	('change',
+	('input',
 		function() {
 		var stock = $(document.getElementById('stock')).val();
 		var stock_actual = $(document.getElementById('stock_actual')).val();
@@ -102,7 +102,7 @@
 	})
 	
 	$('#precio').on
-	('change',
+	('input',
 		function() {
 		$.ajax({
 			type : 'GET',
