@@ -19,7 +19,8 @@
 		String anio = (String)request.getAttribute("anio");
 	%>
 	<div class="m-2">
-		<h1>Buscar Cuotas</h1>
+		<h1>Listado de cuotas pagas</h1>
+		<h4>Seleccione año y mes de pago de las cuotas</h4>
 		<form action="ControladorCuota" method="get">
 	   		<div class = "form-row">
 	       		<div class="form-group col-md-5">
