@@ -265,5 +265,42 @@ public class CuotaDAO
 		}
 		return cantidadCuotasImpagas;
 	}
+	public ArrayList<Cuota> ListadoCuotasPagasPorMes(int mes, int anio) throws Exception
+	{
+		ArrayList<Cuota> cuotas = new ArrayList<Cuota>();
+		Cuota cuota = null;
+		String sentenciaSQL = "SELECT * FROM cuota WHERE YEAR(fecha_pago) = ? AND MONTH(fecha_pago) = ?";
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try 
+		{
+			ps = Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			ps.setInt(1, anio);
+			ps.setInt(2, mes);
+			rs = ps.executeQuery();
+			while (rs.next())
+			{
+				cuota = new Cuota(rs.getString(1), rs.getInt(2), rs.getInt(3), rs.getDouble(4), rs.getObject(5, LocalDate.class));
+				cuotas.add(cuota);
+			}
+			return cuotas;
+		}
+		catch(Exception e)
+		{
+			_logger.error(e.getMessage());
+			throw e;
+		}
+		finally 
+		{
+			try 
+			{
+                Conexion.getInstancia().desconectar();
+			} 
+			catch (Exception e) 
+			{
+				_logger.error(e.getMessage());
+			}
+		}
+	}
 	
 }

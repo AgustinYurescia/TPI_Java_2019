@@ -13,9 +13,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import Validators.ValidatorCuota;
 import exceptions.NonExistentFeeException;
 import exceptions.NonExistentFeeValueException;
 import exceptions.NonExistentPartnerException;
+import exceptions.ValidatorsException;
 import modelo.Cliente;
 import modelo.Cuota;
 import services.CustomerService;
@@ -96,6 +98,22 @@ public class ControladorCuota extends HttpServlet {
 			{
 				acceso = "loginClientes.jsp";
 			}
+		}
+		else if(action.equalsIgnoreCase("listadoCuotasPagas")) {
+			try {
+				ValidatorCuota.ValidarMesYAnio(request.getParameter("mes"), request.getParameter("anio"));
+				int parseMes = Integer.parseInt(request.getParameter("mes"));
+				int parseAnio = Integer.parseInt(request.getParameter("anio"));
+				ArrayList<Cuota> cuotasPagas = _servicioCuota.ListadoCuotasPagasPorMes(parseMes,parseAnio);
+				request.setAttribute("cuotas", cuotasPagas);
+				request.setAttribute("mes", request.getParameter("mes"));
+				request.setAttribute("anio", request.getParameter("anio"));
+			}catch(ValidatorsException e) {
+				request.setAttribute("mensajeError", e.getMessage());
+			}catch(Exception ex) {
+				request.setAttribute("mensajeError", "Ocurrio un error, por favor vuelva a intentarlo");
+			}
+			acceso = "listadoCuotasPagas.jsp";
 		}
 		
 		RequestDispatcher vista = request.getRequestDispatcher(acceso);

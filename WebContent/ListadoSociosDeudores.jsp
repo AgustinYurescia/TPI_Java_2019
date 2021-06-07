@@ -28,6 +28,20 @@
 					<h1 style="text-align: center;">Todos los socios se encuentran al dia con las cuotas</h1>
 				<%}else{%>
 					<h1 style="text-align: center;">Listado de Socios Deudores</h1>
+					<div style="display:inline">
+						<div style="width:50%; float:left; text-Align: center;">
+							<p>Seleccione la cantidad de cuotas minimas a mostrar</p>
+						</div>
+						<div style="width:50%; float:right;">
+							<select id="filtro-cuotas-adeudadas" class="form-control"  >
+								<option value ="todos">Todos</option>
+		        				<option value = "1">1</option>
+		        				<option value = "2">2</option>
+		        				<option value = "3">3</option>
+		        				<option value = "4">4</option>
+		     				</select>
+	     				</div>
+     				</div>		
 					<table class="table">
 						<thead>
 							<tr>
@@ -41,7 +55,7 @@
 						</thead>
 						<tbody>
 						<% for(SocioDeudor socio: socios){%>
-							<tr>
+							<tr id="socio-<%=socio.getDni()%>" class="empleado-deudor" data-dni="<%=socio.getDni()%>" data-cantidadcuotasadeudadas="<%=socio.getCantidadCuotasAdeudadas()%>">
 								<td><%=socio.getDni() %></td>
 								<td><%=socio.getNombre() %></td>
 								<td><%=socio.getApellido() %></td>
@@ -70,4 +84,23 @@
 	}
 	%>
 </body>
+<script>
+const selectElement = document.querySelector('#filtro-cuotas-adeudadas');
+
+selectElement.addEventListener('change', (e) => {
+    let selectElements = document.getElementsByClassName("empleado-deudor");
+	let arrayElements = Array.from(selectElements);
+    arrayElements.map((elem) => {
+    	if (e.target.value == "todos"){
+    		elem.style.display = "contents";
+    	}
+    	else if(elem.dataset.cantidadcuotasadeudadas < e.target.value){
+    		elem.style.display = "none";
+    	}
+    	else{
+    		elem.style.display = "contents";
+    	}
+    });
+});
+</script>
 </html>

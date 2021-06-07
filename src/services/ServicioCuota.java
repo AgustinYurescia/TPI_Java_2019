@@ -100,5 +100,16 @@ public class ServicioCuota {
 			throw e;
 		}
 	}
-
+	public ArrayList<Cuota> ListadoCuotasPagasPorMes(int mes, int anio) throws Exception
+	{
+		try
+		{ 
+			ArrayList<Cuota> cuotasPagadas = _cuotaDAO.ListadoCuotasPagasPorMes(mes, anio);
+			return cuotasPagadas;
+		}
+		catch (Exception e)
+		{
+			throw e;
+		}
+	}
 }
