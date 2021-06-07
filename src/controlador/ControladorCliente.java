@@ -93,6 +93,19 @@ public class ControladorCliente extends HttpServlet {
 					}
 				}
 			}
+			else if(action.equalsIgnoreCase("listado_socios_deudores")) {
+				if(sesion.getAttribute("usuario_admin") == null)
+				{
+					acceso = "loginAdmin.jsp";
+				}else {
+					try {
+						request.setAttribute("sociosDeudores", _customerService.GetSociosDeudores());
+					}catch(Exception ex) {
+						request.setAttribute("mensajeError", "Ocurrio un error, por favor, intente nuevamente");
+					}
+					acceso = "ListadoSociosDeudores.jsp";
+				}
+			}
 		}
 		RequestDispatcher vista = request.getRequestDispatcher(acceso);
 		vista.forward(request, response);

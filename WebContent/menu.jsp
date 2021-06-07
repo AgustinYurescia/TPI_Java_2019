@@ -66,6 +66,7 @@
             	<div class="dropdown-menu" aria-labelledby="clientesDropdown">
               		<a class="dropdown-item" href="altaSocio.jsp">Nuevo Socio</a>
               		<a class="dropdown-item" href="ControladorCliente?accion=listado_socios">Listado de Socios</a>
+              		<a class="dropdown-item" href="ControladorCliente?accion=listado_socios_deudores">Listado de Socios Deudores</a>
               		<a class="dropdown-item" href="ControladorCliente?accion=bajaSociosDeudores">Baja Socios Deudores</a>
             	</div>
           	</li>
@@ -77,6 +78,7 @@
             		<a class="dropdown-item" href="listadoCuotas.jsp">Listado de cuotas generadas</a>
             		<a class="dropdown-item" href="ControladorDeLinks?accion=pagoCuotas">Buscar Para Pago</a>
               		<a class="dropdown-item" href="ControladorCuota?accion=generarCuotas">Generar Cuotas</a>
+              		<a class="dropdown-item" href="ControladorCuota?accion=listadoCuotasPagas&mes=1&anio=2021">Listado Cuotas Pagas</a>
             	</div>
           	</li>
           	<li class="nav-item dropdown">
