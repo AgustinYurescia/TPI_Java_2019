@@ -18,6 +18,7 @@ import modelo.Cliente;
 import modelo.Cuota;
 import modelo.ExportadorPDF;
 import modelo.Pedido;
+import modelo.SocioDeudor;
 import services.CustomerService;
 import services.ServicioCuota;
 import services.ServicioPedido;
@@ -60,8 +61,32 @@ public class ControladorPDF extends HttpServlet {
 					String content =  "Content-Disposition";
 					String filename = "attachment; filename=Socios_"+file_date+".pdf";
 					response.setHeader(content, filename);
-					ExportadorPDF exp = new ExportadorPDF(socios, null, null);
+					ExportadorPDF exp = new ExportadorPDF(socios, null, null, null);
 					exp.export(response, "listadoSocios");
+				} catch (Exception e) {
+					_logger.info(e.getMessage());
+				}
+			}
+			else 
+			{
+				acceso = "loginAdmin.jsp";	
+				RequestDispatcher vista = request.getRequestDispatcher(acceso);
+				vista.forward(request, response);
+			}
+		}
+		else if(action.equalsIgnoreCase("exportarSociosDeudoresPdf")) 
+		{
+			if (sesion.getAttribute("usuario_admin") != null)
+			{
+				try {
+					ArrayList<SocioDeudor> socios = _servicioCliente.ObtenerSociosDeudores();
+					DateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd_HH:mm");
+					String file_date = dateformat.format(new Date());
+					String content =  "Content-Disposition";
+					String filename = "attachment; filename=Socios_Deudores_"+file_date+".pdf";
+					response.setHeader(content, filename);
+					ExportadorPDF exp = new ExportadorPDF(null, socios, null, null);
+					exp.export(response, "listadoSociosDeudores");
 				} catch (Exception e) {
 					_logger.info(e.getMessage());
 				}
@@ -85,7 +110,7 @@ public class ControladorPDF extends HttpServlet {
 					String content =  "Content-Disposition";
 					String filename = "attachment; filename=PedidoN°"+pedido.getNro_pedido()+"_"+file_date+".pdf";
 					response.setHeader(content, filename);
-					ExportadorPDF exp = new ExportadorPDF(null, pedido, null);
+					ExportadorPDF exp = new ExportadorPDF(null, null, pedido, null);
 					exp.export(response, "pedido");
 				} catch (Exception e) {
 					_logger.info(e.getMessage());
@@ -111,7 +136,7 @@ public class ControladorPDF extends HttpServlet {
 					String content =  "Content-Disposition";
 					String filename = "attachment; filename=MisCuotas_"+file_date+".pdf";
 					response.setHeader(content, filename);
-					ExportadorPDF exp = new ExportadorPDF(null, null, cuotas);
+					ExportadorPDF exp = new ExportadorPDF(null, null, null, cuotas);
 					exp.export(response, "cuotas");
 				} catch (Exception e) {
 					_logger.info(e.getMessage());

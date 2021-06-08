@@ -41,7 +41,7 @@
 		        				<option value = "4">4</option>
 		     				</select>
 	     				</div>
-     				</div>		
+     				</div>	
 					<table class="table">
 						<thead>
 							<tr>
@@ -49,6 +49,7 @@
 								<th>Nombre</th>
 								<th>Apellido</th>
 								<th>Email</th>
+								<th>Teléfono</th>
 								<th>NRO Cuotas Adeudadas</th>
 								<th>Ver Cuotas</th>
 							</tr>
@@ -60,6 +61,7 @@
 								<td><%=socio.getNombre() %></td>
 								<td><%=socio.getApellido() %></td>
 								<td><%=socio.getMail() %></td>
+								<td><%=socio.getTelefono() %></td>
 								<td><%=socio.getCantidadCuotasAdeudadas() %></td>
 								<td>
 									<form action="ControladorCuota" method="post">
@@ -71,6 +73,12 @@
 						<% }%>
 						</tbody>
 					</table>
+					<form action="ControladorPDF" method="POST">
+						<button type="submit" class="btn btn-primary" name="accion" value="exportarSociosDeudoresPdf">
+							Exportar en PDF
+						</button>
+						<br><br>
+					</form>
 				<%}%>
 			<% } %>
 		   	
@@ -85,22 +93,22 @@
 	%>
 </body>
 <script>
-const selectElement = document.querySelector('#filtro-cuotas-adeudadas');
-
-selectElement.addEventListener('change', (e) => {
-    let selectElements = document.getElementsByClassName("empleado-deudor");
-	let arrayElements = Array.from(selectElements);
-    arrayElements.map((elem) => {
-    	if (e.target.value == "todos"){
-    		elem.style.display = "contents";
-    	}
-    	else if(elem.dataset.cantidadcuotasadeudadas < e.target.value){
-    		elem.style.display = "none";
-    	}
-    	else{
-    		elem.style.display = "contents";
-    	}
-    });
-});
+	const selectElement = document.querySelector('#filtro-cuotas-adeudadas');
+	
+	selectElement.addEventListener('change', (e) => {
+	    let selectElements = document.getElementsByClassName("empleado-deudor");
+		let arrayElements = Array.from(selectElements);
+	    arrayElements.map((elem) => {
+	    	if (e.target.value == "todos"){
+	    		elem.style.display = "contents";
+	    	}
+	    	else if(elem.dataset.cantidadcuotasadeudadas < e.target.value){
+	    		elem.style.display = "none";
+	    	}
+	    	else{
+	    		elem.style.display = "contents";
+	    	}
+	    });
+	});
 </script>
 </html>

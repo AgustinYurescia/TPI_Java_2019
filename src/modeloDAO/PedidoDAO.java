@@ -14,8 +14,10 @@ import org.apache.logging.log4j.Logger;
 
 import config.Conexion;
 import exceptions.NonExistentOrderException;
+import modelo.Cliente;
 import modelo.LineaPedido;
 import modelo.Pedido;
+import modelo.Producto;
 
 public class PedidoDAO {
 	
@@ -161,11 +163,11 @@ public class PedidoDAO {
 		String sentenciaSQL = "";
 		ArrayList<Pedido>lista = new ArrayList<>();
 		if(fecha_ini != "" && fecha_fin != "") {
-			sentenciaSQL = "SELECT * FROM pedido WHERE fecha_pedido >= '"+fecha_ini+"' AND fecha_pedido <= '"+fecha_fin+"'";
+			sentenciaSQL = "SELECT * FROM pedido as ped INNER JOIN cliente as cli WHERE ped.dni_cliente = cli.dni AND fecha_pedido >= '"+fecha_ini+"' AND fecha_pedido <= '"+fecha_fin+"'";
 		}else if(fecha_ini != "" && fecha_fin == "") {
-			sentenciaSQL = "SELECT * FROM pedido WHERE fecha_pedido >= '"+fecha_ini+"'";
+			sentenciaSQL = "SELECT * FROM pedido as ped INNER JOIN cliente as cli WHERE ped.dni_cliente = cli.dni AND fecha_pedido >= '"+fecha_ini+"'";
 		}else if(fecha_ini == "" && fecha_fin != "") {
-			sentenciaSQL = "SELECT * FROM pedido WHERE fecha_pedido <= '"+fecha_fin+"'";
+			sentenciaSQL = "SELECT * FROM pedido as ped INNER JOIN cliente as cli WHERE ped.dni_cliente = cli.dni AND fecha_pedido <= '"+fecha_fin+"'";
 		}
 		if (estado.equalsIgnoreCase("pendiente")) {
 			sentenciaSQL = sentenciaSQL + " AND fecha_entrega_real is null AND fecha_cancelacion is null AND estado='pendiente' order by fecha_pedido desc";
@@ -183,6 +185,7 @@ public class PedidoDAO {
 			if(rs!=null) {
 				while(rs.next()) {
 					Pedido ped = new Pedido();
+					Cliente cli = new Cliente();
 					ped.setNro_pedido(rs.getInt("nro_pedido"));
 					ped.setFecha_pedido(rs.getDate("fecha_pedido"));
 					ped.setFecha_entrega_est(rs.getDate("fecha_entrega_est"));
@@ -191,6 +194,12 @@ public class PedidoDAO {
 					ped.setFecha_entrega_real(rs.getDate("fecha_entrega_real"));
 					ped.setDni_cliente(rs.getString("dni_cliente"));
 					ped.setEstado(rs.getString("estado"));
+					cli.setApellido(rs.getString("apellido"));
+					cli.setNombre(rs.getString("nombre"));
+					cli.setTelefono(rs.getNString("telefono"));
+					cli.setDireccion(rs.getString("direccion"));
+					cli.setMail(rs.getString("mail"));
+					ped.setCliente(cli);
 					lista.add(ped);
 				}
 			}
@@ -214,13 +223,13 @@ public class PedidoDAO {
 		ArrayList<Pedido>lista = new ArrayList<>();
 		String sentenciaSQL = "SELECT * FROM pedido";
 		if (estado.equalsIgnoreCase("pendiente")) {
-			sentenciaSQL = sentenciaSQL + " WHERE fecha_entrega_real is null AND fecha_cancelacion is null  AND estado='pendiente' order by fecha_pedido desc";
+			sentenciaSQL = sentenciaSQL + " as ped INNER JOIN cliente as cli WHERE ped.dni_cliente = cli.dni AND fecha_entrega_real is null AND fecha_cancelacion is null  AND estado='pendiente' order by fecha_pedido desc";
 		}else if (estado.equalsIgnoreCase("preparado")) {
-			sentenciaSQL = "SELECT * FROM pedido WHERE estado='preparado' order by fecha_pedido desc";
+			sentenciaSQL = "SELECT * FROM pedido as ped INNER JOIN cliente as cli WHERE ped.dni_cliente = cli.dni AND estado='preparado' order by fecha_pedido desc";
 		}else if (estado.equalsIgnoreCase("entregado")) {
-			sentenciaSQL = sentenciaSQL + " WHERE fecha_cancelacion is null AND fecha_entrega_real is not null AND estado='finalizado' order by fecha_pedido desc";
+			sentenciaSQL = sentenciaSQL + " as ped INNER JOIN cliente as cli WHERE ped.dni_cliente = cli.dni AND fecha_cancelacion is null AND fecha_entrega_real is not null AND estado='finalizado' order by fecha_pedido desc";
 		}else if (estado.equalsIgnoreCase("cancelado")) {
-			sentenciaSQL = sentenciaSQL + " WHERE fecha_cancelacion is not null AND estado = 'cancelado' order by fecha_pedido desc";
+			sentenciaSQL = sentenciaSQL + " as ped INNER JOIN cliente as cli WHERE ped.dni_cliente = cli.dni AND fecha_cancelacion is not null AND estado = 'cancelado' order by fecha_pedido desc";
 		}
 		try {
 			st=Conexion.getInstancia().getConexion().createStatement();
@@ -228,7 +237,11 @@ public class PedidoDAO {
 			if(rs!=null) {
 				while(rs.next()) {
 					Pedido ped = new Pedido();
+					Cliente cli = new Cliente();
+					ArrayList<LineaPedido> lineasPedido;
 					ped.setNro_pedido(rs.getInt("nro_pedido"));
+					lineasPedido = this.buscar_productos_pedido(ped.getNro_pedido());
+					ped.setProductos(lineasPedido);
 					ped.setFecha_pedido(rs.getDate("fecha_pedido"));
 					ped.setFecha_entrega_est(rs.getDate("fecha_entrega_est"));
 					ped.setMonto(rs.getDouble("monto"));
@@ -236,6 +249,12 @@ public class PedidoDAO {
 					ped.setFecha_entrega_real(rs.getDate("fecha_entrega_real"));
 					ped.setDni_cliente(rs.getString("dni_cliente"));
 					ped.setEstado(rs.getString("estado"));
+					cli.setApellido(rs.getString("apellido"));
+					cli.setNombre(rs.getString("nombre"));
+					cli.setTelefono(rs.getNString("telefono"));
+					cli.setDireccion(rs.getString("direccion"));
+					cli.setMail(rs.getString("mail"));
+					ped.setCliente(cli);
 					lista.add(ped);
 				}
 			}
@@ -257,9 +276,10 @@ public class PedidoDAO {
 	public Pedido buscar_pedido(int nro_pedido) throws Exception 
 	{
 		Pedido ped = new Pedido();
+		Cliente cli = new Cliente();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sentenciaSQL="SELECT * FROM pedido WHERE nro_pedido = ?";
+		String sentenciaSQL="SELECT * FROM pedido as ped INNER JOIN cliente as cli WHERE ped.dni_cliente = cli.dni AND nro_pedido = ?";
 		try 
 		{
 			ps=Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
@@ -275,6 +295,12 @@ public class PedidoDAO {
 				ped.setFecha_entrega_real(rs.getDate("fecha_entrega_real"));
 				ped.setDni_cliente(rs.getString("dni_cliente"));
 				ped.setEstado(rs.getString("estado"));
+				cli.setApellido(rs.getString("apellido"));
+				cli.setNombre(rs.getString("nombre"));
+				cli.setTelefono(rs.getNString("telefono"));
+				cli.setDireccion(rs.getString("direccion"));
+				cli.setMail(rs.getString("mail"));
+				ped.setCliente(cli);
 				return ped;
 			}
 			else
@@ -304,13 +330,18 @@ public class PedidoDAO {
 		Statement st = null;
 		ResultSet rs = null;
 		ArrayList<LineaPedido> pedido_productos = new ArrayList<LineaPedido>();
-		String sentenciaSQL="SELECT * FROM pedido_productos WHERE nro_pedido = "+nro_pedido+"";
+		String sentenciaSQL="SELECT * FROM pedido_productos as pp INNER JOIN producto as pr WHERE pp.codigo_producto = pr.codigo AND nro_pedido = "+nro_pedido+"";
 		try {
 			st=Conexion.getInstancia().getConexion().createStatement();
 			rs=st.executeQuery(sentenciaSQL);
 			if (rs != null) {
 				while(rs.next()) {
+					Producto producto = new Producto();
+					producto.setCodigo(rs.getInt("codigo"));
+					producto.setNombre(rs.getString("nombre"));
+					producto.setPrecioVenta(rs.getDouble("precio_venta"));
 					LineaPedido linea = new LineaPedido(rs.getInt(1),rs.getInt(3),0);
+					linea.setProducto(producto);
 					pedido_productos.add(linea);
 				}
 			}
@@ -456,14 +487,18 @@ public class PedidoDAO {
 		PreparedStatement ps= null;
 		ResultSet rs = null;
 		ArrayList<Pedido>pedidos = new ArrayList<>();
-		String sentenciaSQL="SELECT * FROM pedido WHERE fecha_entrega_est = date_add(current_date, interval 1 day) AND estado != 'cancelado';";
+		ArrayList<LineaPedido>lineasPedido = null;
+		String sentenciaSQL="SELECT * FROM pedido as ped INNER JOIN cliente as cli WHERE ped.dni_cliente = cli.dni AND fecha_entrega_est = date_add(current_date, interval 1 day) AND estado != 'cancelado';";
 		try {
 			ps = Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
 			rs = ps.executeQuery(sentenciaSQL);
 			if(rs!=null) {
 				while(rs.next()) {
 					Pedido ped = new Pedido();
+					Cliente cli = new Cliente();
 					ped.setNro_pedido(rs.getInt("nro_pedido"));
+					lineasPedido = this.buscar_productos_pedido(ped.getNro_pedido());
+					ped.setProductos(lineasPedido);
 					ped.setFecha_pedido(rs.getDate("fecha_pedido"));
 					ped.setFecha_entrega_est(rs.getDate("fecha_entrega_est"));
 					ped.setMonto(rs.getDouble("monto"));
@@ -471,6 +506,12 @@ public class PedidoDAO {
 					ped.setFecha_entrega_real(rs.getDate("fecha_entrega_real"));
 					ped.setDni_cliente(rs.getString("dni_cliente"));
 					ped.setEstado(rs.getString("estado"));
+					cli.setApellido(rs.getString("apellido"));
+					cli.setNombre(rs.getString("nombre"));
+					cli.setTelefono(rs.getNString("telefono"));
+					cli.setDireccion(rs.getString("direccion"));
+					cli.setMail(rs.getString("mail"));
+					ped.setCliente(cli);
 					pedidos.add(ped);
 				}
 			}

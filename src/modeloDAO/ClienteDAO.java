@@ -508,10 +508,10 @@ public class ClienteDAO {
 	public ArrayList<SocioDeudor> GetSociosDeudores() throws SQLException{
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sentenciaSQL = "SELECT cli.dni, cli.nombre, cli.apellido,  cli.cliente_usuario , cli.mail, COUNT(cu.dni_cliente) FROM Cliente cli \r\n"
+		String sentenciaSQL = "SELECT cli.dni, cli.nombre, cli.apellido,  cli.cliente_usuario , cli.mail, cli.telefono, COUNT(cu.dni_cliente) FROM Cliente cli \r\n"
 				+ "INNER JOIN Cuota cu ON cli.dni = cu.dni_cliente \r\n"
 				+ "WHERE cu.fecha_pago IS NULL AND cli.fecha_baja_socio IS NULL AND cli.fecha_baja IS NULL \r\n"
-				+ "GROUP BY cli.dni";
+				+ "GROUP BY cli.dni, cli.nombre, cli.apellido,  cli.cliente_usuario , cli.mail, cli.telefono";
 		ArrayList<SocioDeudor> sociosDeudores = new ArrayList<SocioDeudor>(); 
 		try {
 			ps = Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
@@ -523,7 +523,8 @@ public class ClienteDAO {
 				socio.setApellido(rs.getString(3));
 				socio.setCliente_usuario(rs.getString(4));
 				socio.setMail(rs.getString(5));
-				socio.setCantidadCuotasAdeudadas(rs.getInt(6));
+				socio.setTelefono(rs.getString(6));
+				socio.setCantidadCuotasAdeudadas(rs.getInt(7));
 				sociosDeudores.add(socio);
 			}
 		}catch(SQLException ex) {

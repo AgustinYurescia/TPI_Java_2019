@@ -12,6 +12,7 @@ public class Pedido {
 	private String dni_cliente;
 	private ArrayList<LineaPedido> productos;
 	private String estado;
+	private Cliente cliente;
 	
 	public int getNro_pedido() {
 		return nro_pedido;
@@ -66,5 +67,11 @@ public class Pedido {
 	}
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+	public Cliente getCliente() {
+		return cliente;
+	}
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
 	}
 }

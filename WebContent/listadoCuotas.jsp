@@ -65,6 +65,9 @@
 	   		<thead>
 	   			<tr>
 	   				<th>DNI CLIENTE</th>
+					<th>NOMBRE</th>
+					<th>APELLIDO</th>
+					<th>TELEFONO</th>
 					<th>MES</th>
 					<th>AÑO</th>
 					<th>FECHA PAGO</th>
@@ -82,6 +85,9 @@
 	   		<tbody>
 	   			<tr>
 					<td style="padding-top: 20px"><%=cuota.getDniCliente()%></td>
+					<td style="padding-top: 20px"><%=cuota.getCliente().getNombre()%></td>
+					<td style="padding-top: 20px"><%=cuota.getCliente().getApellido()%></td>
+					<td style="padding-top: 20px"><%=cuota.getCliente().getTelefono()%></td>
 					<td style="padding-top: 20px"><%=cuota.getMes()%></td>
 					<td style="padding-top: 20px"><%=cuota.getAnio()%></td>
 					<%

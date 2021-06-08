@@ -171,6 +171,18 @@ public class CustomerService {
 			throw e;
 		}
 	}
+	public ArrayList<SocioDeudor> ObtenerSociosDeudores() throws Exception
+	{
+		try
+		{
+			ArrayList<SocioDeudor> socios = _clienteDAO.GetSociosDeudores();
+			return socios;
+		}
+		catch (Exception e)
+		{
+			throw e;
+		}
+	}
 	public ArrayList<SocioDeudor> GetSociosDeudores() throws SQLException 
 	{
 		return _clienteDAO.GetSociosDeudores();	

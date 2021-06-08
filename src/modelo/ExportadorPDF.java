@@ -24,6 +24,7 @@ public class ExportadorPDF
 {
 	
 	private ArrayList<Cliente> socios;
+	private ArrayList<SocioDeudor> sociosDeudores;
 	private Pedido pedido;
 	private Color color_letra;
 	private CustomerService _servicioCliente;
@@ -34,9 +35,10 @@ public class ExportadorPDF
 		
 	}
 	
-	public ExportadorPDF(ArrayList<Cliente> socios, Pedido pedido, ArrayList<Cuota> cuotas)
+	public ExportadorPDF(ArrayList<Cliente> socios, ArrayList<SocioDeudor> sociosDeudores, Pedido pedido, ArrayList<Cuota> cuotas)
 	{
 		this.socios = socios;
+		this.sociosDeudores = sociosDeudores;
 		this.pedido = pedido;
 		this.cuotas = cuotas;
 		this._servicioCliente = new CustomerService();
@@ -104,6 +106,18 @@ public class ExportadorPDF
 			date_info_cell.setPhrase(date_info);
 			span_cell_title.setPhrase(title);
 		}
+		else if (type.equalsIgnoreCase("listadoSociosDeudores"))
+		{
+			span_cell_img.setColspan(3);
+			date_info_cell.setColspan(6);
+			span_cell_title.setColspan(6);
+			span_info_cell.setColspan(4);
+			date_info_cell.setPaddingLeft(25);
+			Phrase title = new Phrase("LISTADO DE SOCIOS DEUDORES\n ", title_font);
+			Phrase date_info = new Phrase("Fecha de informe: "+string_date, date_font);
+			date_info_cell.setPhrase(date_info);
+			span_cell_title.setPhrase(title);
+		}
 		else if (type.equalsIgnoreCase("cuotas"))
 		{
 			date_info_cell.setColspan(3);
@@ -132,6 +146,21 @@ public class ExportadorPDF
 			cell.setPhrase(new Phrase("MAIL", font));
 			pdfTable.addCell(cell);
 			cell.setPhrase(new Phrase("TELEFONO", font));
+			pdfTable.addCell(cell);
+		}
+		if (type.equalsIgnoreCase("listadoSociosDeudores"))
+		{
+			cell.setPhrase(new Phrase("DNI", font));
+			pdfTable.addCell(cell);
+			cell.setPhrase(new Phrase("NOMBRE", font));
+			pdfTable.addCell(cell);
+			cell.setPhrase(new Phrase("APELLIDO", font));
+			pdfTable.addCell(cell);
+			cell.setPhrase(new Phrase("MAIL", font));
+			pdfTable.addCell(cell);
+			cell.setPhrase(new Phrase("TELEFONO", font));
+			pdfTable.addCell(cell);
+			cell.setPhrase(new Phrase("CANTIDAD CUOTAS ADEUDADAS", font));
 			pdfTable.addCell(cell);
 		}
 		if (type.equalsIgnoreCase("pedido"))
@@ -169,6 +198,24 @@ public class ExportadorPDF
 				cell.setPhrase(new Phrase(s.getMail(), font));
 				pdfTable.addCell(cell);
 				cell.setPhrase(new Phrase(s.getTelefono(), font));
+				pdfTable.addCell(cell);
+			}
+		}
+		if (type.equalsIgnoreCase("listadoSociosDeudores"))
+		{
+			for (SocioDeudor s : sociosDeudores)
+			{
+				cell.setPhrase(new Phrase(s.getDni(), font));
+				pdfTable.addCell(cell);
+				cell.setPhrase(new Phrase(s.getNombre(), font));
+				pdfTable.addCell(cell);
+				cell.setPhrase(new Phrase(s.getApellido(), font));
+				pdfTable.addCell(cell);
+				cell.setPhrase(new Phrase(s.getMail(), font));
+				pdfTable.addCell(cell);
+				cell.setPhrase(new Phrase(s.getTelefono(), font));
+				pdfTable.addCell(cell);
+				cell.setPhrase(new Phrase(Integer.toString(s.getCantidadCuotasAdeudadas()), font));
 				pdfTable.addCell(cell);
 			}
 		}
@@ -265,6 +312,16 @@ public class ExportadorPDF
 				pdfPTable.setSpacingBefore(10);
 				writeTableHeader(pdfPTable, "listadoSocios");
 				writeTableData(pdfPTable, "listadoSocios");
+				doc.add(pdfPTable);
+			}
+			else if (type.equalsIgnoreCase("listadoSociosDeudores"))
+			{
+				PdfPTable pdfPTable = new PdfPTable(6);
+				pdfPTable.setWidthPercentage(100f);
+				pdfPTable.setWidths(new float []{10.0f, 10.0f, 10.0f, 10.0f, 10.0f, 10.0f});
+				pdfPTable.setSpacingBefore(10);
+				writeTableHeader(pdfPTable, "listadoSociosDeudores");
+				writeTableData(pdfPTable, "listadoSociosDeudores");
 				doc.add(pdfPTable);
 			}
 			else if (type.equalsIgnoreCase("pedido"))

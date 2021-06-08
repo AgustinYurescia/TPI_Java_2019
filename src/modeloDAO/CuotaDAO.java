@@ -11,6 +11,7 @@ import config.Conexion;
 import exceptions.NonExistentFeeException;
 import exceptions.NonExistentFeeValueException;
 import modelo.Cuota;
+import modelo.Cliente;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -186,7 +187,8 @@ public class CuotaDAO
 	{
 		ArrayList<Cuota> cuotas = new ArrayList<Cuota>();
 		Cuota cuota = null;
-		String sentenciaSQL = "SELECT * FROM cuota WHERE mes=? and anio=?";
+		Cliente cliente = null;
+		String sentenciaSQL = "SELECT * FROM cuota as cuo INNER JOIN cliente as cli WHERE mes=? and anio=? and cuo.dni_cliente = cli.dni AND cli.fecha_baja_socio IS NULL;";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try 
@@ -198,10 +200,14 @@ public class CuotaDAO
 			if (rs.next())
 			{
 				cuota = new Cuota(rs.getString(1), rs.getInt(2), rs.getInt(3), rs.getDouble(4), rs.getObject(5, LocalDate.class));
+				cliente = new Cliente(rs.getString(6), null, null, rs.getString(9), rs.getString(10), null, rs.getString(12), null, null, null);
+				cuota.setCliente(cliente);
 				cuotas.add(cuota);
 				while (rs.next())
 				{
 					cuota = new Cuota(rs.getString(1), rs.getInt(2), rs.getInt(3), rs.getDouble(4), rs.getObject(5, LocalDate.class));
+					cliente = new Cliente(rs.getString(6), null, null, rs.getString(9), rs.getString(10), null, rs.getString(12), null, null, null);
+					cuota.setCliente(cliente);
 					cuotas.add(cuota);
 				}
 				return cuotas;
@@ -269,7 +275,8 @@ public class CuotaDAO
 	{
 		ArrayList<Cuota> cuotas = new ArrayList<Cuota>();
 		Cuota cuota = null;
-		String sentenciaSQL = "SELECT * FROM cuota WHERE YEAR(fecha_pago) = ? AND MONTH(fecha_pago) = ?";
+		Cliente cliente = null;
+		String sentenciaSQL = "SELECT * FROM cuota  as cuo INNER JOIN cliente as cli WHERE YEAR(fecha_pago) = ? AND MONTH(fecha_pago) = ? AND cuo.dni_cliente = cli.dni";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try 
@@ -281,6 +288,8 @@ public class CuotaDAO
 			while (rs.next())
 			{
 				cuota = new Cuota(rs.getString(1), rs.getInt(2), rs.getInt(3), rs.getDouble(4), rs.getObject(5, LocalDate.class));
+				cliente = new Cliente(rs.getString(6), null, null, rs.getString(9), rs.getString(10), null, rs.getString(12), null, null, null);
+				cuota.setCliente(cliente);
 				cuotas.add(cuota);
 			}
 			return cuotas;

@@ -1,6 +1,7 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="modeloDAO.ProductoDAO"%>
 <%@page import="modelo.Pedido"%>
+<%@page import="modelo.LineaPedido"%>
 <%@page import="modeloDAO.CategoriaDAO"%>
 <%@page import="modelo.Categoria"%>
 <%@page import="javax.servlet.http.HttpSession"%>
@@ -28,30 +29,35 @@
  		%>
  			<div class="alert alert-primary" role="alert"><%=request.getAttribute("mensajeOk")%></div>
 		<%}%>
-	   	<table class="table">
-	   		<thead>
+	   	
+		<%
+		if (sesion.getAttribute("pedidos") != null)
+		{
+		ArrayList<Pedido> pedidos = (ArrayList<Pedido>)sesion.getAttribute("pedidos");
+		for (Pedido ped: pedidos){
+		%>
+   		<table class="table">	   				  		   				 	   			  
+	   		<tbody>
 	   			<tr>
 	   				<th>Codigo</th>
 					<th>DNI Cliente</th>
+					<th>Nombre</th>
+					<th>Apellido</th>
+					<th>Telefono</th>
 					<th>Fecha de realización</th>
 					<th>Estado</th>
 					<th>Monto</th>
 					<th></th>
 	   			</tr>
-	   		</thead>
-	   			<%
-	   				if (sesion.getAttribute("pedidos") != null)
-	   				{
-	   				ArrayList<Pedido> pedidos = (ArrayList<Pedido>)sesion.getAttribute("pedidos");
-	   				for (Pedido ped: pedidos){
-	   			%>	   				  		   				 	   			  
-	   		<tbody>
 	   			<tr>
 					<td style="padding-top: 20px"><%=ped.getNro_pedido()%></td>
+					<td style="padding-top: 20px"><%=ped.getCliente().getNombre()%></td>
+					<td style="padding-top: 20px"><%=ped.getCliente().getApellido()%></td>
+					<td style="padding-top: 20px"><%=ped.getCliente().getTelefono()%></td>
 					<td style="padding-top: 20px"><%=ped.getDni_cliente()%></td>
 					<td style="padding-top: 20px"><%=ped.getFecha_pedido()%></td>
 					<td style="padding-top: 20px"><%=ped.getEstado().toUpperCase()%></td>
-					<td style="padding-top: 20px">$ <%=ped.getMonto()%></td>
+					<td style="padding-top: 20px">$<%=ped.getMonto()%></td>
 					<td>
 						<a class="py-0 d-none d-md-inline-block" href="ControladorPedido?accion=mostrar_pedido&nro_pedido=<%=ped.getNro_pedido()%>">
 							<button type="submit" class="btn btn-outline-info" style="color: white;  width:200 ; height:200;" name="" value="">
@@ -61,9 +67,18 @@
 						</a>
 					</td>
 				</tr>
-			<%}%>
-	   		</tbody>
+				<tr>
+					<td colspan="9" style="text-align: left;">
+						<ul>
+						<% for(LineaPedido lp : ped.getProductos()){ %>
+							<li><%=lp.getProducto().getNombre() %> - Cantidad: <%= lp.getCantidad() %></li>
+						<%} %>
+						</ul>
+					</td>
+				</tr>
+			</tbody>
 	   	</table>
+		<%}%>
 	   	<form action="ControladorPedido" method="get">
 	   		<button type="submit" class="btn btn-outline-info" style="color: white;  width:200 ; height:200;" name="accion" value="prepararPedidos">
 				¡Pedidos ya preparados!
