@@ -155,6 +155,53 @@ public class CuotaDAO
 		
 	}
 	
+	public ArrayList<Cuota> ObtenerCuotas(String dniCliente) throws Exception
+	{
+		ArrayList<Cuota> cuotas = new ArrayList<Cuota>();
+		Cuota cuota = null;
+		String sentenciaSQL="SELECT * FROM cuota WHERE dni_cliente=? and anio = year(current_date);";
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try 
+		{
+			ps = Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			ps.setString(1, dniCliente);
+			rs = ps.executeQuery();
+			if (rs.next())
+			{
+				cuota = new Cuota(rs.getString(1), rs.getInt(2), rs.getInt(3), rs.getDouble(4), rs.getObject(5, LocalDate.class));
+				cuotas.add(cuota);
+				while (rs.next())
+				{
+					cuota = new Cuota(rs.getString(1), rs.getInt(2), rs.getInt(3), rs.getDouble(4), rs.getObject(5, LocalDate.class));
+					cuotas.add(cuota);
+				}
+				return cuotas;
+			}
+			else
+			{
+				throw new NonExistentFeeException("No existen cuotas para el cliente ingresado");
+			}
+		}catch(NonExistentFeeException e) {
+			throw e;
+		}catch(Exception e)
+		{
+			_logger.error(e.getMessage());
+			throw e;
+		}
+		finally {
+			try 
+			{
+                Conexion.getInstancia().desconectar();
+			} 
+			catch (Exception e) 
+			{
+				_logger.error(e.getMessage());
+			}
+		}
+		
+	}
+	
 	public void RegistrarPago(String dniCliente, int mes, int anio) throws Exception
 	{
 		String sentenciaSQL="UPDATE cuota SET fecha_pago = current_date WHERE dni_cliente=? AND mes=? AND anio=?";

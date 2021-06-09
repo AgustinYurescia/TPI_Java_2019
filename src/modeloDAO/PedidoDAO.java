@@ -186,7 +186,10 @@ public class PedidoDAO {
 				while(rs.next()) {
 					Pedido ped = new Pedido();
 					Cliente cli = new Cliente();
+					ArrayList<LineaPedido> lineasPedido;
 					ped.setNro_pedido(rs.getInt("nro_pedido"));
+					lineasPedido = this.buscar_productos_pedido(ped.getNro_pedido());
+					ped.setProductos(lineasPedido);
 					ped.setFecha_pedido(rs.getDate("fecha_pedido"));
 					ped.setFecha_entrega_est(rs.getDate("fecha_entrega_est"));
 					ped.setMonto(rs.getDouble("monto"));
@@ -231,6 +234,106 @@ public class PedidoDAO {
 		}else if (estado.equalsIgnoreCase("cancelado")) {
 			sentenciaSQL = sentenciaSQL + " as ped INNER JOIN cliente as cli WHERE ped.dni_cliente = cli.dni AND fecha_cancelacion is not null AND estado = 'cancelado' order by fecha_pedido desc";
 		}
+		try {
+			st=Conexion.getInstancia().getConexion().createStatement();
+			rs=st.executeQuery(sentenciaSQL);
+			if(rs!=null) {
+				while(rs.next()) {
+					Pedido ped = new Pedido();
+					Cliente cli = new Cliente();
+					ArrayList<LineaPedido> lineasPedido;
+					ped.setNro_pedido(rs.getInt("nro_pedido"));
+					lineasPedido = this.buscar_productos_pedido(ped.getNro_pedido());
+					ped.setProductos(lineasPedido);
+					ped.setFecha_pedido(rs.getDate("fecha_pedido"));
+					ped.setFecha_entrega_est(rs.getDate("fecha_entrega_est"));
+					ped.setMonto(rs.getDouble("monto"));
+					ped.setFecha_cancelacion(rs.getDate("fecha_cancelacion"));
+					ped.setFecha_entrega_real(rs.getDate("fecha_entrega_real"));
+					ped.setDni_cliente(rs.getString("dni_cliente"));
+					ped.setEstado(rs.getString("estado"));
+					cli.setApellido(rs.getString("apellido"));
+					cli.setNombre(rs.getString("nombre"));
+					cli.setTelefono(rs.getNString("telefono"));
+					cli.setDireccion(rs.getString("direccion"));
+					cli.setMail(rs.getString("mail"));
+					ped.setCliente(cli);
+					lista.add(ped);
+				}
+			}
+		} catch (Exception e) {
+			_logger.error(e.getMessage());
+			throw e;
+		} finally {
+			try {
+				if(rs!=null) {rs.close();}
+				if(st!=null) {st.close();}
+				Conexion.getInstancia().desconectar();
+			} catch (Exception e) {
+				_logger.error(e.getMessage());
+			}
+		}
+		return lista;
+	}
+	
+	public ArrayList<Pedido> listarFinalizados(String fecha_ini, String fecha_fin) {
+		Statement st = null;
+		ResultSet rs = null;
+		String sentenciaSQL = "";
+		ArrayList<Pedido>lista = new ArrayList<>();
+		if(fecha_ini != "" && fecha_fin != "") {
+			sentenciaSQL = "SELECT * FROM pedido as ped INNER JOIN cliente as cli WHERE ped.dni_cliente = cli.dni AND fecha_entrega_real >= '"+fecha_ini+"' AND fecha_entrega_real <= '"+fecha_fin+"'";
+		}else if(fecha_ini != "" && fecha_fin == "") {
+			sentenciaSQL = "SELECT * FROM pedido as ped INNER JOIN cliente as cli WHERE ped.dni_cliente = cli.dni AND fecha_entrega_real >= '"+fecha_ini+"'";
+		}else if(fecha_ini == "" && fecha_fin != "") {
+			sentenciaSQL = "SELECT * FROM pedido as ped INNER JOIN cliente as cli WHERE ped.dni_cliente = cli.dni AND fecha_entrega_real <= '"+fecha_fin+"'";
+		}
+		try {
+			st=Conexion.getInstancia().getConexion().createStatement();
+			rs=st.executeQuery(sentenciaSQL);
+			if(rs!=null) {
+				while(rs.next()) {
+					Pedido ped = new Pedido();
+					Cliente cli = new Cliente();
+					ArrayList<LineaPedido> lineasPedido;
+					ped.setNro_pedido(rs.getInt("nro_pedido"));
+					lineasPedido = this.buscar_productos_pedido(ped.getNro_pedido());
+					ped.setProductos(lineasPedido);
+					ped.setFecha_pedido(rs.getDate("fecha_pedido"));
+					ped.setFecha_entrega_est(rs.getDate("fecha_entrega_est"));
+					ped.setMonto(rs.getDouble("monto"));
+					ped.setFecha_cancelacion(rs.getDate("fecha_cancelacion"));
+					ped.setFecha_entrega_real(rs.getDate("fecha_entrega_real"));
+					ped.setDni_cliente(rs.getString("dni_cliente"));
+					ped.setEstado(rs.getString("estado"));
+					cli.setApellido(rs.getString("apellido"));
+					cli.setNombre(rs.getString("nombre"));
+					cli.setTelefono(rs.getNString("telefono"));
+					cli.setDireccion(rs.getString("direccion"));
+					cli.setMail(rs.getString("mail"));
+					ped.setCliente(cli);
+					lista.add(ped);
+				}
+			}
+		} catch (Exception e) {
+			_logger.error(e.getMessage());
+		} finally {
+			try {
+				if(rs!=null) {rs.close();}
+				if(st!=null) {st.close();}
+				Conexion.getInstancia().desconectar();
+			} catch (Exception e) {
+				_logger.error(e.getMessage());
+			}
+		}
+		return lista;
+	}
+	
+	public ArrayList<Pedido> listarFinalizados() throws Exception  {
+		Statement st = null;
+		ResultSet rs = null;
+		ArrayList<Pedido>lista = new ArrayList<>();
+		String sentenciaSQL = "SELECT * FROM pedido as ped INNER JOIN cliente as cli WHERE ped.dni_cliente = cli.dni AND fecha_entrega_real is not null";
 		try {
 			st=Conexion.getInstancia().getConexion().createStatement();
 			rs=st.executeQuery(sentenciaSQL);
@@ -627,5 +730,58 @@ public class PedidoDAO {
 				_logger.error(e.getMessage());
 			}
 		}
+	}
+	public ArrayList<Pedido> VentasDelDia() throws Exception {
+		PreparedStatement ps= null;
+		ResultSet rs = null;
+		ArrayList<Pedido>pedidos = new ArrayList<>();
+		ArrayList<LineaPedido>lineasPedido = null;
+		String sentenciaSQL="SELECT * FROM pedido as ped INNER JOIN cliente as cli WHERE ped.dni_cliente = cli.dni AND fecha_entrega_real = current_date;";
+		try {
+			ps = Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			rs = ps.executeQuery(sentenciaSQL);
+			if(rs!=null) {
+				while(rs.next()) {
+					Pedido ped = new Pedido();
+					Cliente cli = new Cliente();
+					ped.setNro_pedido(rs.getInt("nro_pedido"));
+					lineasPedido = this.buscar_productos_pedido(ped.getNro_pedido());
+					ped.setProductos(lineasPedido);
+					ped.setFecha_pedido(rs.getDate("fecha_pedido"));
+					ped.setFecha_entrega_est(rs.getDate("fecha_entrega_est"));
+					ped.setMonto(rs.getDouble("monto"));
+					ped.setFecha_cancelacion(rs.getDate("fecha_cancelacion"));
+					ped.setFecha_entrega_real(rs.getDate("fecha_entrega_real"));
+					ped.setDni_cliente(rs.getString("dni_cliente"));
+					ped.setEstado(rs.getString("estado"));
+					cli.setApellido(rs.getString("apellido"));
+					cli.setNombre(rs.getString("nombre"));
+					cli.setTelefono(rs.getNString("telefono"));
+					cli.setDireccion(rs.getString("direccion"));
+					cli.setMail(rs.getString("mail"));
+					ped.setCliente(cli);
+					pedidos.add(ped);
+				}
+			}
+		} 
+		catch (Exception e) {
+			_logger.error(e.getMessage());
+			throw e;
+		}
+		finally {
+			try {
+				if(rs!=null) {rs.close();}
+				if(ps!=null) {ps.close();}
+                Conexion.getInstancia().desconectar();
+			} 
+			catch (Exception e) {
+				_logger.error(e.getMessage());
+			}
+		}
+		if (pedidos.size() == 0)
+		{
+			throw new NonExistentOrderException("Hoy no hubo ventas");
+		}
+		return pedidos;
 	}
 }

@@ -58,6 +58,24 @@ public class ServicioCuota {
 		}
 	}
 	
+	public ArrayList<Cuota> ObtenerCuotas(String dniCliente) throws Exception
+	{
+		ArrayList<Cuota> cuotas = null;
+		try
+		{
+			cuotas = _cuotaDAO.ObtenerCuotas(dniCliente);
+			return cuotas;
+		}
+		catch(NonExistentFeeException e)
+		{
+			throw e;
+		}
+		catch(Exception e)
+		{
+			throw e;
+		}
+	}
+	
 	public void RegistrarPago(String dniCliente, int mes, int anio) throws Exception
 	{
 		try

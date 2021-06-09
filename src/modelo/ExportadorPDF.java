@@ -29,18 +29,20 @@ public class ExportadorPDF
 	private Color color_letra;
 	private CustomerService _servicioCliente;
 	private ArrayList<Cuota> cuotas;
+	private ArrayList<Pedido> pedidos;
 	
 	public ExportadorPDF() 
 	{
 		
 	}
 	
-	public ExportadorPDF(ArrayList<Cliente> socios, ArrayList<SocioDeudor> sociosDeudores, Pedido pedido, ArrayList<Cuota> cuotas)
+	public ExportadorPDF(ArrayList<Cliente> socios, ArrayList<SocioDeudor> sociosDeudores, Pedido pedido, ArrayList<Cuota> cuotas, ArrayList<Pedido> pedidos)
 	{
 		this.socios = socios;
 		this.sociosDeudores = sociosDeudores;
 		this.pedido = pedido;
 		this.cuotas = cuotas;
+		this.pedidos = pedidos;
 		this._servicioCliente = new CustomerService();
 		color_letra =  new Color(88,39,45);
 	}
@@ -67,6 +69,11 @@ public class ExportadorPDF
 		cell.setBorderColor(color_letra);
 		cell.setHorizontalAlignment(Paragraph.ALIGN_CENTER);
 		cell.setPadding(5);
+		PdfPCell money_cell = new PdfPCell();
+		money_cell.setBorder(0);
+		money_cell.setBorderColor(color_letra);
+		money_cell.setHorizontalAlignment(Paragraph.ALIGN_RIGHT);
+		money_cell.setPadding(5);
 		PdfPCell span_cell_img = new PdfPCell();
 		span_cell_img.setImage(img);
 		span_cell_img.setBorder(0);
@@ -128,6 +135,28 @@ public class ExportadorPDF
 			date_info_cell.setPhrase(date_info);
 			span_cell_title.setPhrase(title);
 		}
+		else if (type.equalsIgnoreCase("ventasDelDia"))
+		{
+			span_cell_img.setColspan(3);
+			date_info_cell.setColspan(6);
+			span_cell_title.setColspan(6);
+			span_info_cell.setColspan(4);
+			Phrase title = new Phrase("INFORME DE VENTAS DEL DIA DE HOY", title_font);
+			Phrase date_info = new Phrase("Fecha de informe: " + string_date + "\n ", date_font);
+			date_info_cell.setPhrase(date_info);
+			span_cell_title.setPhrase(title);
+		}
+		else if (type.equalsIgnoreCase("ventas"))
+		{
+			span_cell_img.setColspan(3);
+			date_info_cell.setColspan(6);
+			span_cell_title.setColspan(6);
+			span_info_cell.setColspan(4);
+			Phrase title = new Phrase("INFORME DE VENTAS", title_font);
+			Phrase date_info = new Phrase("Fecha de informe: " + string_date + "\n ", date_font);
+			date_info_cell.setPhrase(date_info);
+			span_cell_title.setPhrase(title);
+		}
 		
 		span_info_cell.setPhrase(info);
 		pdfTable.addCell(span_cell_img);
@@ -173,8 +202,38 @@ public class ExportadorPDF
 			pdfTable.addCell(cell);
 			cell.setPhrase(new Phrase("PRECIO", font));
 			pdfTable.addCell(cell);
-			cell.setPhrase(new Phrase("SUBTOTAL", font));
+			money_cell.setPhrase(new Phrase("SUBTOTAL", font));
 			pdfTable.addCell(cell);
+		}
+		if (type.equalsIgnoreCase("ventasDelDia"))
+		{
+			cell.setPhrase(new Phrase("NRO PED", font));
+			pdfTable.addCell(cell);
+			cell.setPhrase(new Phrase("NOMBRE", font));
+			pdfTable.addCell(cell);
+			cell.setPhrase(new Phrase("APELLIDO", font));
+			pdfTable.addCell(cell);
+			cell.setPhrase(new Phrase("TELEFONO", font));
+			pdfTable.addCell(cell);
+			cell.setPhrase(new Phrase("FECHA", font));
+			pdfTable.addCell(cell);
+			money_cell.setPhrase(new Phrase("MONTO", font));
+			pdfTable.addCell(money_cell);
+		}
+		if (type.equalsIgnoreCase("ventas"))
+		{
+			cell.setPhrase(new Phrase("NRO PED", font));
+			pdfTable.addCell(cell);
+			cell.setPhrase(new Phrase("NOMBRE", font));
+			pdfTable.addCell(cell);
+			cell.setPhrase(new Phrase("APELLIDO", font));
+			pdfTable.addCell(cell);
+			cell.setPhrase(new Phrase("TELEFONO", font));
+			pdfTable.addCell(cell);
+			cell.setPhrase(new Phrase("FECHA", font));
+			pdfTable.addCell(cell);
+			money_cell.setPhrase(new Phrase("MONTO", font));
+			pdfTable.addCell(money_cell);
 		}
 	}
 	
@@ -183,8 +242,17 @@ public class ExportadorPDF
 		PdfPCell cell = new PdfPCell();
 		cell.setBorder(0);
 		cell.setHorizontalAlignment(Paragraph.ALIGN_CENTER);
+		PdfPCell money_cell = new PdfPCell();
+		money_cell.setBorder(0);
+		money_cell.setBorderColor(color_letra);
+		money_cell.setHorizontalAlignment(Paragraph.ALIGN_RIGHT);
 		Font font = FontFactory.getFont(FontFactory.COURIER);
 		font.setColor(color_letra);
+		PdfPCell product_cell = new PdfPCell();
+		product_cell.setBorder(0);
+		product_cell.setHorizontalAlignment(Phrase.ALIGN_RIGHT);
+		product_cell.setColspan(5);
+		product_cell.setPaddingRight(5);
 		if (type.equalsIgnoreCase("listadoSocios"))
 		{
 			for (Cliente s : socios)
@@ -232,7 +300,7 @@ public class ExportadorPDF
 				pdfTable.addCell(cell);
 				cell.setPhrase(new Phrase(String.valueOf(producto.getPrecioVenta()), font));
 				pdfTable.addCell(cell);
-				cell.setPhrase(new Phrase(String.valueOf(l.getCantidad() * producto.getPrecioVenta()), font));
+				cell.setPhrase(new Phrase(String.format("$%.2f",l.getCantidad() * producto.getPrecioVenta()), font));
 				pdfTable.addCell(cell);
 			}
 			
@@ -243,7 +311,7 @@ public class ExportadorPDF
 			total_cell.setBorder(0);
 			total_cell.setHorizontalAlignment(Phrase.ALIGN_RIGHT);
 			total_cell.setColspan(5);
-			total_cell.setPhrase(new Phrase("Total: $"+String.valueOf(pedido.getMonto()), total_font));
+			total_cell.setPhrase(new Phrase("Total: $"+String.format("%.2f",pedido.getMonto()), total_font));
 			total_cell.setPaddingRight(25);
 			pdfTable.addCell(total_cell);
 		}
@@ -284,7 +352,7 @@ public class ExportadorPDF
 				cell.setBorderWidthLeft(1);
 				cell.setBorderWidthRight(1);
 				pdfTable.addCell(cell);
-				cell.setPhrase(new Phrase("Total: $" + String.valueOf(c.getValor()), font));
+				cell.setPhrase(new Phrase("Total: $" + String.format("%.2f",c.getValor()), font));
 				cell.setHorizontalAlignment(Phrase.ALIGN_RIGHT);
 				cell.setBorderWidthTop(0);
 				cell.setBorderWidthBottom(1);
@@ -295,6 +363,100 @@ public class ExportadorPDF
 				cell.setPhrase(new Phrase(" ", font));
 				pdfTable.addCell(cell);
 			}
+		}
+		else if(type.equalsIgnoreCase("ventasDelDia"))
+		{
+			double total = 0.0;
+			for (Pedido p: pedidos)
+			{
+				Cliente c = p.getCliente();
+				cell.setPhrase(new Phrase(String.valueOf(p.getNro_pedido()), font));
+				pdfTable.addCell(cell);
+				cell.setPhrase(new Phrase(c.getNombre(), font));
+				pdfTable.addCell(cell);
+				cell.setPhrase(new Phrase(c.getApellido(), font));
+				pdfTable.addCell(cell);
+				cell.setPhrase(new Phrase(c.getTelefono(), font));
+				pdfTable.addCell(cell);
+				cell.setPhrase(new Phrase(String.valueOf(p.getFecha_pedido()), font));
+				pdfTable.addCell(cell);
+				money_cell.setPhrase(new Phrase(String.format("$%.2f",p.getMonto()), font));
+				pdfTable.addCell(money_cell);
+				total = total + p.getMonto();
+				cell.setPhrase(new Phrase(" "));
+				pdfTable.addCell(cell);
+				product_cell.setPhrase(new Phrase(" "));
+				pdfTable.addCell(product_cell);
+				for (LineaPedido lp : p.getProductos())
+				{
+					cell.setPhrase(new Phrase(" "));
+					pdfTable.addCell(cell);
+					product_cell.setPhrase(new Phrase(lp.getProducto().getNombre() + " - " + "Cantidad: " + String.valueOf(lp.getCantidad()), font));
+					pdfTable.addCell(product_cell);
+				}
+				cell.setPhrase(new Phrase(" "));
+				pdfTable.addCell(cell);
+				product_cell.setPhrase(new Phrase(" "));
+				pdfTable.addCell(product_cell);
+			}
+			
+			Font total_font = FontFactory.getFont(FontFactory.COURIER_BOLD);
+			total_font.setSize(15);
+			total_font.setColor(color_letra);
+			PdfPCell total_cell = new PdfPCell();
+			total_cell.setBorder(0);
+			total_cell.setHorizontalAlignment(Phrase.ALIGN_RIGHT);
+			total_cell.setColspan(6);
+			total_cell.setPhrase(new Phrase("Total: $"+String.format("%.2f",total), total_font));
+			total_cell.setPaddingRight(5);
+			pdfTable.addCell(total_cell);
+		}
+		else if(type.equalsIgnoreCase("ventas"))
+		{
+			double total = 0.0;
+			for (Pedido p: pedidos)
+			{
+				Cliente c = p.getCliente();
+				cell.setPhrase(new Phrase(String.valueOf(p.getNro_pedido()), font));
+				pdfTable.addCell(cell);
+				cell.setPhrase(new Phrase(c.getNombre(), font));
+				pdfTable.addCell(cell);
+				cell.setPhrase(new Phrase(c.getApellido(), font));
+				pdfTable.addCell(cell);
+				cell.setPhrase(new Phrase(c.getTelefono(), font));
+				pdfTable.addCell(cell);
+				cell.setPhrase(new Phrase(String.valueOf(p.getFecha_pedido()), font));
+				pdfTable.addCell(cell);
+				money_cell.setPhrase(new Phrase(String.format("$%.2f",p.getMonto()), font));
+				pdfTable.addCell(money_cell);
+				total = total + p.getMonto();
+				cell.setPhrase(new Phrase(" "));
+				pdfTable.addCell(cell);
+				product_cell.setPhrase(new Phrase(" "));
+				pdfTable.addCell(product_cell);
+				for (LineaPedido lp : p.getProductos())
+				{
+					cell.setPhrase(new Phrase(" "));
+					pdfTable.addCell(cell);
+					product_cell.setPhrase(new Phrase(lp.getProducto().getNombre() + " - " + "Cantidad: " + String.valueOf(lp.getCantidad()), font));
+					pdfTable.addCell(product_cell);
+				}
+				cell.setPhrase(new Phrase(" "));
+				pdfTable.addCell(cell);
+				product_cell.setPhrase(new Phrase(" "));
+				pdfTable.addCell(product_cell);
+			}
+			
+			Font total_font = FontFactory.getFont(FontFactory.COURIER_BOLD);
+			total_font.setSize(15);
+			total_font.setColor(color_letra);
+			PdfPCell total_cell = new PdfPCell();
+			total_cell.setBorder(0);
+			total_cell.setHorizontalAlignment(Phrase.ALIGN_RIGHT);
+			total_cell.setColspan(6);
+			total_cell.setPhrase(new Phrase("Total: $"+String.format("%.2f",total), total_font));
+			total_cell.setPaddingRight(5);
+			pdfTable.addCell(total_cell);
 		}
 	}
 	
@@ -342,6 +504,26 @@ public class ExportadorPDF
 				pdfPTable.setSpacingBefore(10);
 				writeTableHeader(pdfPTable, "cuotas");
 				writeTableData(pdfPTable, "cuotas");
+				doc.add(pdfPTable);
+			}
+			else if (type.equalsIgnoreCase("ventasDelDia"))
+			{
+				PdfPTable pdfPTable = new PdfPTable(6);
+				pdfPTable.setWidthPercentage(100f);
+				pdfPTable.setWidths(new float []{10.0f, 10.0f, 10.0f, 10.0f, 10.0f, 10.0f});
+				pdfPTable.setSpacingBefore(10);
+				writeTableHeader(pdfPTable, "ventasDelDia");
+				writeTableData(pdfPTable, "ventasDelDia");
+				doc.add(pdfPTable);
+			}
+			else if (type.equalsIgnoreCase("ventas"))
+			{
+				PdfPTable pdfPTable = new PdfPTable(6);
+				pdfPTable.setWidthPercentage(100f);
+				pdfPTable.setWidths(new float []{10.0f, 10.0f, 10.0f, 10.0f, 10.0f, 10.0f});
+				pdfPTable.setSpacingBefore(10);
+				writeTableHeader(pdfPTable, "ventas");
+				writeTableData(pdfPTable, "ventas");
 				doc.add(pdfPTable);
 			}
 			doc.close();
