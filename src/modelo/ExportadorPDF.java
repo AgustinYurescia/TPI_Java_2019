@@ -253,6 +253,11 @@ public class ExportadorPDF
 		product_cell.setHorizontalAlignment(Phrase.ALIGN_RIGHT);
 		product_cell.setColspan(5);
 		product_cell.setPaddingRight(5);
+		PdfPCell cuota_cell = new PdfPCell();
+		cuota_cell.setBorder(0);
+		cuota_cell.setHorizontalAlignment(Phrase.ALIGN_RIGHT);
+		cuota_cell.setColspan(6);
+		cuota_cell.setPaddingRight(5);
 		if (type.equalsIgnoreCase("listadoSocios"))
 		{
 			for (Cliente s : socios)
@@ -271,8 +276,11 @@ public class ExportadorPDF
 		}
 		if (type.equalsIgnoreCase("listadoSociosDeudores"))
 		{
+			double deudaCliente;
+			double deudaTotal = 0.0;
 			for (SocioDeudor s : sociosDeudores)
 			{
+				deudaCliente = 0.0;
 				cell.setPhrase(new Phrase(s.getDni(), font));
 				pdfTable.addCell(cell);
 				cell.setPhrase(new Phrase(s.getNombre(), font));
@@ -285,7 +293,36 @@ public class ExportadorPDF
 				pdfTable.addCell(cell);
 				cell.setPhrase(new Phrase(Integer.toString(s.getCantidadCuotasAdeudadas()), font));
 				pdfTable.addCell(cell);
+				cell.setPhrase(new Phrase(" "));
+				pdfTable.addCell(cell);
+				product_cell.setPhrase(new Phrase(" "));
+				pdfTable.addCell(product_cell);
+				for (Cuota c : s.getCuotas())
+				{
+					deudaCliente = deudaCliente + c.getValor();
+					deudaTotal = deudaTotal + c.getValor();
+					cell.setPhrase(new Phrase(" "));
+					pdfTable.addCell(cell);
+					cuota_cell.setPhrase(new Phrase(c.getMes() + "/" + c.getAnio() + " - " + "Valor: $" + String.valueOf(c.getValor()), font));
+					pdfTable.addCell(cuota_cell);
+				}
+				cuota_cell.setPhrase(new Phrase("Deuda total: $" + String.valueOf(deudaCliente), font));
+				pdfTable.addCell(cuota_cell);
+				cell.setPhrase(new Phrase(" "));
+				pdfTable.addCell(cell);
+				cuota_cell.setPhrase(new Phrase(" "));
+				pdfTable.addCell(cuota_cell);
 			}
+			Font total_font = FontFactory.getFont(FontFactory.COURIER_BOLD);
+			total_font.setSize(15);
+			total_font.setColor(color_letra);
+			PdfPCell total_cell = new PdfPCell();
+			total_cell.setBorder(0);
+			total_cell.setHorizontalAlignment(Phrase.ALIGN_RIGHT);
+			total_cell.setColspan(6);
+			total_cell.setPhrase(new Phrase("Total deudas: $"+String.format("%.2f",deudaTotal), total_font));
+			total_cell.setPaddingRight(5);
+			pdfTable.addCell(total_cell);
 		}
 		else if(type.equalsIgnoreCase("pedido"))
 		{

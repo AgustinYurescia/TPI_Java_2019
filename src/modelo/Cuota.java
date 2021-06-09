@@ -11,6 +11,11 @@ public class Cuota
 	private LocalDate fechaPago;
 	private Cliente cliente;
 	
+	public Cuota() 
+	{
+		super();
+	}
+	
 	public Cuota(String dniCliente, int mes, int anio, double valor, LocalDate localDate) 
 	{
 		super();

@@ -463,7 +463,7 @@ public class ControladorPedido extends HttpServlet {
 				try
 				{
 					pedidos = _servicioPedido.VentasDelDia();
-					sesion.setAttribute("pedidos", pedidos);
+					sesion.setAttribute("ventasDelDia", pedidos);
 				}
 				catch(AppException e)
 				{

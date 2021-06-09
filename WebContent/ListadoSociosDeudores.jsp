@@ -1,4 +1,5 @@
 <%@page import="modelo.SocioDeudor"%>
+<%@page import="modelo.Cuota"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="modelo.Producto"%>
 <%@page import="java.awt.*"%>
@@ -55,7 +56,11 @@
 							</tr>
 						</thead>
 						<tbody>
-						<% for(SocioDeudor socio: socios){%>
+						<% 
+						double deuda_total = 0.0;
+						for(SocioDeudor socio: socios){
+							double total_deuda_socio = 0.0;
+						%>
 							<tr id="socio-<%=socio.getDni()%>" class="empleado-deudor" data-dni="<%=socio.getDni()%>" data-cantidadcuotasadeudadas="<%=socio.getCantidadCuotasAdeudadas()%>">
 								<td><%=socio.getDni() %></td>
 								<td><%=socio.getNombre() %></td>
@@ -66,11 +71,27 @@
 								<td>
 									<form action="ControladorCuota" method="post">
 										<input type="hidden" id="dniCliente" name="dniCliente" class="form-control" value="<%=socio.getDni()%>" required/>
-										<button type="submit" class="btn btn-primary" name="accion" value="buscarCuotas" style="width: 175px;"> <img src="SVG/Eye.svg"/> Ver Cuotas</button>
+										<button type="submit" class="btn btn-primary" name="accion" value="buscarCuotas" style="width: 175px;">Ir a pagar</button>
 									</form>
 								</td>
 							</tr>
+							<tr>
+								<td colspan="9" style="text-align: left;">
+									<ul>
+									<% for(Cuota c : socio.getCuotas()){ 
+										total_deuda_socio = total_deuda_socio + c.getValor();
+										deuda_total = deuda_total + c.getValor();
+									%>
+										<li><%=c.getMes()%>/<%=c.getAnio()%> - Valor: <%= c.getValor() %></li>
+									<%}%>
+										<%="Deuda total: $" + total_deuda_socio %>
+									</ul>
+								</td>
+							</tr>
 						<% }%>
+						<tr>
+							<td colspan="9" style="padding-top: 20px; text-align: right;"><b>Dinero total adeudado: $<%=deuda_total%></b></td>
+						</tr>
 						</tbody>
 					</table>
 					<form action="ControladorPDF" method="POST">

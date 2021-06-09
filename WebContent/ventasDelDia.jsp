@@ -30,7 +30,7 @@
  			<div class="alert alert-primary" role="alert"><%=request.getAttribute("mensajeOk")%></div>
 		<%}%>
 		<%
-		if (sesion.getAttribute("pedidos") != null)
+		if (sesion.getAttribute("ventasDelDia") != null)
 		{
 		%>
 		<form action="ControladorPDF" method="POST">
@@ -40,8 +40,7 @@
 			<br><br>
 		</form>
 		<%
-		ArrayList<Pedido> pedidos = (ArrayList<Pedido>)sesion.getAttribute("pedidos");
-		sesion.setAttribute("ventasDelDia", pedidos);
+		ArrayList<Pedido> pedidos = (ArrayList<Pedido>)sesion.getAttribute("ventasDelDia");
 		double total = 0.0;
 		for (Pedido ped: pedidos){
 			total = total + ped.getMonto();
