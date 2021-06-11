@@ -75,7 +75,7 @@
 									</form>
 								</td>
 							</tr>
-							<tr class="empleado-deudor" data-dni="<%=socio.getDni()%>" data-cantidadcuotasadeudadas="<%=socio.getCantidadCuotasAdeudadas()%>">
+ 							<tr class="empleado-deudor" data-dni="<%=socio.getDni()%>" data-cantidadcuotasadeudadas="<%=socio.getCantidadCuotasAdeudadas()%>">
 								<td colspan="9" style="text-align: left;">
 									<ul>
 									<% for(Cuota c : socio.getCuotas()){ 
