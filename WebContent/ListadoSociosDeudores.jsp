@@ -75,7 +75,7 @@
 									</form>
 								</td>
 							</tr>
-							<tr>
+							<tr class="empleado-deudor" data-dni="<%=socio.getDni()%>" data-cantidadcuotasadeudadas="<%=socio.getCantidadCuotasAdeudadas()%>">
 								<td colspan="9" style="text-align: left;">
 									<ul>
 									<% for(Cuota c : socio.getCuotas()){ 
@@ -121,13 +121,13 @@
 		let arrayElements = Array.from(selectElements);
 	    arrayElements.map((elem) => {
 	    	if (e.target.value == "todos"){
-	    		elem.style.display = "contents";
+	    		elem.style.display = "revert";
 	    	}
 	    	else if(elem.dataset.cantidadcuotasadeudadas < e.target.value){
 	    		elem.style.display = "none";
 	    	}
 	    	else{
-	    		elem.style.display = "contents";
+	    		elem.style.display = "revert";
 	    	}
 	    });
 	});
