@@ -130,4 +130,53 @@ public class ServicioCuota {
 			throw e;
 		}
 	}
+	public ArrayList<Integer> ObtenerAnios() throws Exception
+	{
+		try
+		{ 
+			ArrayList<Integer> anios = _cuotaDAO.ObtenerAnios();
+			return anios;
+		}
+		catch (Exception e)
+		{
+			throw e;
+		}
+	}
+	public ArrayList<Integer> ObtenerMeses(Integer anio) throws Exception
+	{
+		try
+		{ 
+			ArrayList<Integer> meses = _cuotaDAO.ObtenerMeses(anio);
+			return meses;
+		}
+		catch (Exception e)
+		{
+			throw e;
+		}
+	}
+	public ArrayList<Integer> ObtenerAniosPagas() throws Exception
+	{
+		try
+		{ 
+			ArrayList<Integer> anios = _cuotaDAO.ObtenerAniosPagas();
+			return anios;
+		}
+		catch (Exception e)
+		{
+			throw e;
+		}
+	}
+	public ArrayList<Integer> ObtenerMesesPagas(Integer anio) throws Exception
+	{
+		try
+		{ 
+			ArrayList<Integer> meses = _cuotaDAO.ObtenerMesesPagas(anio);
+			return meses;
+		}
+		catch (Exception e)
+		{
+			throw e;
+		}
+	}
+	
 }

@@ -359,4 +359,134 @@ public class CuotaDAO
 		}
 	}
 	
+	public ArrayList<Integer> ObtenerAnios() throws Exception
+	{
+		ArrayList<Integer> anios = new ArrayList<Integer>();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sentenciaSQL="SELECT DISTINCT anio FROM cuota ORDER BY anio ASC";
+		try 
+		{
+			ps = Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			rs = ps.executeQuery();
+			while (rs.next())
+			{
+				anios.add(rs.getInt(1));
+			}
+		}
+		catch(Exception e)
+		{
+			_logger.error(e.getMessage());
+			throw e;
+		}finally {
+			try 
+			{
+                Conexion.getInstancia().desconectar();
+			} 
+			catch (Exception e) 
+			{
+				_logger.error(e.getMessage());
+			}
+		}
+		return anios;
+	}
+	
+	public ArrayList<Integer> ObtenerMeses(Integer anio) throws Exception
+	{
+		ArrayList<Integer> meses = new ArrayList<Integer>();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sentenciaSQL="SELECT DISTINCT mes FROM cuota WHERE anio=? ORDER BY anio ASC";
+		try 
+		{
+			ps = Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			ps.setInt(1, anio);
+			rs = ps.executeQuery();
+			while (rs.next())
+			{
+				meses.add(rs.getInt(1));
+			}
+		}
+		catch(Exception e)
+		{
+			_logger.error(e.getMessage());
+			throw e;
+		}finally {
+			try 
+			{
+                Conexion.getInstancia().desconectar();
+			} 
+			catch (Exception e) 
+			{
+				_logger.error(e.getMessage());
+			}
+		}
+		return meses;
+	}
+	
+	public ArrayList<Integer> ObtenerAniosPagas() throws Exception
+	{
+		ArrayList<Integer> anios = new ArrayList<Integer>();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sentenciaSQL="SELECT DISTINCT year(fecha_pago) FROM cuota WHERE fecha_pago is not null ORDER BY anio ASC";
+		try 
+		{
+			ps = Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			rs = ps.executeQuery();
+			while (rs.next())
+			{
+				anios.add(rs.getInt(1));
+			}
+		}
+		catch(Exception e)
+		{
+			_logger.error(e.getMessage());
+			throw e;
+		}finally {
+			try 
+			{
+                Conexion.getInstancia().desconectar();
+			} 
+			catch (Exception e) 
+			{
+				_logger.error(e.getMessage());
+			}
+		}
+		return anios;
+	}
+	
+	public ArrayList<Integer> ObtenerMesesPagas(Integer anio) throws Exception
+	{
+		ArrayList<Integer> meses = new ArrayList<Integer>();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sentenciaSQL="SELECT DISTINCT month(fecha_pago) FROM cuota WHERE year(fecha_pago)=? and fecha_pago is not null ORDER BY anio ASC";
+		try 
+		{
+			ps = Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			ps.setInt(1, anio);
+			rs = ps.executeQuery();
+			while (rs.next())
+			{
+				meses.add(rs.getInt(1));
+			}
+		}
+		catch(Exception e)
+		{
+			_logger.error(e.getMessage());
+			throw e;
+		}finally {
+			try 
+			{
+                Conexion.getInstancia().desconectar();
+			} 
+			catch (Exception e) 
+			{
+				_logger.error(e.getMessage());
+			}
+		}
+		return meses;
+	}
+	
 }

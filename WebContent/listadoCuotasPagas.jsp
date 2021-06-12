@@ -24,29 +24,19 @@
 		<form action="ControladorCuota" method="get">
 	   		<div class = "form-row">
 	       		<div class="form-group col-md-5">
-	       			<label for="mes">Mes:</label>
-	       			<select id="mes" name="mes" class="form-control">
-        				<option selected>-</option>
-        				<% 
-						for(int i=1; i<=12; i++){
-						%>
-        					<option value="<%=i%>"><%=i%></option>
-        				<%}%>
-     				</select>
-	       		</div>
-	       		<div class="form-group col-md-5">
 	       			<label for="anio">Año:</label>
       				<select id="anio" name="anio" class="form-control">
         				<option selected>-</option>
-        				<% 
-						for(int i=2020; i<=2040; i++){
-						%>
-        					<option value="<%=i%>"><%=i%></option>
-        				<%}%>
+     				</select>
+	       		</div>
+	       		<div class="form-group col-md-5">
+	       			<label for="mes">Mes:</label>
+	       			<select id="mes" name="mes" class="form-control">
+        				<option selected>-</option>
      				</select>
 	       		</div>
 	       		<div class="form-group col-md-2" style="padding-top: 31px">
-	       			<button type="submit" class="btn btn-primary" name="accion" value="listadoCuotasPagas" style="width: 175px;" onclick="return validacion_buscar_cuotas();">Buscar Cuotas</button>
+	       			<button type="submit" class="btn btn-primary" name="accion" id="buscarcuotas" value="listadoCuotasPagas" style="width: 175px;" onclick="return validacion_buscar_cuotas();">Buscar Cuotas</button>
 	       		</div>
 	       	</div>
 		</form>
@@ -104,4 +94,66 @@
 	   <%}}%>
 	</div>
 </body>
+<script>
+	$(document).ready( function () {
+		$(document.getElementById('buscarcuotas').disabled = true);
+		$(document.getElementById('mes').disabled = true);
+		$.ajax({
+			type : 'GET',
+			url : '/TPI_Java/ControladorCuota',
+			data : {
+				'ajax_action' : 'obtenerAniosPagas',
+			}
+		}).done(
+				function(anios) {
+					var select = document.getElementById("anio");
+					for(var i = 0; i < anios.length; i++) {
+						 var opt = document.createElement('option');
+						 opt.value = anios[i];
+				         opt.innerHTML = anios[i];
+						 select.appendChild(opt);
+					}
+				}).fail(function() {
+					alert('Hubo un error interno')
+		})
+	});
+	
+	$("#anio").on('change', function () {
+		var anio = $(document.getElementById('anio')).val();
+		$(document.getElementById('mes')).find('option').remove();
+		if (anio != "-")
+		{
+			$.ajax({
+				type : 'GET',
+				url : '/TPI_Java/ControladorCuota',
+				data : {
+					'ajax_action' : 'obtenerMesesPagas',
+					'anio': anio,
+				}
+			}).done(
+					function(meses) {
+						var select = document.getElementById("mes");
+						for(var i = 0; i < meses.length; i++) {
+							 var opt = document.createElement('option');
+							 opt.value = meses[i];
+					         opt.innerHTML = meses[i];
+							 select.appendChild(opt);
+						}
+						$(document.getElementById('mes').disabled = false);
+						$(document.getElementById('buscarcuotas').disabled = false);
+					}).fail(function() {
+						alert('Hubo un error interno')
+			})
+		}
+		else
+		{
+			$(document.getElementById('mes').disabled = true);
+			var opt = document.createElement('option');
+			opt.value = "-";
+	        opt.innerHTML = "Seleccione un año primero";
+			$(document.getElementById('mes').appendChild(opt));
+			$(document.getElementById('buscarcuotas').disabled = true);
+		}
+	});
+</script>
 </html>

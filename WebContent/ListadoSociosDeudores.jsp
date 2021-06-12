@@ -87,15 +87,16 @@
 										<%="Deuda total: $" + total_deuda_socio %>
 									</ul>
 								</td>
+								<td id="deudasocio" hidden="true"><%=total_deuda_socio %></td>
 							</tr>
 						<% }%>
 						<tr>
-							<td colspan="9" style="padding-top: 20px; text-align: right;"><b>Dinero total adeudado: $<%=deuda_total%></b></td>
+							<td id="totaldeuda" colspan="9" style="padding-top: 20px; text-align: right;"><b>Dinero total adeudado: $</b><b id="deudatotal"><%=deuda_total%></b></td>
 						</tr>
 						</tbody>
 					</table>
 					<form action="ControladorPDF" method="POST">
-						<button type="submit" class="btn btn-primary" name="accion" value="exportarSociosDeudoresPdf">
+						<button type="submit" class="btn btn-primary" id="botonexportar" name="accion" value="exportarSociosDeudoresPdf">
 							Exportar en PDF
 						</button>
 						<br><br>
@@ -117,6 +118,7 @@
 	const selectElement = document.querySelector('#filtro-cuotas-adeudadas');
 	
 	selectElement.addEventListener('change', (e) => {
+		let deuda = 0;
 	    let selectElements = document.getElementsByClassName("empleado-deudor");
 		let arrayElements = Array.from(selectElements);
 	    arrayElements.map((elem) => {
@@ -130,6 +132,35 @@
 	    		elem.style.display = "revert";
 	    	}
 	    });
+	    let count = 0;
+	    
+	    arrayElements.map((elem) => {
+	    	
+		  	if(elem.style.display == "none")
+		  	{
+			  count = count + 1;
+		  	}
+		  	else
+		  	{
+		  		if (!isNaN(elem.cells[1].innerHTML))
+				  {
+					  deuda = deuda + parseFloat(elem.cells[1].innerHTML);
+					  console.log(deuda);
+					  document.getElementById("deudatotal").innerHTML = deuda;
+				  }
+		  	}
+		});
+
+	    if (count == arrayElements.length)
+	    {
+	    	$(document.getElementById('botonexportar').hidden = true);
+	    	$(document.getElementById('totaldeuda').hidden = true);
+	    }
+	    else
+    	{
+	    	$(document.getElementById('botonexportar').hidden = false);
+	    	$(document.getElementById('totaldeuda').hidden = false);
+    	}
 	});
 </script>
 </html>
