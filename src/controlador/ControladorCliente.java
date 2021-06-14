@@ -106,6 +106,32 @@ public class ControladorCliente extends HttpServlet {
 					acceso = "ListadoSociosDeudores.jsp";
 				}
 			}
+			else if (action.equalsIgnoreCase("listado_clientes")) 
+			{
+				if(sesion.getAttribute("usuario_admin") == null)
+				{
+					acceso = "loginAdmin.jsp";
+				}
+				else
+				{
+					try
+					{
+						ArrayList<Cliente> socios = _customerService.ObtenerClientes();
+						request.setAttribute("clientes", socios);
+						acceso = "listadoClientes.jsp";
+					}
+					catch(AppException e)
+					{
+						request.setAttribute("mensajeError", e.getMessage());
+						acceso = "listadoClientes.jsp";
+					}
+					catch(Exception e)
+					{
+						request.setAttribute("mensajeError", "Error inter del servidor");
+						acceso = "listadoClientes.jsp";
+					}
+				}
+			}
 		}
 		RequestDispatcher vista = request.getRequestDispatcher(acceso);
 		vista.forward(request, response);

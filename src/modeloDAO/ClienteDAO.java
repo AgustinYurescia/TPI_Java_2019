@@ -520,7 +520,7 @@ public class ClienteDAO {
 				+ "WHERE cu.fecha_pago IS NULL AND cli.fecha_baja_socio IS NULL AND cli.fecha_baja IS NULL AND cli.dni = ?";
 		ArrayList<SocioDeudor> sociosDeudores = new ArrayList<SocioDeudor>(); 
 		try {
-			Cuota cuota = new Cuota();
+			
 			ps = Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
 			rs = ps.executeQuery();
 			while(rs.next()) {
@@ -538,6 +538,7 @@ public class ClienteDAO {
 				rs2 = ps2.executeQuery();
 				while(rs2.next())
 				{
+					Cuota cuota = new Cuota();
 					cuota.setMes(rs2.getInt(1));
 					cuota.setAnio(rs2.getInt(2));
 					cuota.setValor(rs2.getDouble(3));
@@ -563,6 +564,53 @@ public class ClienteDAO {
 		}
 		return sociosDeudores;
 		
+	}
+	
+	public ArrayList<Cliente> ObtenerClientes() throws Exception
+	{
+		ArrayList<Cliente> clientes = new ArrayList<Cliente>();
+		Cliente cliente = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sentenciaSQL = "SELECT * FROM cliente WHERE fecha_baja is null";
+		try
+		{
+			ps = Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			rs = ps.executeQuery();
+			if (rs.next())
+			{
+				cliente = new Cliente(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getDate(9), rs.getDate(10));
+				clientes.add(cliente);
+				while(rs.next()) 
+				{
+					cliente = new Cliente(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getDate(9), rs.getDate(10));
+					clientes.add(cliente);
+				}
+				return clientes;
+			}
+			else
+			{
+				throw new NonExistentPartnerException("No existen clientes");
+			}
+		}
+		catch (Exception e)
+		{
+			_logger.error(e.getMessage());
+			throw e;
+		}
+		finally 
+		{
+			try 
+			{
+				if(ps!=null) {ps.close();}
+				Conexion.getInstancia().desconectar();
+			}
+			catch (Exception e) 
+			{
+				_logger.error(e.getMessage());
+			}
+		}
+
 	}
 }
 	

@@ -45,7 +45,8 @@
  			<div class="alert alert-danger" role="alert"><%=request.getAttribute("mensajeError")%></div>
 		<%}%>
 	   			<%
-	   				if (request.getAttribute("listadoVentas") != null)
+	   				ArrayList<Pedido> pedidos = (ArrayList<Pedido>)request.getAttribute("listadoVentas");
+	   				if (pedidos != null && pedidos.size() > 0)
 	   				{
 	   			%>
 	   					<form action="ControladorPDF" method="POST">
@@ -55,7 +56,6 @@
 							<br><br>
 						</form> 
 	   			<%
-	   				ArrayList<Pedido> pedidos = (ArrayList<Pedido>)request.getAttribute("listadoVentas");
 	   				sesion.setAttribute("ventas", pedidos);
 	   				double total = 0.0;
 	   				for (Pedido ped: pedidos){
@@ -114,7 +114,7 @@
 				</tr>
 			<%}%>
 			<tr>
-				<td colspan="10" style="padding-top: 20px; text-align: right;"><b>Total cobrado: $<%=total%></b></td>
+				<td colspan="10" style="padding-top: 20px; text-align: right;"><b>Total cobrado: $<%=String.format("%.2f", total)%></b></td>
 			</tr>
 			</tbody>
 	   		</table>

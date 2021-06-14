@@ -20,8 +20,8 @@
 	<% HttpSession sesion = request.getSession(true);
 	   if (sesion.getAttribute("usuario_admin") != null) { 
 	   Pedido ped = (Pedido)request.getAttribute("pedido"); 
-	   if (ped == null){
-	   		String mensaje = (String)sesion.getAttribute("mesajeError");
+	   if (request.getAttribute("mensajeError") != null){
+	   		String mensaje = (String)request.getAttribute("mensajeError");
 	   	%>
 			<div class="alert alert-danger" role="alert" align = "center"><%=mensaje%></div>
 	   <%

@@ -48,6 +48,9 @@
 	       	</div>				
 		</form>
 		<hr/>
+		<div class="alert alert-danger" role="alert" id="mensajeError" hidden="true">Ocurrió un error interno</div>
+		<div class="alert alert-primary" role="alert" id="mensajeOkPreparacion" hidden="true">Preparación registrada con éxito</div>
+		<div class="alert alert-primary" role="alert" id="mensajeOkEntrega" hidden="true">Entrega registrada con éxito</div>
 		<% 	
  			if(request.getAttribute("mensajeError") != null){
  		%>
@@ -154,18 +157,12 @@
 					</td>
 					<td>
 						<% if(ped.getEstado().equalsIgnoreCase("pendiente")){ %>
-						<form action="ControladorPedido">
-						   	<input type="hidden" class="form-control" id="numero_pedido" name="numero_pedido" value=<%=ped.getNro_pedido()%>>
-						   	<button type="submit" class="btn btn-primary" name="accion" value="prepararPedido">Preparado</button>
-						</form>
+						   	<button type="submit" class="btn btn-primary" name="accion" id="botonPrepararPedido<%=ped.getNro_pedido()%>" onclick="registrarPreparacion(<%=ped.getNro_pedido()%>)">Preparado</button>
 						<%}%>
 					</td>
 					<td>
 						<% if(ped.getFecha_entrega_real() == null && ped.getFecha_cancelacion() == null){ %>
-						<form action="ControladorPedido">
-					   		<input type="hidden" class="form-control" id="numero_pedido" name="numero_pedido" value=<%=ped.getNro_pedido()%>>
-					   		<button type="submit" class="btn btn-primary" name="accion" value="entregaPedido">Entrega</button>
-						</form>
+					   		<button type="submit" class="btn btn-primary" name="accion" id="botonEntregarPedido<%=ped.getNro_pedido()%>" onclick="registrarEntrega(<%=ped.getNro_pedido()%>)">Entrega</button>
 						<%}%>
 					</td>
 				</tr>
@@ -185,4 +182,59 @@
 	   <%}}%>
 	   </div>
 	</body>
+	<script>
+		function registrarPreparacion(nro_pedido) {
+			var botonPreparar = document.getElementById("botonPrepararPedido" + nro_pedido.toString());
+			$.ajax({
+				type : 'GET',
+				url : '/TPI_Java/ControladorPedido',
+				data : {
+					'accion' : 'prepararPedidoAjax',
+					'numero_pedido': nro_pedido,
+				}
+			}).done(
+				function(mensajeOk) {
+					var mensajeOkPrep = document.getElementById("mensajeOkPreparacion");
+					var mensajeOkEnt = document.getElementById("mensajeOkEntrega");
+					mensajeOkPrep.hidden = false;
+					mensajeOkEnt.hidden = true;
+					botonPreparar.hidden = true;
+					setTimeout(mensaje.hidden = true,3000);
+				}).fail(function() {
+					var mensajeOkPrep = document.getElementById("mensajeOkPreparacion");
+					var mensajeOkEnt = document.getElementById("mensajeOkEntrega");
+					var mensaje = document.getElementById("mensajeError");
+					mensajeOkPrep.hidden = true;
+					mensajeOkEnt.hidden = true;
+					mensaje.hidden = false;
+				})
+		}
+		
+		function registrarEntrega(nro_pedido) {
+			var botonEntregar = document.getElementById("botonEntregarPedido" + nro_pedido.toString());
+			$.ajax({
+				type : 'GET',
+				url : '/TPI_Java/ControladorPedido',
+				data : {
+					'accion' : 'entregarPedidoAjax',
+					'numero_pedido': nro_pedido,
+				}
+			}).done(
+				function(mensajeOk) {
+					var mensajeOkPrep = document.getElementById("mensajeOkPreparacion");
+					var mensajeOkEnt = document.getElementById("mensajeOkEntrega");
+					mensajeOkPrep.hidden = true;
+					mensajeOkEnt.hidden = false;
+					botonEntregar.hidden = true;
+					setTimeout(mensaje.hidden = true,3000);
+				}).fail(function() {
+					var mensaje = document.getElementById("mensajeError");
+					var mensajeOkPrep = document.getElementById("mensajeOkPreparacion");
+					var mensajeOkEnt = document.getElementById("mensajeOkEntrega");
+					mensajeOkPrep.hidden = true;
+					mensajeOkEnt.hidden = true;
+					mensaje.hidden = false;
+				})
+		}
+	</script>
 </html>

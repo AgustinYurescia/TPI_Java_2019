@@ -66,7 +66,7 @@
 					<td style="padding-top: 20px"><%=ped.getCliente().getTelefono()%></td>
 					<td style="padding-top: 20px"><%=ped.getFecha_pedido()%></td>
 					<td style="padding-top: 20px"><%=ped.getEstado().toUpperCase()%></td>
-					<td style="padding-top: 20px">$<%=ped.getMonto()%></td>
+					<td style="padding-top: 20px"><%=String.format("$%.2f", ped.getMonto())%></td>
 					<td>
 						<a class="py-0 d-none d-md-inline-block" href="ControladorPedido?accion=mostrar_pedido&nro_pedido=<%=ped.getNro_pedido()%>">
 							<button type="submit" class="btn btn-outline-info" style="color: white;  width:200 ; height:200;" name="" value="">
@@ -87,7 +87,7 @@
 				</tr>
 		<%}%>
 	   			<tr>
-					<td colspan="9" style="padding-top: 20px; text-align: right;"><b>Total cobrado: $<%=total%></b></td>
+					<td colspan="9" style="padding-top: 20px; text-align: right;"><b>Total cobrado: $<%=String.format("%.2f", total)%></b></td>
 				</tr>
 			</tbody>
 	   	</table>

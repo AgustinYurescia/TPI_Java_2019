@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 
+import javax.mail.MessagingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +19,7 @@ import exceptions.AppException;
 import exceptions.NonExistentOrderException;
 import exceptions.NonExistentUserException;
 import exceptions.NotEnoughStockException;
+import exceptions.ValidatorsException;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,6 +36,8 @@ import modelo.Pedido;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.google.gson.Gson;
+
 
 @WebServlet("/ControladorPedido")
 public class ControladorPedido extends HttpServlet {
@@ -43,6 +48,7 @@ public class ControladorPedido extends HttpServlet {
 	private ValidatorPedido _validatorPedido;
 	private ServicioPlazosPrecios _servicioPlazosPrecios;
 	private static Logger _logger = LogManager.getLogger(ControladorLogin.class);
+	private Gson _gson;
 	
     public ControladorPedido() {
         super();
@@ -51,6 +57,7 @@ public class ControladorPedido extends HttpServlet {
         this._servicioPedido = new ServicioPedido();
         this._validatorPedido = new ValidatorPedido();
         this._servicioPlazosPrecios = new ServicioPlazosPrecios();
+        _gson = new Gson();
     }
 	@SuppressWarnings("unchecked")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -237,25 +244,34 @@ public class ControladorPedido extends HttpServlet {
 		    	acceso = "loginAdmin.jsp";
 		    }
 		    
-		}else if(action.equalsIgnoreCase("mostrar_pedido")) {
+		}
+		else if(action.equalsIgnoreCase("mostrar_pedido")) {
   			String usuario_admin = (String)sesion.getAttribute("usuario_admin");
-  			if(usuario_admin != null) {
+  			if(usuario_admin != null) 
+  			{
 				String nro_pedido = request.getParameter("nro_pedido");
-				try {
+				try 
+				{
 					Pedido ped = _servicioPedido.BuscarPedidoConProductos(Integer.parseInt(nro_pedido));
 					request.setAttribute("pedido", ped);
-				}catch(NonExistentOrderException ex){
-					request.setAttribute("mensajeError", ex.getMessage());
-					acceso = "error.jsp";
-				}catch(Exception ex){
-					request.setAttribute("mensajeError", "Lo sentimos, ha ocurrido un error");
-					acceso = "error.jsp";
+					acceso = "mostrarPedido.jsp";
 				}
-				acceso = "mostrarPedido.jsp";
-  			}else{
+				catch(AppException ex)
+				{
+					request.setAttribute("mensajeError", ex.getMessage());
+					acceso = "confirmarEntrega.jsp";
+				}
+				catch(Exception ex)
+				{
+					request.setAttribute("mensajeError", "Lo sentimos, ha ocurrido un error");
+					acceso = "confirmarEntrega.jsp";
+				}
+				
+  			}
+  			else
+  			{
   				acceso = "loginAdmin.jsp";
   			}
-		
 		}else if(action.equalsIgnoreCase("mostrar_pedido_cliente")) {
   			String usuario_cliente = (String)sesion.getAttribute("usuario_cliente");
 			
@@ -397,13 +413,28 @@ public class ControladorPedido extends HttpServlet {
 		}
 		else if (action.equalsIgnoreCase("prepararPedidos"))
 		{
+			Correo correo = new Correo();
+			Cliente cli = null;
 			ArrayList<Pedido> pedidos = (ArrayList<Pedido>)sesion.getAttribute("pedidos");
 			if(sesion.getAttribute("usuario_admin") != null) 
 			{
 				try
 				{
 					_servicioPedido.SetEstadoPreparado(pedidos);
+					for (Pedido p: pedidos)
+					{
+						if (p.getEstado().equalsIgnoreCase("pendiente"))
+						{
+							cli = _servicioCliente.Buscar(p.getDni_cliente());
+							correo.enviar_mail_confirmacion_preparacion(cli.getMail(), p.getNro_pedido());
+							p.setEstado("preparado");
+						}
+					}
 					request.setAttribute("mensajeOk", "Preparación registrada con éxito");
+				}
+				catch(MessagingException e)
+				{
+					request.setAttribute("mensajeError", "Error interno al enviar el email al cliente, pero el estado del pedido fue cambiado satisfactoriamente");
 				}
 				catch (Exception e)
 				{
@@ -438,13 +469,25 @@ public class ControladorPedido extends HttpServlet {
 		}
 		else if (action.equalsIgnoreCase("prepararPedido"))
 		{
+			Correo correo = new Correo();
+			Cliente cli = null;
 			String nro_pedido = request.getParameter("numero_pedido");
 			if(sesion.getAttribute("usuario_admin") != null) 
 			{
 				try
 				{
-					_servicioPedido.SetEstadoPreparado(nro_pedido);
-					request.setAttribute("mensajeOk", "Preparación registrada con éxito");
+					Pedido ped = _servicioPedido.BuscarPedido(Integer.parseInt(nro_pedido));
+					if (ped.getEstado().equalsIgnoreCase("pendiente"))
+					{
+						_servicioPedido.SetEstadoPreparado(nro_pedido);
+						cli = _servicioCliente.Buscar(ped.getDni_cliente());
+						correo.enviar_mail_confirmacion_preparacion(cli.getMail(), Integer.parseInt(nro_pedido));
+						request.setAttribute("mensajeOk", "Preparación registrada con éxito");
+					}
+				}
+				catch(MessagingException e)
+				{
+					request.setAttribute("mensajeError", "Error interno al enviar el email al cliente, pero el estado del pedido fue cambiado satisfactoriamente");
 				}
 				catch (Exception e)
 				{
@@ -454,6 +497,57 @@ public class ControladorPedido extends HttpServlet {
 			}else 
 			{
 				acceso = "loginAdmin.jsp";
+			}
+		}
+		else if(action.equalsIgnoreCase("prepararPedidoAjax"))
+		{
+			Correo correo = new Correo();
+			Cliente cli = null;
+			String nro_pedido = request.getParameter("numero_pedido");
+			if (sesion.getAttribute("usuario_admin") != null)
+			{
+				try 
+				{
+					_servicioPedido.SetEstadoPreparado(nro_pedido);
+					Pedido ped = _servicioPedido.BuscarPedido(Integer.parseInt(nro_pedido));
+					cli = _servicioCliente.Buscar(ped.getDni_cliente());
+					correo.enviar_mail_confirmacion_preparacion(cli.getMail(), Integer.parseInt(nro_pedido));
+					String mensajeOk = "Preparación registrada con éxito";
+					String res = _gson.toJson(mensajeOk);
+					SendSuccessResponse(res ,response);
+					return;
+				}catch(ValidatorsException e) {
+					request.setAttribute("mensajeError", e.getMessage());
+				}catch(Exception ex) {
+					request.setAttribute("mensajeError", "Ocurrio un error, por favor vuelva a intentarlo");
+				}
+				acceso = "listadoCuotasPagas.jsp";
+			}else
+			{
+				acceso="loginAdmin.jsp";
+			}
+		}
+		else if(action.equalsIgnoreCase("entregarPedidoAjax"))
+		{
+			int numeroPedido = Integer.parseInt(request.getParameter("numero_pedido"));
+			if (sesion.getAttribute("usuario_admin") != null)
+			{
+				try 
+				{
+					_servicioPedido.RegistrarEntrega(numeroPedido);
+					String mensajeOk = "Entrega registrada con éxito";
+					String res = _gson.toJson(mensajeOk);
+					SendSuccessResponse(res ,response);
+					return;
+				}catch(ValidatorsException e) {
+					request.setAttribute("mensajeError", e.getMessage());
+				}catch(Exception ex) {
+					request.setAttribute("mensajeError", "Ocurrio un error, por favor vuelva a intentarlo");
+				}
+				acceso = "listadoCuotasPagas.jsp";
+			}else
+			{
+				acceso="loginAdmin.jsp";
 			}
 		}
 		else if (action.equalsIgnoreCase("ventasDelDia"))
@@ -516,6 +610,14 @@ public class ControladorPedido extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 			
 		doGet(request, response);
+	}
+	
+	private static void SendSuccessResponse(String mensaje,HttpServletResponse response) throws ServletException, IOException
+	{
+		response.setContentType("application/json;charset=UTF-8");
+		ServletOutputStream out = response.getOutputStream();
+		out.print(mensaje);
+		out.flush();
 	}
 
 }

@@ -57,7 +57,7 @@
             		<a class="dropdown-item" href="ControladorDeLinks?accion=ventasDelDia">Total ventas del día</a>
             		<a class="dropdown-item" href="ControladorDeLinks?accion=ventasEntreFechas">Total ventas entre fecha</a>
             		<a class="dropdown-item" href="ControladorDeLinks?accion=listarPedidosAEntregarManana">Listado de Pedidos A Entregar Mañana</a>
-              		<a class="dropdown-item" href="ControladorDeLinks?accion=listarPedidosAdmin">Listado de Pedidos Pendientes</a>
+              		<a class="dropdown-item" href="ControladorDeLinks?accion=listarPedidosAdmin">Listado de Pedidos</a>
               		<a class="dropdown-item" href="confirmarEntrega.jsp">Confirmar Entrega</a>
             	</div>
           	</li>
@@ -66,6 +66,7 @@
               		Clientes
             	</a>
             	<div class="dropdown-menu" aria-labelledby="clientesDropdown">
+            		<a class="dropdown-item" href="ControladorCliente?accion=listado_clientes">Listado de Clientes</a>
               		<a class="dropdown-item" href="altaSocio.jsp">Nuevo Socio</a>
               		<a class="dropdown-item" href="ControladorCliente?accion=listado_socios">Listado de Socios</a>
               		<a class="dropdown-item" href="ControladorCliente?accion=listado_socios_deudores">Listado de Socios Deudores</a>
