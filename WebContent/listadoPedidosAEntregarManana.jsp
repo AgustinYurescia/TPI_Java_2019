@@ -48,6 +48,7 @@
 					<th>Estado</th>
 					<th>Monto</th>
 					<th></th>
+					<th></th>
 	   			</tr>
 	   			<tr>
 					<td style="padding-top: 20px"><%=ped.getNro_pedido()%></td>
@@ -57,7 +58,15 @@
 					<td style="padding-top: 20px"><%=ped.getCliente().getTelefono()%></td>
 					<td style="padding-top: 20px"><%=ped.getFecha_pedido()%></td>
 					<td style="padding-top: 20px"><%=ped.getEstado().toUpperCase()%></td>
-					<td style="padding-top: 20px">$<%=ped.getMonto()%></td>
+					<td style="padding-top: 20px">$<%=String.format("%.2f", ped.getMonto())%></td>
+					<td>
+						<form action="ControladorPDF" method="POST">
+							<input 	type="hidden" name="nro_pedido" class="form-control" value="<%=ped.getNro_pedido()%>"/>
+							<button type="submit" class="btn btn-primary" name="accion" value="exportarPedidoPdf">
+								Exportar
+							</button>
+						</form>
+					</td>
 					<td>
 						<a class="py-0 d-none d-md-inline-block" href="ControladorPedido?accion=mostrar_pedido&nro_pedido=<%=ped.getNro_pedido()%>">
 							<button type="submit" class="btn btn-outline-info" style="color: white;  width:200 ; height:200;" name="" value="">

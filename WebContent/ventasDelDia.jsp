@@ -16,7 +16,7 @@
 	</head>
 	<body style="weigth:800px !important">
 		<div class="container">
-		<h1>VentasDelDia</h1><hr/>
+		<h1>Ventas del día</h1><hr/>
 		<% HttpSession sesion = request.getSession(true);
 	   	   if (sesion.getAttribute("usuario_admin") != null) { %>
 		<% 	
