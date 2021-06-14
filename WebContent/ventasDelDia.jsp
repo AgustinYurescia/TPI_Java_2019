@@ -16,7 +16,7 @@
 	</head>
 	<body style="weigth:800px !important">
 		<div class="container">
-		<h1>Listado de pedidos a entregar mañana</h1><hr/>
+		<h1>VentasDelDia</h1><hr/>
 		<% HttpSession sesion = request.getSession(true);
 	   	   if (sesion.getAttribute("usuario_admin") != null) { %>
 		<% 	
@@ -29,12 +29,21 @@
  		%>
  			<div class="alert alert-primary" role="alert"><%=request.getAttribute("mensajeOk")%></div>
 		<%}%>
-	   	
 		<%
-		if (sesion.getAttribute("pedidos") != null)
+		if (sesion.getAttribute("ventasDelDia") != null)
 		{
-		ArrayList<Pedido> pedidos = (ArrayList<Pedido>)sesion.getAttribute("pedidos");
+		%>
+		<form action="ControladorPDF" method="POST">
+			<button type="submit" class="btn btn-primary" name="accion" value="exportarVentasDelDiaPdf">
+					Exportar en PDF
+			</button>
+			<br><br>
+		</form>
+		<%
+		ArrayList<Pedido> pedidos = (ArrayList<Pedido>)sesion.getAttribute("ventasDelDia");
+		double total = 0.0;
 		for (Pedido ped: pedidos){
+			total = total + ped.getMonto();
 		%>
    		<table class="table">	   				  		   				 	   			  
 	   		<tbody>
@@ -76,19 +85,18 @@
 						</ul>
 					</td>
 				</tr>
+		<%}%>
+	   			<tr>
+					<td colspan="9" style="padding-top: 20px; text-align: right;"><b>Total cobrado: $<%=total%></b></td>
+				</tr>
 			</tbody>
 	   	</table>
-		<%}%>
-	   	<form action="ControladorPedido" method="get">
-	   		<button type="submit" class="btn btn-outline-info" style="color: white;  width:200 ; height:200;" name="accion" value="prepararPedidos">
-				¡Pedidos ya preparados!
-			</button>
-	   	</form>
-	   </div>
-	   <%}}
+	   <%
+		}}
 	   	   else{
 	   		response.sendRedirect("loginAdmin.jsp");
 	   	   }
 	   %>
+	   </div>
 	</body>
 </html>

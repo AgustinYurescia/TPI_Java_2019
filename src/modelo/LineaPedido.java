@@ -6,6 +6,7 @@ public class LineaPedido {
 	private int codigo_producto;
 	private int cantidad;
 	private double subtotal;
+	private Producto producto;
 	
 	public LineaPedido(int codigo_producto, int cantidad, double subtotal){
 		this.setCantidad(cantidad);
@@ -46,6 +47,14 @@ public class LineaPedido {
 			
 		}
 		return prod;
+	}
+	public Producto getProducto()
+	{
+		return producto;
+	}
+	public void setProducto(Producto producto)
+	{
+		this.producto = producto;
 	}
 	
 	

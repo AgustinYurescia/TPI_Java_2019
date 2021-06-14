@@ -15,6 +15,7 @@ import exceptions.NoRowsAffectedException;
 import exceptions.NonExistentPartnerException;
 import exceptions.NonExistentUserException;
 import modelo.Cliente;
+import modelo.Cuota;
 import modelo.SocioDeudor;
 
 public class ClienteDAO {
@@ -508,22 +509,41 @@ public class ClienteDAO {
 	public ArrayList<SocioDeudor> GetSociosDeudores() throws SQLException{
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sentenciaSQL = "SELECT cli.dni, cli.nombre, cli.apellido,  cli.cliente_usuario , cli.mail, COUNT(cu.dni_cliente) FROM Cliente cli \r\n"
+		PreparedStatement ps2 = null;
+		ResultSet rs2 = null;
+		String sentenciaSQL = "SELECT cli.dni, cli.nombre, cli.apellido,  cli.cliente_usuario , cli.mail, cli.telefono, COUNT(cu.dni_cliente) FROM Cliente cli \r\n"
 				+ "INNER JOIN Cuota cu ON cli.dni = cu.dni_cliente \r\n"
 				+ "WHERE cu.fecha_pago IS NULL AND cli.fecha_baja_socio IS NULL AND cli.fecha_baja IS NULL \r\n"
-				+ "GROUP BY cli.dni";
+				+ "GROUP BY cli.dni, cli.nombre, cli.apellido,  cli.cliente_usuario , cli.mail, cli.telefono";
+		String sentenciaSQLCuotas = "SELECT cu.mes, cu.anio, cu.valor FROM Cliente as cli \r\n"
+				+ "INNER JOIN Cuota as cu ON cli.dni = cu.dni_cliente \r\n"
+				+ "WHERE cu.fecha_pago IS NULL AND cli.fecha_baja_socio IS NULL AND cli.fecha_baja IS NULL AND cli.dni = ?";
 		ArrayList<SocioDeudor> sociosDeudores = new ArrayList<SocioDeudor>(); 
 		try {
+			Cuota cuota = new Cuota();
 			ps = Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
 			rs = ps.executeQuery();
 			while(rs.next()) {
+				ArrayList<Cuota> cuotas = new ArrayList<Cuota>();
 				SocioDeudor socio = new SocioDeudor();
 				socio.setDni(rs.getString(1));
 				socio.setNombre(rs.getString(2));
 				socio.setApellido(rs.getString(3));
 				socio.setCliente_usuario(rs.getString(4));
 				socio.setMail(rs.getString(5));
-				socio.setCantidadCuotasAdeudadas(rs.getInt(6));
+				socio.setTelefono(rs.getString(6));
+				socio.setCantidadCuotasAdeudadas(rs.getInt(7));
+				ps2 = Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQLCuotas);
+				ps2.setString(1, socio.getDni());
+				rs2 = ps2.executeQuery();
+				while(rs2.next())
+				{
+					cuota.setMes(rs2.getInt(1));
+					cuota.setAnio(rs2.getInt(2));
+					cuota.setValor(rs2.getDouble(3));
+					cuotas.add(cuota);
+				}
+				socio.setCuotas(cuotas);
 				sociosDeudores.add(socio);
 			}
 		}catch(SQLException ex) {

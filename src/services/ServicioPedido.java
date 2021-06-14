@@ -36,6 +36,26 @@ public class ServicioPedido {
 	public ArrayList<Pedido> Listar(String fechaDesde,String fechaHasta, String estado) throws Exception{
 		return _pedidoDAO.listar( fechaDesde, fechaHasta, estado);
 	}
+	public ArrayList<Pedido> ListarFinalizados() throws Exception{
+		try
+		{
+			return _pedidoDAO.listarFinalizados();
+		}
+		catch(Exception e)
+		{
+			throw e;
+		}
+	}
+	public ArrayList<Pedido> ListarFinalizados(String fechaDesde,String fechaHasta) throws Exception{
+		try
+		{
+			return _pedidoDAO.listarFinalizados( fechaDesde, fechaHasta);
+		}
+		catch(Exception e)
+		{
+			throw e;
+		}
+	}
 	public Pedido BuscarPedido(int numeroPedido) throws Exception {
 		return _pedidoDAO.buscar_pedido(numeroPedido);
 	}
@@ -119,6 +139,24 @@ public class ServicioPedido {
 		try
 		{
 			_pedidoDAO.setEstadoPreparado(nro_pedido);
+		}
+		catch(Exception e)
+		{
+			throw e;
+		}
+	}
+	
+	public ArrayList<Pedido> VentasDelDia() throws Exception
+	{
+		ArrayList<Pedido> pedidos = new ArrayList<Pedido>();
+		try
+		{
+			pedidos = _pedidoDAO.VentasDelDia();
+			return pedidos;
+		}
+		catch(AppException e)
+		{
+			throw e;
 		}
 		catch(Exception e)
 		{

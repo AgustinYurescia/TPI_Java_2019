@@ -456,6 +456,58 @@ public class ControladorPedido extends HttpServlet {
 				acceso = "loginAdmin.jsp";
 			}
 		}
+		else if (action.equalsIgnoreCase("ventasDelDia"))
+		{
+			ArrayList<Pedido> pedidos = new ArrayList<Pedido>();
+			if(sesion.getAttribute("usuario_admin")!= null) {
+				try
+				{
+					pedidos = _servicioPedido.VentasDelDia();
+					sesion.setAttribute("ventasDelDia", pedidos);
+				}
+				catch(AppException e)
+				{
+					request.setAttribute("mensajeError", e.getMessage());
+				}
+				catch (Exception e)
+				{
+					request.setAttribute("mensajeError", "Error interno del servidor");
+				}
+				acceso = "ventasDelDia.jsp";
+			}else {
+				acceso = "loginAdmin.jsp";
+			}
+		}
+		else if (action.equalsIgnoreCase("VentasEntreFechas")) {
+  			String usuario_admin = (String)sesion.getAttribute("usuario_admin");
+  			if(usuario_admin != null) {
+				String fechaDesde = request.getParameter("fechaDesde");
+				String fechaHasta = request.getParameter("fechaHasta");
+			    ArrayList<Pedido> pedidos = new  ArrayList<Pedido>();
+				try {
+					if ((fechaDesde == "" && fechaHasta == "") || (fechaDesde == null && fechaHasta == null)) 
+					{
+						pedidos = _servicioPedido.ListarFinalizados();
+						request.setAttribute("listadoVentas", pedidos);
+					}
+					
+					else if((fechaDesde != "" | fechaHasta != "") && (fechaDesde != null && fechaHasta != null)) 
+					{
+						pedidos = _servicioPedido.ListarFinalizados(fechaDesde, fechaHasta);
+						request.setAttribute("listadoVentas", pedidos);
+					}
+					
+				} catch (Exception e) 
+				{
+					request.setAttribute("mensajeError", "Error al obtener las ventas, vuelva a intentarlo");
+				}
+				request.setAttribute("fechaDesde", fechaDesde);
+				request.setAttribute("fechaHasta", fechaHasta);
+			    acceso = "ventasEntreFechas.jsp";
+		    }else{
+		    	acceso = "loginAdmin.jsp";
+		    }
+		}
 		
 		RequestDispatcher vista = request.getRequestDispatcher(acceso);
 		vista.forward(request, response);

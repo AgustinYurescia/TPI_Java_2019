@@ -22,30 +22,20 @@
 		<h1>Buscar Cuotas</h1>
 		<form action="ControladorCuota" method="post">
 	   		<div class = "form-row">
-	       		<div class="form-group col-md-5">
-	       			<label for="mes">Mes:</label>
-	       			<select id="mes" name="mes" class="form-control">
-        				<option selected>-</option>
-        				<% 
-						for(int i=1; i<=12; i++){
-						%>
-        					<option value="<%=i%>"><%=i%></option>
-        				<%}%>
-     				</select>
-	       		</div>
-	       		<div class="form-group col-md-5">
+	   			<div class="form-group col-md-5">
 	       			<label for="anio">Año:</label>
       				<select id="anio" name="anio" class="form-control">
         				<option selected>-</option>
-        				<% 
-						for(int i=2020; i<=2200; i++){
-						%>
-        					<option value="<%=i%>"><%=i%></option>
-        				<%}%>
+     				</select>
+	       		</div>
+	       		<div class="form-group col-md-5">
+	       			<label for="mes">Mes:</label>
+	       			<select id="mes" name="mes" class="form-control">
+        				<option selected>Seleccione un año primero</option>
      				</select>
 	       		</div>
 	       		<div class="form-group col-md-2" style="padding-top: 31px">
-	       			<button type="submit" class="btn btn-primary" name="accion" value="listadoCuotas" style="width: 175px;" onclick="return validacion_buscar_cuotas();">Buscar Cuotas</button>
+	       			<button type="submit" class="btn btn-primary" name="accion" id="buscarcuotas" value="listadoCuotas" style="width: 175px;" onclick="return validacion_buscar_cuotas();">Buscar Cuotas</button>
 	       		</div>
 	       	</div>
 		</form>
@@ -65,6 +55,9 @@
 	   		<thead>
 	   			<tr>
 	   				<th>DNI CLIENTE</th>
+					<th>NOMBRE</th>
+					<th>APELLIDO</th>
+					<th>TELEFONO</th>
 					<th>MES</th>
 					<th>AÑO</th>
 					<th>FECHA PAGO</th>
@@ -82,6 +75,9 @@
 	   		<tbody>
 	   			<tr>
 					<td style="padding-top: 20px"><%=cuota.getDniCliente()%></td>
+					<td style="padding-top: 20px"><%=cuota.getCliente().getNombre()%></td>
+					<td style="padding-top: 20px"><%=cuota.getCliente().getApellido()%></td>
+					<td style="padding-top: 20px"><%=cuota.getCliente().getTelefono()%></td>
 					<td style="padding-top: 20px"><%=cuota.getMes()%></td>
 					<td style="padding-top: 20px"><%=cuota.getAnio()%></td>
 					<%
@@ -118,4 +114,66 @@
 	   <%}}%>
 	</div>
 </body>
+<script>
+	$(document).ready( function () {
+		$(document.getElementById('buscarcuotas').disabled = true);
+		$(document.getElementById('mes').disabled = true);
+		$.ajax({
+			type : 'GET',
+			url : '/TPI_Java/ControladorCuota',
+			data : {
+				'ajax_action' : 'obtenerAnios',
+			}
+		}).done(
+				function(anios) {
+					var select = document.getElementById("anio");
+					for(var i = 0; i < anios.length; i++) {
+						 var opt = document.createElement('option');
+						 opt.value = anios[i];
+				         opt.innerHTML = anios[i];
+						 select.appendChild(opt);
+					}
+				}).fail(function() {
+					alert('Hubo un error interno')
+		})
+	});
+	
+	$("#anio").on('change', function () {
+		var anio = $(document.getElementById('anio')).val();
+		$(document.getElementById('mes')).find('option').remove();
+		if (anio != "-")
+		{
+			$.ajax({
+				type : 'GET',
+				url : '/TPI_Java/ControladorCuota',
+				data : {
+					'ajax_action' : 'obtenerMeses',
+					'anio': anio,
+				}
+			}).done(
+					function(meses) {
+						var select = document.getElementById("mes");
+						for(var i = 0; i < meses.length; i++) {
+							 var opt = document.createElement('option');
+							 opt.value = meses[i];
+					         opt.innerHTML = meses[i];
+							 select.appendChild(opt);
+						}
+						$(document.getElementById('mes').disabled = false);
+						$(document.getElementById('buscarcuotas').disabled = false);
+					}).fail(function() {
+						alert('Hubo un error interno')
+			})
+		}
+		else
+		{
+			$(document.getElementById('mes').disabled = true);
+			var opt = document.createElement('option');
+			opt.value = "-";
+	        opt.innerHTML = "Seleccione un año primero";
+			$(document.getElementById('mes').appendChild(opt));
+			$(document.getElementById('buscarcuotas').disabled = true);
+		}
+	});
+</script>
 </html>

@@ -91,18 +91,26 @@
 		})
 		
 	$('#stock').on
-	('change',
+	('input',
 		function() {
 		var stock = $(document.getElementById('stock')).val();
 		var stock_actual = $(document.getElementById('stock_actual')).val();
 		var stock_futuro = $(document.getElementById('stock_futuro'));
 		var total = parseInt(stock) + parseInt(stock_actual);
-		stock_futuro.html("Nuevo stock: " + total);
-		$(document.getElementById('stock_futuro').hidden = false);
+		if(!Number.isNaN(total))
+		{
+			stock_futuro.html("Nuevo stock: " + total);
+			$(document.getElementById('stock_futuro').hidden = false);
+		}
+		else
+		{
+			$(document.getElementById('stock_futuro').hidden = true);	
+		}
+		
 	})
 	
 	$('#precio').on
-	('change',
+	('input',
 		function() {
 		$.ajax({
 			type : 'GET',
@@ -116,7 +124,14 @@
 					var float_precio = parseFloat(precio)
 					var precio_futuro = $(document.getElementById('precio_futuro'));
 					precio_futuro.html("Nuevo precio: $" + (float_precio*(1 + porc)).toFixed(2).toString());
-					$(document.getElementById('precio_futuro').hidden = false);
+					if(!Number.isNaN(float_precio*(1 + porc)))
+					{
+						$(document.getElementById('precio_futuro').hidden = false);	
+					}
+					else
+					{
+						$(document.getElementById('precio_futuro').hidden = true);	
+					}
 				}).fail(function() {
 					alert('Hubo un error al recuperar el stock actual del producto seleccionado')
 		})

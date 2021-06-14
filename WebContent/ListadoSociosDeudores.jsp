@@ -1,4 +1,5 @@
 <%@page import="modelo.SocioDeudor"%>
+<%@page import="modelo.Cuota"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="modelo.Producto"%>
 <%@page import="java.awt.*"%>
@@ -41,7 +42,7 @@
 		        				<option value = "4">4</option>
 		     				</select>
 	     				</div>
-     				</div>		
+     				</div>	
 					<table class="table">
 						<thead>
 							<tr>
@@ -49,28 +50,57 @@
 								<th>Nombre</th>
 								<th>Apellido</th>
 								<th>Email</th>
+								<th>Teléfono</th>
 								<th>NRO Cuotas Adeudadas</th>
 								<th>Ver Cuotas</th>
 							</tr>
 						</thead>
 						<tbody>
-						<% for(SocioDeudor socio: socios){%>
+						<% 
+						double deuda_total = 0.0;
+						for(SocioDeudor socio: socios){
+							double total_deuda_socio = 0.0;
+						%>
 							<tr id="socio-<%=socio.getDni()%>" class="empleado-deudor" data-dni="<%=socio.getDni()%>" data-cantidadcuotasadeudadas="<%=socio.getCantidadCuotasAdeudadas()%>">
 								<td><%=socio.getDni() %></td>
 								<td><%=socio.getNombre() %></td>
 								<td><%=socio.getApellido() %></td>
 								<td><%=socio.getMail() %></td>
+								<td><%=socio.getTelefono() %></td>
 								<td><%=socio.getCantidadCuotasAdeudadas() %></td>
 								<td>
 									<form action="ControladorCuota" method="post">
 										<input type="hidden" id="dniCliente" name="dniCliente" class="form-control" value="<%=socio.getDni()%>" required/>
-										<button type="submit" class="btn btn-primary" name="accion" value="buscarCuotas" style="width: 175px;"> <img src="SVG/Eye.svg"/> Ver Cuotas</button>
+										<button type="submit" class="btn btn-primary" name="accion" value="buscarCuotas" style="width: 175px;">Ir a pagar</button>
 									</form>
 								</td>
 							</tr>
+ 							<tr class="empleado-deudor" data-dni="<%=socio.getDni()%>" data-cantidadcuotasadeudadas="<%=socio.getCantidadCuotasAdeudadas()%>">
+								<td colspan="9" style="text-align: left;">
+									<ul>
+									<% for(Cuota c : socio.getCuotas()){ 
+										total_deuda_socio = total_deuda_socio + c.getValor();
+										deuda_total = deuda_total + c.getValor();
+									%>
+										<li><%=c.getMes()%>/<%=c.getAnio()%> - Valor: <%= c.getValor() %></li>
+									<%}%>
+										<%="Deuda total: $" + total_deuda_socio %>
+									</ul>
+								</td>
+								<td id="deudasocio" hidden="true"><%=total_deuda_socio %></td>
+							</tr>
 						<% }%>
+						<tr>
+							<td id="totaldeuda" colspan="9" style="padding-top: 20px; text-align: right;"><b>Dinero total adeudado: $</b><b id="deudatotal"><%=deuda_total%></b></td>
+						</tr>
 						</tbody>
 					</table>
+					<form action="ControladorPDF" method="POST">
+						<button type="submit" class="btn btn-primary" id="botonexportar" name="accion" value="exportarSociosDeudoresPdf">
+							Exportar en PDF
+						</button>
+						<br><br>
+					</form>
 				<%}%>
 			<% } %>
 		   	
@@ -85,22 +115,52 @@
 	%>
 </body>
 <script>
-const selectElement = document.querySelector('#filtro-cuotas-adeudadas');
+	const selectElement = document.querySelector('#filtro-cuotas-adeudadas');
+	
+	selectElement.addEventListener('change', (e) => {
+		let deuda = 0;
+	    let selectElements = document.getElementsByClassName("empleado-deudor");
+		let arrayElements = Array.from(selectElements);
+	    arrayElements.map((elem) => {
+	    	if (e.target.value == "todos"){
+	    		elem.style.display = "revert";
+	    	}
+	    	else if(elem.dataset.cantidadcuotasadeudadas < e.target.value){
+	    		elem.style.display = "none";
+	    	}
+	    	else{
+	    		elem.style.display = "revert";
+	    	}
+	    });
+	    let count = 0;
+	    
+	    arrayElements.map((elem) => {
+	    	
+		  	if(elem.style.display == "none")
+		  	{
+			  count = count + 1;
+		  	}
+		  	else
+		  	{
+		  		if (!isNaN(elem.cells[1].innerHTML))
+				  {
+					  deuda = deuda + parseFloat(elem.cells[1].innerHTML);
+					  console.log(deuda);
+					  document.getElementById("deudatotal").innerHTML = deuda;
+				  }
+		  	}
+		});
 
-selectElement.addEventListener('change', (e) => {
-    let selectElements = document.getElementsByClassName("empleado-deudor");
-	let arrayElements = Array.from(selectElements);
-    arrayElements.map((elem) => {
-    	if (e.target.value == "todos"){
-    		elem.style.display = "contents";
+	    if (count == arrayElements.length)
+	    {
+	    	$(document.getElementById('botonexportar').hidden = true);
+	    	$(document.getElementById('totaldeuda').hidden = true);
+	    }
+	    else
+    	{
+	    	$(document.getElementById('botonexportar').hidden = false);
+	    	$(document.getElementById('totaldeuda').hidden = false);
     	}
-    	else if(elem.dataset.cantidadcuotasadeudadas < e.target.value){
-    		elem.style.display = "none";
-    	}
-    	else{
-    		elem.style.display = "contents";
-    	}
-    });
-});
+	});
 </script>
 </html>

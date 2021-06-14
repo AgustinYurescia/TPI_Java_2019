@@ -9,6 +9,12 @@ public class Cuota
 	private int anio;
 	private double valor;
 	private LocalDate fechaPago;
+	private Cliente cliente;
+	
+	public Cuota() 
+	{
+		super();
+	}
 	
 	public Cuota(String dniCliente, int mes, int anio, double valor, LocalDate localDate) 
 	{
@@ -68,6 +74,16 @@ public class Cuota
 	public void setFechaPago(LocalDate fechaPago) 
 	{
 		this.fechaPago = fechaPago;
+	}
+
+	public Cliente getCliente()
+	{
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente)
+	{
+		this.cliente = cliente;
 	}
 
 }

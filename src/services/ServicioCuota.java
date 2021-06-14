@@ -58,6 +58,24 @@ public class ServicioCuota {
 		}
 	}
 	
+	public ArrayList<Cuota> ObtenerCuotas(String dniCliente) throws Exception
+	{
+		ArrayList<Cuota> cuotas = null;
+		try
+		{
+			cuotas = _cuotaDAO.ObtenerCuotas(dniCliente);
+			return cuotas;
+		}
+		catch(NonExistentFeeException e)
+		{
+			throw e;
+		}
+		catch(Exception e)
+		{
+			throw e;
+		}
+	}
+	
 	public void RegistrarPago(String dniCliente, int mes, int anio) throws Exception
 	{
 		try
@@ -112,4 +130,53 @@ public class ServicioCuota {
 			throw e;
 		}
 	}
+	public ArrayList<Integer> ObtenerAnios() throws Exception
+	{
+		try
+		{ 
+			ArrayList<Integer> anios = _cuotaDAO.ObtenerAnios();
+			return anios;
+		}
+		catch (Exception e)
+		{
+			throw e;
+		}
+	}
+	public ArrayList<Integer> ObtenerMeses(Integer anio) throws Exception
+	{
+		try
+		{ 
+			ArrayList<Integer> meses = _cuotaDAO.ObtenerMeses(anio);
+			return meses;
+		}
+		catch (Exception e)
+		{
+			throw e;
+		}
+	}
+	public ArrayList<Integer> ObtenerAniosPagas() throws Exception
+	{
+		try
+		{ 
+			ArrayList<Integer> anios = _cuotaDAO.ObtenerAniosPagas();
+			return anios;
+		}
+		catch (Exception e)
+		{
+			throw e;
+		}
+	}
+	public ArrayList<Integer> ObtenerMesesPagas(Integer anio) throws Exception
+	{
+		try
+		{ 
+			ArrayList<Integer> meses = _cuotaDAO.ObtenerMesesPagas(anio);
+			return meses;
+		}
+		catch (Exception e)
+		{
+			throw e;
+		}
+	}
+	
 }
