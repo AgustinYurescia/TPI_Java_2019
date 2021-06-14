@@ -59,10 +59,21 @@ public class ServicioPedido {
 	public Pedido BuscarPedido(int numeroPedido) throws Exception {
 		return _pedidoDAO.buscar_pedido(numeroPedido);
 	}
-	public Pedido BuscarPedidoConProductos(int numeroPedido) throws Exception {		
-		Pedido pedido = _pedidoDAO.buscar_pedido(numeroPedido);
-		pedido.setProductos(_pedidoDAO.buscar_productos_pedido(numeroPedido));
-		return pedido;
+	public Pedido BuscarPedidoConProductos(int numeroPedido) throws Exception {
+		try
+		{
+			Pedido pedido = _pedidoDAO.buscar_pedido(numeroPedido);
+			pedido.setProductos(_pedidoDAO.buscar_productos_pedido(numeroPedido));
+			return pedido;
+		}
+		catch(AppException e)
+		{
+			throw e;
+		}
+		catch(Exception e)
+		{
+			throw e;
+		}
 	}
 	public void CancelarPedido(int numeroPedido) {
 		_pedidoDAO.cancelar_pedido(numeroPedido);

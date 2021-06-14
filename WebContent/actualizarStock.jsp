@@ -81,7 +81,7 @@
 						$('#product_info').html(
 						"<li>Nombre del producto: " + producto.nombre + "</li>" +
 						"<li id='stock_actual' value=" + producto.stock +">Stock actual: " + producto.stock + "</li>" +
-						"<li>Precio de venta: $" + producto.precioVenta + "</li>" +
+						"<li>Precio de venta: $" + producto.precioVenta.toFixed(2) + "</li>" +
 						"<li id='stock_futuro' hidden></li>" +
 						"<li id='precio_futuro' hidden></li>"
 						)

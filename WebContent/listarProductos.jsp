@@ -19,7 +19,8 @@
 	<div class="container" style="padding-bottom:15%">
 		<% HttpSession sesion = request.getSession(true);%>
 		<%if(sesion.getAttribute("es_socio") != null){%>
-			<div align="center" class="alert alert-info"><p><b>Recuerde que como beneficio de sociedad activa se le aplicara el descuento pertinenete al finalizar la compra.</b></p></div>
+			<br/>
+			<div align="center" class="alert alert-info"><b>Recuerde que como beneficio de sociedad activa se le aplicara el descuento pertinenete al finalizar la compra</b></div>
 		<%} %>
 		<div class="productos" style="text-align:center; width: 640px !important; margin:auto !important">
 			<h1>Listado de productos</h1>

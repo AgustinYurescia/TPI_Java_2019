@@ -31,10 +31,18 @@
 			</form>
 		</div>
 		<%
-		if(request.getAttribute("pedido") != null)
-		{
-			Pedido ped = (Pedido)request.getAttribute("pedido");
-			ArrayList<LineaPedido> productos = ped.getProductos();
+		if (request.getAttribute("mensajeError") != null){
+	   		String mensaje = (String)request.getAttribute("mensajeError");
+	   	%>
+			<div class="alert alert-danger" role="alert" align = "center"><%=mensaje%></div>
+	   <%
+	   	}
+		else
+	   	{
+			if(request.getAttribute("pedido") != null)
+			{
+				Pedido ped = (Pedido)request.getAttribute("pedido");
+				ArrayList<LineaPedido> productos = ped.getProductos();
 		%>
 		<div class="m-2">
 			<form>
@@ -121,7 +129,7 @@
 			</form>
 			<%}%>
 		</div>
-		<%}}%>
+		<%}}}%>
 	</div>
 </body>
 </html>

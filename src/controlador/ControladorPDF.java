@@ -74,6 +74,30 @@ public class ControladorPDF extends HttpServlet {
 				vista.forward(request, response);
 			}
 		}
+		else if(action.equalsIgnoreCase("exportarClientesPdf")) 
+		{
+			if (sesion.getAttribute("usuario_admin") != null)
+			{
+				try {
+					ArrayList<Cliente> clientes = _servicioCliente.ObtenerClientes();
+					DateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd_HH:mm");
+					String file_date = dateformat.format(new Date());
+					String content =  "Content-Disposition";
+					String filename = "attachment; filename=Clientes_"+file_date+".pdf";
+					response.setHeader(content, filename);
+					ExportadorPDF exp = new ExportadorPDF(clientes, null, null, null, null);
+					exp.export(response, "listadoClientes");
+				} catch (Exception e) {
+					_logger.info(e.getMessage());
+				}
+			}
+			else 
+			{
+				acceso = "loginAdmin.jsp";	
+				RequestDispatcher vista = request.getRequestDispatcher(acceso);
+				vista.forward(request, response);
+			}
+		}
 		else if(action.equalsIgnoreCase("exportarSociosDeudoresPdf")) 
 		{
 			if (sesion.getAttribute("usuario_admin") != null)

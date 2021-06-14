@@ -49,7 +49,7 @@
   					<div class="alert alert-danger" role="alert" align = "center"><%=mensaje%></div>
   					<%}%>
   					<div>
-  						<button type="submit" class="btn btn-primary mb-2" name="accion" value="agregarAlCarrito" onclick="return validacion_agregar_al_carrito();">Agregar al carrito</button>
+  						<button type="submit" class="btn btn-primary mb-2" id="add_cart_button" name="accion" value="agregarAlCarrito" onclick="return validacion_agregar_al_carrito();">Agregar al carrito</button>
   					</div>
 				</form>
 	 		</div>
@@ -57,4 +57,26 @@
 	 </div>
 	 <jsp:include page="footer.jsp"/>
 </body>
+<script>
+	$('#cantidad').on
+	('input',
+		function() {
+			var add_cart_button = document.getElementById('add_cart_button');
+			if(document.getElementById('stock_disponible')){
+		        var stock = document.getElementById('stock_disponible').value;
+		    }
+		    if(document.getElementById('cantidad')){
+		        var cantidad = document.getElementById('cantidad').value;
+		    }
+		    if(stock && cantidad && parseInt(cantidad,10) > parseInt(stock, 10)){
+		    		add_cart_button.disabled = true
+		    		add_cart_button.innerText = "Sin Stock"
+		    	}
+		    else{
+		    	add_cart_button.disabled = false
+		    	add_cart_button.innerText = "Agregar al carrito"
+		    }
+		}
+	)
+</script>
 </html>
