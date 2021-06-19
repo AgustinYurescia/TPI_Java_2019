@@ -100,7 +100,7 @@
 		$(document.getElementById('mes').disabled = true);
 		$.ajax({
 			type : 'GET',
-			url : '/TPI_Java/ControladorCuota',
+			url : '/ControladorCuota',
 			data : {
 				'ajax_action' : 'obtenerAniosPagas',
 			}
@@ -125,7 +125,7 @@
 		{
 			$.ajax({
 				type : 'GET',
-				url : '/TPI_Java/ControladorCuota',
+				url : '/ControladorCuota',
 				data : {
 					'ajax_action' : 'obtenerMesesPagas',
 					'anio': anio,

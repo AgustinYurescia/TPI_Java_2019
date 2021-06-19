@@ -187,7 +187,7 @@
 			var botonPreparar = document.getElementById("botonPrepararPedido" + nro_pedido.toString());
 			$.ajax({
 				type : 'GET',
-				url : '/TPI_Java/ControladorPedido',
+				url : '/ControladorPedido',
 				data : {
 					'accion' : 'prepararPedidoAjax',
 					'numero_pedido': nro_pedido,
@@ -214,7 +214,7 @@
 			var botonEntregar = document.getElementById("botonEntregarPedido" + nro_pedido.toString());
 			$.ajax({
 				type : 'GET',
-				url : '/TPI_Java/ControladorPedido',
+				url : '/ControladorPedido',
 				data : {
 					'accion' : 'entregarPedidoAjax',
 					'numero_pedido': nro_pedido,
