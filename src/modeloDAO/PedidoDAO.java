@@ -351,15 +351,15 @@ public class PedidoDAO {
 		ArrayList<Pedido>lista = new ArrayList<>();
 		if(fecha_ini != "" && fecha_fin != "") 
 		{
-			sentenciaSQL = "SELECT * FROM pedido as ped INNER JOIN cliente as cli WHERE ped.dni_cliente = cli.dni AND fecha_entrega_real >= '"+fecha_ini+"' AND fecha_entrega_real <= '"+fecha_fin+"'";
+			sentenciaSQL = "SELECT * FROM pedido as ped INNER JOIN cliente as cli WHERE ped.dni_cliente = cli.dni AND fecha_entrega_real >= '"+fecha_ini+"' AND fecha_entrega_real <= '"+fecha_fin+"' ORDER BY fecha_entrega_real DESC";
 		}
 		else if(fecha_ini != "" && fecha_fin == "") 
 		{
-			sentenciaSQL = "SELECT * FROM pedido as ped INNER JOIN cliente as cli WHERE ped.dni_cliente = cli.dni AND fecha_entrega_real >= '"+fecha_ini+"'";
+			sentenciaSQL = "SELECT * FROM pedido as ped INNER JOIN cliente as cli WHERE ped.dni_cliente = cli.dni AND fecha_entrega_real >= '"+fecha_ini+"' ORDER BY fecha_entrega_real DESC";
 		}
 		else if(fecha_ini == "" && fecha_fin != "") 
 		{
-			sentenciaSQL = "SELECT * FROM pedido as ped INNER JOIN cliente as cli WHERE ped.dni_cliente = cli.dni AND fecha_entrega_real <= '"+fecha_fin+"'";
+			sentenciaSQL = "SELECT * FROM pedido as ped INNER JOIN cliente as cli WHERE ped.dni_cliente = cli.dni AND fecha_entrega_real <= '"+fecha_fin+"' ORDER BY fecha_entrega_real DESC";
 		}
 		try 
 		{
@@ -417,7 +417,7 @@ public class PedidoDAO {
 		Statement st = null;
 		ResultSet rs = null;
 		ArrayList<Pedido>lista = new ArrayList<>();
-		String sentenciaSQL = "SELECT * FROM pedido as ped INNER JOIN cliente as cli WHERE ped.dni_cliente = cli.dni AND fecha_entrega_real is not null";
+		String sentenciaSQL = "SELECT * FROM pedido as ped INNER JOIN cliente as cli WHERE ped.dni_cliente = cli.dni AND fecha_entrega_real is not null ORDER BY fecha_entrega_real DESC";
 		try 
 		{
 			st=Conexion.getInstancia().getConexion().createStatement();
@@ -695,10 +695,10 @@ public class PedidoDAO {
 	{
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String consulta = "SELECT month(fecha_pedido), sum(monto) FROM pedido\r\n" + 
-						  "WHERE fecha_cancelacion is null AND year(fecha_pedido)=?\r\n" + 
-						  "GROUP BY month(fecha_pedido)\r\n" + 
-						  "ORDER BY month(fecha_pedido) asc";
+		String consulta = "SELECT month(fecha_entrega_real), sum(monto) FROM pedido\r\n" + 
+						  "WHERE fecha_cancelacion is null AND year(fecha_entrega_real)=?\r\n" + 
+						  "GROUP BY month(fecha_entrega_real)\r\n" + 
+						  "ORDER BY month(fecha_entrega_real) asc";
 		Map<Integer, Float> result = new HashMap<Integer,Float>();
 		try 
 		{
@@ -829,9 +829,9 @@ public class PedidoDAO {
 	{
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String consulta = "SELECT year(fecha_pedido), sum(monto) FROM pedido\r\n" + 
-						  "WHERE fecha_cancelacion is null\r\n" + 
-						  "GROUP BY year(fecha_pedido)";
+		String consulta = "SELECT year(fecha_entrega_real), sum(monto) FROM pedido\r\n" + 
+						  "WHERE fecha_cancelacion is null AND fecha_entrega_real is not null\r\n" + 
+						  "GROUP BY year(fecha_entrega_real)";
 		Map<Integer, Float> result = new HashMap<Integer,Float>();
 		try 
 		{
