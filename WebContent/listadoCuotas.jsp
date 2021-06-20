@@ -153,10 +153,10 @@
 			}).done(
 					function(meses) {
 						var select = document.getElementById("mes");
-						for(var i = 0; i < meses.length; i++) {
+						for(var i = 1; i < 13; i++) {
 							 var opt = document.createElement('option');
-							 opt.value = meses[i];
-					         opt.innerHTML = meses[i];
+							 opt.value = i;
+					         opt.innerHTML = i;
 							 select.appendChild(opt);
 						}
 						$(document.getElementById('mes').disabled = false);

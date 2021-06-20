@@ -132,86 +132,56 @@ public class ControladorCuota extends HttpServlet {
 		}
 		if((ajax_action != null && ajax_action.equalsIgnoreCase("obtenerAnios")))
 		{
-			if (sesion.getAttribute("usuario_admin") != null)
+			try 
 			{
-				try 
-				{
-					ArrayList<Integer> anios = _servicioCuota.ObtenerAnios();
-					String res = _gson.toJson(anios);
-					SendSuccessResponse(res ,response);
-					return;
-				}catch(ValidatorsException e) {
-					request.setAttribute("mensajeError", e.getMessage());
-				}catch(Exception ex) {
-					request.setAttribute("mensajeError", "Ocurrio un error, por favor vuelva a intentarlo");
-				}
-				acceso = "listadoCuotasPagas.jsp";
-			}else
+				ArrayList<Integer> anios = _servicioCuota.ObtenerAnios();
+				String res = _gson.toJson(anios);
+				SendSuccessResponse(res ,response);
+				return;
+			}
+			catch(Exception ex) 
 			{
-				acceso="loginAdmin.jsp";
+				ex.printStackTrace();
 			}
 		}
 		else if((ajax_action != null && ajax_action.equalsIgnoreCase("obtenerMeses")))
 		{
-			if (sesion.getAttribute("usuario_admin") != null)
+			try 
 			{
-				try 
-				{
-					ArrayList<Integer> meses = _servicioCuota.ObtenerMeses(Integer.parseInt(request.getParameter("anio")));
-					String res = _gson.toJson(meses);
-					SendSuccessResponse(res ,response);
-					return;
-				}catch(ValidatorsException e) {
-					request.setAttribute("mensajeError", e.getMessage());
-				}catch(Exception ex) {
-					request.setAttribute("mensajeError", "Ocurrio un error, por favor vuelva a intentarlo");
-				}
-				acceso = "listadoCuotasPagas.jsp";
-			}else
+				ArrayList<Integer> meses = _servicioCuota.ObtenerMeses(Integer.parseInt(request.getParameter("anio")));
+				String res = _gson.toJson(meses);
+				SendSuccessResponse(res ,response);
+				return;
+			}
+			catch(Exception ex) 
 			{
-				acceso="loginAdmin.jsp";
+				ex.printStackTrace();
 			}
 		}
 		else if((ajax_action != null && ajax_action.equalsIgnoreCase("obtenerAniosPagas")))
 		{
-			if (sesion.getAttribute("usuario_admin") != null)
+			try 
 			{
-				try 
-				{
-					ArrayList<Integer> anios = _servicioCuota.ObtenerAniosPagas();
-					String res = _gson.toJson(anios);
-					SendSuccessResponse(res ,response);
-					return;
-				}catch(ValidatorsException e) {
-					request.setAttribute("mensajeError", e.getMessage());
-				}catch(Exception ex) {
-					request.setAttribute("mensajeError", "Ocurrio un error, por favor vuelva a intentarlo");
-				}
-				acceso = "listadoCuotasPagas.jsp";
-			}else
+				ArrayList<Integer> anios = _servicioCuota.ObtenerAniosPagas();
+				String res = _gson.toJson(anios);
+				SendSuccessResponse(res ,response);
+				return;
+			}
+			catch(Exception ex) 
 			{
-				acceso="loginAdmin.jsp";
+				ex.printStackTrace();
 			}
 		}
 		else if((ajax_action != null && ajax_action.equalsIgnoreCase("obtenerMesesPagas")))
 		{
-			if (sesion.getAttribute("usuario_admin") != null)
+			try 
 			{
-				try 
-				{
-					ArrayList<Integer> meses = _servicioCuota.ObtenerMesesPagas(Integer.parseInt(request.getParameter("anio")));
-					String res = _gson.toJson(meses);
-					SendSuccessResponse(res ,response);
-					return;
-				}catch(ValidatorsException e) {
-					request.setAttribute("mensajeError", e.getMessage());
-				}catch(Exception ex) {
-					request.setAttribute("mensajeError", "Ocurrio un error, por favor vuelva a intentarlo");
-				}
-				acceso = "listadoCuotasPagas.jsp";
-			}else
-			{
-				acceso="loginAdmin.jsp";
+				ArrayList<Integer> meses = _servicioCuota.ObtenerMesesPagas(Integer.parseInt(request.getParameter("anio")));
+				String res = _gson.toJson(meses);
+				SendSuccessResponse(res ,response);
+				return;
+			}catch(Exception ex) {
+				ex.printStackTrace();
 			}
 		}
 		
