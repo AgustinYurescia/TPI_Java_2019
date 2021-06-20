@@ -58,7 +58,7 @@ public class Correo {
 		    message.setSubject("CONFIRMACIÓN DEL PEDIDO");
 
 			BodyPart messageBodyPart = new MimeBodyPart();
-			messageBodyPart.setText("GRACIAS POR SU COMPRA. RECUERDE QUE DEBE PODRÁ PASAR A RETIRAR SU PEDIDO CUANDO SE LO NOTIFIQUE POR EMAIL. SU NÚMERO DE PEDIDO ES " + nro_pedido);
+			messageBodyPart.setText("GRACIAS POR SU COMPRA. RECUERDE QUE PODRÁ PASAR A RETIRAR SU PEDIDO CUANDO SE LO NOTIFIQUE POR EMAIL (DEMORA APROX DE 3 DÍAS HÁBILES). SU NÚMERO DE PEDIDO ES " + nro_pedido);
 
 			Multipart multipart = new MimeMultipart();
 
