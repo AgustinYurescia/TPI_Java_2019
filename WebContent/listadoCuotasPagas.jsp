@@ -45,7 +45,9 @@
   		%>
   			<div class="alert alert-danger" role="alert"><%=request.getAttribute("mensajeError")%></div>
 		<%}%>
-		<p>Cuotas pagadas en el mes: <%=request.getAttribute("mes") %>, del año  <%=request.getAttribute("anio") %></p>
+		<%if(request.getAttribute("mes") != null && request.getAttribute("anio") != null){%>
+			<p>Cuotas pagadas en el mes: <%=request.getAttribute("mes") %>, del año  <%=request.getAttribute("anio") %></p>
+		<%}%>
 	   	<table class="table">
 	   		<thead>
 	   			<tr>
