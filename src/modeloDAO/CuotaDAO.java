@@ -396,7 +396,7 @@ public class CuotaDAO
 		ArrayList<Integer> meses = new ArrayList<Integer>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sentenciaSQL="SELECT DISTINCT mes FROM cuota WHERE anio=? ORDER BY anio ASC";
+		String sentenciaSQL="SELECT DISTINCT mes FROM cuota WHERE anio=? ORDER BY mes ASC";
 		try 
 		{
 			ps = Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
@@ -429,7 +429,7 @@ public class CuotaDAO
 		ArrayList<Integer> anios = new ArrayList<Integer>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sentenciaSQL="SELECT DISTINCT year(fecha_pago) FROM cuota WHERE fecha_pago is not null ORDER BY anio ASC";
+		String sentenciaSQL="SELECT DISTINCT year(fecha_pago) FROM cuota WHERE fecha_pago is not null ORDER BY year(fecha_pago) ASC";
 		try 
 		{
 			ps = Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
@@ -461,7 +461,7 @@ public class CuotaDAO
 		ArrayList<Integer> meses = new ArrayList<Integer>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sentenciaSQL="SELECT DISTINCT month(fecha_pago) FROM cuota WHERE year(fecha_pago)=? and fecha_pago is not null ORDER BY anio ASC";
+		String sentenciaSQL="SELECT DISTINCT month(fecha_pago) FROM cuota WHERE year(fecha_pago)=? and fecha_pago is not null ORDER BY month(fecha_pago) ASC";
 		try 
 		{
 			ps = Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
