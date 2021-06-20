@@ -130,58 +130,61 @@ public class ControladorCuota extends HttpServlet {
 				}
 			}
 		}
-		if((ajax_action != null && ajax_action.equalsIgnoreCase("obtenerAnios")))
+		if (ajax_action != null)
 		{
-			try 
+			if(ajax_action.equalsIgnoreCase("obtenerAnios"))
 			{
-				ArrayList<Integer> anios = _servicioCuota.ObtenerAnios();
-				String res = _gson.toJson(anios);
-				SendSuccessResponse(res ,response);
-				return;
+				try 
+				{
+					ArrayList<Integer> anios = _servicioCuota.ObtenerAnios();
+					String res = _gson.toJson(anios);
+					SendSuccessResponse(res ,response);
+					return;
+				}
+				catch(Exception ex) 
+				{
+					ex.printStackTrace();
+				}
 			}
-			catch(Exception ex) 
+			else if(ajax_action.equalsIgnoreCase("obtenerMeses"))
 			{
-				ex.printStackTrace();
+				try 
+				{
+					ArrayList<Integer> meses = _servicioCuota.ObtenerMeses(Integer.parseInt(request.getParameter("anio")));
+					String res = _gson.toJson(meses);
+					SendSuccessResponse(res ,response);
+					return;
+				}
+				catch(Exception ex) 
+				{
+					ex.printStackTrace();
+				}
 			}
-		}
-		else if((ajax_action != null && ajax_action.equalsIgnoreCase("obtenerMeses")))
-		{
-			try 
+			else if(ajax_action.equalsIgnoreCase("obtenerAniosPagas"))
 			{
-				ArrayList<Integer> meses = _servicioCuota.ObtenerMeses(Integer.parseInt(request.getParameter("anio")));
-				String res = _gson.toJson(meses);
-				SendSuccessResponse(res ,response);
-				return;
+				try 
+				{
+					ArrayList<Integer> anios = _servicioCuota.ObtenerAniosPagas();
+					String res = _gson.toJson(anios);
+					SendSuccessResponse(res ,response);
+					return;
+				}
+				catch(Exception ex) 
+				{
+					ex.printStackTrace();
+				}
 			}
-			catch(Exception ex) 
+			else if(ajax_action.equalsIgnoreCase("obtenerMesesPagas"))
 			{
-				ex.printStackTrace();
-			}
-		}
-		else if((ajax_action != null && ajax_action.equalsIgnoreCase("obtenerAniosPagas")))
-		{
-			try 
-			{
-				ArrayList<Integer> anios = _servicioCuota.ObtenerAniosPagas();
-				String res = _gson.toJson(anios);
-				SendSuccessResponse(res ,response);
-				return;
-			}
-			catch(Exception ex) 
-			{
-				ex.printStackTrace();
-			}
-		}
-		else if((ajax_action != null && ajax_action.equalsIgnoreCase("obtenerMesesPagas")))
-		{
-			try 
-			{
-				ArrayList<Integer> meses = _servicioCuota.ObtenerMesesPagas(Integer.parseInt(request.getParameter("anio")));
-				String res = _gson.toJson(meses);
-				SendSuccessResponse(res ,response);
-				return;
-			}catch(Exception ex) {
-				ex.printStackTrace();
+				try 
+				{
+					ArrayList<Integer> meses = _servicioCuota.ObtenerMesesPagas(Integer.parseInt(request.getParameter("anio")));
+					String res = _gson.toJson(meses);
+					SendSuccessResponse(res ,response);
+					return;
+				}catch(Exception ex) {
+					ex.printStackTrace();
+				}
 			}
 		}
 		

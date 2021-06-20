@@ -511,12 +511,12 @@ public class ClienteDAO {
 		ResultSet rs = null;
 		PreparedStatement ps2 = null;
 		ResultSet rs2 = null;
-		String sentenciaSQL = "SELECT cli.dni, cli.nombre, cli.apellido,  cli.cliente_usuario , cli.mail, cli.telefono, COUNT(cu.dni_cliente) FROM Cliente cli \r\n"
-				+ "INNER JOIN Cuota cu ON cli.dni = cu.dni_cliente \r\n"
+		String sentenciaSQL = "SELECT cli.dni, cli.nombre, cli.apellido,  cli.cliente_usuario , cli.mail, cli.telefono, COUNT(cu.dni_cliente) FROM cliente cli \r\n"
+				+ "INNER JOIN cuota cu ON cli.dni = cu.dni_cliente \r\n"
 				+ "WHERE cu.fecha_pago IS NULL AND cli.fecha_baja_socio IS NULL AND cli.fecha_baja IS NULL \r\n"
 				+ "GROUP BY cli.dni, cli.nombre, cli.apellido,  cli.cliente_usuario , cli.mail, cli.telefono";
-		String sentenciaSQLCuotas = "SELECT cu.mes, cu.anio, cu.valor FROM Cliente as cli \r\n"
-				+ "INNER JOIN Cuota as cu ON cli.dni = cu.dni_cliente \r\n"
+		String sentenciaSQLCuotas = "SELECT cu.mes, cu.anio, cu.valor FROM cliente as cli \r\n"
+				+ "INNER JOIN cuota as cu ON cli.dni = cu.dni_cliente \r\n"
 				+ "WHERE cu.fecha_pago IS NULL AND cli.fecha_baja_socio IS NULL AND cli.fecha_baja IS NULL AND cli.dni = ?";
 		ArrayList<SocioDeudor> sociosDeudores = new ArrayList<SocioDeudor>(); 
 		try {
