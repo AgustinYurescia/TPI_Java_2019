@@ -5,7 +5,14 @@
 		<jsp:include page="menu.jsp"/>
 	</head>
 	<body>
-	   	<div>
+	   	<div class="container">
+	   		<% 
+			String mensajeError = (String)request.getAttribute("mensajeErrorMail");
+		   	if(mensajeError != null){
+		   	%>
+		   		<br/>
+		   		<div class="alert alert-warning" style="text-align: center;"><%=mensajeError%></div>
+		   	<%}%>
 			<h1>Confirmación de la cancelación</h1>
 			<p align="center"><b><font face="calibri" color="black" size="6">MUCHAS GRACIAS</font></b></p>
 			<p align="center"><b><font face="calibri" color="black" size="3">Su pedido ha sido cancelado con éxito</font></b></p>
