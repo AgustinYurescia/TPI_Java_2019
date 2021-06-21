@@ -55,7 +55,7 @@ public class ValidatorProducto {
 		if (nombre != null) {
 			Pattern nombre_pattern = Pattern.compile("/^\\s+$/");
 			Matcher nombre_matcher = nombre_pattern.matcher(nombre);
-			if (nombre.isBlank() || nombre.isEmpty()) {
+			if (nombre.isEmpty()) {
 				throw new ValidatorsException("Nombre vacío");
 			}
 			else if(nombre_matcher.matches()){
@@ -66,14 +66,14 @@ public class ValidatorProducto {
 			}
 		}
 		if (cod_cat != null) {
-			if(cod_cat.isBlank() || cod_cat.isEmpty()) {
+			if(cod_cat.isEmpty()) {
 				throw new ValidatorsException("Categoria vacía");
 			}
 		}
 		if (cantidad != null) {
 			Pattern cantidad_pattern = Pattern.compile("/^\\s+$/");
 			Matcher cantidad_matcher = cantidad_pattern.matcher(cantidad);
-			if(cantidad.isBlank() || cantidad.isEmpty())
+			if(cantidad.isEmpty())
 			{
 				throw new ValidatorsException("Cantidad vacía");
 			}
@@ -90,7 +90,7 @@ public class ValidatorProducto {
 		if (precio != null) {
 			Pattern precio_pattern = Pattern.compile("/^\\s+$/");
 			Matcher precio_matcher = precio_pattern.matcher(precio);
-			if(precio.isBlank() || precio.isEmpty())
+			if(precio.isEmpty())
 			{
 				throw new ValidatorsException("Precio vacío");
 			}
@@ -110,7 +110,7 @@ public class ValidatorProducto {
 			}
 		}
 		if(cod_prod != null) {
-			if(cod_prod.isBlank() || cod_prod.isEmpty()) {
+			if(cod_prod.isEmpty()) {
 				throw new ValidatorsException("No se seleccionó ningún producto");
 			}
 		}

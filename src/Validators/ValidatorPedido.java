@@ -25,7 +25,7 @@ public class ValidatorPedido {
 		if (nro != null) {
 			Pattern nro_pattern = Pattern.compile("/^\\s+$/");
 			Matcher nro_matcher = nro_pattern.matcher(nro);
-			if (nro.isBlank() || nro.isEmpty()) {
+			if (nro.isEmpty()) {
 				throw new ValidatorsException("Número de pedido vacío");
 			}
 			else if(nro_matcher.matches()){
@@ -44,7 +44,7 @@ public class ValidatorPedido {
 		if (cantidad != null) {
 			Pattern cantidad_pattern = Pattern.compile("/^\\s+$/");
 			Matcher cantidad_matcher = cantidad_pattern.matcher(cantidad);
-			if (cantidad.isBlank() || cantidad.isEmpty()) {
+			if (cantidad.isEmpty()) {
 				throw new ValidatorsException("No se ingresó la cantidad deseada");
 			}
 			else if(cantidad_matcher.matches()){
