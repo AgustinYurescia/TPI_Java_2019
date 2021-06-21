@@ -48,6 +48,51 @@ public class ControladorPlazosPrecios extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
+		if (ajax_action != null && ajax_action.equalsIgnoreCase("obtenerPorcDescuento"))
+		{
+			try 
+			{
+				float porc = _servicioPlazosPrecios.obtenerPrcentajeDescuentoSocio();
+				String res = _gson.toJson(porc);
+				SendSuccessResponse(res ,response);
+				return;
+				
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		if (ajax_action != null && ajax_action.equalsIgnoreCase("obtenerPlazoEntrega"))
+		{
+			try 
+			{
+				Integer plazo = _servicioPlazosPrecios.obtenerPlazoEntrega();
+				String res = _gson.toJson(plazo);
+				SendSuccessResponse(res ,response);
+				return;
+				
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		if (ajax_action != null && ajax_action.equalsIgnoreCase("obtenerValorCuotas"))
+		{
+			try 
+			{
+				double valor = _servicioPlazosPrecios.obtenerValorCuotas();
+				String res = _gson.toJson(valor);
+				SendSuccessResponse(res ,response);
+				return;
+				
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

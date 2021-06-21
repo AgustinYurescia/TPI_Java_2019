@@ -107,5 +107,43 @@ public class TardanzaPedidoDAO {
 			}
 		}
 	}
+	public Integer obtenerPlazoActual() throws Exception
+	{	
+		Integer plazo = 0;
+		sentenciaSQL = "SELECT cantidad_de_dias "
+						+ "FROM tardanza_preparacion_pedido "
+						+ "WHERE fecha_desde = ("
+						+ "SELECT MAX(fecha_desde) "
+						+ "FROM tardanza_preparacion_pedido "
+						+ "WHERE fecha_desde <= current_date)";
+		try
+		{
+			ps = Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);
+			rs = ps.executeQuery();
+			if (rs.next())
+			{
+				plazo = rs.getInt(1);
+			}
+		}
+		catch(Exception e)
+		{
+			_logger.error(e.getMessage());
+			throw e;
+		}
+		finally 
+		{
+			try 
+			{
+				if(rs!=null) {rs.close();}
+				if(ps!=null) {ps.close();}
+                Conexion.getInstancia().desconectar();
+			} 
+			catch (Exception e) 
+			{
+				_logger.error(e.getMessage());
+			}
+		}
+		return plazo;
+	}
 
 }

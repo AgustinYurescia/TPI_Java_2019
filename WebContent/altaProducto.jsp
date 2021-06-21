@@ -50,6 +50,9 @@
       				<label for="imagen">Imagen del producto</label> </br>
       				<input type="file" id="imagen" name="imagen" class="" value="<%=(request.getAttribute("imagen") != null)?request.getAttribute("imagen"):""%>" required>
     			</div>
+    			<div class="form-group col-md-6">
+      				<p id="precioDeVenta" hidden="true"></p>
+    			</div>
   			</div>
   			<% 	
   			if(request.getAttribute("mensajeError") != null){
@@ -73,4 +76,33 @@
 	}
 	%>
 </body>
+<script>
+$('#precio').on
+('input',
+	function() {
+	$.ajax({
+		type : 'GET',
+		url : '/TPI_Java/ControladorPlazosPrecios',
+		data : {
+			'ajax_action' : 'obtenerPorcGanancia',
+		}
+	}).done(
+			function(porc) {
+				var precio = $(document.getElementById('precio')).val();
+				var float_precio = parseFloat(precio)
+				var precio_de_venta = $(document.getElementById('precioDeVenta'));
+				precio_de_venta.html("Precio de venta: $" + (float_precio*(1 + porc)).toFixed(2).toString());
+				if(!Number.isNaN(float_precio*(1 + porc)))
+				{
+					$(document.getElementById('precioDeVenta').hidden = false);	
+				}
+				else
+				{
+					$(document.getElementById('precioDeVenta').hidden = true);	
+				}
+			}).fail(function() {
+				alert('Hubo un error al calcular el nuevo precio de venta del producto seleccionado')
+	})
+})
+</script>
 </html>

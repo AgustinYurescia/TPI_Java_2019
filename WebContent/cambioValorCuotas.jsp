@@ -29,8 +29,30 @@
     				<button type="submit" class="btn btn-primary" name="accion" value="nuevoValorCuotas" onclick="return validacion_cambio_valor_cuotas();">Registrar</button>	
     			</div>
     		</div>
+    		<div class="form-row">
+    			<div class="form-group col-md-12">
+      				<p id="valor_actual"></p>														
+    			</div>
+    		</div>
 		</form>
 	</div>
 	<jsp:include page="footer.jsp"/>
 </body>
+<script>
+	$(document).ready( function () {
+		$.ajax({
+			type : 'GET',
+			url : '/TPI_Java/ControladorPlazosPrecios',
+			data : {
+				'ajax_action' : 'obtenerValorCuotas',
+			}
+		}).done(
+				function(valor) {
+					var valor_actual = $(document.getElementById('valor_actual'));
+					valor_actual.html("Valor actual: " + valor.toFixed(2).toString());
+				}).fail(function() {
+					alert('Hubo un error interno')
+		})
+	});
+</script>
 </html>
