@@ -29,8 +29,30 @@
     				<button type="submit" class="btn btn-primary" name="accion" value="nuevoPlazoEntrega" onclick="return validacion_cambio_plazo_entrega();">Registrar</button>	
     			</div>
     		</div>
+    		<div class="form-row">
+    			<div class="form-group col-md-12">
+      				<p id="valor_actual"></p>														
+    			</div>
+    		</div>
 		</form>
 	</div>
 	<jsp:include page="footer.jsp"/>
 </body>
+<script>
+	$(document).ready( function () {
+		$.ajax({
+			type : 'GET',
+			url : '/ControladorPlazosPrecios',
+			data : {
+				'ajax_action' : 'obtenerPlazoEntrega',
+			}
+		}).done(
+				function(plazo) {
+					var plazo_actual = $(document.getElementById('valor_actual'));
+					plazo_actual.html("Valor actual: " + plazo.toString());
+				}).fail(function() {
+					alert('Hubo un error interno')
+		})
+	});
+</script>
 </html>

@@ -133,7 +133,7 @@
 						$(document.getElementById('precio_futuro').hidden = true);	
 					}
 				}).fail(function() {
-					alert('Hubo un error al recuperar el stock actual del producto seleccionado')
+					alert('Hubo un error al calcular el nuevo precio de venta del producto seleccionado');
 		})
 	})
 </script>

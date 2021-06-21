@@ -4,6 +4,7 @@ import modeloDAO.PorcentajeGananciaDAO;
 import modeloDAO.TardanzaPedidoDAO;
 import modeloDAO.ValorCuotasDAO;
 import modeloDAO.DescuentoSocioDAO;
+import modeloDAO.CuotaDAO;
 
 public class ServicioPlazosPrecios {
 	
@@ -11,6 +12,7 @@ public class ServicioPlazosPrecios {
 	private PorcentajeGananciaDAO _porcentajeGananciaDAO;
 	private DescuentoSocioDAO _descuentoSocioDAO;
 	private ValorCuotasDAO _valorCuotasDAO;
+	private CuotaDAO _cuotaDAO;
 
 	public ServicioPlazosPrecios()
 	{
@@ -18,6 +20,7 @@ public class ServicioPlazosPrecios {
 		_porcentajeGananciaDAO = new PorcentajeGananciaDAO();
 		_descuentoSocioDAO = new DescuentoSocioDAO();
 		_valorCuotasDAO = new ValorCuotasDAO();
+		_cuotaDAO = new CuotaDAO();
 	}
 	
 	public void AltaPlazo(int cantidadDias) throws Exception
@@ -100,5 +103,11 @@ public class ServicioPlazosPrecios {
 	}
 	public float obtenerPorcGanancia() throws Exception {
 		return _porcentajeGananciaDAO.ObtenerPorcentajeActual();
+	}
+	public Integer obtenerPlazoEntrega() throws Exception {
+		return _tardanzaPedidoDAO.obtenerPlazoActual();
+	}
+	public double obtenerValorCuotas() throws Exception {
+		return _cuotaDAO.ObtenerValorCuota();
 	}
 }
