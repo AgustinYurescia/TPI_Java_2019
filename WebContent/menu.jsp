@@ -96,7 +96,6 @@
             		<a class="dropdown-item" href="cambioDescuentoSocio.jsp">Nuevo porcentaje descuento para socios</a>
             	</div>
           	</li>
-          	<!-- 
           	<li class="nav-item dropdown">
             	<a class="nav-link dropdown-toggle" href="#" id="clientesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color:white !important">
               		Informes gráficos
@@ -107,7 +106,6 @@
             		<a class="dropdown-item" href="ControladorPedido?accion=graficoTotalVentasAnual">Total de ventas anuales</a>
             	</div>
           	</li>
-          	-->
         </ul>
         
         <ul class="navbar-nav mr-right">  

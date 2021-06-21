@@ -6,12 +6,12 @@ public class Conexion {
 	private static Conexion instancia;
 	private Connection con=null;
 	private int conectados=0;
-	private String url="jdbc:mysql://node72003-viejotonel.jelastic.saveincloud.net:3306/vinoteca_gatti?useTimezone=true&serverTimezone=America/Argentina/Buenos_Aires";
+	private String url="jdbc:mysql://node72083-elviejotonel.jelastic.saveincloud.net:3306/vinoteca_gatti?useTimezone=true&serverTimezone=America/Argentina/Buenos_Aires";
 //	private String url="jdbc:mysql://localhost:3306/vinoteca_gatti?useTimezone=true&serverTimezone=UTC";
 //	private String usuario="Java";
 //	private String pass="Java2019";
 	private String usuario="root";
-	private String pass="ooLqyuBARS";
+	private String pass="YBSfzp85532";
 	
 	
 	private Conexion() {
