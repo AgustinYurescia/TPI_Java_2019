@@ -22,6 +22,7 @@
 		<% 
 		String mensajeError = (String)request.getAttribute("mensajeErrorMail");
 	   	if(mensajeError != null){%>
+	   		<br/>
 	   		<div class="alert alert-warning" style="text-align: center;"><%=mensajeError%></div>
 	   	<%}%>
 	   	<% 	HttpSession sesion = request.getSession(true);

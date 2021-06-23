@@ -4,7 +4,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Vinoteca Gatti</title>
+	<title>El Viejo Tonel</title>
+	<link rel="icon" href="Images/favicon.png" sizes="62x62">
   	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   	<link rel="stylesheet" href="CSS/vinoteca.css"/>
   	<script type="text/javascript" src="JS/vinoteca.js"></script>
@@ -119,7 +120,7 @@
             		<a class="dropdown-item" href="ControladorLoginAdmin?accion=logout">Cerrar Sesión</a>
             </div>  
           </li>	
-        </ul>
+        
         <%
 	   	}else if (sesion.getAttribute("usuario_cliente") != null) { 
         %>
@@ -172,10 +173,11 @@
             	Carrito
             </a>
           </li>
-        </ul>
+        
        	<%
        	}else{
       	%>
+       	
        		<li class="nav-item">
   				<a class="nav-link" href="ControladorDeLinks?accion=listarProductosCliente" style="color:white !important">Productos</a>
 			</li>

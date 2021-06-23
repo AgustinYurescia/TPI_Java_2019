@@ -313,9 +313,13 @@ public class ControladorPedido extends HttpServlet {
 						_servicioProducto.ActualizarStock(l.getCodigo_producto(),l.getCantidad());
 					}
 					_servicioPedido.CancelarPedido(nro_pedido);
-					correo.enviar_mail_cancelacion(cli.getMail());
-					
 					acceso = "confirmacionCancelacion.jsp";
+					try {
+						correo.enviar_mail_cancelacion(cli.getMail());
+					}catch(Exception Ex){
+						request.setAttribute("mensajeErrorMail", "El pedido se canceló exitosamente pero no se le ha podido enviar el mail de confirmación a su correo");
+						acceso = "confirmacionCancelacion.jsp";
+					}
 				}
 				else {
 					acceso = "loginClientes.jsp";
@@ -430,10 +434,20 @@ public class ControladorPedido extends HttpServlet {
 							p.setEstado("preparado");
 						}
 					}
+					for (int i=0; i < pedidos.size(); i++)
+					{
+						pedidos.get(i).setEstado("preparado");
+					}
+					sesion.setAttribute("pedidos", pedidos);
 					request.setAttribute("mensajeOk", "Preparación registrada con éxito");
 				}
 				catch(MessagingException e)
 				{
+					for (int i=0; i < pedidos.size(); i++)
+					{
+						pedidos.get(i).setEstado("preparado");
+					}
+					sesion.setAttribute("pedidos", pedidos);
 					request.setAttribute("mensajeError", "Error interno al enviar el email al cliente, pero el estado del pedido fue cambiado satisfactoriamente");
 				}
 				catch (Exception e)

@@ -5,8 +5,17 @@
 		<jsp:include page="menu.jsp"/>
 	</head>
 	<body>
-	   	<div>
-			<h1>Confirmación de la cancelación</h1>
+	   	<div class="container">
+	   		<% 
+			String mensajeError = (String)request.getAttribute("mensajeErrorMail");
+		   	if(mensajeError != null){
+		   	%>
+		   		<br/>
+		   		<div class="alert alert-warning" style="text-align: center;"><%=mensajeError%></div>
+		   	<%}%>
+		   	<hr>
+			<h1 align="center">Confirmación de la cancelación</h1>
+			<hr>
 			<p align="center"><b><font face="calibri" color="black" size="6">MUCHAS GRACIAS</font></b></p>
 			<p align="center"><b><font face="calibri" color="black" size="3">Su pedido ha sido cancelado con éxito</font></b></p>
 			<p align="center"><a class="py-0 d-none d-md-inline-block" href="ControladorDeLinks?accion=indexCliente"><button type="submit" class="btn btn-primary">Volver al inicio</button></a></p>
