@@ -48,9 +48,9 @@
 	       	</div>				
 		</form>
 		<hr/>
-		<div class="alert alert-danger" role="alert" id="mensajeError" hidden="true">Ocurrió un error interno</div>
-		<div class="alert alert-primary" role="alert" id="mensajeOkPreparacion" hidden="true">Preparación registrada con éxito</div>
-		<div class="alert alert-primary" role="alert" id="mensajeOkEntrega" hidden="true">Entrega registrada con éxito</div>
+		<div class="alert alert-danger" role="alert" id="mensajeError" hidden="true">Ocurriï¿½ un error interno</div>
+		<div class="alert alert-primary" role="alert" id="mensajeOkPreparacion" hidden="true">Preparaciï¿½n registrada con ï¿½xito</div>
+		<div class="alert alert-primary" role="alert" id="mensajeOkEntrega" hidden="true">Entrega registrada con ï¿½xito</div>
 		<% 	
  			if(request.getAttribute("mensajeError") != null){
  		%>
@@ -90,10 +90,10 @@
 					<th>Nombre</th>
 					<th>Apellido</th>
 					<th>Telefono</th>
-					<th>Fecha de realización</th>
+					<th>Fecha de realizaciï¿½n</th>
 					<th>Fecha entrega estimada</th>
 					<th>Fecha Entraga Real</th>
-					<th>Fecha Cancelación</th>
+					<th>Fecha Cancelaciï¿½n</th>
 					<th>Monto</th>
 					<th></th>
 					<th></th>
@@ -187,7 +187,7 @@
 			var botonPreparar = document.getElementById("botonPrepararPedido" + nro_pedido.toString());
 			$.ajax({
 				type : 'GET',
-				url : '/TPI_Java/ControladorPedido',
+				url : '/TPI_Java_2019/ControladorPedido',
 				data : {
 					'accion' : 'prepararPedidoAjax',
 					'numero_pedido': nro_pedido,
@@ -214,7 +214,7 @@
 			var botonEntregar = document.getElementById("botonEntregarPedido" + nro_pedido.toString());
 			$.ajax({
 				type : 'GET',
-				url : '/TPI_Java/ControladorPedido',
+				url : '/TPI_Java_2019/ControladorPedido',
 				data : {
 					'accion' : 'entregarPedidoAjax',
 					'numero_pedido': nro_pedido,

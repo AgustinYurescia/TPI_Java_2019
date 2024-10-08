@@ -42,7 +42,7 @@
 	$(document).ready( function () {
 		$.ajax({
 			type : 'GET',
-			url : '/TPI_Java/ControladorPlazosPrecios',
+			url : '/TPI_Java_2019/ControladorPlazosPrecios',
 			data : {
 				'ajax_action' : 'obtenerPorcGanancia',
 			}

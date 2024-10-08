@@ -23,7 +23,7 @@
 		<form action="ControladorCuota" method="post">
 	   		<div class = "form-row">
 	   			<div class="form-group col-md-5">
-	       			<label for="anio">Año:</label>
+	       			<label for="anio">Aï¿½o:</label>
       				<select id="anio" name="anio" class="form-control">
         				<option selected>-</option>
      				</select>
@@ -31,7 +31,7 @@
 	       		<div class="form-group col-md-5">
 	       			<label for="mes">Mes:</label>
 	       			<select id="mes" name="mes" class="form-control">
-        				<option selected>Seleccione un año primero</option>
+        				<option selected>Seleccione un aï¿½o primero</option>
      				</select>
 	       		</div>
 	       		<div class="form-group col-md-2" style="padding-top: 31px">
@@ -59,7 +59,7 @@
 					<th>APELLIDO</th>
 					<th>TELEFONO</th>
 					<th>MES</th>
-					<th>AÑO</th>
+					<th>Aï¿½O</th>
 					<th>FECHA PAGO</th>
 					<th>VALOR</th>
 					<th></th>
@@ -120,7 +120,7 @@
 		$(document.getElementById('mes').disabled = true);
 		$.ajax({
 			type : 'GET',
-			url : '/TPI_Java/ControladorCuota',
+			url : '/TPI_Java_2019/ControladorCuota',
 			data : {
 				'ajax_action' : 'obtenerAnios',
 			}
@@ -145,7 +145,7 @@
 		{
 			$.ajax({
 				type : 'GET',
-				url : '/TPI_Java/ControladorCuota',
+				url : '/TPI_Java_2019/ControladorCuota',
 				data : {
 					'ajax_action' : 'obtenerMeses',
 					'anio': anio,
@@ -170,7 +170,7 @@
 			$(document.getElementById('mes').disabled = true);
 			var opt = document.createElement('option');
 			opt.value = "-";
-	        opt.innerHTML = "Seleccione un año primero";
+	        opt.innerHTML = "Seleccione un aï¿½o primero";
 			$(document.getElementById('mes').appendChild(opt));
 			$(document.getElementById('buscarcuotas').disabled = true);
 		}

@@ -71,7 +71,7 @@
 			var codigo_prod = $(document.getElementById('codigo_producto')).find('option:selected').val();
 			$.ajax({
 				type : 'POST',
-				url : '/TPI_Java/ControladorProducto',
+				url : '/TPI_Java_2019/ControladorProducto',
 				data : {
 					'ajax_action' : 'buscar_producto',
 					'codigo_producto': codigo_prod,
@@ -114,7 +114,7 @@
 		function() {
 		$.ajax({
 			type : 'GET',
-			url : '/TPI_Java/ControladorPlazosPrecios',
+			url : '/TPI_Java_2019/ControladorPlazosPrecios',
 			data : {
 				'ajax_action' : 'obtenerPorcGanancia',
 			}

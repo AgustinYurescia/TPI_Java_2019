@@ -22,7 +22,7 @@
 	   	<form action="ControladorPlazosPrecios" method="POST">
   			<div class="form-row">
     			<div class="form-group col-md-10">
-      				<label for="cantidadDias">Ingresa la cantidad de días para la entrega de pedidos:</label>
+      				<label for="cantidadDias">Ingresa la cantidad de dï¿½as para la entrega de pedidos:</label>
       				<input type="number" class="form-control" name="cantidadDias" id="cantidadDias" required/>														
     			</div>
     			<div class="form-group col-md-2" style="padding-top: 31px">
@@ -42,7 +42,7 @@
 	$(document).ready( function () {
 		$.ajax({
 			type : 'GET',
-			url : '/TPI_Java/ControladorPlazosPrecios',
+			url : '/TPI_Java_2019/ControladorPlazosPrecios',
 			data : {
 				'ajax_action' : 'obtenerPlazoEntrega',
 			}
