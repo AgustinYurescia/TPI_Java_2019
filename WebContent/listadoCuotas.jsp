@@ -31,7 +31,7 @@
 	       		<div class="form-group col-md-5">
 	       			<label for="mes">Mes:</label>
 	       			<select id="mes" name="mes" class="form-control">
-        				<option selected>Seleccione un aï¿½o primero</option>
+        				<option selected>Seleccione un año primero</option>
      				</select>
 	       		</div>
 	       		<div class="form-group col-md-2" style="padding-top: 31px">
