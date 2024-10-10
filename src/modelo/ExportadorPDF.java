@@ -96,8 +96,8 @@ public class ExportadorPDF
 			span_cell_title.setColspan(5);
 			span_info_cell.setColspan(3);
 			date_info_cell.setPaddingLeft(25);
-			Phrase title = new Phrase("Pedido Nï¿½"+pedido.getNro_pedido()+"\n ", title_font);
-			Phrase date_info = new Phrase("DNI: "+pedido.getDni_cliente()+"\nNombre: "+cli.getNombre()+" "+cli.getApellido()+"\nDirecciï¿½n: "+cli.getDireccion()+"\nTelï¿½fono : "+cli.getTelefono()+"\nEmail: "+cli.getMail()+"\n\nFecha entrega estimada: "+pedido.getFecha_entrega_est()+"\n ", date_font);
+			Phrase title = new Phrase("Pedido N°"+pedido.getNro_pedido()+"\n ", title_font);
+			Phrase date_info = new Phrase("DNI: "+pedido.getDni_cliente()+"\nNombre: "+cli.getNombre()+" "+cli.getApellido()+"\nDirección: "+cli.getDireccion()+"\nTeléfono : "+cli.getTelefono()+"\nEmail: "+cli.getMail()+"\n\nFecha entrega estimada: "+pedido.getFecha_entrega_est()+"\n ", date_font);
 			date_info_cell.setPhrase(date_info);
 			span_cell_title.setPhrase(title);
 		}
@@ -142,7 +142,7 @@ public class ExportadorPDF
 			date_info_cell.setColspan(3);
 			span_cell_title.setColspan(3);
 			span_info_cell.setColspan(3);
-			Phrase title = new Phrase("CUOTAS Aï¿½O "+cuotas.get(0).getAnio()+"\n ", title_font);
+			Phrase title = new Phrase("CUOTAS AÑO "+cuotas.get(0).getAnio()+"\n ", title_font);
 			Phrase date_info = new Phrase("Fecha de informe: " + string_date + "\n ", date_font);
 			date_info_cell.setPhrase(date_info);
 			span_cell_title.setPhrase(title);

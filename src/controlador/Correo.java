@@ -93,10 +93,10 @@ public class Correo {
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatario)); // Destinatario
 			
 	
-		    message.setSubject("CONFIRMACIï¿½N DE CANCELACIï¿½N");
+		    message.setSubject("CONFIRMACIÓN DE CANCELACIÓN");
 	
 			BodyPart messageBodyPart = new MimeBodyPart();
-			messageBodyPart.setText("SU PEDIDO SE CANCELï¿½ SATISFACTORIAMENTE, MUCHAS GRACIAS.");
+			messageBodyPart.setText("SU PEDIDO SE CANCELÓ SATISFACTORIAMENTE, MUCHAS GRACIAS.");
 			
 			Multipart multipart = new MimeMultipart();
 			
@@ -145,7 +145,7 @@ public class Correo {
 			message.setSubject("CONFIRMACION DE PREPARACION");
 	
 			BodyPart messageBodyPart = new MimeBodyPart();
-			messageBodyPart.setText("ESTIMADO CLIENTE, SU PEDIDO Nï¿½MERO " + nro_pedido + " YA ESTï¿½ LISTO Y PUEDE PASAR A RETIRARLO");
+			messageBodyPart.setText("ESTIMADO CLIENTE, SU PEDIDO NÚMERO " + nro_pedido + " YA ESTÁ LISTO Y PUEDE PASAR A RETIRARLO");
 			
 			Multipart multipart = new MimeMultipart();
 	

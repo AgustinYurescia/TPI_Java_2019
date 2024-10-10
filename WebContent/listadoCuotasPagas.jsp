@@ -20,11 +20,11 @@
 	%>
 	<div class="m-2">
 		<h1>Listado de cuotas pagas</h1>
-		<h4>Seleccione aï¿½o y mes de pago de las cuotas</h4>
+		<h4>Seleccione año y mes de pago de las cuotas</h4>
 		<form action="ControladorCuota" method="get">
 	   		<div class = "form-row">
 	       		<div class="form-group col-md-5">
-	       			<label for="anio">Aï¿½o:</label>
+	       			<label for="anio">Año:</label>
       				<select id="anio" name="anio" class="form-control">
         				<option selected>-</option>
      				</select>
@@ -46,7 +46,7 @@
   			<div class="alert alert-danger" role="alert"><%=request.getAttribute("mensajeError")%></div>
 		<%}%>
 		<%if(request.getAttribute("mes") != null && request.getAttribute("anio") != null){%>
-			<p>Cuotas pagadas en el mes: <%=request.getAttribute("mes") %>, del aï¿½o  <%=request.getAttribute("anio") %></p>
+			<p>Cuotas pagadas en el mes: <%=request.getAttribute("mes") %>, del año  <%=request.getAttribute("anio") %></p>
 		<%}%>
 	   	<table class="table">
 	   		<thead>
@@ -56,7 +56,7 @@
 	   				<th>APELLIDO</th>
 	   				<th>TELEFONO</th>
 					<th>MES</th>
-					<th>Aï¿½O</th>
+					<th>AÑO</th>
 					<th>FECHA PAGO</th>
 					<th>VALOR</th>
 	   			</tr>
@@ -152,7 +152,7 @@
 			$(document.getElementById('mes').disabled = true);
 			var opt = document.createElement('option');
 			opt.value = "-";
-	        opt.innerHTML = "Seleccione un aï¿½o primero";
+	        opt.innerHTML = "Seleccione un año primero";
 			$(document.getElementById('mes').appendChild(opt));
 			$(document.getElementById('buscarcuotas').disabled = true);
 		}

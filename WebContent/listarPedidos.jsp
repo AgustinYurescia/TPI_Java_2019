@@ -48,9 +48,9 @@
 	       	</div>				
 		</form>
 		<hr/>
-		<div class="alert alert-danger" role="alert" id="mensajeError" hidden="true">Ocurriï¿½ un error interno</div>
-		<div class="alert alert-primary" role="alert" id="mensajeOkPreparacion" hidden="true">Preparaciï¿½n registrada con ï¿½xito</div>
-		<div class="alert alert-primary" role="alert" id="mensajeOkEntrega" hidden="true">Entrega registrada con ï¿½xito</div>
+		<div class="alert alert-danger" role="alert" id="mensajeError" hidden="true">Ocurrió un error interno</div>
+		<div class="alert alert-primary" role="alert" id="mensajeOkPreparacion" hidden="true">Preparación registrada con éxito</div>
+		<div class="alert alert-primary" role="alert" id="mensajeOkEntrega" hidden="true">Entrega registrada con éxito</div>
 		<% 	
  			if(request.getAttribute("mensajeError") != null){
  		%>

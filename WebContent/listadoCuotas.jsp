@@ -23,7 +23,7 @@
 		<form action="ControladorCuota" method="post">
 	   		<div class = "form-row">
 	   			<div class="form-group col-md-5">
-	       			<label for="anio">Aï¿½o:</label>
+	       			<label for="anio">Año:</label>
       				<select id="anio" name="anio" class="form-control">
         				<option selected>-</option>
      				</select>
@@ -59,7 +59,7 @@
 					<th>APELLIDO</th>
 					<th>TELEFONO</th>
 					<th>MES</th>
-					<th>Aï¿½O</th>
+					<th>AÑO</th>
 					<th>FECHA PAGO</th>
 					<th>VALOR</th>
 					<th></th>
@@ -170,7 +170,7 @@
 			$(document.getElementById('mes').disabled = true);
 			var opt = document.createElement('option');
 			opt.value = "-";
-	        opt.innerHTML = "Seleccione un aï¿½o primero";
+	        opt.innerHTML = "Seleccione un año primero";
 			$(document.getElementById('mes').appendChild(opt));
 			$(document.getElementById('buscarcuotas').disabled = true);
 		}
