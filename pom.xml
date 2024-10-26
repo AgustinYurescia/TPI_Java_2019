@@ -22,7 +22,7 @@
           <fork>True</fork>
           <target>1.8</target>
           <source>1.8</source>
-          <executable>C:\Program Files\Java\jdk-12.0.2\bin\javac.exe</executable>
+		  <encoding>windows-1252</encoding>
         </configuration>
       </plugin>
       <plugin>

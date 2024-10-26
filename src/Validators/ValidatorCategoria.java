@@ -12,7 +12,7 @@ public class ValidatorCategoria {
 		if (nombre != null) {
 			Pattern nombre_pattern = Pattern.compile("/^\\s+$/");
 			Matcher nombre_matcher = nombre_pattern.matcher(nombre);
-			if (nombre.isBlank() || nombre.isEmpty()) {
+			if (nombre.isEmpty()) {
 				throw new ValidatorsException("Nombre de la categoría vacío");
 			}
 			else if(nombre_matcher.matches()){
