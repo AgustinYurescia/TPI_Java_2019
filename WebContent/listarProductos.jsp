@@ -126,21 +126,26 @@
 			}
 			hadleFilterClick = () => {
 				var selectedValue = document.getElementById("selectFiltro").value;
-				this.props.listHandler(selectedValue); 
-			} 
+				var searchText =  document.getElementById("search_text").value;
+				console.log(searchText);
+				this.props.listHandler(selectedValue,searchText); 
+			}
 			
 			render(){
 				return(
 					<>
 					<h4 style={{textalign: "center"}}>Seleccione una categoria para filtrar los productos:</h4>
 					<div className="form-row">
-						<div className="col col-md-11">
+						<div className="col col-md-5">
 							<select id="selectFiltro" name="selectFiltro" className="form-control"  >
 								<option value = "0" defaultValue>Todos</option>
 								{this.state.categories.map((value, index) => {
 									return <option value={value.codigo} key = {index}> {value.descripcion}</option>
 								})}
 							</select>														
+						</div>
+						<div className="col col-md-6">
+								<input type="text" id="search_text" name="search_text" className="form-control" placeholder="Nombre de producto"/>												
 						</div>
 						<div className="col col-md-1" style={{padding: "0px"}}>
 							<button onClick={this.hadleFilterClick}  style={{float: "right"}} type="submit" className="btn btn-primary" name="accion" value="listar">Listar</button>	
@@ -225,16 +230,17 @@
 					currentCategory: 0,
 					currentAmountPerPage: 9,
 					currentAmountFetched:0,
+					currentSearchText:"",
 				}
 			}
 			fetchPage = async () =>{
-				let endpoint = "ControladorApiProducto?accion=ListarPorPaginas&numero_por_pagina="+this.state.currentAmountPerPage+"&numero_pagina="+this.state.currentPage+"&codigo_categoria="+this.state.currentCategory;
+				let endpoint = "ControladorApiProducto?accion=ListarPorPaginas&numero_por_pagina="+this.state.currentAmountPerPage+"&numero_pagina="+this.state.currentPage+"&codigo_categoria="+this.state.currentCategory+"&texto_busqueda="+this.state.currentSearchText;
 				const resp = await axios.get(endpoint);
 				this.setState({currentAmountFetched: resp.data.CantidadRegistros, products: resp.data.Productos});
 
 			}
-			ListHandlerForFilter(categoryId){
-				this.setState({currentPage: 1, currentCategory: categoryId}, () => {this.fetchPage()});
+			ListHandlerForFilter(categoryId, searchText){
+				this.setState({currentPage: 1, currentCategory: categoryId, currentSearchText: searchText}, () => {this.fetchPage()});
 			}
 			ListHandlerForPageSizeSelector(pageSize){
 				this.setState({currentPage: 1, currentAmountPerPage: pageSize}, () => {this.fetchPage()});

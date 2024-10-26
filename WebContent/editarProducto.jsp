@@ -18,7 +18,11 @@
 		<h1>Editar Producto</h1>
 		<form action="ControladorProducto" method="post">
   			<div class="form-row">
-    			<div class="form-group col-md-10">
+				<div class="form-group col-md-5">
+					<label for="codigo_producto">filtrar nombre</label>
+				 	<input type="text" class="form-control filter-input" id="selectSearch" placeholder="Buscar productos..." onkeyup="filtrarProductos()">
+				</div>
+    			<div class="form-group col-md-5">
     				<label for="codigo_producto">Seleccione el producto a editar:</label>
       				<select id="codigo_producto" name="codigo_producto" class="form-control">
         				<option selected>-</option>
@@ -82,4 +86,22 @@
 	</div>
 	<jsp:include page="footer.jsp"/>
 </body>
+<script>
+	function filtrarProductos(){
+		var input, filter, select, options, i;
+		input = document.getElementById("selectSearch");
+		filter = input.value.toLowerCase();
+		select = document.getElementById("codigo_producto");
+		options = select.getElementsByTagName("option");
+		
+		// Loop through all options in the select element and hide those that don't match the search query
+		for (i = 0; i < options.length; i++) {
+		    if (options[i].text.toLowerCase().indexOf(filter) > -1) {
+		        options[i].style.display = "";
+		    } else {
+		        options[i].style.display = "none";
+		    }
+		}
+	}
+</script>
 </html>

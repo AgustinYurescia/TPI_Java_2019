@@ -21,7 +21,7 @@ public class Correo {
 
 	public void enviar_mail_confirmacion(String destinatario, int nro_pedido) throws IOException, MessagingException {
 		
-        // Configuraci贸n de propiedades para la conexi贸n SMTP de Brevo
+        // Configuraci髇 de propiedades para la conexi髇 SMTP de Brevo
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp-relay.brevo.com");
         props.put("mail.smtp.port", "587");
@@ -29,11 +29,11 @@ public class Correo {
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.ssl.protocols", "TLSv1.2"); 
 
-        // Autenticaci贸n con tu cuenta Brevo
+        // Autenticaci髇 con tu cuenta Brevo
         final String brevoUsername = "7d394a001@smtp-brevo.com";
         final String brevoPassword = "5PN6C2wcLA7dm8zE"; 
 
-        // Sesi贸n de autenticaci贸n SMTP
+        // Sesi髇 de autenticaci髇 SMTP
         Session session = Session.getInstance(props, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(brevoUsername, brevoPassword);
@@ -41,11 +41,11 @@ public class Correo {
         });
 
         try {
-            // Creaci贸n del mensaje de correo
+            // Creaci髇 del mensaje de correo
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress("vinotecagatti@gmail.com")); // Remitente
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatario)); // Destinatario
-            message.setSubject("Confirmaci贸n del pedido"); // Asunto
+            message.setSubject("Confirmaci髇 del pedido"); // Asunto
 
             // Cuerpo del mensaje
             BodyPart messageBodyPart = new MimeBodyPart();
@@ -66,7 +66,7 @@ public class Correo {
 	}
 	
 	public void enviar_mail_cancelacion(String destinatario) throws IOException, MessagingException {
-		  // Configuraci贸n de propiedades para la conexi贸n SMTP de Brevo
+		  // Configuraci髇 de propiedades para la conexi髇 SMTP de Brevo
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp-relay.brevo.com");
         props.put("mail.smtp.port", "587");
@@ -74,11 +74,11 @@ public class Correo {
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.ssl.protocols", "TLSv1.2"); 
 
-        // Autenticaci贸n con tu cuenta Brevo
+        // Autenticaci髇 con tu cuenta Brevo
         final String brevoUsername = "7d394a001@smtp-brevo.com";
         final String brevoPassword = "5PN6C2wcLA7dm8zE"; 
 
-        // Sesi贸n de autenticaci贸n SMTP
+        // Sesi髇 de autenticaci髇 SMTP
         Session session = Session.getInstance(props, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(brevoUsername, brevoPassword);
@@ -87,7 +87,7 @@ public class Correo {
 
 		try {
 	
-            // Creaci贸n del mensaje de correo
+            // Creaci髇 del mensaje de correo
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress("vinotecagatti@gmail.com")); // Remitente
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatario)); // Destinatario
@@ -116,7 +116,7 @@ public class Correo {
 	}
 
 	public void enviar_mail_confirmacion_preparacion(String destinatario, int nro_pedido) throws IOException, MessagingException {
-		  // Configuraci贸n de propiedades para la conexi贸n SMTP de Brevo
+		  // Configuraci髇 de propiedades para la conexi髇 SMTP de Brevo
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp-relay.brevo.com");
         props.put("mail.smtp.port", "587");
@@ -124,11 +124,11 @@ public class Correo {
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.ssl.protocols", "TLSv1.2"); 
 
-        // Autenticaci贸n con tu cuenta Brevo
+        // Autenticaci髇 con tu cuenta Brevo
         final String brevoUsername = "7d394a001@smtp-brevo.com";
         final String brevoPassword = "5PN6C2wcLA7dm8zE"; 
 
-        // Sesi贸n de autenticaci贸n SMTP
+        // Sesi髇 de autenticaci髇 SMTP
         Session session = Session.getInstance(props, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(brevoUsername, brevoPassword);
@@ -136,7 +136,7 @@ public class Correo {
         });
 	
 		try {
-			 // Creaci贸n del mensaje de correo
+			 // Creaci髇 del mensaje de correo
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress("vinotecagatti@gmail.com")); // Remitente
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatario)); // Destinatario

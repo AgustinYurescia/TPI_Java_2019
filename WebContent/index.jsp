@@ -41,6 +41,7 @@
 	      		%>
 	      			<p style="text-align: center; font-weight:bold">Somos una empresa familiar dedicada a la comercialización de bebidas alcoholicas de primera calidad y a los mejores precios</p>
 	      			<div class="productos">
+	      			<%if (!productos.isEmpty()){%>
 	      				<%for (int i=0; i < 3; i++){%>
 		      			<div class="producto">
 		      				<div class="imagen-producto">
@@ -58,7 +59,7 @@
 		      					</a>
 		      				</div>
 		      			</div>
-		      			<%} %>			      						
+		      			<%} }%>			      						
 	      			</div>
 	      			<br/>
 	      			<p><a class="btn btn-primary btn-lg" href="ControladorDeLinks?accion=listarProductosCliente" role="button" style="margin-top:10px; background: #58272d !important; border: #58272d !important">Ver Todos Los Productos &raquo;</a></p>

@@ -148,10 +148,11 @@ public class ServicioProducto {
 			throw e;
 		}
 	}
-	public PaginaProductos ObtenerPorPagina(int numeroPorPagina, int numeroPagina, int codigoCategoria){
+	
+	public PaginaProductos ObtenerPorPagina(int numeroPorPagina, int numeroPagina, int codigoCategoria, String textoBusqueda){
 		PaginaProductos pagina = new PaginaProductos(); 
 		try {
-			ArrayList<Producto> productos = _productoDAO.obtenerPorPagina(numeroPorPagina, numeroPagina, codigoCategoria);
+			ArrayList<Producto> productos = _productoDAO.obtenerPorPagina(numeroPorPagina, numeroPagina, codigoCategoria, textoBusqueda);
 			int numeroRegistros = _productoDAO.obtenerNumeroDeRegistros(codigoCategoria);
 			pagina.setProductos(productos);
 			pagina.setCantidadRegistros(numeroRegistros);
