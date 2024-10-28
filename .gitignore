@@ -1,2 +1,6 @@
 /build/
-/target/
+# Ignore everything in the target directory
+target/*
+
+# But don't ignore the .war file
+!target/*.war
