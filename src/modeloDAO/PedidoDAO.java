@@ -738,7 +738,11 @@ public class PedidoDAO {
 		ResultSet rs = null;
 		ArrayList<Pedido>pedidos = new ArrayList<>();
 		ArrayList<LineaPedido>lineasPedido = null;
-		String sentenciaSQL="SELECT * FROM pedido as ped INNER JOIN cliente as cli WHERE ped.dni_cliente = cli.dni AND fecha_entrega_est = date_add(current_date, interval 1 day) AND estado != 'cancelado';";
+		String sentenciaSQL="SELECT * FROM pedido as ped INNER JOIN cliente as cli "
+				+ "WHERE ped.dni_cliente = cli.dni "
+				+ "AND fecha_entrega_est = date_add(current_date, interval 1 day) "
+				+ "AND estado != 'cancelado' "
+				+ "AND estado != 'finalizado';";
 		try 
 		{
 			ps = Conexion.getInstancia().getConexion().prepareStatement(sentenciaSQL);

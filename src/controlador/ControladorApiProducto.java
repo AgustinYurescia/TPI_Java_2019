@@ -46,8 +46,9 @@ public class ControladorApiProducto extends HttpServlet {
 				int numeroPorPagina = Integer.parseInt(request.getParameter("numero_por_pagina"));
 				int numeroPagina = Integer.parseInt(request.getParameter("numero_pagina"));
 				int codigoCategoria = Integer.parseInt(request.getParameter("codigo_categoria"));
+				String textoBusqueda = request.getParameter("texto_busqueda");
 				try {
-					PaginaProductos productos = _servicioProducto.ObtenerPorPagina(numeroPorPagina, numeroPagina, codigoCategoria);
+					PaginaProductos productos = _servicioProducto.ObtenerPorPagina(numeroPorPagina, numeroPagina, codigoCategoria, textoBusqueda);
 					String res = _gson.toJson(productos);
 					SendSuccessResponse(res ,response);
 					return;

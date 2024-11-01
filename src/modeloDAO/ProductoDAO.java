@@ -1,4 +1,4 @@
-package modeloDAO;
+ package modeloDAO;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -473,6 +473,7 @@ public class ProductoDAO {
 		
 		return prod;
 	}
+	
 	public Producto buscarProductoSinImagen(int codigo_producto) throws Exception 
 	{
 		Producto prod = new Producto();
@@ -511,66 +512,61 @@ public class ProductoDAO {
 		
 		return prod;
 	}
-	public ArrayList<Producto> obtenerPorPagina(int numeroPorPagina, int numeroPagina, int codigoCategoria) throws Exception {
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String consulta = "";
-		if (codigoCategoria == 0) {
-			consulta = 	"SELECT  * " + 
-						"FROM  producto " + 
-						"WHERE fecha_baja IS NULL " +
-						"LIMIT ? OFFSET ? ";
-		}
-		else {
-			consulta = 	"SELECT  * " + 
-						"FROM  producto " + 
-						"WHERE codigo_categoria = ? AND fecha_baja IS NULL "+
-						"LIMIT ? OFFSET ? ";
-		}
-		ArrayList<Producto> result = new ArrayList<Producto>();
-		int offset = (numeroPorPagina * numeroPagina) - (numeroPorPagina);
-		try {
-			ps=Conexion.getInstancia().getConexion().prepareStatement(consulta);
-			
-			if (codigoCategoria == 0) {
-				ps.setInt(1, numeroPorPagina);
-			    ps.setInt(2, offset);
-			}else {
-			    ps.setInt(1, codigoCategoria);
-			    ps.setInt(2, numeroPorPagina);
-			    ps.setInt(3, offset);
-			}
+	
+	public ArrayList<Producto> obtenerPorPagina(int numeroPorPagina, int numeroPagina, int codigoCategoria, String textoBusqueda) throws Exception {
+	    boolean hasBusqueda = !textoBusqueda.isEmpty() && textoBusqueda != null;
+	    
+	    String consulta = "SELECT * FROM producto WHERE fecha_baja IS NULL ";
+	    
+	    if (codigoCategoria != 0) {
+	        consulta += "AND codigo_categoria = ? ";
+	    }
+	    
+	    if (hasBusqueda) {
+	        consulta += "AND LOWER(nombre) LIKE LOWER(?) ";
+	    }
+	    
+	    consulta += "LIMIT ? OFFSET ?";
+	    
+	    ArrayList<Producto> result = new ArrayList<>();
+	    int offset = (numeroPorPagina * numeroPagina) - numeroPorPagina;
+	    
+	    try (PreparedStatement ps = Conexion.getInstancia().getConexion().prepareStatement(consulta)) {
+	        
+	        int cont = 1;
+	        
+	        if (codigoCategoria != 0) {
+	            ps.setInt(cont++, codigoCategoria);
+	        }
+	        
+	        if (hasBusqueda) {
+	            ps.setString(cont++, "%" + textoBusqueda + "%");
+	        }
+	        
+	        ps.setInt(cont++, numeroPorPagina);
+	        ps.setInt(cont++, offset);
+	        
+	        try (ResultSet rs = ps.executeQuery()) {
+	            while (rs.next()) {
+	                Producto p = new Producto();
+	                p.setCodigo(rs.getInt("codigo"));
+	                p.setNombre(rs.getString("nombre"));
+	                p.setImagenString(Helpers.BlobToBase64(rs.getBlob("imagen")));
+	                p.setStock(rs.getInt("stock"));
+	                p.setPrecioVenta(rs.getDouble("precio_venta"));
+	                p.setCodigo_categoria(rs.getInt("codigo_categoria"));
+	                result.add(p);
+	            }
+	        }
+	        
+	    } catch (SQLException e) {
+	        _logger.error(e.getMessage());
+	        throw new Exception("Error executing query", e);
+	    }
 
-		    rs = ps.executeQuery();
-		    if(rs != null){
-			    while(rs.next()) {
-			    	Producto p = new Producto();
-			    	p.setCodigo(rs.getInt("codigo"));
-					p.setNombre(rs.getString("nombre"));
-					p.setImagenString(Helpers.BlobToBase64(rs.getBlob("imagen")));
-					p.setStock(rs.getInt("stock"));
-					p.setPrecioVenta(rs.getDouble("precio_venta"));
-					p.setCodigo_categoria(Integer.parseInt(rs.getString("codigo_categoria")));
-					result.add(p);
-			    }
-		    }
-		}catch(SQLException e) {
-			_logger.error(e.getMessage());
-		}
-		finally {
-			try 
-			{
-				if(rs!=null) {rs.close();}
-				if(ps!=null) {ps.close();}
-				Conexion.getInstancia().desconectar();
-			} 
-			catch (Exception e) 
-			{
-				_logger.error(e.getMessage());
-			}
-		}
-		return result;
+	    return result;
 	}
+	
 	public int obtenerNumeroDeRegistros(int codigoCategoria) {
 		int result = 0;
 		ResultSet rs = null;

@@ -21,95 +21,76 @@ public class Correo {
 
 	public void enviar_mail_confirmacion(String destinatario, int nro_pedido) throws IOException, MessagingException {
 		
-		Properties props = new Properties();
-		props.put("mail.smtp.host", "smtp.gmail.com");
-		props.put("mail.smtp.socketFactory.port", "465");
-		props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.port", "465");
-		
-		String resourceName = "config.properties";
-		ClassLoader loader = Thread.currentThread().getContextClassLoader();
-		Properties config = new Properties();
-		try(InputStream resourceStream = loader.getResourceAsStream(resourceName)) {
-		    config.load(resourceStream);
-		}
+        // Configuración de propiedades para la conexión SMTP de Brevo
+        Properties props = new Properties();
+        props.put("mail.smtp.host", "smtp-relay.brevo.com");
+        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.ssl.protocols", "TLSv1.2"); 
 
-		final String gmailAccount = config.getProperty("gmail.account");
-		final String gmailPassword = config.getProperty("gmail.password");
-		final String emailDestination = destinatario;
+        // Autenticación con tu cuenta Brevo
+        final String brevoUsername = "7d394a001@smtp-brevo.com";
+        final String brevoPassword = "5PN6C2wcLA7dm8zE"; 
 
-		Session session = Session.getDefaultInstance(props,
-			new javax.mail.Authenticator() {
-				protected PasswordAuthentication getPasswordAuthentication() {
-					return new PasswordAuthentication(gmailAccount,gmailPassword);
-				}
-			});
+        // Sesión de autenticación SMTP
+        Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(brevoUsername, brevoPassword);
+            }
+        });
 
-		try {
+        try {
+            // Creación del mensaje de correo
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("vinotecagatti@gmail.com")); // Remitente
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatario)); // Destinatario
+            message.setSubject("Confirmación del pedido"); // Asunto
 
-			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(gmailAccount));
-			
-			
-		    message.addRecipients(Message.RecipientType.TO, InternetAddress.parse(emailDestination));
-			
+            // Cuerpo del mensaje
+            BodyPart messageBodyPart = new MimeBodyPart();
+            messageBodyPart.setText("Gracias por tu compra. Tu nÃºmero de pedido es: " + nro_pedido);
 
-		    message.setSubject("CONFIRMACIÓN DEL PEDIDO");
+            // Agregar contenido al correo
+            Multipart multipart = new MimeMultipart();
+            multipart.addBodyPart(messageBodyPart);
+            message.setContent(multipart);
 
-			BodyPart messageBodyPart = new MimeBodyPart();
-			messageBodyPart.setText("GRACIAS POR SU COMPRA. RECUERDE QUE PODRÁ PASAR A RETIRAR SU PEDIDO CUANDO SE LO NOTIFIQUE POR EMAIL (DEMORA APROX DE 3 DÍAS HÁBILES). SU NÚMERO DE PEDIDO ES " + nro_pedido);
+            // Enviar el correo
+            Transport.send(message);
+            System.out.println("Correo enviado correctamente!");
 
-			Multipart multipart = new MimeMultipart();
-
-			//Setting email text message
-			multipart.addBodyPart(messageBodyPart);
-
-			//set the attachments to the email
-	        message.setContent(multipart);
-
-			Transport.send(message);
-
-
-		} catch (MessagingException e) {
-			throw e;
-		}
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
 	}
 	
 	public void enviar_mail_cancelacion(String destinatario) throws IOException, MessagingException {
-		
-		Properties props = new Properties();
-		props.put("mail.smtp.host", "smtp.gmail.com");
-		props.put("mail.smtp.socketFactory.port", "465");
-		props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.port", "465");
-		
-		String resourceName = "config.properties";
-		ClassLoader loader = Thread.currentThread().getContextClassLoader();
-		Properties config = new Properties();
-		try(InputStream resourceStream = loader.getResourceAsStream(resourceName)) {
-		    config.load(resourceStream);
-		}
-	
-		final String gmailAccount = config.getProperty("gmail.account");
-		final String gmailPassword = config.getProperty("gmail.password");
-		final String emailDestination = destinatario;
-	
-		Session session = Session.getDefaultInstance(props,
-			new javax.mail.Authenticator() {
-				protected PasswordAuthentication getPasswordAuthentication() {
-					return new PasswordAuthentication(gmailAccount,gmailPassword);
-				}
-			});
-	
+		  // Configuración de propiedades para la conexión SMTP de Brevo
+        Properties props = new Properties();
+        props.put("mail.smtp.host", "smtp-relay.brevo.com");
+        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.ssl.protocols", "TLSv1.2"); 
+
+        // Autenticación con tu cuenta Brevo
+        final String brevoUsername = "7d394a001@smtp-brevo.com";
+        final String brevoPassword = "5PN6C2wcLA7dm8zE"; 
+
+        // Sesión de autenticación SMTP
+        Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(brevoUsername, brevoPassword);
+            }
+        });
+
 		try {
 	
-			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(gmailAccount));
-			
-			
-		    message.addRecipients(Message.RecipientType.TO, InternetAddress.parse(emailDestination));
+            // Creación del mensaje de correo
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("vinotecagatti@gmail.com")); // Remitente
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatario)); // Destinatario
 			
 	
 		    message.setSubject("CONFIRMACIÓN DE CANCELACIÓN");
@@ -135,38 +116,30 @@ public class Correo {
 	}
 
 	public void enviar_mail_confirmacion_preparacion(String destinatario, int nro_pedido) throws IOException, MessagingException {
-		Properties props = new Properties();
-		props.put("mail.smtp.host", "smtp.gmail.com");
-		props.put("mail.smtp.socketFactory.port", "465");
-		props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.port", "465");
-	
-		String resourceName = "config.properties";
-		ClassLoader loader = Thread.currentThread().getContextClassLoader();
-		Properties config = new Properties();
-		try(InputStream resourceStream = loader.getResourceAsStream(resourceName)) {
-		    config.load(resourceStream);
-		}
-	
-		final String gmailAccount = config.getProperty("gmail.account");
-		final String gmailPassword = config.getProperty("gmail.password");
-		final String emailDestination = destinatario;
-	
-		Session session = Session.getDefaultInstance(props,
-			new javax.mail.Authenticator() {
-				protected PasswordAuthentication getPasswordAuthentication() {
-					return new PasswordAuthentication(gmailAccount,gmailPassword);
-				}
-			});
+		  // Configuración de propiedades para la conexión SMTP de Brevo
+        Properties props = new Properties();
+        props.put("mail.smtp.host", "smtp-relay.brevo.com");
+        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.ssl.protocols", "TLSv1.2"); 
+
+        // Autenticación con tu cuenta Brevo
+        final String brevoUsername = "7d394a001@smtp-brevo.com";
+        final String brevoPassword = "5PN6C2wcLA7dm8zE"; 
+
+        // Sesión de autenticación SMTP
+        Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(brevoUsername, brevoPassword);
+            }
+        });
 	
 		try {
-	
-			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(gmailAccount));
-	
-	
-		    message.addRecipients(Message.RecipientType.TO, InternetAddress.parse(emailDestination));
+			 // Creación del mensaje de correo
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("vinotecagatti@gmail.com")); // Remitente
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatario)); // Destinatario
 	
 	
 			message.setSubject("CONFIRMACION DE PREPARACION");

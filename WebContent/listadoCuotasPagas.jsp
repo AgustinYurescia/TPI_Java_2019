@@ -98,11 +98,14 @@
 </body>
 <script>
 	$(document).ready( function () {
+		const baseUrl = '<%= request.getContextPath() %>';
+		const endpoint = '/ControladorCuota';
+		const fullUrl = baseUrl + endpoint;
 		$(document.getElementById('buscarcuotas').disabled = true);
 		$(document.getElementById('mes').disabled = true);
 		$.ajax({
 			type : 'GET',
-			url : '/TPI_Java/ControladorCuota',
+			url : fullUrl,
 			data : {
 				'ajax_action' : 'obtenerAniosPagas',
 			}
@@ -121,13 +124,16 @@
 	});
 	
 	$("#anio").on('change', function () {
+		const baseUrl = '<%= request.getContextPath() %>';
+		const endpoint = '/ControladorCuota';
+		const fullUrl = baseUrl + endpoint;
 		var anio = $(document.getElementById('anio')).val();
 		$(document.getElementById('mes')).find('option').remove();
 		if (anio != "-")
 		{
 			$.ajax({
 				type : 'GET',
-				url : '/TPI_Java/ControladorCuota',
+				url : fullUrl,
 				data : {
 					'ajax_action' : 'obtenerMesesPagas',
 					'anio': anio,

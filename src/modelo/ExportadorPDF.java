@@ -63,7 +63,7 @@ public class ExportadorPDF
 		System.setProperty("http.agent", "Chrome");
         String url = "https://i.imgur.com/A6ZahSa.png";
 		Image img = Image.getInstance(url);
-		Phrase info = new Phrase("\nVinoteca El Viejo Tonel\nRoque S. Peña, Pujato, Sta Fe\n3464 44-1296 ", info_font);
+		Phrase info = new Phrase("\nVinoteca El Viejo Tonel\nRoque S. PeÃ±a, Pujato, Sta Fe\n3464 44-1296 ", info_font);
 		PdfPCell cell = new PdfPCell();
 		cell.setBorder(0);
 		cell.setBorderColor(color_letra);

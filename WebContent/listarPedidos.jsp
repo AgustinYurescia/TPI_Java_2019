@@ -15,11 +15,15 @@
 		<jsp:include page="menu.jsp"/>
 	</head>
 	<body style="weigth:800px !important">
-		<div class="" style="width:1700px; margin:auto">
+		<div class="" style="margin:auto">
 		<% HttpSession sesion = request.getSession(true);
 	   	   if (sesion.getAttribute("usuario_admin") != null) { %>
 	   <div class="m-2">
 	   <hr/>
+	   		<%
+		String estado = (String)request.getAttribute("estado");%>
+			<h1>Listado de pedidos</h1>
+		
 	   	<form action="ControladorPedido">
 	   		<div class = "form-row">
 	   			<div class="form-group col-md-4">	
@@ -33,11 +37,11 @@
 	       		<div class="form-group col-md-4">
 	       			<label for="estado">Estado:</label>
       				<select id="estado" name="estado" class="form-control">
-      					<option>-</option>
-        				<option>Pendiente</option>
-        				<option>Preparado</option>
-        				<option>Entregado</option>
-        				<option>Cancelado</option>
+      					<option <%= "Todos".equals(estado) ? "selected": "" %>>Todos </option>
+        				<option <%= "Pendiente".equals(estado) ? "selected": "" %>>Pendiente</option>
+        				<option <%= "Preparado".equals(estado) ? "selected": "" %>>Preparado</option>
+        				<option <%= "Entregado".equals(estado) ? "selected": "" %>>Entregado</option>
+        				<option <%= "Cancelado".equals(estado) ? "selected": "" %>>Cancelado</option>
      				</select>
 	       		</div>
 	       	</div>
@@ -61,21 +65,7 @@
  		%>
  			<div class="alert alert-primary" role="alert"><%=request.getAttribute("mensajeOk")%></div>
 		<%}%>
-		<%
-		String estado = (String)request.getAttribute("estado");
-		if (estado != null && !estado.equalsIgnoreCase("-"))
-		{
-		%>
-			<h1>Listado de pedidos <%=estado.toLowerCase()%>s</h1>
-		<%
-		}
-		else
-		{
-		%>
-			<h1>Listado de pedidos</h1>
-		<%
-		}
-		%>
+
 	   			<%
 	   				if (request.getAttribute("listadoPedidos") != null)
 	   				{
@@ -184,10 +174,13 @@
 	</body>
 	<script>
 		function registrarPreparacion(nro_pedido) {
+			const baseUrl = '<%= request.getContextPath() %>';
+			const endpoint = '/ControladorPedido';
+			const fullUrl = baseUrl + endpoint;
 			var botonPreparar = document.getElementById("botonPrepararPedido" + nro_pedido.toString());
 			$.ajax({
 				type : 'GET',
-				url : '/TPI_Java/ControladorPedido',
+				url : fullUrl,
 				data : {
 					'accion' : 'prepararPedidoAjax',
 					'numero_pedido': nro_pedido,
@@ -211,10 +204,13 @@
 		}
 		
 		function registrarEntrega(nro_pedido) {
+			const baseUrl = '<%= request.getContextPath() %>';
+			const endpoint = '/ControladorPedido';
+			const fullUrl = baseUrl + endpoint;
 			var botonEntregar = document.getElementById("botonEntregarPedido" + nro_pedido.toString());
 			$.ajax({
 				type : 'GET',
-				url : '/TPI_Java/ControladorPedido',
+				url : fullUrl,
 				data : {
 					'accion' : 'entregarPedidoAjax',
 					'numero_pedido': nro_pedido,

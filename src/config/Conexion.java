@@ -7,11 +7,14 @@ public class Conexion {
 	private Connection con=null;
 	private int conectados=0;
 //	private String url="jdbc:mysql://node71920-elviejotonel.jelastic.saveincloud.net:3306/vinoteca_gatti?useTimezone=true&serverTimezone=UTC";
-	private String url="jdbc:mysql://localhost:3306/vinoteca_gatti?useTimezone=true&serverTimezone=America/Argentina/Buenos_Aires";
-	private String usuario="Java";
-	private String pass="Java2019";
+	// private String url="jdbc:mysql://localhost:3306/vinoteca_gatti_2024?useTimezone=true&serverTimezone=America/Argentina/Buenos_Aires";
+	// private String usuario="root";
+	// private String pass="root";
 //	private String usuario="root";
 //	private String pass="hE4RDagft9";
+private String url = "jdbc:mysql://autorack.proxy.rlwy.net:49938/railway";
+private String usuario = "root";
+private String pass = "EqkXsWVVRSuLrMQdCIaZsVshjOtxqjbh";
 	
 	
 	private Conexion() {

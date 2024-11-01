@@ -19,6 +19,10 @@
 		<h1>Actualizar Stock</h1>
 		<form action="ControladorProducto" method="POST">
 			<div class="form-row">
+				<div class="form-group col-md-2">
+					<label for="codigo_producto">filtrar nombre</label>
+				 	<input type="text" class="form-control filter-input" id="selectSearch" placeholder="Buscar productos..." onkeyup="filtrarProductos()">
+				</div>
  				<div class="form-group col-md-4">
    					<label for="codigo_producto">Nombre del producto</label>
    					<select id="codigo_producto" name="codigo_producto" class="form-control">
@@ -35,12 +39,12 @@
      					<%}%>
   					</select>
  				</div>
- 				<div class="form-group col-md-4">
+ 				<div class="form-group col-md-3">
    					<label for="nombre">Cantidad</label>
    					<input type="text" class="form-control" id="stock" name="stock" placeholder="Ej: 200" value="<%=(request.getAttribute("cantidad") != null)?request.getAttribute("cantidad"):""%>" required>
  				</div>
- 				<div class="form-group col-md-4">
-   					<label for="nombre">Precio Unitario</label>
+ 				<div class="form-group col-md-3">
+   					<label for="nombre">Precio Unitario de Costo</label>
    					<input type="text" class="form-control" id="precio" name="precio" placeholder="" value="<%=(request.getAttribute("precio") != null)?request.getAttribute("precio"):""%>" required>
  				</div>
 			</div>
@@ -68,10 +72,13 @@
 	$('#codigo_producto').on
 	('change',
 		function() {
+			const baseUrl = '<%= request.getContextPath() %>';
+			const endpoint = '/ControladorProducto';
+			const fullUrl = baseUrl + endpoint;
 			var codigo_prod = $(document.getElementById('codigo_producto')).find('option:selected').val();
 			$.ajax({
 				type : 'POST',
-				url : '/TPI_Java/ControladorProducto',
+				url : 'fullUrl',
 				data : {
 					'ajax_action' : 'buscar_producto',
 					'codigo_producto': codigo_prod,
@@ -112,29 +119,51 @@
 	$('#precio').on
 	('input',
 		function() {
-		$.ajax({
-			type : 'GET',
-			url : '/TPI_Java/ControladorPlazosPrecios',
-			data : {
-				'ajax_action' : 'obtenerPorcGanancia',
-			}
-		}).done(
-				function(porc) {
-					var precio = $(document.getElementById('precio')).val();
-					var float_precio = parseFloat(precio)
-					var precio_futuro = $(document.getElementById('precio_futuro'));
-					precio_futuro.html("Nuevo precio: $" + (float_precio*(1 + porc)).toFixed(2).toString());
-					if(!Number.isNaN(float_precio*(1 + porc)))
-					{
-						$(document.getElementById('precio_futuro').hidden = false);	
-					}
-					else
-					{
-						$(document.getElementById('precio_futuro').hidden = true);	
-					}
-				}).fail(function() {
-					alert('Hubo un error al calcular el nuevo precio de venta del producto seleccionado')
+			const baseUrl = '<%= request.getContextPath() %>';
+			const endpoint = '/ControladorPlazosPrecios';
+			const fullUrl = baseUrl + endpoint;
+			$.ajax({
+				type : 'GET',
+				url : 'fullUrl',
+				data : {
+					'ajax_action' : 'obtenerPorcGanancia',
+				}
+			}).done(
+					function(porc) {
+						var precio = $(document.getElementById('precio')).val();
+						var float_precio = parseFloat(precio)
+						var precio_futuro = $(document.getElementById('precio_futuro'));
+						precio_futuro.html("Nuevo precio: $" + (float_precio*(1 + porc)).toFixed(2).toString());
+						if(!Number.isNaN(float_precio*(1 + porc)))
+						{
+							$(document.getElementById('precio_futuro').hidden = false);	
+						}
+						else
+						{
+							$(document.getElementById('precio_futuro').hidden = true);	
+						}
+					}).fail(function() {
+						alert('Hubo un error al calcular el nuevo precio de venta del producto seleccionado')
+			})
 		})
-	})
+	
+	function filtrarProductos(){
+		console.log("filter product dropdown");
+		var input, filter, select, options, i;
+		input = document.getElementById("selectSearch");
+		filter = input.value.toLowerCase();
+		select = document.getElementById("codigo_producto");
+		options = select.getElementsByTagName("option");
+		
+		// Loop through all options in the select element and hide those that don't match the search query
+		for (i = 0; i < options.length; i++) {
+		    if (options[i].text.toLowerCase().indexOf(filter) > -1) {
+		        options[i].style.display = "";
+		    } else {
+		        options[i].style.display = "none";
+		    }
+		}
+	}
+	
 </script>
 </html>
