@@ -40,9 +40,12 @@
 </body>
 <script>
 	$(document).ready( function () {
+		const baseUrl = '<%= request.getContextPath() %>';
+		const endpoint = '/ControladorPlazosPrecios';
+		const fullUrl = baseUrl + endpoint;
 		$.ajax({
 			type : 'GET',
-			url : '/TPI_Java_2019/ControladorPlazosPrecios',
+			url : fullUrl,
 			data : {
 				'ajax_action' : 'obtenerPlazoEntrega',
 			}

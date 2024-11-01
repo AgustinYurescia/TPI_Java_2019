@@ -174,10 +174,13 @@
 	</body>
 	<script>
 		function registrarPreparacion(nro_pedido) {
+			const baseUrl = '<%= request.getContextPath() %>';
+			const endpoint = '/ControladorPedido';
+			const fullUrl = baseUrl + endpoint;
 			var botonPreparar = document.getElementById("botonPrepararPedido" + nro_pedido.toString());
 			$.ajax({
 				type : 'GET',
-				url : '/TPI_Java_2019/ControladorPedido',
+				url : fullUrl,
 				data : {
 					'accion' : 'prepararPedidoAjax',
 					'numero_pedido': nro_pedido,
@@ -201,10 +204,13 @@
 		}
 		
 		function registrarEntrega(nro_pedido) {
+			const baseUrl = '<%= request.getContextPath() %>';
+			const endpoint = '/ControladorPedido';
+			const fullUrl = baseUrl + endpoint;
 			var botonEntregar = document.getElementById("botonEntregarPedido" + nro_pedido.toString());
 			$.ajax({
 				type : 'GET',
-				url : '/TPI_Java_2019/ControladorPedido',
+				url : fullUrl,
 				data : {
 					'accion' : 'entregarPedidoAjax',
 					'numero_pedido': nro_pedido,
