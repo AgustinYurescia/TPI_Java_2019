@@ -1,6 +1,8 @@
 package modelo;
 
 import java.awt.Color;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -61,9 +63,19 @@ public class ExportadorPDF
 		info_font.setColor(color_letra);
 		font.setColor(color_letra);
 		System.setProperty("http.agent", "Chrome");
-        String url = "https://i.imgur.com/A6ZahSa.png";
-		Image img = Image.getInstance(url);
-		Phrase info = new Phrase("\nVinoteca El Viejo Tonel\nRoque S. PeÃ±a, Pujato, Sta Fe\n3464 44-1296 ", info_font);
+		
+		InputStream inputStream = getClass().getResourceAsStream("/logo.png");
+		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+		int i;
+		while ((i = inputStream.read()) != -1) {
+		    byteArrayOutputStream.write(i);
+		}
+		inputStream.close();
+
+		Image img = Image.getInstance(byteArrayOutputStream.toByteArray());
+		byteArrayOutputStream.close();
+
+		Phrase info = new Phrase("\nVinoteca El Viejo Tonel\nRoque S. Peña, Pujato, Sta Fe\n3464 44-1296 ", info_font);
 		PdfPCell cell = new PdfPCell();
 		cell.setBorder(0);
 		cell.setBorderColor(color_letra);
