@@ -48,9 +48,9 @@
   		<%}%>
   		<button class="btn btn-lg btn-primary btn-block" type="submit" name="accion" value="login" onclick="return validacion_login();">Iniciar Sesión</button>
   		<p>
-  			<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=registroCliente"><font face="Calibri" color="#58272d">¿Olvidaste tu contraseña?</font></a><br/>
+  			<!-- <a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=registroCliente"><font face="Calibri" color="#58272d">¿Olvidaste tu contraseña?</font></a><br/> -->
   			<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=registroCliente"><font face="Calibri" color="#58272d">¿Aún no tiene una cuenta? Registrese aquí</font></a><br/>
-  			&copy; 2019
+  			&copy; 2021
   		</p>
 	</form>
 	</div>

@@ -115,6 +115,14 @@
 			   		</tbody>
 			   	</table>
 			</div>
+			<% if(ped.getFecha_cancelacion() == null && ped.getFecha_entrega_real() == null){ %>
+			<div class="m-3">
+				<form action="ControladorPedido">
+			   		<input type="hidden" class="form-control" id="nro_pedido" name="nro_pedido" value=<%=ped.getNro_pedido()%>>
+			   		<button type="submit" class="btn btn-primary" name="accion" value="cancelar_pedido">Cancelar Pedido</button>
+				</form>
+			</div>
+			<%}%>
 			<% if(ped.getEstado().equalsIgnoreCase("pendiente")){ %>
 			<div class="m-3">
 				<form action="ControladorPedido">

@@ -300,11 +300,32 @@ public class ControladorPedido extends HttpServlet {
 			try {
 				Correo correo = new Correo(); 
 				String usuario_cliente = (String)sesion.getAttribute("usuario_cliente");
+				String usuario_admin = (String)sesion.getAttribute("usuario_admin");
 				int nro_pedido = Integer.parseInt(request.getParameter("nro_pedido"));
 				
 				if(usuario_cliente != null) {
 					Pedido pedido = _servicioPedido.BuscarPedidoConProductos(nro_pedido);
 					Cliente cli = _servicioCliente.ObtenerPorNombreDeUsuario(usuario_cliente);
+					if(!pedido.getDni_cliente().equals(cli.getDni())) {
+						throw new NonExistentUserException("No existe pedido solicitado para el cliente");
+					}
+					ArrayList<LineaPedido> lineas = pedido.getProductos(); 
+					for(LineaPedido l : lineas) {
+						_servicioProducto.ActualizarStock(l.getCodigo_producto(),l.getCantidad());
+					}
+					_servicioPedido.CancelarPedido(nro_pedido);
+					acceso = "confirmacionCancelacion.jsp";
+					try {
+						correo.enviar_mail_cancelacion(cli.getMail());
+					}catch(Exception Ex){
+						request.setAttribute("mensajeErrorMail", "El pedido se canceló exitosamente pero no se le ha podido enviar el mail de confirmación a su correo");
+						acceso = "confirmacionCancelacion.jsp";
+					}
+				}
+				else if (usuario_admin != null)
+				{
+					Pedido pedido = _servicioPedido.BuscarPedidoConProductos(nro_pedido);
+					Cliente cli = _servicioCliente.Buscar(pedido.getDni_cliente());
 					if(!pedido.getDni_cliente().equals(cli.getDni())) {
 						throw new NonExistentUserException("No existe pedido solicitado para el cliente");
 					}
