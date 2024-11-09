@@ -50,7 +50,7 @@
   		<p>
   			<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=registroCliente"><font face="Calibri" color="#58272d">¿Olvidaste tu contraseña?</font></a><br/>
   			<a class="py-2 d-none d-md-inline-block" href="ControladorDeLinks?accion=registroCliente"><font face="Calibri" color="#58272d">¿Aún no tiene una cuenta? Registrese aquí</font></a><br/>
-  			&copy; 2019
+  			&copy; 2024
   		</p>
 	</form>
 	</div>

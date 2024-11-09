@@ -16,7 +16,7 @@
 		<% 	
 		HttpSession sesion = request.getSession(true);
 		if (sesion.getAttribute("usuario_admin") != null){%>
-		<h1>Actualizar Stock</h1>
+		<h1>Actualizar Stock y Precio</h1>
 		<form action="ControladorProducto" method="POST">
 			<div class="form-row">
 				<div class="form-group col-md-2">
@@ -78,7 +78,7 @@
 			var codigo_prod = $(document.getElementById('codigo_producto')).find('option:selected').val();
 			$.ajax({
 				type : 'POST',
-				url : 'fullUrl',
+				url : fullUrl,
 				data : {
 					'ajax_action' : 'buscar_producto',
 					'codigo_producto': codigo_prod,
@@ -124,7 +124,7 @@
 			const fullUrl = baseUrl + endpoint;
 			$.ajax({
 				type : 'GET',
-				url : 'fullUrl',
+				url : fullUrl,
 				data : {
 					'ajax_action' : 'obtenerPorcGanancia',
 				}

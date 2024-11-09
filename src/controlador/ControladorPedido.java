@@ -605,6 +605,14 @@ public class ControladorPedido extends HttpServlet {
 						request.setAttribute("listadoVentas", pedidos);
 					}
 					
+					int numeroVentas = pedidos.size();
+					Double montoTotalVentas = (double) 0;
+					for(Pedido pedido: pedidos) {
+						montoTotalVentas = montoTotalVentas + pedido.getMonto();
+					}
+					request.setAttribute("numeroDeVentasTotales", numeroVentas);
+					request.setAttribute("montoTotalDeVentas", montoTotalVentas);
+					
 				} catch (Exception e) 
 				{
 					request.setAttribute("mensajeError", "Error al obtener las ventas, vuelva a intentarlo");
