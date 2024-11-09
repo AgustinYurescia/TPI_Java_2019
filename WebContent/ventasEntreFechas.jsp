@@ -55,6 +55,11 @@
 							</button>
 							<br><br>
 						</form> 
+					<div style="padding-bottom: 20px;">
+						<b> Número total de ventas: <%=request.getAttribute("numeroDeVentasTotales")%> </b>
+						<br/>
+						<b> Total cobrado: $<%=String.format("%.2f", request.getAttribute("montoTotalDeVentas"))%> </b>
+					</div>
 	   			<%
 	   				sesion.setAttribute("ventas", pedidos);
 	   				double total = 0.0;
@@ -77,6 +82,8 @@
 			   			</tr>
 			   		</thead> 				  		   				 	   			  
 			   		<tbody>
+					<tr >
+					</tr>
 			   			<tr>
 							<td style="padding-top: 20px"><%=ped.getNro_pedido()%></td>
 							<td style="padding-top: 20px"><%=ped.getDni_cliente()%></td>
@@ -113,9 +120,6 @@
 							</td>
 						</tr>
 					<%}%>
-					<tr>
-						<td colspan="10" style="padding-top: 20px; text-align: right;"><b>Total cobrado: $<%=String.format("%.2f", total)%></b></td>
-					</tr>
 					</tbody>
 			   		</table>
 			   </div>

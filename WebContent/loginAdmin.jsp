@@ -47,7 +47,7 @@
   		<div class="alert alert-danger" role="alert"><%= request.getAttribute("loginAdminError") %></div>
   		<%}%>
   		<button class="btn btn-lg btn-primary btn-block" type="submit" name="accion" value="login" onclick="return validacion_login();">Iniciar Sesión</button>
-  		<p class="mt-5 mb-3 text-muted">&copy; 2017-2019</p>
+  		<p class="mt-5 mb-3 text-muted">&copy;2024</p>
 	</form>
 	</div>
 	<jsp:include page="footer.jsp"/>

@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import exceptions.NonExistentUserException;
 import services.CustomerService;
+import services.ServicioPlazosPrecios;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,10 +22,12 @@ import org.apache.logging.log4j.Logger;
 public class ControladorLogin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static Logger _logger = LogManager.getLogger(ControladorLogin.class);
+	private ServicioPlazosPrecios _servicioPlazosPrecios;
+
 	CustomerService _servicioCliente;
     public ControladorLogin() {
         super();
-        
+        this._servicioPlazosPrecios = new ServicioPlazosPrecios();
     }
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession sesion = request.getSession();
@@ -47,7 +51,9 @@ public class ControladorLogin extends HttpServlet {
 				_servicioCliente.IniciarSesion(request.getParameter("usuario"), request.getParameter("contrasena"));
 				sesion.setAttribute("usuario_cliente", request.getParameter("usuario"));
 				if(_servicioCliente.EsSocio(request.getParameter("usuario"))) {
+					float porcentajeDescuento = _servicioPlazosPrecios.obtenerPrcentajeDescuentoSocio();
 					sesion.setAttribute("es_socio","1");
+					sesion.setAttribute("dcto_socio", Float.toString(porcentajeDescuento * 100));
 				}
 				acceso = "index.jsp";
 			}

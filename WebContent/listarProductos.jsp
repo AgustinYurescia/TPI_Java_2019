@@ -20,7 +20,7 @@
 		<% HttpSession sesion = request.getSession(true);%>
 		<%if(sesion.getAttribute("es_socio") != null){%>
 			<br/>
-			<div align="center" class="alert alert-info"><b>Recuerde que como beneficio de sociedad activa se le aplicara el descuento pertinenete al finalizar la compra</b></div>
+			<div align="center" class="alert alert-info"><b>Recuerde que como beneficio de sociedad activa se le aplicara el descuento del <%=sesion.getAttribute("dcto_socio")%> % al finalizar la compra</b></div>
 		<%} %>
 		<div class="productos" style="text-align:center; width: 640px !important; margin:auto !important">
 			<h1>Listado de productos</h1>
