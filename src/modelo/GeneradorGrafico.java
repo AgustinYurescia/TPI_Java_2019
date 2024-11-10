@@ -18,8 +18,10 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Base64;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 
 public class GeneradorGrafico {
@@ -37,22 +39,35 @@ public class GeneradorGrafico {
 	public String graficoBarrasVentasPorProducto(Map<String,Integer> data) throws Exception {
 		Color trans = new Color(0xFF, 0xFF, 0xFF, 0);
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-		TreeMap<String,Integer> sort_data = new  TreeMap<String,Integer>(data); 
-		for (String key : sort_data.keySet())
-		{
-			dataset.addValue(sort_data.get(key), key, key);
-		}	
+		
+		// Ordenar el mapa por valores en orden descendente
+		Map<String, Integer> sortedData = data.entrySet()
+				.stream()
+				.sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue()))
+				.collect(Collectors.toMap(
+					Map.Entry::getKey,
+					Map.Entry::getValue,
+					(e1, e2) -> e1,
+					LinkedHashMap::new
+				));
+		
+		// Añadir los datos ordenados al dataset
+		for (String key : sortedData.keySet()) {
+			dataset.addValue(sortedData.get(key), key, key);
+		}
+
 		JFreeChart chart = ChartFactory.createBarChart("GRÁFICO DE BARRAS", "Productos", "N° Ventas", dataset);
 		CategoryPlot plot = chart.getCategoryPlot();
 		BarRenderer renderer = (BarRenderer) plot.getRenderer();
 		renderer.setDrawBarOutline(false);
 		renderer.setItemMargin(0);
-	    chart.setBackgroundPaint(trans);
-	    chart.getLegend().setBackgroundPaint(trans);
-	    plot.setBackgroundPaint(trans);
-	    plot.setRangeGridlinePaint(Color.black);
-        BufferedImage image = chart.createBufferedImage(625, 400);
-        return getBase64(image);
+		chart.setBackgroundPaint(trans);
+		chart.getLegend().setBackgroundPaint(trans);
+		plot.setBackgroundPaint(trans);
+		plot.setRangeGridlinePaint(Color.black);
+		
+		BufferedImage image = chart.createBufferedImage(625, 400);
+		return getBase64(image);
     }
 	
 	public String graficoBarrasVentasPorMes(Map<Integer,Float> data) throws Exception {
