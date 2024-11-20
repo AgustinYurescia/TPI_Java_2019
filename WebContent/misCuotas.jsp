@@ -65,7 +65,7 @@
 						%>
 						<td style="padding-top: 20px">-</td>
 						<td style="padding-top: 20px"><%=cuota.getValor()%></td>
-						<td style="padding-top: 20px">A pagar!</td>
+						<td style="padding-top: 20px">A pagar</td>
 						<%	
 						}
 						else
