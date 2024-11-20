@@ -16,6 +16,7 @@
 	</head>
 	<body>
 		<div class="container">
+
 		<% HttpSession sesion = request.getSession(true);
 	   	   if (sesion.getAttribute("usuario_cliente") != null) { 
 	   	   		if(sesion.getAttribute("mensaje_error") != null){
@@ -23,6 +24,8 @@
 		   	   		<div class="alert alert-danger" role="alert" align = "center"><%=mensaje%></div>
 	   	   		<%}else{ %>
 				   <div class="m-2">
+					<h1>Mis Pedidos</h1>
+					<hr/>
 				   <h5>Estado del pedido:</h5>
 				   	<form action="ControladorPedido">
 				   		<div class = "form-row">
