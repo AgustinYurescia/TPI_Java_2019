@@ -11,6 +11,7 @@ import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.chart.axis.NumberAxis;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -21,6 +22,7 @@ import java.util.Base64;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
+import java.text.DecimalFormat;
 import java.util.stream.Collectors;
 
 
@@ -147,29 +149,41 @@ public class GeneradorGrafico {
         return getBase64(image);
     }
 	
-	public String graficoLinealVentasPorAnio(Map<Integer,Float> data) throws Exception {
+	public String graficoLinealVentasPorAnio(Map<Integer, Float> data) throws Exception {
 		XYSeries dataset = new XYSeries("Ventas");
 		Color trans = new Color(0xFF, 0xFF, 0xFF, 0);
-		for (Integer key : data.keySet())
-		{
+	
+		// Agregar datos al dataset
+		for (Integer key : data.keySet()) {
 			dataset.add(key, data.get(key));
 		}
 		XYSeriesCollection xydataset = new XYSeriesCollection();
 		xydataset.addSeries(dataset);
-
-		JFreeChart chart = ChartFactory.createXYLineChart("GRÁFICO LINEAL", "Año", "Total Ventas en $", xydataset,PlotOrientation.VERTICAL, true, true, false);
-		ChartPanel chartPanel = new ChartPanel(chart);
-		chartPanel.setPreferredSize(new java.awt.Dimension(560, 367));
+	
+		JFreeChart chart = ChartFactory.createXYLineChart(
+			"GRÁFICO LINEAL", "Año", "Total Ventas en $", 
+			xydataset, PlotOrientation.VERTICAL, 
+			true, true, false
+		);
+	
 		XYPlot plot = chart.getXYPlot();
 		XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
 		renderer.setSeriesPaint(0, Color.RED);
 		renderer.setSeriesStroke(0, new BasicStroke(4.0f));
 		plot.setRenderer(renderer);
-	    chart.setBackgroundPaint(trans);
-	    chart.getLegend().setBackgroundPaint(trans);
-	    plot.setBackgroundPaint(trans);
-	    plot.setRangeGridlinePaint(Color.black);
-        BufferedImage image = chart.createBufferedImage(625, 400);
-        return getBase64(image);
-    }
+	
+		// Configurar el eje X para mostrar números enteros sin decimales
+		NumberAxis xAxis = (NumberAxis) plot.getDomainAxis();
+		xAxis.setNumberFormatOverride(new DecimalFormat("####")); // Formato sin decimales
+		xAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+	
+		// Configuraciones de estilo
+		chart.setBackgroundPaint(trans);
+		chart.getLegend().setBackgroundPaint(trans);
+		plot.setBackgroundPaint(trans);
+		plot.setRangeGridlinePaint(Color.black);
+	
+		BufferedImage image = chart.createBufferedImage(625, 400);
+		return getBase64(image);
+	}
 }
