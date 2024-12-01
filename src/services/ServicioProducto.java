@@ -110,6 +110,18 @@ public class ServicioProducto {
 			throw ex;
 		}
 	}
+	
+	public void DescontarStock(int codigo_producto,int cantidad) {
+		try 
+		{
+			_productoDAO.descontarStock(codigo_producto, cantidad);
+		}
+		catch(Exception ex)
+		{
+			//TODO: handle specific exception
+			throw ex;
+		}
+	}
 		
 	public ArrayList<Producto> ObtenerProductos(int codigoCategoria) throws Exception {
 		

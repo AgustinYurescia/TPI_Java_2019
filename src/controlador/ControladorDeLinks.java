@@ -34,6 +34,13 @@ public class ControladorDeLinks extends HttpServlet {
 			}else {
 				response.sendRedirect("actualizarStock.jsp");
 			}
+		}else if(action.equalsIgnoreCase("descontarStock")) {
+			HttpSession sesion = request.getSession(true);
+			if (sesion.getAttribute("usuario_admin") == null) {
+				response.sendRedirect("loginAdmin.jsp");   
+			}else {
+				response.sendRedirect("descontarStock.jsp");
+			}
 		}else if(action.equalsIgnoreCase("editarProducto")) {
 			HttpSession sesion = request.getSession(true);
 			if (sesion.getAttribute("usuario_admin") == null) {

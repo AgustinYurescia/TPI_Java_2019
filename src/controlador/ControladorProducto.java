@@ -252,6 +252,32 @@ public class ControladorProducto extends HttpServlet {
 					acceso = "loginAdmin.jsp";
 				}
 			}
+			else if(action.equalsIgnoreCase("DescontarStock")){
+				if (sesion.getAttribute("usuario_admin") != null)
+				{
+					try
+					{
+						_validatorProducto.validacion_producto(null, null, request.getParameter("stock"), request.getParameter("precio"), null, request.getParameter("codigo_producto"));
+						_servicioProducto.DescontarStock(Integer.parseInt(request.getParameter("codigo_producto")), Integer.parseInt(request.getParameter("stock")));
+						request.setAttribute("mensajeOk", "Stock actualizado con éxito");
+					}
+					catch(AppException e) 
+					{
+						request.setAttribute("cantidad", request.getParameter("stock"));
+						request.setAttribute("mensajeError", e.getMessage());
+					}
+					catch (Exception e)
+					{
+						request.setAttribute("mensajeError", "Error al actualizar el stock, error interno del servidor");
+					}
+					
+					acceso="descontarStock.jsp";
+				}
+				else
+				{
+					acceso = "loginAdmin.jsp";
+				}
+			}
 			else if(action.equalsIgnoreCase("listar") || action.equalsIgnoreCase("listarParaBajaCat")) 
 			{	
 				request.setAttribute("categorias", _servicioCategoria.obtenerTodas());

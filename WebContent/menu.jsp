@@ -34,7 +34,8 @@
               		Productos
             	</a>
             	<div class="dropdown-menu" aria-labelledby="productosDropdown">
-              		<a class="dropdown-item" href="ControladorDeLinks?accion=actualizarStock">Actualizar stock</a>
+              		<a class="dropdown-item" href="ControladorDeLinks?accion=actualizarStock">Actualizar stock y precio</a>
+              		<a class="dropdown-item" href="ControladorDeLinks?accion=descontarStock">Descontar stock</a>
               		<a class="dropdown-item" href="ControladorDeLinks?accion=altaProducto">Alta Producto</a>
               		<a class="dropdown-item" href="ControladorDeLinks?accion=editarProducto">Editar Producto</a>
               		<a class="dropdown-item" href="ControladorDeLinks?accion=listarProductosAdmin">Listado de Productos</a>
