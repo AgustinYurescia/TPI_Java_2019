@@ -1,5 +1,6 @@
 package controlador;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -19,19 +20,66 @@ import javax.mail.internet.MimeMultipart;
 
 public class Correo {
 
+    private String mailSmtpHost;
+    private String mailSmtpPort; 
+    private String mailSmtpAuth; 
+    private String mailSmtpStartTlsEnable; 
+    private String mailSmtpSslProtocols; 
+    private String mailUserName;   
+    private String mailPassword;   
+
+    Correo() {
+        try {
+            String configFilePath = System.getProperty("catalina.base") + "/conf/config.properties";
+                        
+            // Leer el archivo de configuración
+            FileInputStream inputStream = new FileInputStream(configFilePath);
+            loadConfig(inputStream);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadConfig(FileInputStream inputStream) throws Exception {
+        // Cargar las propiedades desde el archivo de configuración
+        Properties config = new Properties();
+        config.load(inputStream);
+
+        // Obtener los valores de configuración
+        mailSmtpHost = config.getProperty("mail.smtp.host");
+        mailSmtpPort = config.getProperty("mail.smtp.port");
+        mailSmtpAuth = config.getProperty("mail.smtp.auth");
+        mailSmtpStartTlsEnable = config.getProperty("mail.smtp.starttls.enable");
+        mailSmtpSslProtocols = config.getProperty("mail.smtp.ssl.protocols");
+
+        mailUserName = config.getProperty("mail.username");
+        mailPassword = config.getProperty("mail.password");
+
+        if (mailSmtpHost == null || 
+        mailSmtpPort == null || 
+        mailSmtpAuth == null ||
+        mailSmtpStartTlsEnable == null || 
+        mailSmtpSslProtocols == null||
+        mailUserName == null || 
+        mailPassword == null) {
+            System.out.println("Faltan parámetros en el archivo config.properties para enviar email");
+        }
+    }
+
 	public void enviar_mail_confirmacion(String destinatario, int nro_pedido) throws IOException, MessagingException {
 		
         // Configuración de propiedades para la conexión SMTP de Brevo
         Properties props = new Properties();
-        props.put("mail.smtp.host", "smtp-relay.brevo.com");
-        props.put("mail.smtp.port", "587");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.ssl.protocols", "TLSv1.2"); 
+        props.put("mail.smtp.host", mailSmtpHost);
+        props.put("mail.smtp.port", mailSmtpPort);
+        props.put("mail.smtp.auth", mailSmtpAuth);
+        props.put("mail.smtp.starttls.enable", mailSmtpStartTlsEnable);
+        props.put("mail.smtp.ssl.protocols", mailSmtpSslProtocols); 
 
         // Autenticación con tu cuenta Brevo
-        final String brevoUsername = "7d394a001@smtp-brevo.com";
-        final String brevoPassword = "5PN6C2wcLA7dm8zE"; 
+        final String brevoUsername = mailUserName;
+        final String brevoPassword = mailPassword; 
 
         // Sesión de autenticación SMTP
         Session session = Session.getInstance(props, new javax.mail.Authenticator() {
@@ -66,17 +114,17 @@ public class Correo {
 	}
 	
 	public void enviar_mail_cancelacion(String destinatario) throws IOException, MessagingException {
-		  // Configuración de propiedades para la conexión SMTP de Brevo
+        // Configuración de propiedades para la conexión SMTP de Brevo
         Properties props = new Properties();
-        props.put("mail.smtp.host", "smtp-relay.brevo.com");
-        props.put("mail.smtp.port", "587");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.ssl.protocols", "TLSv1.2"); 
+        props.put("mail.smtp.host", mailSmtpHost);
+        props.put("mail.smtp.port", mailSmtpPort);
+        props.put("mail.smtp.auth", mailSmtpAuth);
+        props.put("mail.smtp.starttls.enable", mailSmtpStartTlsEnable);
+        props.put("mail.smtp.ssl.protocols", mailSmtpSslProtocols); 
 
         // Autenticación con tu cuenta Brevo
-        final String brevoUsername = "7d394a001@smtp-brevo.com";
-        final String brevoPassword = "5PN6C2wcLA7dm8zE"; 
+        final String brevoUsername = mailUserName;
+        final String brevoPassword = mailPassword; 
 
         // Sesión de autenticación SMTP
         Session session = Session.getInstance(props, new javax.mail.Authenticator() {
@@ -116,17 +164,17 @@ public class Correo {
 	}
 
 	public void enviar_mail_confirmacion_preparacion(String destinatario, int nro_pedido) throws IOException, MessagingException {
-		  // Configuración de propiedades para la conexión SMTP de Brevo
+        // Configuración de propiedades para la conexión SMTP de Brevo
         Properties props = new Properties();
-        props.put("mail.smtp.host", "smtp-relay.brevo.com");
-        props.put("mail.smtp.port", "587");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.ssl.protocols", "TLSv1.2"); 
+        props.put("mail.smtp.host", mailSmtpHost);
+        props.put("mail.smtp.port", mailSmtpPort);
+        props.put("mail.smtp.auth", mailSmtpAuth);
+        props.put("mail.smtp.starttls.enable", mailSmtpStartTlsEnable);
+        props.put("mail.smtp.ssl.protocols", mailSmtpSslProtocols); 
 
         // Autenticación con tu cuenta Brevo
-        final String brevoUsername = "7d394a001@smtp-brevo.com";
-        final String brevoPassword = "5PN6C2wcLA7dm8zE"; 
+        final String brevoUsername = mailUserName;
+        final String brevoPassword = mailPassword; 
 
         // Sesión de autenticación SMTP
         Session session = Session.getInstance(props, new javax.mail.Authenticator() {

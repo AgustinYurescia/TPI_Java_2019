@@ -38,7 +38,7 @@ public class TasasPlazosValidator {
 		if (porcDescuento != null) {
 			Pattern descuento_pattern = Pattern.compile("/^\\s+$/");
 			Matcher descuento_matcher = descuento_pattern.matcher(porcDescuento);
-			if (porcDescuento.isBlank() || porcDescuento.isEmpty()) {
+			if (porcDescuento.isEmpty()) {
 				throw new ValidatorsException("Porcentaje de descuento vacío");
 			}
 			else if(descuento_matcher.matches()){
@@ -57,7 +57,7 @@ public class TasasPlazosValidator {
 		if (dias != null) {
 			Pattern dias_pattern = Pattern.compile("/^\\s+$/");
 			Matcher dias_matcher = dias_pattern.matcher(dias);
-			if (dias.isBlank() || dias.isEmpty()) {
+			if (dias.isEmpty()) {
 				throw new ValidatorsException("Plazo de entrega vacío");
 			}
 			else if(dias_matcher.matches()){
@@ -76,7 +76,7 @@ public class TasasPlazosValidator {
 		if (porcGanancia != null) {
 			Pattern porcGanancia_pattern = Pattern.compile("/^\\s+$/");
 			Matcher porcGanancia_matcher = porcGanancia_pattern.matcher(porcGanancia);
-			if (porcGanancia.isBlank() || porcGanancia.isEmpty()) {
+			if (porcGanancia.isEmpty()) {
 				throw new ValidatorsException("Porcentaje de ganancia vacío");
 			}
 			else if(porcGanancia_matcher.matches()){
@@ -95,7 +95,7 @@ public class TasasPlazosValidator {
 		if (valor != null) {
 			Pattern valor_pattern = Pattern.compile("/^\\s+$/");
 			Matcher valor_matcher = valor_pattern.matcher(valor);
-			if (valor.isBlank() || valor.isEmpty()) {
+			if (valor.isEmpty()) {
 				throw new ValidatorsException("Valor de cuotas vacío");
 			}
 			else if(valor_matcher.matches()){
